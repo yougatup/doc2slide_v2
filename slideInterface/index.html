@@ -1,0 +1,102 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="google-signin-client_id" content="1080216621788-nsdlr416il84hr9t6nkrb9fv3b663tgk.apps.googleusercontent.com">
+        <link rel="stylesheet" type="text/css" href="myStyle.css">
+        <link rel="stylesheet" href="./splitjs/split.css">
+
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="./splitjs/split.js"></script>
+
+        <script src="https://code.jquery.com/ui/jquery-ui-git.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+        <script src="https://apis.google.com/js/api.js"></script>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <script src="scripts/pouchdb-7.0.0.min.js"></script>
+
+        <script src="script.js"></script>
+
+    </head>
+
+    <body>
+    <div id='loadingPlane'> 
+    <img id='loadingPlaneGif' src="./loading.gif"> </img>
+    </div>
+        <div id='topBar'> 
+        Doc2Slide
+        </div>
+        <div id='wrapper'>
+            <div id='leftPlane' class='mainPlane split split-horizontal'>
+                <div id='dragButton' class='opened' onclick="toggleSlidePlane()"> > </div>
+
+                <div id='leftPlanecontent' class='content'>
+                    <!--Add buttons to initiate auth sequence and sign out-->
+                    <button id="authorize-button" style="display: none;">Authorize</button>
+                    <button id="signout-button" style="display: none;">Sign Out</button>
+
+                    <!--
+                    <button id='createSlideButton'> Add a slide </button>
+                    <button id='slideInfoButton'> Get slide info </button>
+                    <button id='fireEventButton'> Fire Event </button>
+    
+                    <button id='insertText'> Insert text </button> -->
+
+                     <iframe id='pdfjsIframe' src='./generic/web/viewer.html' frameborder='0' marginwidth='0' marginheight='0' >
+                    </iframe>
+
+                </div>
+            </div>
+	     </div>
+
+            <div id="mySidenav" class="sidenav">
+
+                    <div id='slidePlane' class='mainPlane split split-horizontal'>
+                        <div id='slidePlaneContent' class='content'>
+                            <div id='slidePlaneCanvas'> 
+        			<div id='contentVisualizer'> 
+        			    <button id='textTypeBtn' class='contentVisualizerButton contentVisualizerBtnSelected'> Text</button> 
+        			    <button id='figureTypeBtn' class='contentVisualizerButton'> Figure </button> 
+        			    <button id='subtitleTypeBtn' class='stylingBtn contentVisualizerButton'> Subtitle </button> 
+        
+        			    <div id='objectIDField'> object id:  </div>
+        			    <div id='originalTextField'> original text:  </div>
+        			    <div id='originalFigureField'> original figure: </div>
+        			</div>
+        			<div id='slideNavigator'> 
+        			    <button id='prevMappedElementButton' class='slideNavigatorButton'> < </button> 
+        			    <button id='currentMappedElementButton' class='slideNavigatorButton'> Current </button> 
+        			    <button id='nextMappedElementButton' class='slideNavigatorButton'> > </button> 
+        			</div>
+        
+                                <div id='slidePlaneCanvasPopup'> 
+        			    <input id='autoCompleteNumberInput'> </input> 
+                                </div>
+        
+        			<div id='elementMenuButton'> 
+        			    <button id='elementTextButton' class='elementButton'> Text </button>
+        			    <button id='elementFigureButton' class='elementButton'> Figure </button>
+        			</div>
+        
+                            </div>
+        
+                            <iframe id='slideIframe' frameborder='0' marginwidth='0' marginheight='0'>
+                            </iframe>
+                        </div>
+                    </div>
+        
+        	    <div id='searchResultTab' class="ui-widget-content"> 
+        		<div id='searchBar'> 
+        		    <input type='text' id='searchQueryInputBox' />
+        		    <button id='searchResultSubmitBtn'> Go </button>
+        		    <button id='searchResultCloseBtn'> Close </button>
+        		</div>
+        		<div id='searchResultImages'> </div>
+            </div>
+        </div>
+    </body>
+</html>
