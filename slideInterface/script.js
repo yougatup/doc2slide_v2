@@ -1,3 +1,11 @@
+var userName = 'tempUser';
+var curHighlightInfo = {
+	pageNumber: -1,
+	startWordIndex: -1,
+	endWordIndex: -1
+};
+var highlightDB = {};
+
 function prepare() {
     initializeGAPI();
 /*
@@ -193,9 +201,62 @@ return console.log(`The API returned an error: ${error}`);
 handleClientLoad();
 }
 
-$(document).ready(function() {
+function issueEvent(eventName, data) {
+    var myEvent = new CustomEvent(eventName, {detail: data} );
 
+    document.dispatchEvent(myEvent);
+}
+
+function highlightPage(pageNumber) {
+	for(var key in highlightDB.mapping[pageNumber]) {
+		var elem = highlightDB.mapping[pageNumber][key];
+
+		console.log(elem);
+
+		issueEvent("root_sendMappingIdentifier_2", {
+						mappingID: key,
+						pageNumber: pageNumber,
+						startWordIndex: elem.startWordIndex,
+						endWordIndex: elem.endWordIndex
+					});
+	}
+}
+
+async function writeHighlight(pageNumber, startWordIndex, endWordIndex) {
+	var newKey = firebase.database().ref('users/' + userName + '/mapping/' + pageNumber + '/').push().key;
+
+	var updates = {};
+	updates['/users/' + userName + '/mapping/' + pageNumber + '/' + newKey] = {
+		startWordIndex: startWordIndex,
+		endWordIndex: endWordIndex
+	};
+
+	await firebase.database().ref().update(updates);
+
+	return newKey;
+}
+
+async function registerHighlight(highlightInfo) {
+	return new Promise(function (resolve, reject) {
+		var ret = writeHighlight(highlightInfo.pageNumber, highlightInfo.startWordIndex, highlightInfo.endWordIndex);
+
+		resolve(ret);
+	});
+}
+
+function initializeDB() {
+	readData('/users/' + userName).then(result => {
+		highlightDB = result;
+
+		console.log(highlightDB);
+		issueEvent("root_openPDF", null);
+	});
+}
+
+$(document).ready(function() {
         $("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
+
+		initializeDB();
 
         $(document).on("initialSlideGeneration", 
                 function(e) {
@@ -212,6 +273,42 @@ $(document).ready(function() {
                 $("#loadingPlane").hide();
               //  closeNav();
                 });
+
+		$(document).on("pdfjs_pageRendered", function(e) {
+				var p = e.detail;
+
+				console.log(p);
+
+				highlightPage(p.pageNumber);
+		});
+
+		$(document).on("pdfjs_highlighted", function(e) {
+				var p = e.detail;
+
+				registerHighlight(p).then(result => {
+					issueEvent("root_sendMappingIdentifier", {
+						mappingID: result,
+						pageNumber: p.pageNumber,
+						startWordIndex: p.startWordIndex,
+						endWordIndex: p.endWordIndex
+					});
+				});
+		});
+
+		$(document).on("pdfjs_checkPreprocessed", function(e) {
+			readData('/' + userName).then(result => {
+				if(result == null) {
+				}
+				else {
+					issueEvent("root_checkPreprocessed", {
+						"result": "no"
+						});
+				}
+			});
+		});
+
+
+
 /*
         document.getElementById("wrapper").addEventListener( 
                 'webkitTransitionEnd', 
@@ -219,7 +316,25 @@ $(document).ready(function() {
                 alert( "Finished transition!" ); 
                 }, false );
                 */
+
+		
+		// console.log("hello");
+
+		var readValue = readData('/').then(result => {
+				/*
+			console.log("world");
+			console.log(result);
+			*/
+		});
 });
+
+async function readData(path) {
+	const eventref = firebase.database().ref(path);
+	const snapshot = await eventref.once('value');
+	const value = snapshot.val();
+
+	return value;
+}
 
 function openNav() {
 // document.getElementById("mySidenav").style.width = "50%";

@@ -1,3 +1,13 @@
+var isInitialLoading = true;
+var paperURL = 'paperData/paper/paper.pdf';
+var mouseDown = 0;
+var curHighlightInfo = {
+	pageNumber: -1,
+	startWordIndex: -1,
+	endWordIndex: -1
+};
+var wordListOnPages = {};
+
 /**
  * @licstart The following is the entire license notice for the
  * Javascript code in this page
@@ -17696,22 +17706,206 @@ exports.NetworkManager = NetworkManager;
 function issueEvent(eventName, data) {
     var myEvent = new CustomEvent(eventName, {detail: data} );
 
-    // window.postMessage(eventName, "*");
-
     document.dispatchEvent(myEvent);
 }
 
-$(document).ready(function() {
-        var paperURL = 'paperData/paper/paper.pdf';
-        PDFViewerApplication.open(paperURL);
+async function issueEvent(eventName, data, callbackString) {
+    var myEvent = new CustomEvent(eventName, {detail: data} );
 
+    document.dispatchEvent(myEvent);
+
+	return new Promise(function(resolve, reject) {
+		$(document).on(callbackString, function(e) {
+				resolve(e);
+			});
+		});
+}
+
+function analyzeDocument() {
+	issueEvent("pdfjs_checkPreprocessed", null, "root_checkPreprocessed").then(result => {
+		console.log(result);
+	});
+}
+
+function parseDivs(pageNumber) { // make span
+	var wordCnt = 0;
+
+	wordListOnPages[pageNumber] = [];
+
+	$('.page[data-page-number=' + pageNumber + '] > .textLayer > div').each(function() {
+		var splitted = $(this).html().split(' ');
+
+		$(this).html(
+			splitted.map((elem, index) => {
+				wordCnt = wordCnt + 2;
+
+				// if(elem == '') return '';
+
+				return '<span class=textSegment pageNumber=' + pageNumber + 
+				' wordIndex=' + (wordCnt-2) + '>' + elem + '</span>' + 
+				((index < splitted.length-1) ? '<span class=textSegment pageNumber=' + pageNumber + 
+				' wordIndex=' + (wordCnt-1) + '> </span>' : '');
+			}).join('')
+		);
+	});
+}
+
+$(document).ready(function() {
+
+		// if a page is rendered
         document.addEventListener('textlayerrendered', function (e) {
-            if (e.detail.pageNumber === PDFViewerApplication.pagesCount) {
-            issueEvent("pdfjs_renderFinished", null);
-            console.log("FINISHED");
-            // finished rendering
+			parseDivs(e.detail.pageNumber);
+
+			issueEvent("pdfjs_pageRendered", {
+				pageNumber: e.detail.pageNumber
+			});
+
+			if (isInitialLoading && e.detail.pageNumber === PDFViewerApplication.pagesCount) {
+				isInitialLoading = false;
+				issueEvent("pdfjs_renderFinished", null);
+
+				analyzeDocument();
             }
+
         }, true);
+
+		function applyClassToHighlight(pageNumber, startWordIndex, endWordIndex, className, attrSet) {
+			if(startWordIndex > endWordIndex) {
+				var temp = startWordIndex;
+				startWordIndex = endWordIndex;
+				endWordIndex = temp;
+			}
+
+			var startWord = $(".textSegment[pageNumber=" + pageNumber + "][wordIndex=" + startWordIndex + "]");
+			var parentDiv = $(startWord).parent();
+
+			$(parentDiv).children().each(function(e) {
+				if(parseInt($(this).attr("wordIndex")) >= startWordIndex && 
+				   parseInt($(this).attr("wordIndex")) <= endWordIndex) {
+						$(this).addClass(className);
+
+						if(attrSet) {
+							for(var key in attrSet) {
+								$(this).attr(key, attrSet[key]);
+							}
+						}
+					}
+			});
+			
+			if(parseInt($($(parentDiv).children().last()).attr("wordIndex")) < endWordIndex) {
+				for(var i=0;i<1000;i++) { // to avoid infinite loop
+					parentDiv = $(parentDiv).next();
+
+					var lastWord = $($(parentDiv).children().last());
+
+					if(parseInt($(lastWord).attr("wordIndex")) < endWordIndex)  {
+						$(parentDiv).children().addClass(className);
+
+						if(attrSet) {
+							for(var key in attrSet) {
+								$(parentDiv).children().attr(key, attrSet[key]);
+							}
+						}
+					}
+					else {
+						$(parentDiv).children().each(function(e) {
+							if(parseInt($(this).attr("wordIndex")) <= endWordIndex)  {
+								$(this).addClass(className);
+
+								if(attrSet) {
+									for(var key in attrSet) {
+										$(this).attr(key, attrSet[key]);
+									}
+								}
+							}
+							else return;
+						});
+
+						break;
+					}
+				}
+			}
+		}
+
+		function setCurHighlightInfo(pageNumber, startWordIndex, endWordIndex) {
+			$(".wordHighlighted").removeClass("wordHighlighted");
+
+			applyClassToHighlight(pageNumber, startWordIndex, endWordIndex, "wordHighlighted", null);
+
+			curHighlightInfo.pageNumber = pageNumber;
+			curHighlightInfo.startWordIndex = startWordIndex;
+			curHighlightInfo.endWordIndex = endWordIndex;
+		}
+
+		function clearCurHighlightInfo() {
+			curHighlightInfo.pageNumber = -1;
+			curHighlightInfo.startWordIndex = -1;
+			curHighlightInfo.endWordIndex = -1;
+
+			$(".wordHighlighted").removeClass("wordHighlighted");
+		}
+
+		$(document).on("mousedown", function(e) {
+			mouseDown++;
+
+			var target = e.target;
+
+			if($(target).hasClass("textSegment")) {
+				setCurHighlightInfo(parseInt($(target).attr("pageNumber")), 
+						parseInt($(target).attr("wordIndex")),
+						parseInt($(target).attr("wordIndex"))
+						);
+			}
+
+		});
+
+		$(document).on("mouseenter", ".textSegment", function(e) {
+			var target = e.target;
+			var wordIndex = parseInt($(target).attr("wordIndex"));
+
+			if(mouseDown > 0) {
+				setCurHighlightInfo(curHighlightInfo.pageNumber, 
+					curHighlightInfo.startWordIndex,
+					wordIndex
+					);
+			}
+		});
+
+		$(document).on("mouseup", function(e) {
+			mouseDown--;
+
+			var target = e.target;
+
+			if($(target).hasClass("textSegment")) {
+				// do something
+
+				issueEvent("pdfjs_highlighted", {
+					pageNumber: curHighlightInfo.pageNumber,
+					startWordIndex: curHighlightInfo.startWordIndex,
+					endWordIndex: curHighlightInfo.endWordIndex
+				}, "root_sendMappingIdentifier").then(result => {
+					var p = result.detail;
+
+					applyClassToHighlight(p.pageNumber, p.startWordIndex, p.endWordIndex, "wordMapped", {
+						mappingID: p.mappingID
+					});
+				});
+			}
+			else clearCurHighlightInfo();
+
+		});
+
+		$(document).on("root_sendMappingIdentifier_2", function(e) {
+			var p = e.detail;
+
+			applyClassToHighlight(p.pageNumber, p.startWordIndex, p.endWordIndex, "wordMapped", {
+				mappingID: p.mappingID
+			});
+		});
+
+		$(document).on("root_openPDF", function(e) {
+        	PDFViewerApplication.open(paperURL);
+		});
 
 });
 
