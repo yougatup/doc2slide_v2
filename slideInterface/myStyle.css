@@ -13,10 +13,11 @@ position: relative;
 }
 
 #topBar {
+position: relative;
 padding: 5px;
 height: 30px;
 width: 100%;
-       background-color: rgb(45, 79, 126);
+background-color: rgb(45, 79, 126);
 color: white;
        font-weight: bold;
        font-family: Arial, Helvetica, sans-serif;
@@ -70,7 +71,7 @@ width: 100%;
 height: 100%;
 position: absolute;
 top: 0px;
-     pointer-events: none;
+pointer-events: none;
 }
 
 .elementButton {
@@ -353,4 +354,99 @@ top: 50%;
 position: relative;
 transform: translate(-50%, -50%);
 opacity: 0.5;
+}
+
+.focusRect {
+display: none;
+position: absolute;
+background-color: gray;
+opacity: 0.4;
+pointer-events: auto !important;
+}
+
+
+.objectIndicator {
+position: absolute;
+border: 2px dashed black;
+z-index: 1000 !important;
+pointer-events: auto !important;
+}
+
+.objectIndicator.onEditing {
+position: absolute;
+background-color: none;
+opacity: 0;
+border: none;
+z-index: 1000 !important;
+pointer-events: none !important;
+}
+
+.workspaceRect {
+position: absolute;
+pointer-events: auto !important;
+}
+
+.workspaceRect.onEditing {
+position: absolute;
+background-color: none;
+opacity: 0;
+pointer-events: none !important;
+}
+
+.slideObjectMouseEntered {
+	border-top: 5px solid red;
+}
+
+.slideObjectFirstSelected {
+	border: 2px solid blue;
+}
+
+.slideObjectSecondSelected {
+	border: 2px solid green;
+}
+
+.removeSlideObject {
+	background-image: url( './trashcan.png' );
+	background-size: 35px 35px;
+	height: 40px;
+	width: 40px;
+	margin-left: 5px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+.editSlideObject {
+	background-image: url( './edit.png' );
+	background-size: 35px 35px;
+	height: 40px;
+	width: 40px;
+	margin: 3px;
+}
+
+#slideObjectPopover{
+	position: absolute;
+    border-radius: 3px;
+	background-color: white;
+	z-index: 2000 !important;
+	pointer-events: auto !important;
+}
+
+#slideObjectPopover {
+display: none;
+}
+
+.mappingIndicator {
+	position: absolute;
+	z-index: 1000 !important;
+	border: 1px solid black;
+    opacity: 0.5;
+    cursor: pointer;
+    pointer-events: auto !important;
+    border-radius: 100%;
+	width: 10px;
+	height: 10px;
+}
+
+.mappingIndicator.mapped {
+	background-color: blue;
 }

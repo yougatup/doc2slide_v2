@@ -7,6 +7,8 @@ var curHighlightInfo = {
 	endWordIndex: -1
 };
 var wordListOnPages = {};
+var popoverElement = null;
+var blink = null;
 
 /**
  * @licstart The following is the entire license notice for the
@@ -17750,6 +17752,91 @@ function parseDivs(pageNumber) { // make span
 	});
 }
 
+function removePopover() {
+	if(popoverElement != null) {
+		$(popoverElement).popover("dispose");
+		popoverElement = null;
+	}
+}
+
+function popoverOnWord(target) {
+	$(target).attr("data-container", "body");
+	$(target).attr("data-toggle", "popover");
+	$(target).attr("data-placement", "top");
+
+	$(target).popover(
+			{
+			    html: true,
+			    content: function () {
+				  return "<button class='removeHighlightBtn' />";
+			     }
+			}
+			);
+
+	popoverElement = target;
+}
+
+function removeHighlight(mappingID) {
+	$(".textSegment[mappingID=" + mappingID + "]").each(function(e) {
+		$(this).removeClass("wordMapped");
+		$(this).removeClass("wordHighlighted");
+		$(this).removeAttr("mappingID");
+		$(this).attr("mappingID", null);
+	});
+}
+
+function iterateWords(pageNumber, startWordIndex, endWordIndex, func, arg) {
+	if(startWordIndex > endWordIndex) {
+		var temp = startWordIndex;
+		startWordIndex = endWordIndex;
+		endWordIndex = temp;
+	}
+
+	var startWord = $(".textSegment[pageNumber=" + pageNumber + "][wordIndex=" + startWordIndex + "]");
+	var parentDiv = $(startWord).parent();
+
+	$(parentDiv).children().each(function(e) {
+		if(parseInt($(this).attr("wordIndex")) >= startWordIndex && 
+		   parseInt($(this).attr("wordIndex")) <= endWordIndex) {
+				func($(this), arg)
+		  }
+	});
+	
+	if(parseInt($($(parentDiv).children().last()).attr("wordIndex")) < endWordIndex) {
+		for(var i=0;i<1000;i++) { // to avoid infinite loop
+			parentDiv = $(parentDiv).next();
+
+			var lastWord = $($(parentDiv).children().last());
+
+			if(parseInt($(lastWord).attr("wordIndex")) < endWordIndex)  {
+				func($(parentDiv).children(), arg)
+			}
+			else {
+				$(parentDiv).children().each(function(e) {
+					if(parseInt($(this).attr("wordIndex")) <= endWordIndex)  {
+						func($(this), arg)
+					}
+					else return;
+				});
+
+				break;
+			}
+		}
+	}
+}
+
+function getHighlightedText(curPageNumber, startElementInx, endElementInx) {
+	var result= '';
+
+	iterateWords(curPageNumber, startElementInx, endElementInx, function(elem) {
+		result = result+ $(elem).html();
+	});
+
+    result = result.replace(/  +/g, ' ');
+
+    return result;
+
+}
 $(document).ready(function() {
 
 		// if a page is rendered
@@ -17770,61 +17857,18 @@ $(document).ready(function() {
         }, true);
 
 		function applyClassToHighlight(pageNumber, startWordIndex, endWordIndex, className, attrSet) {
-			if(startWordIndex > endWordIndex) {
-				var temp = startWordIndex;
-				startWordIndex = endWordIndex;
-				endWordIndex = temp;
-			}
+			iterateWords(pageNumber, startWordIndex, endWordIndex, function(elem, arg) {
+				$(elem).addClass(arg.className);
 
-			var startWord = $(".textSegment[pageNumber=" + pageNumber + "][wordIndex=" + startWordIndex + "]");
-			var parentDiv = $(startWord).parent();
-
-			$(parentDiv).children().each(function(e) {
-				if(parseInt($(this).attr("wordIndex")) >= startWordIndex && 
-				   parseInt($(this).attr("wordIndex")) <= endWordIndex) {
-						$(this).addClass(className);
-
-						if(attrSet) {
-							for(var key in attrSet) {
-								$(this).attr(key, attrSet[key]);
-							}
-						}
-					}
-			});
-			
-			if(parseInt($($(parentDiv).children().last()).attr("wordIndex")) < endWordIndex) {
-				for(var i=0;i<1000;i++) { // to avoid infinite loop
-					parentDiv = $(parentDiv).next();
-
-					var lastWord = $($(parentDiv).children().last());
-
-					if(parseInt($(lastWord).attr("wordIndex")) < endWordIndex)  {
-						$(parentDiv).children().addClass(className);
-
-						if(attrSet) {
-							for(var key in attrSet) {
-								$(parentDiv).children().attr(key, attrSet[key]);
-							}
-						}
-					}
-					else {
-						$(parentDiv).children().each(function(e) {
-							if(parseInt($(this).attr("wordIndex")) <= endWordIndex)  {
-								$(this).addClass(className);
-
-								if(attrSet) {
-									for(var key in attrSet) {
-										$(this).attr(key, attrSet[key]);
-									}
-								}
-							}
-							else return;
-						});
-
-						break;
+				if(attrSet) {
+					for(var key in arg.attrSet) {
+						$(elem).attr(key, arg.attrSet[key]);
 					}
 				}
-			}
+			}, {
+				className: className,
+				attrSet: attrSet
+			});
 		}
 
 		function setCurHighlightInfo(pageNumber, startWordIndex, endWordIndex) {
@@ -17844,6 +17888,42 @@ $(document).ready(function() {
 
 			$(".wordHighlighted").removeClass("wordHighlighted");
 		}
+
+		$(document).on("root_navigateToWord", function(e) {
+			var p = e.detail;
+
+			var allElements = $(".textSegment[mappingID=" + p.mappingID + "]")
+			var startElement = $($(".textSegment[mappingID=" + p.mappingID + "]")[0]);
+
+			var pageNumber = parseInt($(startElement).attr("pageNumber"));
+			var boundingClientRect = $(startElement).offset();
+
+			var page = $("[data-page-number=" + pageNumber + "][class='page']");
+			var pageRect = $(page)[0].getBoundingClientRect();
+			var pageHeight = pageRect.height;
+
+			var relativeTop = boundingClientRect.top - pageRect.top - 400;
+
+			$("#viewerContainer").scrollTop(pageHeight * (pageNumber-1) + relativeTop);
+
+			var blinkingCnt = 0;
+
+			if(blink != null){
+				clearInterval(blink);
+			}
+
+			$(".blinkingWord").removeClass("blinkingWord");
+
+			blink = setInterval(function() {
+				$(allElements).toggleClass("blinkingWord");
+				blinkingCnt++;
+
+				if(blinkingCnt >= 10) {
+					clearInterval(blink);
+					blink = null;
+				}
+			}, 100);
+		});
 
 		$(document).on("mousedown", function(e) {
 			mouseDown++;
@@ -17876,20 +17956,36 @@ $(document).ready(function() {
 
 			var target = e.target;
 
+			if($(target).hasClass("endOfContent")) removePopover();
+
 			if($(target).hasClass("textSegment")) {
 				// do something
 
-				issueEvent("pdfjs_highlighted", {
-					pageNumber: curHighlightInfo.pageNumber,
-					startWordIndex: curHighlightInfo.startWordIndex,
-					endWordIndex: curHighlightInfo.endWordIndex
-				}, "root_sendMappingIdentifier").then(result => {
-					var p = result.detail;
+				if($(target).hasClass("wordMapped")) {
+					popoverOnWord(target);
+				}
+				else {
+					if(curHighlightInfo.pageNumber != -1) {
+						var text = getHighlightedText(curHighlightInfo.pageNumber, curHighlightInfo.startWordIndex, curHighlightInfo.endWordIndex);
+						
+						issueEvent("pdfjs_highlighted", {
+							text: text,
+							pageNumber: curHighlightInfo.pageNumber,
+							startWordIndex: curHighlightInfo.startWordIndex,
+							endWordIndex: curHighlightInfo.endWordIndex
+						}, "root_sendMappingIdentifier").then(result => {
+							var p = result.detail;
 
-					applyClassToHighlight(p.pageNumber, p.startWordIndex, p.endWordIndex, "wordMapped", {
-						mappingID: p.mappingID
-					});
-				});
+							console.log(p);
+
+							applyClassToHighlight(p.pageNumber, p.startWordIndex, p.endWordIndex, "wordMapped", {
+								mappingID: p.mappingID
+							});
+						});
+					}
+
+					issueEvent("pdfjs_extensionTemp", null);
+				}
 			}
 			else clearCurHighlightInfo();
 
@@ -17904,8 +18000,32 @@ $(document).ready(function() {
 		});
 
 		$(document).on("root_openPDF", function(e) {
+			console.log("HI");
+
         	PDFViewerApplication.open(paperURL);
 		});
+		
+		$(document).on("root_mappingRemoved2", function(e) {
+			var _mappingID = e.detail.mappingID;
 
+			removeHighlight(_mappingID);
+		});
+		$(document).on("click", ".removeHighlightBtn", function(e) {
+			if(popoverElement != null) {
+				var mappingID = $(popoverElement).attr("mappingID");
+				var pageNumber = $(popoverElement).attr("pageNumber");
+
+				issueEvent("pdfjs_removeMapping", {
+					mappingID: mappingID,
+					pageNumber: pageNumber
+				}, "root_mappingRemoved").then(result => {
+					var _mappingID = result.detail.mappingID;
+
+					removeHighlight(_mappingID);
+				});
+
+				removePopover();
+			}
+		});
 });
 

@@ -51,7 +51,9 @@
     <img id='loadingPlaneGif' src="./loading.gif"> </img>
     </div>
         <div id='topBar'> 
-        Doc2Slide
+			<div id='titleText' style='float: left;'> Doc2Slide </div>
+			<button id="authorize-button" style="display: none; float: left; background-color: red; height: 35px; width: 120px; margin-left: 20px; font-size: 20px; font-weight: bold;">Authorize</button>
+			<button id="signout-button" style="display: none; float: left;">Sign Out</button>
         </div>
         <div id='wrapper'>
             <div id='leftPlane' class='mainPlane split split-horizontal'>
@@ -59,8 +61,6 @@
 
                 <div id='leftPlanecontent' class='content'>
                     <!--Add buttons to initiate auth sequence and sign out-->
-                    <button id="authorize-button" style="display: none;">Authorize</button>
-                    <button id="signout-button" style="display: none;">Sign Out</button>
 
                     <!--
                     <button id='createSlideButton'> Add a slide </button>
@@ -81,30 +81,12 @@
                     <div id='slidePlane' class='mainPlane split split-horizontal'>
                         <div id='slidePlaneContent' class='content'>
                             <div id='slidePlaneCanvas'> 
-        			<div id='contentVisualizer'> 
-        			    <button id='textTypeBtn' class='contentVisualizerButton contentVisualizerBtnSelected'> Text</button> 
-        			    <button id='figureTypeBtn' class='contentVisualizerButton'> Figure </button> 
-        			    <button id='subtitleTypeBtn' class='stylingBtn contentVisualizerButton'> Subtitle </button> 
-        
-        			    <div id='objectIDField'> object id:  </div>
-        			    <div id='originalTextField'> original text:  </div>
-        			    <div id='originalFigureField'> original figure: </div>
-        			</div>
-        			<div id='slideNavigator'> 
-        			    <button id='prevMappedElementButton' class='slideNavigatorButton'> < </button> 
-        			    <button id='currentMappedElementButton' class='slideNavigatorButton'> Current </button> 
-        			    <button id='nextMappedElementButton' class='slideNavigatorButton'> > </button> 
-        			</div>
-        
-                                <div id='slidePlaneCanvasPopup'> 
-        			    <input id='autoCompleteNumberInput'> </input> 
-                                </div>
-        
-        			<div id='elementMenuButton'> 
-        			    <button id='elementTextButton' class='elementButton'> Text </button>
-        			    <button id='elementFigureButton' class='elementButton'> Figure </button>
-        			</div>
-        
+								<div id='slideObjectPopover'> <button class='removeSlideObject' /> <button class='editSlideObject'> </div>
+								<div id='workspaceRect' class='workspaceRect'></div>
+								<div id='focusRect1' class='focusRect'></div>
+								<div id='focusRect2' class='focusRect'></div>
+								<div id='focusRect3' class='focusRect'></div>
+								<div id='focusRect4' class='focusRect'></div>
                             </div>
         
                             <iframe id='slideIframe' frameborder='0' marginwidth='0' marginheight='0'>

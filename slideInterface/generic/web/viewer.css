@@ -2401,3 +2401,14 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
 .textSegment[mappingid] {
 	background-color: red;
 }
+
+.removeHighlightBtn {
+	background-image: url( '../../trashcan.png' );
+	background-size: 35px 35px;
+	height: 40px;  
+	width: 40px;
+}
+
+.textSegment.blinkingWord {
+	background-color: blue;
+}
