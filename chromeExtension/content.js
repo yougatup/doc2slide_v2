@@ -15,11 +15,15 @@ var eventList = {
 	"extension_pageUpdated": ['extension', 'root'],
 	"extension_typing": ['extension', 'root'],
 	"root_setSlideState": ['root', 'extension'],
-	"root_navigateToWord": ['root', 'pdfjs']
+	"root_navigateToWord": ['root', 'pdfjs'],
+	"root_getLastObject": ['root', 'extension'],
+	"extension_getLastObject": ['extension', 'root'],
+
 }
 
 var curSlideState = "WAIT";
 var curMonitoringParagraph = null;
+var removedBorderList = [];
 
 function issueEvent(eventName, data) {
     var myEvent = new CustomEvent(eventName, {detail: data} );
@@ -51,6 +55,14 @@ function focusObject(objID) {
 
 function pageUpdated(mutationsList) {
 	// console.log(mutationsList);
+
+	// console.log($("g[pointer-events='visiblePainted']").children())
+	// console.log($("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8'], path[fill='#1a73e8']"))	
+
+	$("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8']").attr("stroke", null);
+	$("g[pointer-events='visiblePainted']").children("path[fill='#1a73e8']").attr("fill", null);
+	$("path[stroke='#8ab4f8'][stroke-opacity='0.6']").attr("stroke", null);
+
 	if(curSlideState == "WAIT") {
 		function get_common_ancestor(a, b)
 			{
@@ -118,7 +130,17 @@ function pageUpdated(mutationsList) {
 		// console.log("Page Updated : " + getPageID());
 
 		var retValue = [];
+		var filmstripInfo = [];
 		
+		$("[id^='filmstrip-slide-'][id$='-bg']").each(function() {
+			filmstripInfo.push({
+				filmstripID: $(this).attr("id"),
+				rect: document.getElementById($(this).attr("id")).getBoundingClientRect(),
+				pageNumber: $(this).attr("id").split('-')[2],
+				pageID: $(this).attr("id").split('-')[3]
+			});
+		});
+
 		$("#editor-" + getPageID()).children("g:not([id$='-bg'])").map((key, value) => { 
 			var paragraphs = DOMtoList($(value).find("[id*='-paragraph-']"));
 
@@ -139,6 +161,7 @@ function pageUpdated(mutationsList) {
 		issueEvent("extension_pageUpdated", {
 			pageID: getPageID(),
 			objects: retValue,
+			filmstrip: filmstripInfo,
 			workspace: document.getElementById("workspace-container").getBoundingClientRect()
 		});
 	}
@@ -161,6 +184,24 @@ function setObserver() {
 function chromeExtensionBody() {
 	setObserver();
 	
+	$(document).on("root_getLastObject", function(e) {
+		var p = e.detail;
+		var pageID = p.pageID;
+
+		console.log($("[id^='filmstrip-slide'][id$='" + pageID + "']"));
+		console.log($("[id^='filmstrip-slide'][id$='" + pageID + "']").children("[id^='filmstrip']"));
+
+		var objs = $("[id^='filmstrip-slide'][id$='" + pageID + "']").children("[id^='filmstrip']");
+		var lastObj = $(objs)[$(objs).length-1];
+
+		console.log(lastObj);
+
+		issueEvent("extension_getLastObject", {
+			objID: $(lastObj).attr("id").split('-')[3]
+		});
+	});
+
+
 	$(document).on("root_setSlideState", function(e) {
 		var p = e.detail;
 

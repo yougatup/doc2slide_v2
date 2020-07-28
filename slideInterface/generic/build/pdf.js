@@ -17828,8 +17828,10 @@ function iterateWords(pageNumber, startWordIndex, endWordIndex, func, arg) {
 function getHighlightedText(curPageNumber, startElementInx, endElementInx) {
 	var result= '';
 
-	iterateWords(curPageNumber, startElementInx, endElementInx, function(elem) {
-		result = result+ $(elem).html();
+	iterateWords(curPageNumber, startElementInx, endElementInx, function(elems) {
+		$(elems).each(function(idx, elem) {
+			result = result + $(elem).html();
+		});
 	});
 
     result = result.replace(/  +/g, ' ');
