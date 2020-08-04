@@ -25,7 +25,7 @@ function prepare() {
     */
 }
 
-function initializeGAPI() {
+function initializeGAPI(callback) {
     // Client ID and API key from the Developer Console
     var CLIENT_ID = '242873078831-sdfm9eu5qcvoek4k0vkq9ef7de0vqf0a.apps.googleusercontent.com';
 
@@ -73,18 +73,8 @@ function initializeGAPI() {
 	function updateSigninStatus(isSignedIn) {
 	    if (isSignedIn) {
 	        authorizeButton.style.display = 'none';
-	/*
-	        if(gapi.client.slides == null) {
-	            initialSlideGenerationFlag = true;
-	            initialSlideCreationStart();
-	        }
-	        else {
-	            // already loaded. Let's remove
-	
-	            console.log("Already loaded. Let's remove");
-	
-	            initialSlideCreationStart();
-	        }*/
+
+			callback();
 	    } else {
 	        authorizeButton.style.display = 'block';
 	        // signoutButton.style.display = 'none';
@@ -251,24 +241,106 @@ async function registerHighlight(highlightInfo) {
 	});
 }
 
+async function clearDB() {
+	var updates = {};
+
+	updates['/users/' + userName + '/slideInfo/'] = {}
+	updates['/users/' + userName + '/mapping/'] = {}
+
+	await firebase.database().ref().update(updates);
+}
+
+async function initializeSlide() {
+	gapi.client.slides.presentations.get({
+	  presentationId: PRESENTATION_ID
+	}).then(function(response) {
+	  var slides = response.result.slides;
+	
+	  initialSlideCnt = slides.length;
+	  removedSlideCnt = 0;
+	
+	  var requests = [];
+
+	  for(var i=0;i<slides.length;i++) {
+			var pageID = slides[i].objectId;
+
+			requests.push({
+	    		"deleteObject": {
+	     		"objectId": pageID,
+	         	},
+			});
+	  }
+
+	  requests.push({
+		createSlide: {
+	    	insertionIndex: '0',
+		   	slideLayoutReference: {
+			    predefinedLayout: 'TITLE'
+		   }
+		 }
+	  });
+
+	  requests.push({
+		 createSlide: {
+		 	insertionIndex: '1',
+		 	slideLayoutReference: {
+		     	predefinedLayout: 'TITLE_AND_BODY'
+		 	}
+	 	 }
+	  });
+
+	  gapi.client.slides.presentations.batchUpdate({
+	     presentationId: PRESENTATION_ID,
+	     requests: requests
+	  }).then((createSlideResponse) => {
+	     // successfully pasted the text
+	
+	     console.log("succeed!");
+	     console.log(createSlideResponse);
+
+		 return true;
+	  });
+	}).catch(function (err) {
+	  console.log(err);
+	});
+}
+
 function initializeDB() {
 	readData('/users/' + userName).then(result => {
-		highlightDB = result;
+		if(!("parameters" in result && "initialize" in result.parameters && !result.parameters.initialize)) {
+			$("#check2").prop("checked", "true");
 
-		if(highlightDB == null) {
-			highlightDB = {};
-			highlightDB['mapping'] = {};
+			clearDB().then( () => {
+				initializeSlide().then( () => {
+					issueEvent("root_openPDF", null);
+
+					setTimeout(function() {
+							$("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
+						}, 1000);
+					});
+			});
 		}
+		else {
+			// $("#check2").prop("checked", "false");
+			$("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
 
-		readData('/users/' + userName + '/slideInfo/').then(r2 => {
-			slideDB = r2;
+			highlightDB = result;
 
-			setTimeout(function() {
-				issueEvent("root_openPDF", null);
-			}, 1000);
-		}).catch(function(e) {
-			console.log(e);
-		});
+			if(highlightDB == null) {
+				highlightDB = {};
+				highlightDB['mapping'] = {};
+			}
+
+			readData('/users/' + userName + '/slideInfo/').then(r2 => {
+				slideDB = r2;
+
+				setTimeout(function() {
+					issueEvent("root_openPDF", null);
+				}, 1000);
+			}).catch(function(e) {
+				console.log(e);
+			});
+		}
 
 
 	}).catch(function(error) {
@@ -420,9 +492,6 @@ function visualizeSlideObjects() {
 	$(".mappingIndicator").remove();
 
 	var filmstripIndex = 0;
-
-	console.log(curSlideObjects);
-	console.log(curSlideObjects.filmstrip);
 
 	for(var i=0;i<curSlideObjects.filmstrip.length;i++) {
 		$("#slidePlaneCanvas").append(
@@ -587,7 +656,7 @@ function listSlides(callback) {
 
 async function putText(p, mappingID) {
 	return new Promise(function (resolve, reject) { 
-		appendText(curSlideObjects.pageID, curSlideObjects.objects[curSlideObjects.objects.length-1].objectID.substring(7), p.text, mappingID);
+		 appendText(curSlideObjects.pageID, curSlideObjects.objects[curSlideObjects.objects.length-1].objectID.substring(7), p.text, mappingID);
 
 		resolve(mappingID);
 	});
@@ -807,8 +876,6 @@ function moveParagraph(slidePageID, objectID, srcParagraphIndex, dstParagraphInd
 			if(slideID == slidePageID) {
 				for(var j=0;j<slide.pageElements.length;j++) {
 					var slideItem = slide.pageElements[j];
-
-					console.log(slideItem);
 
 					if(slideItem.objectId == objectID) {
 						var srcText = null, dstText = null;
@@ -1038,11 +1105,20 @@ function disappearDropbox() {
 	$(".filmstripIndicator").hide();
 }
 
-$(document).ready(function() {
-        $("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
+function showLoadingSlidePlane(){
+	$("#loadingSlidePlane").show();
+	$("#slidePlaneCanvas").css("background-color", "rgb(0, 0, 0, 0.3)");
+}
 
-		initializeDB();
-		initializeGAPI();
+function hideLoadingSlidePlane() {
+	$("#loadingSlidePlane").hide();
+	$("#slidePlaneCanvas").css("background-color", "transparent");
+}
+
+$(document).ready(function() {
+        // $("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
+
+		initializeGAPI(initializeDB);
 
 		setTimeout(function() { listSlides(); }, 2000);
 
@@ -1094,7 +1170,6 @@ $(document).ready(function() {
 			var tempCnt = 1;
 			var p = e.detail;
 
-			console.log(p);
 			curSlideObjects = p;
 
 			var pageID = p.pageID;
@@ -1131,6 +1206,8 @@ $(document).ready(function() {
 					});
 				}
 			}
+
+			hideLoadingSlidePlane();
 		});
 
 		$(document).on("click", ".mappingIndicator.mapped", function(e) {
@@ -1167,9 +1244,21 @@ $(document).ready(function() {
 			}
 		});
 
+		$(document).on("mouseenter", ".filmstripIndicator", function(e) {
+			if(slideObjectMousedown > 0) {
+				$(this).addClass("filmstripMouseEntered");
+			}
+		});
+
 		$(document).on("mouseleave", ".objectIndicator", function(e) {
 			if(slideObjectMousedown > 0) {
 				$(this).removeClass("slideObjectMouseEntered");
+			}
+		});
+
+		$(document).on("mouseleave", ".filmstripIndicator", function(e) {
+			if(slideObjectMousedown > 0) {
+				$(this).removeClass("filmstripMouseEntered");
 			}
 		});
 
@@ -1191,6 +1280,7 @@ $(document).ready(function() {
 		$(document).on("mouseup", function(e) {
 			slideObjectMousedown = 0;
 			disappearDropbox();
+			disappearResourceBox();
 
 			var srcPageID = $(".slideObjectFirstSelected").attr("pageID");
 			var srcObjectID = $(".slideObjectFirstSelected").attr("objID");
@@ -1201,6 +1291,8 @@ $(document).ready(function() {
 				$(e.target).addClass("slideObjectSecondSelected");
 			}
 			else if($(e.target).hasClass("filmstripIndicator")) {
+				showLoadingSlidePlane();
+
 				var pageID = $(e.target).attr("pageID");
 
 				issueEvent("root_getLastObject", {
@@ -1215,7 +1307,6 @@ $(document).ready(function() {
 						console.log(result);
 					});
 					*/
-				// 	appendText(pageID, lastObjectID, myText, mappingID) {
 				});
 			}
 			else {
@@ -1229,15 +1320,17 @@ $(document).ready(function() {
 
 				if(src === dst) {
 					appearPopoverOnSlideObject(src);
+					appearResourceBox();
 				}
-				else {
+				else if($(src).attr("objID") == $(dst).attr("objID")) {
 					var srcParagraphIndex = parseInt($(src).attr("paragraphIndex"));
 					var dstParagraphIndex = parseInt($(dst).attr("paragraphIndex"));
 
-					$(src).removeClass(".slideObjectFirstSelected");
-					$(dst).removeClass(".slideObjectSecondSelected");
+					// $(src).removeClass("slideObjectFirstSelected");
+					// $(dst).removeClass("slideObjectSecondSelected");
 
 					if(srcParagraphIndex+1 != dstParagraphIndex) {
+						showLoadingSlidePlane();
 						if(srcParagraphIndex < dstParagraphIndex) {
 							// move srcParagraph --> dstParagraph-1
 
@@ -1333,14 +1426,16 @@ $(document).ready(function() {
 				var p = e.detail;
 
 				registerHighlight(p).then( mappingID => {
-					return putText(p, mappingID)
-				}).then(mappingID => {
-					issueEvent("root_sendMappingIdentifier", {
-						mappingID: mappingID,
-						pageNumber: p.pageNumber,
-						startWordIndex: p.startWordIndex,
-						endWordIndex: p.endWordIndex
-					});
+					showLoadingSlidePlane();
+
+					return putText(p, mappingID).then( () => {
+						issueEvent("root_sendMappingIdentifier", {
+							mappingID: mappingID,
+							pageNumber: p.pageNumber,
+							startWordIndex: p.startWordIndex,
+							endWordIndex: p.endWordIndex
+						});
+					})
 				});
 		});
 
@@ -1402,8 +1497,6 @@ $(document).ready(function() {
 			});
 
 			$(".focusRect").show();
-
-			appendText("SLIDES_API1856961054_1", "haha", "wy");
 		});
 
 
@@ -1435,6 +1528,17 @@ $(document).ready(function() {
 				$("#slidePlaneCanvas").show();
 			}
  		 });
+
+ 		 $("#check2").change( function(){
+			var curState = $("#check2").prop("checked");
+			var updates = {};
+
+			updates['/users/' + userName + '/parameters/'] = {
+				initialize: curState
+			}
+
+			firebase.database().ref().update(updates);
+ 		 });
 });
 
 async function readData(path) {
@@ -1445,12 +1549,22 @@ async function readData(path) {
 	return value;
 }
 
+function appearResourceBox() {
+	$("#resourceBoxDiv").css("transform", "translate(0, -100%)");
+}
+
+function disappearResourceBox() {
+	$("#resourceBoxDiv").css("transform", "translate(0, 0)");
+}
+
+
 function openNav() {
 // document.getElementById("mySidenav").style.width = "50%";
       document.getElementById("wrapper").style.width = "50%";
 
         $("#dragButton").addClass("opened");
         $("#dragButton").html(">");
+		$("#slidePlaneCanvas").show();
 }
 
 /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
@@ -1459,6 +1573,7 @@ function closeNav() {
         document.getElementById("wrapper").style.width = "100%";
         $("#dragButton").removeClass("opened");
         $("#dragButton").html("<");
+		$("#slidePlaneCanvas").hide();
 }
 
 function toggleSlidePlane() {
@@ -1466,50 +1581,6 @@ function toggleSlidePlane() {
     else openNav();
 }
 
-
-function addText(objId, pageId, myText, pageNumber, paragraphIdentifier, startIndex, endIndex, color) {
-    if(objId != null) {
-        appendText(objId, myText, pageNumber, paragraphIdentifier, startIndex, endIndex, color);
-     }
-    else{
-       var newObjId = createObjId();
-
-       var requests = [ 
-       {
-         "createShape": {
-             "objectId": newObjId,
-             "shapeType": "TEXT_BOX",
-             "elementProperties": {
-                 "pageObjectId": pageId,
-                 "size": {
-                     "width": {
-                         "magnitude": 350,
-                         "unit": "PT"
-                     },
-                     "height": {
-                         "magnitude": 350,
-                         "unit": "PT"
-                     }
-                 },
-                 "transform": {
-                     "scaleX": 1,
-                     "scaleY": 1,
-                     "translateX": 0,
-                     "translateY": 0,
-                     "unit": "PT"
-                 }
-             }
-         }
-       }];
-
-       gapi.client.slides.presentations.batchUpdate({
-         presentationId: PRESENTATION_ID,
-         requests: requests
-       }).then((createSlideResponse) => {
-           fillText(newObjId, myText, pageNumber, 0, startIndex, endIndex, color);
-       });
-    }
-}
 
 async function writeSlideMappingInfo(pageID, objID, paragraphIndex, mappingID) {
 	var updates = {};
@@ -1554,15 +1625,82 @@ async function writeSlideMappingInfo(pageID, objID, paragraphIndex, mappingID) {
 }
 
 function appendText(pageID, objId, myText, mappingID) {
-   var requests = [ 
-   {
-     "insertText": {
-       "objectId": objId,
-       "text": myText + '\n',
-       "insertionIndex": 987987987
-     }
-   } ];
+    gapi.client.slides.presentations.get({
+	presentationId: PRESENTATION_ID
+    }).then(function(response) {
+		var presentation = response.result;
+		var length = presentation.slides.length;
+	
+		// slideDB = {};
+	
+		var startIndex = -1, endIndex = -1;
+		var curParagraphIndex = -1;
 
+		for (i = 0; i < length; i++) {
+			if(endIndex != -1) break;
+
+		    var slide = presentation.slides[i];
+	
+		    var slideID = slide.objectId;
+		    var slideObjId = {};
+	
+			if(slideID == pageID) {
+				for(var j=0;j<slide.pageElements.length;j++) {
+					var slideItem = slide.pageElements[j];
+
+					if(slideItem.objectId == objId) {
+						var srcText = null, dstText = null;
+
+						if("text" in slideItem.shape) {
+							for(var k=0;k<slideItem.shape.text.textElements.length;k++) {
+								var textElem = slideItem.shape.text.textElements[k];
+
+								if(textElem.endIndex != endIndex){
+									curParagraphIndex++;
+
+									if("startIndex" in textElem) startIndex = textElem.startIndex;
+									else startIndex = 0;
+
+									endIndex = textElem.endIndex;
+								}
+							}
+						}
+						else endIndex = 0;
+
+						break;
+					}
+				}
+			}
+		}
+
+        var requests = [ {
+          "insertText": {
+            objectId: objId,
+            text: (endIndex == 0 ? myText : '\n' + myText),
+            insertionIndex: (endIndex  == 0 ? 0 : endIndex-1)
+          },
+        } ];
+
+        gapi.client.slides.presentations.batchUpdate({
+          presentationId: PRESENTATION_ID,
+          requests: requests
+        }).then((createSlideResponse) => {
+            // successfully pasted the text
+
+		    if(endIndex == 0) 
+		        writeSlideMappingInfo(pageID, objId, 0, mappingID);
+		    else 
+		        writeSlideMappingInfo(pageID, objId, Object.keys(slideDB[pageID][objId]).length, mappingID);
+		    return true;
+        });
+    }, function(response) {
+		console.log(response);
+		//appendPre('Error: ' + response.result.error.message);
+   	}).catch(function(er) {
+		console.log("WHAT?");
+		console.log(er);
+    });
+	/*
    gapi.client.slides.presentations.batchUpdate({
      presentationId: PRESENTATION_ID,
      requests: requests
@@ -1611,4 +1749,5 @@ function appendText(pageID, objId, myText, mappingID) {
            });
 	    }
    });
+   */
 }

@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="google-signin-client_id" content="1080216621788-nsdlr416il84hr9t6nkrb9fv3b663tgk.apps.googleusercontent.com">
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+		<!-- The core Firebase JS SDK is always required and must be listed first -->
+		<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
+		
+		<!-- TODO: Add SDKs for Firebase products that you want to use
+		     https://firebase.google.com/docs/web/setup#available-libraries -->
+		<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-analytics.js"></script>
+
+		<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-database.js"></script>
+		
+		<script>
+		  // Your web app's Firebase configuration
+		  var firebaseConfig = {
+		    apiKey: "AIzaSyAkBd1VHFRB69WvR9dZAKZ1ZcI0c0J-DTQ",
+		    authDomain: "doc2slide-ac7e4.firebaseapp.com",
+		    databaseURL: "https://doc2slide-ac7e4.firebaseio.com",
+		    projectId: "doc2slide-ac7e4",
+		    storageBucket: "doc2slide-ac7e4.appspot.com",
+		    messagingSenderId: "266946958066",
+		    appId: "1:266946958066:web:ef0b8bd5d1b5a9b03cf66b",
+		    measurementId: "G-G84JHF1ZT5"
+		  };
+		  // Initialize Firebase
+		  firebase.initializeApp(firebaseConfig);
+		  firebase.analytics();
+		</script>
+
+		<script src="./export.js"></script>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+        <script src="https://code.jquery.com/ui/jquery-ui-git.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        <script src="https://apis.google.com/js/api.js"></script>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+        <script src="script.js"></script>
+
+    </head>
+
+    <body>
+	<input id='inputBox' style='width: 1000px'> </input> <button id='submitBtn'> submit </button>
+	<div id='resultPlane'> </div>
+	</body>
+
+</html>

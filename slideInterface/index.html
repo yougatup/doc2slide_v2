@@ -48,7 +48,7 @@
 
     <body>
     <div id='loadingPlane'> 
-    <img id='loadingPlaneGif' src="./loading.gif"> </img>
+    	<img id='loadingPlaneGif' src="./loading.gif"> </img>
     </div>
         <div id='topBar'> 
 			<div id='titleText' style='float: left;'> Doc2Slide </div>
@@ -62,7 +62,18 @@
 				</label>
 
 				<div style='float: left'>
-					doc2Slide
+					Disable Doc2Slide
+				</div>
+			</div>
+
+			<div class='switchDiv'>
+				<label class="switch">
+				  <input id='check2' type="checkbox">
+				  <span class="slider round"></span>
+				</label>
+
+				<div style='float: left'>
+					Initialize when starting
 				</div>
 			</div>
         </div>
@@ -92,14 +103,21 @@
                     <div id='slidePlane' class='mainPlane split split-horizontal'>
                         <div id='slidePlaneContent' class='content'>
                             <div id='slidePlaneCanvas'> 
+    							<img id='loadingSlidePlane' src="./loadingSlidePlane.gif"> </img>
+
 								<div id='slideObjectPopover'> <button class='removeSlideObject' /> <button class='editSlideObject'> </div>
-								<div id='workspaceRect' class='workspaceRect'></div>
+								<div id='workspaceRect' class='workspaceRect'>
+								</div>
+
 								<div id='focusRect1' class='focusRect'></div>
 								<div id='focusRect2' class='focusRect'></div>
 								<div id='focusRect3' class='focusRect'></div>
 								<div id='focusRect4' class='focusRect'></div>
                             </div>
         
+							<div id='resourceBoxDiv'>
+								ResourceBox
+							</div>
                             <iframe id='slideIframe' frameborder='0' marginwidth='0' marginheight='0'>
                             </iframe>
                         </div>

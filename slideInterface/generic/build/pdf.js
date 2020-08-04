@@ -17978,8 +17978,6 @@ $(document).ready(function() {
 						}, "root_sendMappingIdentifier").then(result => {
 							var p = result.detail;
 
-							console.log(p);
-
 							applyClassToHighlight(p.pageNumber, p.startWordIndex, p.endWordIndex, "wordMapped", {
 								mappingID: p.mappingID
 							});
