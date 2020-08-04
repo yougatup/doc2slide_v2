@@ -18,7 +18,8 @@ var eventList = {
 	"root_navigateToWord": ['root', 'pdfjs'],
 	"root_getLastObject": ['root', 'extension'],
 	"extension_getLastObject": ['extension', 'root'],
-
+	"root_getOriginalText": ['root', 'pdfjs'],
+	"pdfjs_getOriginalText": ['pdfjs', 'root'],
 }
 
 var curSlideState = "WAIT";
@@ -58,6 +59,9 @@ function pageUpdated(mutationsList) {
 
 	// console.log($("g[pointer-events='visiblePainted']").children())
 	// console.log($("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8'], path[fill='#1a73e8']"))	
+
+	console.log(mutationsList);
+	console.log(curSlideState);
 
 	$("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8']").attr("stroke", null);
 	$("g[pointer-events='visiblePainted']").children("path[fill='#1a73e8']").attr("fill", null);

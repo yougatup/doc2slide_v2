@@ -79,6 +79,7 @@ function initializeGAPI(callback) {
 	        authorizeButton.style.display = 'block';
 	        // signoutButton.style.display = 'none';
 	        console.log("yay?");
+            $("#loadingPlane").hide();
 	    }
 	}
 
@@ -390,7 +391,7 @@ function setFocusBox(id, info) {
 	if(info.height != null) $("#" + id).height(info.height);
 }
 
-function removePopover() {
+function disappearPopover() {
 	$("#slideObjectPopover").hide();
 }
 
@@ -1108,6 +1109,8 @@ function disappearDropbox() {
 function showLoadingSlidePlane(){
 	$("#loadingSlidePlane").show();
 	$("#slidePlaneCanvas").css("background-color", "rgb(0, 0, 0, 0.3)");
+
+	setTimeout(function() { hideLoadingSlidePlane(); }, 3000);
 }
 
 function hideLoadingSlidePlane() {
@@ -1122,6 +1125,13 @@ $(document).ready(function() {
 
 		setTimeout(function() { listSlides(); }, 2000);
 
+		$(document).on("input", "#resourceBoxShortTextSlider", function(e) {
+				var curValue = $(e.target).val();
+				var curText = $("#resourceBoxShortTextSlider").attr("text" + curValue);
+
+				$("#resourceBoxShortTextBox").attr("value", curText);
+		});
+
 		$(document).on("click", ".removeSlideObject", function(e) {
 			var slidePageID = $(popoverElement).attr("pageID");
 			var objectID = $(popoverElement).attr("objID");
@@ -1131,7 +1141,7 @@ $(document).ready(function() {
 		});
 
 		$(document).on("click", ".editSlideObject", function(e) {
-			removePopover();
+			disappearPopover();
 
 			editFocus( {
 				parent: $("#workspaceRect")[0].getBoundingClientRect(),
@@ -1217,6 +1227,8 @@ $(document).ready(function() {
 		});
 
 		$(document).on("mousedown", function(e) {
+			if($("#resourceBoxDiv").is($(e.target)) || $("#resourceBoxDiv").find($(e.target)[0]).length > 0) return;
+
 			if(curSlideState == "WAIT") {
 				$(".slideObjectFirstSelected").removeClass("slideObjectFirstSelected");
 				$(".slideObjectSecondSelected").removeClass("slideObjectSecondSelected");
@@ -1236,6 +1248,24 @@ $(document).ready(function() {
 					visualizeSlideObjects();
 				}
 			}
+		});
+
+		$(document).on("click", "#shortTextSubmitBtn", function(e) {
+			var text = $("#resourceBoxShortTextBox").val();
+
+			showLoadingSlidePlane();
+
+			disappearPopover();
+			disappearDropbox();
+			disappearResourceBox();
+
+			var curObj = $(".slideObjectFirstSelected");
+
+			var slidePageID = $(curObj).attr("pageID");
+			var objID = $(curObj).attr("objID");
+			var paragraphIndex = parseInt($(curObj).attr("paragraphIndex"));
+
+			slideSwitchText(slidePageID, objID, paragraphIndex, text);
 		});
 
 		$(document).on("mouseenter", ".objectIndicator", function(e) {
@@ -1264,7 +1294,7 @@ $(document).ready(function() {
 
 		
 		$(document).on("dblclick", ".objectIndicator", function(e) {
-			removePopover();
+			disappearPopover();
 
 			editFocus( {
 				parent: $("#workspaceRect")[0].getBoundingClientRect(),
@@ -1278,6 +1308,8 @@ $(document).ready(function() {
 
 
 		$(document).on("mouseup", function(e) {
+			if($("#resourceBoxDiv").is($(e.target)) || $("#resourceBoxDiv").find($(e.target)[0]).length > 0) return;
+
 			slideObjectMousedown = 0;
 			disappearDropbox();
 			disappearResourceBox();
@@ -1311,7 +1343,7 @@ $(document).ready(function() {
 			}
 			else {
 				$(".slideObjectFirstSelected").removeClass("slideObjectFirstSelected");
-				removePopover();
+				disappearPopover();
 			}
 
 			if($(".slideObjectFirstSelected").length == 1 && $(".slideObjectSecondSelected").length == 1) {
@@ -1320,7 +1352,13 @@ $(document).ready(function() {
 
 				if(src === dst) {
 					appearPopoverOnSlideObject(src);
-					appearResourceBox();
+					issueEvent("root_getOriginalText", {
+						mappingID: $("#mappingIndicator" + $(src).attr("id").substr(15)).attr("mappingID")
+					}, "pdfjs_getOriginalText").then( result => {
+							constructResourceBox(result.detail.text, []);
+							appearResourceBox();
+						});
+
 				}
 				else if($(src).attr("objID") == $(dst).attr("objID")) {
 					var srcParagraphIndex = parseInt($(src).attr("paragraphIndex"));
@@ -1463,7 +1501,6 @@ $(document).ready(function() {
 				});
 			});
 		});
-
 		$(document).on("extension_focusObject", function(e) {
 
 			var p = e.detail;
@@ -1549,6 +1586,78 @@ async function readData(path) {
 	return value;
 }
 
+function getStrings(data) {
+	var rootIndex = -1;
+	var myGraph = [];
+
+	console.log(data);
+
+	for(var i=0;i<data.length;i++) 
+		myGraph.push([]);
+
+	for(var i=0;i<data.length;i++) {
+		if(data[i].parent == i) {
+			rootIndex = i;
+		}
+		else {
+			myGraph[data[i].parent].push(i);
+		}
+	}
+	
+	var result = doBFS(myGraph, rootIndex);
+	var temp = [];
+	var text = [];
+
+	for(var i=0;i<result.length;i++) {
+		var tt = [];
+
+		temp = temp.concat(result[i]);
+
+		for(var j=0;j<data.length;j++) {
+			if(temp.includes(j)) {
+				tt.push(data[j].text);
+			}
+		}
+
+		text.push(tt.join(' '));
+	}
+
+	return text;
+}
+
+
+function constructResourceBox(originalText, listOfKeywords) {
+ 	xmlhttp = new XMLHttpRequest();
+ 	xmlhttp.open("GET","http://127.0.0.1:3000/?text=" + originalText.replace(" ", "_"), true);
+ 	xmlhttp.onreadystatechange=function(){
+ 	   if (xmlhttp.readyState==4 && xmlhttp.status==200){
+ 		      var data=JSON.parse(xmlhttp.responseText);
+
+		  	  var result = getStrings(data);
+
+			  $("#resourceBoxShortTextSlider").attr("max", result.length-1);
+			  $("#resourceBoxShortTextSlider").attr("value", parseInt(result.length / 2));
+
+			  for(var i=0;i<result.length;i++) $("#resourceBoxShortTextSlider").attr("text" + i, result[i]);
+
+			  $("#resourceBoxShortTextBox").attr("value", result[parseInt(result.length/2)]);
+ 		  }
+ 	   }
+
+ 	xmlhttp.send();
+
+	$("#resourceBoxDiv").html('');
+
+	$("#resourceBoxDiv").append('<div class="resourceBoxHeader"> Original Text </div>');
+	$("#resourceBoxDiv").append('<div id="resourceBoxOriginalText">' + originalText + '</div>');
+	$("#resourceBoxDiv").append('<br>');
+
+	$("#resourceBoxDiv").append('<div style="display: inline-block"> <div class="resourceBoxHeader" style="float: left"> Text Slider </div>' + 
+								'<input style="float: left" type="range" min="0" max="100" value="50" id="resourceBoxShortTextSlider"> </div>');
+	$("#resourceBoxDiv").append('<br>');
+	$("#resourceBoxDiv").append("<input id='resourceBoxShortTextBox' value='Loading...'> </input> <button id='shortTextSubmitBtn' class='resourceBoxSubmitBtn'> Submit </button>");
+}
+
 function appearResourceBox() {
 	$("#resourceBoxDiv").css("transform", "translate(0, -100%)");
 }
@@ -1622,6 +1731,92 @@ async function writeSlideMappingInfo(pageID, objID, paragraphIndex, mappingID) {
 	}
 
 	await firebase.database().ref().update(updates);
+}
+
+function slideSwitchText(slidePageID, objID, paragraphIndex, text) {
+    gapi.client.slides.presentations.get({
+	presentationId: PRESENTATION_ID
+    }).then(function(response) {
+		var presentation = response.result;
+		var length = presentation.slides.length;
+	
+		// slideDB = {};
+	
+		var startIndex = -1, endIndex = -1;
+		var myText, myStartIndex=-1, myEndIndex=-1;
+		var curParagraphIndex = -1;
+
+		for (i = 0; i < length; i++) {
+			if(endIndex != -1) break;
+
+		    var slide = presentation.slides[i];
+	
+		    var slideID = slide.objectId;
+		    var slideObjId = {};
+	
+			if(slideID == slidePageID) {
+				for(var j=0;j<slide.pageElements.length;j++) {
+					var slideItem = slide.pageElements[j];
+
+					if(slideItem.objectId == objID) {
+						var srcText = null, dstText = null;
+
+						if("text" in slideItem.shape) {
+							for(var k=0;k<slideItem.shape.text.textElements.length;k++) {
+								var textElem = slideItem.shape.text.textElements[k];
+
+								if(textElem.endIndex != endIndex){
+									curParagraphIndex++;
+
+									if("startIndex" in textElem) startIndex = textElem.startIndex;
+									else startIndex = 0;
+
+									endIndex = textElem.endIndex;
+								}
+
+								if("textRun" in textElem && curParagraphIndex == paragraphIndex) { 
+									myStartIndex = startIndex;
+									myEndIndex = endIndex;
+
+									if(text.trim() == textElem.textRun.content.trim()) {
+										hideLoadingSlidePlane();
+										return;
+									}
+								}
+							}
+						}
+						else endIndex = 0;
+
+						requests = [{
+							deleteText: {
+       							"objectId": objID,
+       							"textRange": {
+	   							    "startIndex":  myStartIndex,
+	   							    "endIndex": (curParagraphIndex == paragraphIndex? myEndIndex-1 : myEndIndex == 0 ? 0 : myEndIndex-1),
+	   							    "type": "FIXED_RANGE"
+	   							}
+							}
+						}, {
+							insertText: {
+      							"objectId": objID,
+      							"text": text,
+      							"insertionIndex": myStartIndex 
+							}
+						}];
+
+   						gapi.client.slides.presentations.batchUpdate({
+   						  presentationId: PRESENTATION_ID,
+   						  requests: requests
+   						}).then((createSlideResponse) => {
+							console.log(createSlideResponse);
+   						});
+						
+						break;
+					}
+				}
+			}
+		}
+	});
 }
 
 function appendText(pageID, objId, myText, mappingID) {
@@ -1751,3 +1946,29 @@ function appendText(pageID, objId, myText, mappingID) {
    });
    */
 }
+
+function doBFS(myGraph, r) {
+	var myQueue = [];
+	var front = 0;
+
+	myQueue.push([r, 0]);
+
+	var result = [[]];
+
+	while(front < myQueue.length) {
+		var cur = myQueue[front];
+
+		front++;
+
+		while(result.length <= cur[1]) result.push([]);
+
+		result[cur[1]].push(cur[0]);
+
+		for(var j=0;j<myGraph[cur[0]].length;j++) {
+			myQueue.push([myGraph[cur[0]][j], cur[1]+1]);
+		}
+	}
+
+	return result;
+}
+

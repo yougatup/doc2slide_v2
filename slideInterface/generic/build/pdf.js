@@ -17825,6 +17825,18 @@ function iterateWords(pageNumber, startWordIndex, endWordIndex, func, arg) {
 	}
 }
 
+function getHighlightedTextWithMappingID(mappingID) {
+	var result = '';
+
+	$(".textSegment[mappingID='" + mappingID + "']").each(function(idx, elem) {
+		result = result + $(elem).html();
+	});
+
+    result = result.replace(/  +/g, ' ');
+
+	return result;
+}
+
 function getHighlightedText(curPageNumber, startElementInx, endElementInx) {
 	var result= '';
 
@@ -18010,6 +18022,15 @@ $(document).ready(function() {
 
 			removeHighlight(_mappingID);
 		});
+
+		$(document).on("root_getOriginalText", function(e) {
+			var result = getHighlightedTextWithMappingID(e.detail.mappingID);
+
+			issueEvent("pdfjs_getOriginalText", {
+				text: result
+			});
+		});
+
 		$(document).on("click", ".removeHighlightBtn", function(e) {
 			if(popoverElement != null) {
 				var mappingID = $(popoverElement).attr("mappingID");
