@@ -14,6 +14,30 @@ var slideObjectMousedownObject = null;
 var slideObjectMouseupObject = null;
 var popoverElement = null;
 var curSlidePage = null; 
+var structureHighlightDB = {};
+
+function documentStructureRowElement(id) {
+	return "<div id=" + id + " class='documentStructureBodyRow'> " +
+			"<div class='documentStructureBodyRowArrowBox'> " +
+			"<i class='arrow left'></i>" + 
+			"<i class='arrow right'></i>" + 
+			"</div>" + 
+			"<div class='documentStructureBodyRowTextBox'> yeyeye" +
+			"</div>" + 
+			"<div class='documentStructureBodyRowIconBox'> " +
+			"<button class='documentStructureBodyRowEditIcon'> </button>" + 
+			"<button class='documentStructureBodyRowDeleteIcon'> </button>" + 
+			"<button class='documentStructureBodyRowConfirmIcon'> OK </button>" + 
+			"</div>" + 
+			"</div>";
+}
+
+
+function appendDocumentStructureRow() {
+	$("#documentStructureAppendDiv").append(
+		"<div class='documentStructureBodyRow appendRow'> Add a row </div>"
+	);
+}
 
 function prepare() {
     initializeGAPI();
@@ -58,6 +82,7 @@ function initializeGAPI(callback) {
 			}).then(function () {
    				 // Listen for sign-in state changes.
    				 gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+				 console.log(gapi.auth2.getAuthInstance().currentUser.get().Ot.yu);
 
    				 // Handle the initial sign-in state.
    				 updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
@@ -73,11 +98,12 @@ function initializeGAPI(callback) {
 	function updateSigninStatus(isSignedIn) {
 	    if (isSignedIn) {
 	        authorizeButton.style.display = 'none';
+	        // signoutButton.style.display = 'block';
 
 			callback();
 	    } else {
 	        authorizeButton.style.display = 'block';
-	        // signoutButton.style.display = 'none';
+	        signoutButton.style.display = 'none';
 	        console.log("yay?");
             $("#loadingPlane").hide();
 	    }
@@ -332,18 +358,20 @@ function initializeDB() {
 				highlightDB['mapping'] = {};
 			}
 
-			readData('/users/' + userName + '/slideInfo/').then(r2 => {
-				slideDB = r2;
+			slideDB = result.slideInfo;
 
-				setTimeout(function() {
-					issueEvent("root_openPDF", null);
-				}, 1000);
-			}).catch(function(e) {
-				console.log(e);
-			});
+			if("structureHighlightInfo" in result) 
+				structureHighlightDB = result.structureHighlightInfo;
+			else
+				structureHighlightDB = {};
+
+			updateStructure();
+
+			setTimeout(function() {
+				issueEvent("root_openPDF", null);
+			}, 1000);
+
 		}
-
-
 	}).catch(function(error) {
 		console.log(error);
 	});
@@ -1118,10 +1146,60 @@ function hideLoadingSlidePlane() {
 	$("#slidePlaneCanvas").css("background-color", "transparent");
 }
 
+function writeStructureHighlight(info) {
+	var updates = {};
+
+	updates['/users/' + userName + '/structureHighlightInfo/' + info.rowID] = {
+		pageNumber: info.pdfPageNumber,
+		startWordIndex: info.pdfStartWordIndex,
+		endWordIndex: info.pdfEndWordIndex,
+		text: info.text
+	};
+
+	structureHighlightDB[info.rowID] = {
+		pageNumber: info.pdfPageNumber,
+		startWordIndex: info.pdfStartWordIndex,
+		endWordIndex: info.pdfEndWordIndex,
+		text: info.text
+	};
+
+	firebase.database().ref().update(updates);
+}
+
+function updateStructure() {
+	$(".documentStructureBodyRow").each(function(idx, elem) {
+		if(!$(elem).hasClass("appendRow") && !($(elem).attr("id") in structureHighlightDB)) {
+			$(elem).remove();
+		}
+	});
+
+	for(var key in structureHighlightDB) {
+		var rowObject = $("#" + key);
+
+		if($(rowObject).length <= 0) {
+			$("#documentStructureElements").append(
+				documentStructureRowElement(key)
+			);
+
+			rowObject = $("#" + key);
+		}
+
+		$(rowObject).children(".documentStructureBodyRowTextBox").html(structureHighlightDB[key].text);
+
+		$(rowObject).attr("mappingPageNumber", structureHighlightDB[key].pageNumber);
+		$(rowObject).attr("mappingStartWordIndex", structureHighlightDB[key].startWordIndex);
+		$(rowObject).attr("mappingEndWordIndex", structureHighlightDB[key].endWordIndex);
+	}
+}
+
 $(document).ready(function() {
         // $("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
 
+		appendDocumentStructureRow();
+
 		initializeGAPI(initializeDB);
+
+		window.scrollTo(0, 0);
 
 		setTimeout(function() { listSlides(); }, 2000);
 
@@ -1151,6 +1229,25 @@ $(document).ready(function() {
 			setSlideState("EDIT", {
 				paragraphID: $(popoverElement).attr("paragraphID")
 			});
+		});
+
+		$(document).on("click", ".appendRow", function(e) {
+			function pad(num, size) {
+			    var s = "000000000" + num;
+			    return s.substr(s.length-size);
+			}
+
+			var rows = $(".documentStructureBodyRow");
+			var lastRowNumber = -1;
+
+			if($(rows).length <= 1) lastRowNumber = 0;
+			else lastRowNumber = parseInt($($(rows)[$(rows).length-2]).attr("id").substr(20));
+
+			console.log(lastRowNumber);
+
+			$("#documentStructureElements").append(
+				documentStructureRowElement("documentStructureRow" + pad(lastRowNumber+1, 5))
+			);
 		});
 
 		$(document).on("extension_typing", function(e) {
@@ -1355,8 +1452,10 @@ $(document).ready(function() {
 					issueEvent("root_getOriginalText", {
 						mappingID: $("#mappingIndicator" + $(src).attr("id").substr(15)).attr("mappingID")
 					}, "pdfjs_getOriginalText").then( result => {
-							constructResourceBox(result.detail.text, []);
-							appearResourceBox();
+							if(result.detail.text != '') {
+								constructResourceBox(result.detail.text, []);
+								appearResourceBox();
+							}
 						});
 
 				}
@@ -1501,6 +1600,41 @@ $(document).ready(function() {
 				});
 			});
 		});
+
+		$(document).on("click", ".documentStructureBodyRowTextBox", function(e) {
+			var rowObject = $(e.target).parent();
+
+			var attr = $(rowObject).attr('mappingPageNumber');
+
+			if (typeof attr !== typeof undefined && attr !== false) { // attr is there.
+				issueEvent("root_navigateToWord", {
+					pageNumber: $(rowObject).attr("mappingPageNumber"),
+					startWordIndex: $(rowObject).attr("mappingStartWordIndex"),
+					endWordIndex: $(rowObject).attr("mappingEndWordIndex"),
+				});
+			}
+		});
+
+		$(document).on("click", ".documentStructureBodyRowEditIcon", function(e) {
+				var rowObject = $(e.target).parent().parent();
+
+				issueEvent("root_getStructureHighlight", {
+					rowID: $(rowObject).attr("id")
+				}, "pdfjs_getStructureHighlight").then( result => {
+					console.log(result.detail);
+
+					writeStructureHighlight({
+						rowID: $(rowObject).attr("id"),
+						text: result.detail.text,
+						pdfPageNumber: result.detail.pageNumber,
+						pdfStartWordIndex: result.detail.startWordIndex,
+						pdfEndWordIndex: result.detail.endWordIndex
+					});
+
+					updateStructure();
+				});
+		});
+
 		$(document).on("extension_focusObject", function(e) {
 
 			var p = e.detail;
@@ -1628,7 +1762,7 @@ function getStrings(data) {
 
 function constructResourceBox(originalText, listOfKeywords) {
  	xmlhttp = new XMLHttpRequest();
- 	xmlhttp.open("GET","http://127.0.0.1:3000/?text=" + originalText.replace(" ", "_"), true);
+ 	xmlhttp.open("GET","http://hyungyu.com:3333/?text=" + originalText.replace(" ", "_"), true);
  	xmlhttp.onreadystatechange=function(){
  	   if (xmlhttp.readyState==4 && xmlhttp.status==200){
  		      var data=JSON.parse(xmlhttp.responseText);

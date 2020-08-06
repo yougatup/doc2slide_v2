@@ -20,6 +20,8 @@ var eventList = {
 	"extension_getLastObject": ['extension', 'root'],
 	"root_getOriginalText": ['root', 'pdfjs'],
 	"pdfjs_getOriginalText": ['pdfjs', 'root'],
+	"root_getStructureHighlight": ['root', 'pdfjs'],
+	"pdfjs_getStructureHighlight": ['pdfjs', 'root'],
 }
 
 var curSlideState = "WAIT";
@@ -59,9 +61,6 @@ function pageUpdated(mutationsList) {
 
 	// console.log($("g[pointer-events='visiblePainted']").children())
 	// console.log($("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8'], path[fill='#1a73e8']"))	
-
-	console.log(mutationsList);
-	console.log(curSlideState);
 
 	$("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8']").attr("stroke", null);
 	$("g[pointer-events='visiblePainted']").children("path[fill='#1a73e8']").attr("fill", null);
@@ -224,7 +223,7 @@ function chromeExtensionBody() {
 }
 
 $(document).ready(function() {
-	if(this.location.hostname == "localhost" && this.location.pathname == '/') { 
+	if((this.location.hostname == "localhost" || this.location.hostname == "d2stest.web.app") && this.location.pathname == '/') { 
 	    // root script
 		var scriptEventSender = [];
 		var scriptEventReceiver = [];
@@ -247,7 +246,7 @@ $(document).ready(function() {
 	}
 
 	// pdf.js contents script
-	else if(this.location.hostname == "localhost"){
+	else if(this.location.hostname == "localhost" || this.location.hostname == "d2stest.web.app"){
 		var pdfjsEventSender = [];
 		var pdfjsEventReceiver = [];
 
