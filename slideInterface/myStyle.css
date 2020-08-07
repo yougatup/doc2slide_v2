@@ -612,6 +612,7 @@ transform: translate(-50%, -50%);
 background-color: yellow;
 position: absolute;
 z-index: 3000;
+display: none;
 }
 
 #documentStructureTopBar  {

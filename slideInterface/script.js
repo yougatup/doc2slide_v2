@@ -365,8 +365,6 @@ function initializeDB() {
 			else
 				structureHighlightDB = {};
 
-			updateStructure();
-
 			setTimeout(function() {
 				issueEvent("root_openPDF", null);
 			}, 1000);
@@ -1189,7 +1187,37 @@ function updateStructure() {
 		$(rowObject).attr("mappingPageNumber", structureHighlightDB[key].pageNumber);
 		$(rowObject).attr("mappingStartWordIndex", structureHighlightDB[key].startWordIndex);
 		$(rowObject).attr("mappingEndWordIndex", structureHighlightDB[key].endWordIndex);
+		$(rowObject).attr("level", structureHighlightDB[key].level);
+
+		var level = $(rowObject).attr("level");
+
+		if (typeof level !== typeof undefined && level !== false) { // attr is there.
+			$(rowObject).children(".documentStructureBodyRowTextBox").css("padding-left", ((level-1) * 20 + 10) + "px");
+		}
 	}
+}
+
+function appearDocumentStructureBtn() {
+	updateStructure();
+
+	$("#documentStructurePlane").show();
+}
+
+function disappearDocumentStructureBtn() {
+	$("#documentStructurePlane").hide();
+}
+
+function setCurLevel(rowObjId, level) {
+	console.log(rowObjId, level);
+
+	var updates = {};
+
+	structureHighlightDB[rowObjId].level = level;
+	updates['/users/' + userName + '/structureHighlightInfo/' + rowObjId + '/level/'] = level;
+
+	$("#" + rowObjId).attr("level", level);
+
+	firebase.database().ref().update(updates);
 }
 
 $(document).ready(function() {
@@ -1574,6 +1602,49 @@ $(document).ready(function() {
 						});
 					})
 				});
+		});
+
+
+
+		$(document).on("click", ".arrow.left", function(e) {
+			console.log($(e.target).parent().parent());
+
+			var rowObject = $(e.target).parent().parent();
+			var rowInfo = structureHighlightDB[$(rowObject).attr("id")];
+
+			var curLevel = ("level" in rowInfo ? rowInfo.level : 1);
+			setCurLevel($(rowObject).attr("id"), curLevel <= 1 ? 1 : curLevel-1);
+
+			updateStructure();
+		});
+		
+		$(document).on("click", ".arrow.right", function(e) {
+			console.log($(e.target).parent().parent());
+
+			var rowObject = $(e.target).parent().parent();
+			var prevRowObject = $(rowObject).prev();
+			var flag = true;
+
+			var rowInfo = structureHighlightDB[$(rowObject).attr("id")];
+			var curLevel = ("level" in rowInfo ? rowInfo.level : 1);
+
+			if($(prevRowObject).hasClass("documentStructureBodyRow")) {
+				var prevObjLevel = parseInt($(prevRowObject).attr("level"));
+
+				if(curLevel > prevObjLevel) flag = false;
+			}
+
+			if(flag) {
+				setCurLevel($(rowObject).attr("id"), curLevel+1);
+				updateStructure();
+			}
+		});
+	
+		$(document).on("click", "#documentStructureDisappearBtn", function(e) {
+				disappearDocumentStructureBtn();
+		});
+		$(document).on("click", "#documentStructureBtn", function(e) {
+				appearDocumentStructureBtn();
 		});
 
 		$(document).on("pdfjs_checkPreprocessed", function(e) {
