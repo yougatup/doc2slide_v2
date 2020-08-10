@@ -18037,7 +18037,7 @@ $(document).ready(function() {
 
 			if("mappingID" in p) {
 				allElements = $(".textSegment[mappingID=" + p.mappingID + "]")
-				pageNumber = parseInt($(startElement).attr("pageNumber"));
+				pageNumber = parseInt($($(allElements)[0]).attr("pageNumber"));
 			}
 			else {
 				var result= '';
@@ -18056,6 +18056,12 @@ $(document).ready(function() {
 			var startElement = $(allElements)[0];
 			var boundingClientRect = $(startElement).offset();
 			var page = $("[data-page-number=" + pageNumber + "][class='page']");
+
+			console.log(p);
+			console.log(startElement);
+			console.log(pageNumber);
+			console.log($(page));
+
 			var pageRect = $(page)[0].getBoundingClientRect();
 			var pageHeight = pageRect.height;
 
@@ -18181,6 +18187,10 @@ $(document).ready(function() {
 			var _mappingID = e.detail.mappingID;
 
 			removeHighlight(_mappingID);
+		});
+
+		$(document).on("root_updatePdfTextSection", function(e) {
+			console.log(e.detail);
 		});
 
 		$(document).on("root_getOriginalText", function(e) {

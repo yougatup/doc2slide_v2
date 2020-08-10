@@ -274,6 +274,17 @@ async function clearDB() {
 	updates['/users/' + userName + '/slideInfo/'] = {}
 	updates['/users/' + userName + '/mapping/'] = {}
 
+
+	for(var key in structureHighlightDB) {
+		if("slideID" in structureHighlightDB[key]) delete structureHighlightDB[key].slideID;
+		if("titleObjectID" in structureHighlightDB[key]) delete structureHighlightDB[key].titleObjectID;
+		if("bodyObjectID" in structureHighlightDB[key]) delete structureHighlightDB[key].bodyObjectID;
+	}
+
+	console.log(structureHighlightDB);
+
+	updates['/users/' + userName + '/structureHighlightInfo/'] = structureHighlightDB;
+
 	await firebase.database().ref().update(updates);
 }
 
@@ -306,7 +317,7 @@ async function initializeSlide() {
 		   }
 		 }
 	  });
-
+/*
 	  requests.push({
 		 createSlide: {
 		 	insertionIndex: '1',
@@ -314,7 +325,7 @@ async function initializeSlide() {
 		     	predefinedLayout: 'TITLE_AND_BODY'
 		 	}
 	 	 }
-	  });
+	  }); */
 
 	  gapi.client.slides.presentations.batchUpdate({
 	     presentationId: PRESENTATION_ID,
@@ -336,6 +347,11 @@ function initializeDB() {
 	readData('/users/' + userName).then(result => {
 		if(!("parameters" in result && "initialize" in result.parameters && !result.parameters.initialize)) {
 			$("#check2").prop("checked", "true");
+
+			if("structureHighlightInfo" in result) 
+				structureHighlightDB = result.structureHighlightInfo;
+			else
+				structureHighlightDB = {};
 
 			clearDB().then( () => {
 				initializeSlide().then( () => {
@@ -598,87 +614,6 @@ function visualizeSlideObjects() {
 		tempCnt = tempCnt + 1;
 	}
 
-}
-
-function listSlides(callback) {
-    gapi.client.slides.presentations.get({
-	presentationId: PRESENTATION_ID
-    }).then(function(response) {
-		var presentation = response.result;
-		var length = presentation.slides.length;
-	
-		// slideDB = {};
-	
-		for (i = 0; i < length; i++) {
-		    var slide = presentation.slides[i];
-	
-		    var slideID = slide.objectId;
-		    var slideObjId = {};
-	
-		    function compare(a, b) {
-				if(a.objectId > b.objectId) return true;
-				else return false;
-		    }
-	
-		    slide.pageElements.sort(compare);
-	
-		    for(var j=0;j<slide.pageElements.length;j++) {
-				var slideItem = slide.pageElements[j];
-	
-				var slideObjParagraphId = [];
-	
-				if(slideItem.shape.text != null) {
-				    var nestingLevel = 0;
-				    var isFirstTextRun = true;
-				    var paragraphId = -1;
-	
-				    for(var k=0;k<slideItem.shape.text.textElements.length;k++) {
-					var textElem = slideItem.shape.text.textElements[k];
-	
-					if(textElem.paragraphMarker != null) {
-					    paragraphId = paragraphId + 1;
-					}
-	
-					var paragraphObjId = "editor-" + slideItem.objectId + "-paragraph-" + paragraphId;
-					var domId = '';
-	
-					if(textElem.paragraphMarker != null && textElem.paragraphMarker.bullet != null) {
-					    if(textElem.paragraphMarker.bullet.nestingLevel != null) {
-						nestingLevel = parseInt(textElem.paragraphMarker.bullet.nestingLevel);
-					    }
-					    else nestingLevel = 0;
-					}
-					else if(textElem.textRun != null){
-					    var level = (j == 0? nestingLevel : nestingLevel + 1);
-	
-					    // domId = appendOutlineLine(level, textElem.textRun.content, paragraphObjId);
-	
-					    isFirstTextRun = false;
-	
-					    slideObjParagraphId.push(paragraphObjId);
-					}
-				    }
-				}
-	
-				slideObjId[slideItem.objectId] = slideObjParagraphId;
-			}
-	
-			// slideDB[slideID] = slideObjId;
-		}
-	
-		// console.log(slideDB);
-
-		if(callback) {
-		    callback();
-		}
-	
-    }, function(response) {
-		console.log(response);
-		//appendPre('Error: ' + response.result.error.message);
-   	}).catch(function(er) {
-		console.log("WHAT?");
-		console.log(er);
-    });
 }
 
 async function putText(p, mappingID) {
@@ -1229,8 +1164,6 @@ $(document).ready(function() {
 
 		window.scrollTo(0, 0);
 
-		setTimeout(function() { listSlides(); }, 2000);
-
 		$(document).on("input", "#resourceBoxShortTextSlider", function(e) {
 				var curValue = $(e.target).val();
 				var curText = $("#resourceBoxShortTextSlider").attr("text" + curValue);
@@ -1593,7 +1526,7 @@ $(document).ready(function() {
 				registerHighlight(p).then( mappingID => {
 					showLoadingSlidePlane();
 
-					return putText(p, mappingID).then( () => {
+					return automaticallyPutText(p, mappingID).then( () => {
 						issueEvent("root_sendMappingIdentifier", {
 							mappingID: mappingID,
 							pageNumber: p.pageNumber,
@@ -2022,6 +1955,165 @@ function slideSwitchText(slidePageID, objID, paragraphIndex, text) {
 			}
 		}
 	});
+}
+
+function getSectionKey(pageNumber, startWordIndex, endWordIndex) {
+	var keys = Object.keys(structureHighlightDB);
+	var len = keys.length;
+
+	for(var i=len-1;i>=0;i--) {
+		var key = keys[i];
+		var info = structureHighlightDB[key];
+
+		if(parseInt(info.pageNumber) < parseInt(pageNumber) || 
+				(parseInt(info.pageNumber) == parseInt(pageNumber) &&
+		   		parseInt(info.startWordIndex) <= parseInt(startWordIndex))) {
+			return key;
+		}
+	}
+
+	return null;
+}
+
+function getSlideID(sectionKey) {
+	if("slideID" in structureHighlightDB[sectionKey]) {
+		return structureHighlightDB[sectionKey].slideID
+	}
+	else {
+		return null;
+	}
+}
+
+function getTitleAndBodyObjectID(sectionKey) {
+	if("slideID" in structureHighlightDB[sectionKey] == null) return {
+		bodyObjectID: null,
+		titleObjectID: null
+	};
+
+	if("bodyObjectID" in structureHighlightDB[sectionKey])  {
+		return {
+			bodyObjectID: structureHighlightDB[sectionKey].bodyObjectID,
+			titleObjectID: structureHighlightDB[sectionKey].titleObjectID
+		}
+	}
+	else return {
+		bodyObjectID: null,
+		titleObjectID: null
+	};
+}
+
+function getSlideIndexToPut(sectionKey) {
+	var keys = Object.keys(structureHighlightDB);
+	var cnt = 1;
+
+	for(var i=0;i<keys.length;i++) {
+		if(sectionKey == keys[i]) return cnt;
+
+		if("slideID" in structureHighlightDB[keys[i]])
+			cnt++;
+	}
+
+	return null;
+}
+
+function makeid(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
+async function automaticallyPutText(textInfo, mappingID) {
+	/*
+	   textInfo.startWordIndex
+	   textInfo.endWordIndex
+	   textInfo.pageNumber
+	   textInfo.text
+	   textInfo.sectionKey
+	   */
+
+	var sectionKey = getSectionKey(textInfo.pageNumber, textInfo.startWordIndex, textInfo.endWordIndex);
+	var slideID = getSlideID(sectionKey);
+	var objIDs = getTitleAndBodyObjectID(sectionKey);
+
+	var titleObjectID = objIDs.titleObjectID;
+	var bodyObjectID = objIDs.bodyObjectID;
+
+	var requests = [];
+
+	if(slideID == null) {
+		var index = getSlideIndexToPut(sectionKey);
+		slideID = makeid(10);
+		titleObjectID = makeid(10);
+		bodyObjectID = makeid(10);
+
+	  	requests.push({
+	  	   createSlide: {
+			objectId: slideID,
+	  	   	insertionIndex: index,
+	  	   	slideLayoutReference: {
+	  	       	predefinedLayout: 'TITLE_AND_BODY'
+	  	   	},
+			placeholderIdMappings: [{
+				objectId: titleObjectID,
+				layoutPlaceholder: {
+					type: "TITLE",
+					index: 0
+				}
+			},{
+				objectId: bodyObjectID,
+				layoutPlaceholder: {
+					type: "BODY",
+					index: 0
+				}
+			}
+			]
+	  	   }
+	  	});
+		requests.push({
+			insertText: {
+				objectId: titleObjectID,
+				text: structureHighlightDB[sectionKey].text,
+				insertionIndex: 0
+			}
+		});
+		requests.push({
+			insertText: {
+				objectId: bodyObjectID,
+				text: textInfo.text,
+				insertionIndex: 0
+			}
+		});
+
+		var updates = {};
+
+		structureHighlightDB[sectionKey].slideID = slideID;
+		structureHighlightDB[sectionKey].titleObjectID = titleObjectID;
+		structureHighlightDB[sectionKey].bodyObjectID= bodyObjectID;
+
+		updates['/users/' + userName + '/structureHighlightInfo/' + sectionKey] = structureHighlightDB[sectionKey];
+
+		firebase.database().ref().update(updates);
+
+        gapi.client.slides.presentations.batchUpdate({
+          presentationId: PRESENTATION_ID,
+          requests: requests
+        }).then((createSlideResponse) => {
+            // successfully pasted the text
+
+		    writeSlideMappingInfo(slideID, bodyObjectID, 0, mappingID);
+		    return true;
+        });
+	}
+	else if(slideID != null && bodyObjectID == null) { // Let's consider it as bug
+		alert("BUG: cannot find objectID")
+	}
+	else {
+		return appendText(slideID, bodyObjectID, textInfo.text, mappingID);
+	}
 }
 
 function appendText(pageID, objId, myText, mappingID) {

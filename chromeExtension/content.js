@@ -22,6 +22,7 @@ var eventList = {
 	"pdfjs_getOriginalText": ['pdfjs', 'root'],
 	"root_getStructureHighlight": ['root', 'pdfjs'],
 	"pdfjs_getStructureHighlight": ['pdfjs', 'root'],
+	"root_updatePdfTextSection": ['root', 'pdfjs']
 }
 
 var curSlideState = "WAIT";
