@@ -797,7 +797,7 @@ border: 1px solid black;
 .sectionLevelCoverageRowTitle {
 	font-size: 20px;
 	font-weight: bold;
-width: 45%;
+	width: 60%;
 }
 
 .sectionLevelCoverageInput {
@@ -807,9 +807,38 @@ height: 100%;
 
 #presentationObjectiveConfirmBtnDiv {
 width: 80%;
-	   margin-left: 5%;
+margin-left: 5%;
 }
 
 #presentationObjectiveConfirmBtn {
 float: right;
+}
+
+.sectionLevelCoverageRowHighlight{
+width: 5%;
+	   text-align: center;
+}
+
+.sectionLevelCoverageRowBoxes{
+width: 45%;
+}
+
+.coverageTableCell {
+width: 20px;
+height: 100%;
+border: 1px solid black;
+}
+
+.coverageTable {
+height: 30px !important;
+border-collapse: collapse !important; 
+border-spacing: 0 !important;
+}
+
+.coverageTableCell.selected {
+	background-color: yellow;
+}
+
+.coverageTableCell.disabled {
+	background-color: lightgray !important;
 }

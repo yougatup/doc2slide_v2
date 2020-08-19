@@ -5,6 +5,7 @@ var curHighlightInfo = {
 	startWordIndex: -1,
 	endWordIndex: -1
 };
+var generalMouseDown = 0;
 var slideDB = {};
 var curSlideObjects = null;
 var curSlideState = "WAIT";
@@ -15,12 +16,33 @@ var slideObjectMouseupObject = null;
 var popoverElement = null;
 var curSlidePage = null; 
 var structureHighlightDB = {};
+
 var MAX_NUMBER_OF_BULLETS = 3;
+var MAX_NUMBER_OF_SLIDES = 10;
 
 function presentationObjectiveRowElement(sectionKey, index) {
-	return "<tr> <td class='sectionLevelCoverageRowTitle' sectionKey='" + sectionKey + "' rowIndex='" + index + "'> </td> <td class='sectionLevelCoverageRowBoxes' sectionKey='" + sectionKey + "' rowIndex='" + index + "'>" + 
+	return "<tr>" + 
+		"<td class='sectionLevelCoverageRowTitle' sectionKey='" + sectionKey + "' rowIndex='" + index + "'> </td>" + 
+
+		"<td class='sectionLevelCoverageRowHighlight' sectionKey='" + sectionKey + "' rowIndex='" + index + "'> </td>" + 
+
+		"<td class='sectionLevelCoverageRowBoxes' sectionKey='" + sectionKey + "' rowIndex='" + index + "'>" + 
+		"<table class='.coverageTable' style='height: 30px; border-collapse: collapse; border-spacing: 0;' sectionKey='" + sectionKey + "' rowIndex='" + index + "'>" + 
+		"<tr>" + 
+		(function(key) {
+			var returnValue = '';
+
+			for(var i=0;i<MAX_NUMBER_OF_SLIDES;i++) {
+				returnValue += "<td class='coverageTableCell' sectionKey='" + key + "' index='" + i + "'> </td>";
+			}
+
+			return returnValue;
+		})(sectionKey) + 
+		"<tr>"
 	    "<input class='sectionLevelCoverageInput' sectionKey='" + sectionKey + "' rowIndex='" + index + "' />" + 
 		"</td> </tr>";
+
+
 }
 
 function documentStructureRowElement(id) {
@@ -341,10 +363,6 @@ async function initializeSlide() {
 	     requests: requests
 	  }).then((createSlideResponse) => {
 	     // successfully pasted the text
-	
-	     console.log("succeed!");
-	     console.log(createSlideResponse);
-
 		 return true;
 	  });
 	}).catch(function (err) {
@@ -1141,18 +1159,54 @@ function updateStructure() {
 	}
 }
 
+function organizeHighlightOnSections() {
+	var info = {};
+
+	for(var pageNumber in highlightDB.mapping) {
+		for(var key in highlightDB.mapping[pageNumber]) {
+			var sectionKey = getSectionKey(pageNumber, highlightDB.mapping[pageNumber][key].startWordIndex, highlightDB.mapping[pageNumber][key].endWordIndex);
+
+			if(!(sectionKey in info)) info[sectionKey] = {};
+			if(!(key in info[sectionKey])) info[sectionKey][key] = {};
+
+			info[sectionKey][key] = 
+			{
+				pageNumber: pageNumber,
+				startWordIndex: highlightDB.mapping[pageNumber][key].startWordIndex,
+				endWordIndex: highlightDB.mapping[pageNumber][key].endWordIndex,
+				sectionKey: sectionKey,
+				text: highlightDB.mapping[pageNumber][key].text,
+				mappingKey: key
+			}
+		}
+	}
+
+	return info;
+}
+
 function updatePresentationObjectiveStructure() {
-	$("#sectionLevelCoverageTable").html('');
+	$("#sectionLevelCoverageTable").html('<tr> <th> Section title </th> <th> highlight </th> <th> # slides </th> </tr>');
 	var index = 0;
 
-	console.log(structureHighlightDB);
+	var info = organizeHighlightOnSections();
 
 	for(var key in structureHighlightDB) {
 		$("#sectionLevelCoverageTable").append(
 			presentationObjectiveRowElement(key, index)
 		);
 
+		var numHighlight = parseInt((key in info ? Object.keys(info[key]).length : 0));
+
 		$(".sectionLevelCoverageRowTitle[rowIndex=" + index + "]").html(structureHighlightDB[key].text);
+		$(".sectionLevelCoverageRowHighlight[rowIndex=" + index + "]").html(numHighlight);
+
+		var cur = $(".coverageTableCell[sectionKey='" + key + "'][index='0']");
+
+		for(var i=0;i<MAX_NUMBER_OF_SLIDES;i++) {
+			if(i >= numHighlight) $(cur).addClass("disabled");
+
+			cur = $(cur).next();
+		}
 
 		index++;
 	}
@@ -1198,73 +1252,56 @@ function chooseElements(info, sectionKey, number) {
 	var keys = Object.keys(info[sectionKey]);
 	var n = keys.length;
 	
-	var optimal_a = parseInt((n-number)/2), optimal_b = 0;
-	var optimal_diff = Math.abs(optimal_a - optimal_b);
-
-	for(var a=0;a<n/2;a++) {
-		if((n-number-(2*a) > 0)) {
-			var b = parseInt((n-number-(2*a)) / (number - 1));
-
-			if(Math.abs(a-b) < optimal_diff || Math.abs(a-b) == optimal_diff && b > optimal_b) {
-				optimal_diff = Math.abs(a-b);
-
-				optimal_a = a;
-				optimal_b = b;
-			}
+	if(number >= n) {
+		for(var i=0;i<n;i++) {
+			retValue.push(info[sectionKey][keys[i]]);
 		}
 	}
-
-	console.log(optimal_a, optimal_b);
-
-	var cur = optimal_a;
-
-	for(var i=0;i<number;i++) {
-		retValue.push(info[sectionKey][keys[cur]]);
-
-		cur += (optimal_b+1);
+	else {
+		var optimal_a = parseInt((n-number)/2), optimal_b = 0;
+		var optimal_diff = Math.abs(optimal_a - optimal_b);
+	
+		for(var a=0;a<n/2;a++) {
+			if((n-number-(2*a) > 0)) {
+				var b = parseInt((n-number-(2*a)) / (number - 1));
+	
+				if(Math.abs(a-b) < optimal_diff || Math.abs(a-b) == optimal_diff && b > optimal_b) {
+					optimal_diff = Math.abs(a-b);
+	
+					optimal_a = a;
+					optimal_b = b;
+				}
+			}
+		}
+	
+		console.log(optimal_a, optimal_b);
+	
+		var cur = optimal_a;
+	
+		for(var i=0;i<number;i++) {
+			retValue.push(info[sectionKey][keys[cur]]);
+	
+			cur += (optimal_b+1);
+		}
 	}
 
 	return retValue;
 }
 
 function automaticallyUpdateSlides() {
-	console.log(highlightDB);
-
 	var info = {};
 	var slideInfo = {};
 	
-	for(var pageNumber in highlightDB.mapping) {
-		for(var key in highlightDB.mapping[pageNumber]) {
-			var sectionKey = getSectionKey(pageNumber, highlightDB.mapping[pageNumber][key].startWordIndex, highlightDB.mapping[pageNumber][key].endWordIndex);
-
-			if(!(sectionKey in info)) info[sectionKey] = {};
-			if(!(key in info[sectionKey])) info[sectionKey][key] = {};
-
-			info[sectionKey][key] = 
-			{
-				pageNumber: pageNumber,
-				startWordIndex: highlightDB.mapping[pageNumber][key].startWordIndex,
-				endWordIndex: highlightDB.mapping[pageNumber][key].endWordIndex,
-				sectionKey: sectionKey,
-				text: highlightDB.mapping[pageNumber][key].text,
-				mappingKey: key
-			}
-		}
-	}
+	info = organizeHighlightOnSections();
 	
 	for(var key in structureHighlightDB) {
 		var obj = $(".sectionLevelCoverageInput[sectionKey=" + key + "]");
-		var count = $(obj).val();
-
-		console.log(obj);
-		console.log(count);
+		var count = $(".coverageTableCell.selected[sectionKey='" + key + "']").length;
 
 		if(count != '') 
-			slideInfo[key] = chooseElements(info, key, parseInt(count));
+			slideInfo[key] = chooseElements(info, key, parseInt(count)*MAX_NUMBER_OF_BULLETS);
 	}
 	
-	console.log(slideInfo);
-
 	createSlidesBasedOnSelection(slideInfo);
 }
 
@@ -1287,25 +1324,24 @@ function createSlidesBasedOnSelection(info) {
 	for(var sectionKey in info) {
 		var keys = Object.keys(info[sectionKey]);
 
-		var numSlides = parseInt((keys.length % MAX_NUMBER_OF_BULLETS == 0) ? keys.length / MAX_NUMBER_OF_BULLETS : (keys.length / MAX_NUMBER_OF_BULLETS) + 1);
-		var borderline = Object.keys(info[sectionKey]).length - (MAX_NUMBER_OF_BULLETS-1) * numSlides;
+		// var numSlides = parseInt((keys.length % MAX_NUMBER_OF_BULLETS == 0) ? keys.length / MAX_NUMBER_OF_BULLETS : (keys.length / MAX_NUMBER_OF_BULLETS) + 1);
+		var numSlides = parseInt($(".coverageTableCell.selected[sectionKey='" + sectionKey + "']").length);
+		var numHighlightsPerSlide = parseInt((Object.keys(info[sectionKey]).length) / numSlides);
+
+		var borderline = ((Object.keys(info[sectionKey]).length) % numSlides == 0 ? 0 : (Object.keys(info[sectionKey]).length) - numHighlightsPerSlide * numSlides);
 		var cursor = 0;
 
 		for(var j=0;j<numSlides;j++) {
-			var numBullets = -1;
+			var numBullets = numHighlightsPerSlide;
 			var highlightInfo = [];
 
-			if(numSlides >= 2) {
-				if(j < borderline) numBullets = MAX_NUMBER_OF_BULLETS;
-				else numBullets = MAX_NUMBER_OF_BULLETS - 1;
-			}
-			else numBullets = keys.length;
+			if(j < borderline) numBullets++;
 
 			for(var k=0;k<numBullets;k++) {
 				highlightInfo.push(info[sectionKey][keys[cursor]]);
 				cursor++;
 			}
-			
+
 			var elem = {
 				slideID: makeid(10),
 				objIDs: [makeid(10), makeid(10)],
@@ -1329,17 +1365,13 @@ function createSlidesBasedOnSelection(info) {
 		}
 	}
 
-	console.log(requests);
-
 	writeSlideMappingInfoBulk(updateInfo).then( () => {
 		initializeSlide().then( () => {
-			console.log("nice!");
-
    			gapi.client.slides.presentations.batchUpdate({
    			  presentationId: PRESENTATION_ID,
    			  requests: requests
    			}).then((createSlideResponse) => {
-				console.log(createSlideResponse);
+				//console.log(createSlideResponse);
    			});
 		});
 	});
@@ -1519,6 +1551,8 @@ $(document).ready(function() {
 		});
 
 		$(document).on("mousedown", function(e) {
+			generalMouseDown++;
+
 			if($("#resourceBoxDiv").is($(e.target)) || $("#resourceBoxDiv").find($(e.target)[0]).length > 0) return;
 
 			if(curSlideState == "WAIT") {
@@ -1600,6 +1634,8 @@ $(document).ready(function() {
 
 
 		$(document).on("mouseup", function(e) {
+			generalMouseDown = 0;
+
 			if($("#resourceBoxDiv").is($(e.target)) || $("#resourceBoxDiv").find($(e.target)[0]).length > 0) return;
 
 			slideObjectMousedown = 0;
@@ -1885,6 +1921,45 @@ $(document).ready(function() {
 				});
 		});
 
+		function selectCells(target) {
+			var cur = $(target);
+
+			for(var i=0;i<100;i++) {
+				if($(cur).hasClass("coverageTableCell")) {
+					$(cur).addClass("selected");
+				}
+				else break;
+
+				cur = $(cur).prev();
+			}
+
+			cur = $(target).next();
+
+			for(var i=0;i<100;i++) {
+				if($(cur).hasClass("coverageTableCell")) {
+					$(cur).removeClass("selected");
+				}
+				else break;
+
+				cur = $(cur).next();
+			}
+		}
+
+		$(document).on("click", ".coverageTableCell", function(e) {
+			if(!$(e.target).hasClass("disabled")) {
+				if($(e.target).hasClass("selected") && $(e.target).attr("index") == '0' && $(".coverageTableCell.selected[sectionKey='" + $(e.target).attr("sectionKey") + "']").length == 1) 
+					$(e.target).removeClass("selected");
+				else 
+					selectCells($(e.target));
+			}
+		});
+
+		$(document).on("mouseenter", ".coverageTableCell", function(e) {
+			if(generalMouseDown > 0 && !$(e.target).hasClass("disabled")) {
+				selectCells($(e.target));
+			}
+		});
+
 		$(document).on("extension_focusObject", function(e) {
 
 			var p = e.detail;
@@ -2078,12 +2153,8 @@ function toggleSlidePlane() {
 async function writeSlideMappingInfoBulk(elems) {
 	var updates = {};
 
-	console.log(elems);
-
 	for(var e=0;e<elems.length;e++) {
 		var elem = elems[e];
-
-		console.log(elem);
 
 		updates['/users/' + userName + '/slideInfo/' + elem.slideID + '/' + elem.objID + '/' + elem.paragraphIndex] = {
 			mappingID: elem.mappingID
@@ -2115,8 +2186,6 @@ async function writeSlideMappingInfoBulk(elems) {
 			mappingID: elem.mappingID
 		}
 	}
-
-	console.log(updates);
 
 	await firebase.database().ref().update(updates);
 }
