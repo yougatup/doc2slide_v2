@@ -15,6 +15,13 @@ var slideObjectMouseupObject = null;
 var popoverElement = null;
 var curSlidePage = null; 
 var structureHighlightDB = {};
+var MAX_NUMBER_OF_BULLETS = 3;
+
+function presentationObjectiveRowElement(sectionKey, index) {
+	return "<tr> <td class='sectionLevelCoverageRowTitle' sectionKey='" + sectionKey + "' rowIndex='" + index + "'> </td> <td class='sectionLevelCoverageRowBoxes' sectionKey='" + sectionKey + "' rowIndex='" + index + "'>" + 
+	    "<input class='sectionLevelCoverageInput' sectionKey='" + sectionKey + "' rowIndex='" + index + "' />" + 
+		"</td> </tr>";
+}
 
 function documentStructureRowElement(id) {
 	return "<div id=" + id + " class='documentStructureBodyRow'> " +
@@ -82,7 +89,7 @@ function initializeGAPI(callback) {
 			}).then(function () {
    				 // Listen for sign-in state changes.
    				 gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-				 console.log(gapi.auth2.getAuthInstance().currentUser.get().Ot.yu);
+				 // console.log(gapi.auth2.getAuthInstance().currentUser.get().Ot.yu);
 
    				 // Handle the initial sign-in state.
    				 updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
@@ -240,13 +247,14 @@ function highlightPage(pageNumber) {
 	}
 }
 
-async function writeHighlight(pageNumber, startWordIndex, endWordIndex) {
+async function writeHighlight(pageNumber, startWordIndex, endWordIndex, text) {
 	var newKey = firebase.database().ref('users/' + userName + '/mapping/' + pageNumber + '/').push().key;
 
 	var updates = {};
 	updates['/users/' + userName + '/mapping/' + pageNumber + '/' + newKey] = {
 		startWordIndex: startWordIndex,
-		endWordIndex: endWordIndex
+		endWordIndex: endWordIndex,
+		text: text
 	};
 
 	await firebase.database().ref().update(updates);
@@ -256,14 +264,15 @@ async function writeHighlight(pageNumber, startWordIndex, endWordIndex) {
 
 	highlightDB.mapping[pageNumber][newKey] = {
 		startWordIndex: startWordIndex,
-		endWordIndex: endWordIndex
+		endWordIndex: endWordIndex,
+		text: text
 	};
 
 	return newKey;
 }
 
 async function registerHighlight(highlightInfo) {
-	return new Promise(function (resolve, reject) { var ret = writeHighlight(highlightInfo.pageNumber, highlightInfo.startWordIndex, highlightInfo.endWordIndex);
+	return new Promise(function (resolve, reject) { var ret = writeHighlight(highlightInfo.pageNumber, highlightInfo.startWordIndex, highlightInfo.endWordIndex, highlightInfo.text);
 		resolve(ret);
 	});
 }
@@ -1132,6 +1141,23 @@ function updateStructure() {
 	}
 }
 
+function updatePresentationObjectiveStructure() {
+	$("#sectionLevelCoverageTable").html('');
+	var index = 0;
+
+	console.log(structureHighlightDB);
+
+	for(var key in structureHighlightDB) {
+		$("#sectionLevelCoverageTable").append(
+			presentationObjectiveRowElement(key, index)
+		);
+
+		$(".sectionLevelCoverageRowTitle[rowIndex=" + index + "]").html(structureHighlightDB[key].text);
+
+		index++;
+	}
+}
+
 function appearDocumentStructureBtn() {
 	updateStructure();
 
@@ -1142,6 +1168,15 @@ function disappearDocumentStructureBtn() {
 	$("#documentStructurePlane").hide();
 }
 
+function disappearPresentationObjective() {
+	$("#presentationObjectivePlane").hide();
+}
+
+function appearPresentationObjective() {
+	updatePresentationObjectiveStructure();
+
+	$("#presentationObjectivePlane").show();
+}
 function setCurLevel(rowObjId, level) {
 	console.log(rowObjId, level);
 
@@ -1153,6 +1188,205 @@ function setCurLevel(rowObjId, level) {
 	$("#" + rowObjId).attr("level", level);
 
 	firebase.database().ref().update(updates);
+}
+
+function chooseElements(info, sectionKey, number) {
+	var retValue = [];
+
+	if(number <= 0) return [];
+
+	var keys = Object.keys(info[sectionKey]);
+	var n = keys.length;
+	
+	var optimal_a = parseInt((n-number)/2), optimal_b = 0;
+	var optimal_diff = Math.abs(optimal_a - optimal_b);
+
+	for(var a=0;a<n/2;a++) {
+		if((n-number-(2*a) > 0)) {
+			var b = parseInt((n-number-(2*a)) / (number - 1));
+
+			if(Math.abs(a-b) < optimal_diff || Math.abs(a-b) == optimal_diff && b > optimal_b) {
+				optimal_diff = Math.abs(a-b);
+
+				optimal_a = a;
+				optimal_b = b;
+			}
+		}
+	}
+
+	console.log(optimal_a, optimal_b);
+
+	var cur = optimal_a;
+
+	for(var i=0;i<number;i++) {
+		retValue.push(info[sectionKey][keys[cur]]);
+
+		cur += (optimal_b+1);
+	}
+
+	return retValue;
+}
+
+function automaticallyUpdateSlides() {
+	console.log(highlightDB);
+
+	var info = {};
+	var slideInfo = {};
+	
+	for(var pageNumber in highlightDB.mapping) {
+		for(var key in highlightDB.mapping[pageNumber]) {
+			var sectionKey = getSectionKey(pageNumber, highlightDB.mapping[pageNumber][key].startWordIndex, highlightDB.mapping[pageNumber][key].endWordIndex);
+
+			if(!(sectionKey in info)) info[sectionKey] = {};
+			if(!(key in info[sectionKey])) info[sectionKey][key] = {};
+
+			info[sectionKey][key] = 
+			{
+				pageNumber: pageNumber,
+				startWordIndex: highlightDB.mapping[pageNumber][key].startWordIndex,
+				endWordIndex: highlightDB.mapping[pageNumber][key].endWordIndex,
+				sectionKey: sectionKey,
+				text: highlightDB.mapping[pageNumber][key].text,
+				mappingKey: key
+			}
+		}
+	}
+	
+	for(var key in structureHighlightDB) {
+		var obj = $(".sectionLevelCoverageInput[sectionKey=" + key + "]");
+		var count = $(obj).val();
+
+		console.log(obj);
+		console.log(count);
+
+		if(count != '') 
+			slideInfo[key] = chooseElements(info, key, parseInt(count));
+	}
+	
+	console.log(slideInfo);
+
+	createSlidesBasedOnSelection(slideInfo);
+}
+
+function getListOnKey(li, key) {
+	var retValue = [];
+
+	for(var i=0;i<li.length;i++) {
+		retValue.push(li[i][key]);
+	}
+
+	return retValue;
+}
+
+function createSlidesBasedOnSelection(info) {
+	var requests = [];
+	var slideInfo = []; 
+	var slideIndex = 1;
+	var updateInfo = [];
+
+	for(var sectionKey in info) {
+		var keys = Object.keys(info[sectionKey]);
+
+		var numSlides = parseInt((keys.length % MAX_NUMBER_OF_BULLETS == 0) ? keys.length / MAX_NUMBER_OF_BULLETS : (keys.length / MAX_NUMBER_OF_BULLETS) + 1);
+		var borderline = Object.keys(info[sectionKey]).length - (MAX_NUMBER_OF_BULLETS-1) * numSlides;
+		var cursor = 0;
+
+		for(var j=0;j<numSlides;j++) {
+			var numBullets = -1;
+			var highlightInfo = [];
+
+			if(numSlides >= 2) {
+				if(j < borderline) numBullets = MAX_NUMBER_OF_BULLETS;
+				else numBullets = MAX_NUMBER_OF_BULLETS - 1;
+			}
+			else numBullets = keys.length;
+
+			for(var k=0;k<numBullets;k++) {
+				highlightInfo.push(info[sectionKey][keys[cursor]]);
+				cursor++;
+			}
+			
+			var elem = {
+				slideID: makeid(10),
+				objIDs: [makeid(10), makeid(10)],
+				highlightInfo: highlightInfo
+			};
+
+			for(var k=0;k<numBullets;k++) {
+				updateInfo.push({
+					slideID: elem.slideID,
+					objID: elem.objIDs[1],
+					paragraphIndex: k,
+					mappingID: elem.highlightInfo[k].mappingKey
+				});
+			}
+
+			slideInfo.push(elem);
+
+			requests = requests.concat(genRequest(elem.slideID, slideIndex, "TITLE_AND_BODY", elem.objIDs, [structureHighlightDB[sectionKey].text].concat(getListOnKey(elem.highlightInfo, "text"))));
+
+			slideIndex++;
+		}
+	}
+
+	console.log(requests);
+
+	writeSlideMappingInfoBulk(updateInfo).then( () => {
+		initializeSlide().then( () => {
+			console.log("nice!");
+
+   			gapi.client.slides.presentations.batchUpdate({
+   			  presentationId: PRESENTATION_ID,
+   			  requests: requests
+   			}).then((createSlideResponse) => {
+				console.log(createSlideResponse);
+   			});
+		});
+	});
+}
+
+function genRequest(slideID, slideIndex, slideType, objIDs, texts) {
+	var requests = [];
+
+	requests.push({
+	   createSlide: {
+		objectId: slideID,
+	   	insertionIndex: slideIndex,
+	   	slideLayoutReference: {
+	       	predefinedLayout: slideType
+	   	},
+		placeholderIdMappings: [{
+			objectId: objIDs[0],
+			layoutPlaceholder: {
+				type: "TITLE",
+				index: 0
+			}
+		},{
+			objectId: objIDs[1],
+			layoutPlaceholder: {
+				type: "BODY",
+				index: 0
+			}
+		}
+		]
+	   }
+	});
+	requests.push({
+		insertText: {
+			objectId: objIDs[0],
+			text: texts[0],
+			insertionIndex: 0
+		}
+	});
+	requests.push({
+		insertText: {
+			objectId: objIDs[1],
+			text: texts.slice(1).join('\n'),
+			insertionIndex: 0
+		}
+	});
+
+	return requests;
 }
 
 $(document).ready(function() {
@@ -1580,6 +1814,18 @@ $(document).ready(function() {
 				appearDocumentStructureBtn();
 		});
 
+		$(document).on("click", "#presentationObjectiveConfirmBtn", function(e) {
+				automaticallyUpdateSlides();
+		});
+
+		$(document).on("click", "#presentationObjectiveDisappearBtn", function(e) {
+				disappearPresentationObjective();
+		});
+
+		$(document).on("click", "#presentationObjectiveBtn", function(e) {
+				appearPresentationObjective();
+		});
+
 		$(document).on("pdfjs_checkPreprocessed", function(e) {
 			readData('/' + userName).then(result => {
 				if(result == null) {
@@ -1828,6 +2074,52 @@ function toggleSlidePlane() {
     else openNav();
 }
 
+
+async function writeSlideMappingInfoBulk(elems) {
+	var updates = {};
+
+	console.log(elems);
+
+	for(var e=0;e<elems.length;e++) {
+		var elem = elems[e];
+
+		console.log(elem);
+
+		updates['/users/' + userName + '/slideInfo/' + elem.slideID + '/' + elem.objID + '/' + elem.paragraphIndex] = {
+			mappingID: elem.mappingID
+		}
+
+		if(slideDB == null) slideDB = {};
+		if(!(elem.slideID in slideDB)) slideDB[elem.slideID] = {};
+		if(!(elem.objID in slideDB[elem.slideID])) slideDB[elem.slideID][elem.objID] = [];
+
+		for(var i=0;i<100;i++) {
+			if(Object.keys(slideDB[elem.slideID][elem.objID]).length <= elem.paragraphIndex) {
+				updates['/users/' + userName + '/slideInfo/' + elem.slideID+ '/' + elem.objID + '/' + (parseInt(Object.keys(slideDB[elem.slideID][elem.objID]).length))] = {
+					mappingID: "null"
+				}
+
+				slideDB[elem.slideID][elem.objID][parseInt(Object.keys(slideDB[elem.slideID][elem.objID]).length)] = {
+					mappingID: "null"
+				}
+			}
+			else break;
+		}
+
+		if(i == 100) alert("WHAT? WHAT? WHAT? WHAT?");
+
+		updates['/users/' + userName + '/slideInfo/' + elem.sldieID+ '/' + elem.objID + '/' + elem.paragraphIndex] = {
+			mappingID: elem.mappingID 
+		}
+		slideDB[elem.slideID][elem.objID][elem.paragraphIndex] = {
+			mappingID: elem.mappingID
+		}
+	}
+
+	console.log(updates);
+
+	await firebase.database().ref().update(updates);
+}
 
 async function writeSlideMappingInfo(pageID, objID, paragraphIndex, mappingID) {
 	var updates = {};
