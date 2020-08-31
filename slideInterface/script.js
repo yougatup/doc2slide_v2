@@ -269,14 +269,41 @@ function highlightPage(pageNumber) {
 	}
 }
 
+async function getRepresentativeImageURL(queryString) {
+	String.prototype.replaceAll = function(search, replacement) {
+	   var target = this;
+	   return target.replace(new RegExp(search, 'g'), replacement);
+	};
+
+    queryString = queryString.replaceAll(' ', '+');
+
+	console.log(queryString);
+
+    var haha = await $.get({
+            url:"https://www.googleapis.com/customsearch/v1?key=AIzaSyA160fCjV5GS8HhQtYj2R29huH9lnXURKw&cx=000180283903413636684:oxqpr8tki8w&q="+queryString+"&searchType=image",
+            // success: registerImageOnHighlight
+            });
+
+	console.log(haha.items[0].link);
+	console.log(haha);
+
+	return haha.items[0].link;
+}
+
 async function writeHighlight(pageNumber, startWordIndex, endWordIndex, text) {
 	var newKey = firebase.database().ref('users/' + userName + '/mapping/' + pageNumber + '/').push().key;
 
+	var rURL = await getRepresentativeImageURL(text);
+
+	console.log(rURL);
+
 	var updates = {};
+
 	updates['/users/' + userName + '/mapping/' + pageNumber + '/' + newKey] = {
 		startWordIndex: startWordIndex,
 		endWordIndex: endWordIndex,
-		text: text
+		text: text,
+		imageURL: rURL
 	};
 
 	await firebase.database().ref().update(updates);
@@ -287,7 +314,8 @@ async function writeHighlight(pageNumber, startWordIndex, endWordIndex, text) {
 	highlightDB.mapping[pageNumber][newKey] = {
 		startWordIndex: startWordIndex,
 		endWordIndex: endWordIndex,
-		text: text
+		text: text,
+		imageURL: rURL
 	};
 
 	return newKey;
