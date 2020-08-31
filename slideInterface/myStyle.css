@@ -250,13 +250,14 @@ display: none;
 }
 
 .imageQueryResultItem {
-    max-width: 200px;
+max-width: 200px;
 margin: 10px;
 float: left;
+display: block;
 }
 
 .imageQueryResultItem:hover {
-    background-color: orange;
+background-color: orange;
 border: 2px solid red;
 cursor: pointer;
 }
@@ -557,6 +558,7 @@ display: none;
 }
 
 #resourceBoxDiv {
+	overflow: auto;
 	background-color: white;
 	border-top: 2px solid rgb(240, 240, 240);
 	box-sizing: border-box;
@@ -841,4 +843,10 @@ border-spacing: 0 !important;
 
 .coverageTableCell.disabled {
 	background-color: lightgray !important;
+}
+
+.resourceFigureResultBody 
+{
+float: left;
+width: 100%;
 }

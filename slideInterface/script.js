@@ -1291,6 +1291,7 @@ function chooseElements(info, sectionKey, number) {
 function automaticallyUpdateSlides() {
 	var info = {};
 	var slideInfo = {};
+	var heavySwitch = '';
 	
 	info = organizeHighlightOnSections();
 	
@@ -1301,8 +1302,12 @@ function automaticallyUpdateSlides() {
 		if(count != '') 
 			slideInfo[key] = chooseElements(info, key, parseInt(count)*MAX_NUMBER_OF_BULLETS);
 	}
+
+	if($("#textHeavyBtn").prop("checked")) heavySwitch = 'text';
+	else heavySwitch = 'image';
+
 	
-	createSlidesBasedOnSelection(slideInfo);
+	createSlidesBasedOnSelection(slideInfo, heavySwitch);
 }
 
 function getListOnKey(li, key) {
@@ -1315,7 +1320,7 @@ function getListOnKey(li, key) {
 	return retValue;
 }
 
-function createSlidesBasedOnSelection(info) {
+function createTextHeavySlides(info) {
 	var requests = [];
 	var slideInfo = []; 
 	var slideIndex = 1;
@@ -1375,6 +1380,15 @@ function createSlidesBasedOnSelection(info) {
    			});
 		});
 	});
+}
+
+function createImageHeavySlides(info) {
+
+}
+
+function createSlidesBasedOnSelection(info, heavySwitch) {
+	if(heavySwitch == 'text') createTextHeavySlides(info);
+	else createImageHeavySlides(info);
 }
 
 function genRequest(slideID, slideIndex, slideType, objIDs, texts) {
@@ -2084,6 +2098,43 @@ function getStrings(data) {
 	return text;
 }
 
+function appendImageQueryResult(response) {
+	console.log(response);
+	console.log(response.queries.request[0].searchTerms);
+
+	var figDOM = $(".resourceFigureResultBody[searchTerm='" + response.queries.request[0].searchTerms + "']");
+
+	console.log($(figDOM));
+
+    for(var i=0;i<Math.min(response.items.length, 5);i++) {
+        var item = response.items[i];
+
+		$(figDOM).append("<img id='imageQueryResultItem" + i + "' class='imageQueryResultItem' src='" + item.link + "' />");
+    }
+}
+
+function getImageQueryResult(queryString) {
+    queryString = queryString.replace(' ', '+');
+
+    curImageQueryString = queryString;
+
+    $.get({
+            url:"https://www.googleapis.com/customsearch/v1?key=AIzaSyA160fCjV5GS8HhQtYj2R29huH9lnXURKw&cx=000180283903413636684:oxqpr8tki8w&q="+queryString+"&searchType=image",
+            success: appendImageQueryResult
+            });
+}
+
+
+function setFiguresOnResourceBox(entities) {
+	for(var i=0;i<entities.length;i++) {
+		$("#resourceBoxFigureList").append(
+				"<div class='resourceBoxHeader' searchTerm='" + entities[i] + "' > Figures (" + entities[i] + ") </div>" + 
+				"<div class='resourceFigureResultBody' searchTerm='" + entities[i] + "' > </div>"
+				);
+
+		getImageQueryResult(entities[i]);
+	}
+}
 
 function constructResourceBox(originalText, listOfKeywords) {
  	xmlhttp = new XMLHttpRequest();
@@ -2092,7 +2143,10 @@ function constructResourceBox(originalText, listOfKeywords) {
  	   if (xmlhttp.readyState==4 && xmlhttp.status==200){
  		      var data=JSON.parse(xmlhttp.responseText);
 
-		  	  var result = getStrings(data);
+			  console.log(data);
+
+		  	  var result = getStrings(data.mySyntax);
+			  var entities = data.entity;
 
 			  $("#resourceBoxShortTextSlider").attr("max", result.length-1);
 			  $("#resourceBoxShortTextSlider").attr("value", parseInt(result.length / 2));
@@ -2100,6 +2154,8 @@ function constructResourceBox(originalText, listOfKeywords) {
 			  for(var i=0;i<result.length;i++) $("#resourceBoxShortTextSlider").attr("text" + i, result[i]);
 
 			  $("#resourceBoxShortTextBox").attr("value", result[parseInt(result.length/2)]);
+
+			  setFiguresOnResourceBox(entities);
  		  }
  	   }
 
@@ -2115,6 +2171,10 @@ function constructResourceBox(originalText, listOfKeywords) {
 								'<input style="float: left" type="range" min="0" max="100" value="50" id="resourceBoxShortTextSlider"> </div>');
 	$("#resourceBoxDiv").append('<br>');
 	$("#resourceBoxDiv").append("<input id='resourceBoxShortTextBox' value='Loading...'> </input> <button id='shortTextSubmitBtn' class='resourceBoxSubmitBtn'> Submit </button>");
+	$("#resourceBoxDiv").append('<br>');
+	$("#resourceBoxDiv").append('<br>');
+
+	$("#resourceBoxDiv").append("<div id='resourceBoxFigureList'> </div>");
 }
 
 function appearResourceBox() {
