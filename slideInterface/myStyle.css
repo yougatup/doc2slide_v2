@@ -842,3 +842,10 @@ border-spacing: 0 !important;
 .coverageTableCell.disabled {
 	background-color: lightgray !important;
 }
+
+#chromeExtensionDownloadDiv {
+position: absolute;
+right: 30px;
+font-size: 20px;
+z-index: 987987987;
+}

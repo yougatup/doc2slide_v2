@@ -2164,21 +2164,6 @@ async function writeSlideMappingInfoBulk(elems) {
 		if(!(elem.slideID in slideDB)) slideDB[elem.slideID] = {};
 		if(!(elem.objID in slideDB[elem.slideID])) slideDB[elem.slideID][elem.objID] = [];
 
-		for(var i=0;i<100;i++) {
-			if(Object.keys(slideDB[elem.slideID][elem.objID]).length <= elem.paragraphIndex) {
-				updates['/users/' + userName + '/slideInfo/' + elem.slideID+ '/' + elem.objID + '/' + (parseInt(Object.keys(slideDB[elem.slideID][elem.objID]).length))] = {
-					mappingID: "null"
-				}
-
-				slideDB[elem.slideID][elem.objID][parseInt(Object.keys(slideDB[elem.slideID][elem.objID]).length)] = {
-					mappingID: "null"
-				}
-			}
-			else break;
-		}
-
-		if(i == 100) alert("WHAT? WHAT? WHAT? WHAT?");
-
 		updates['/users/' + userName + '/slideInfo/' + elem.sldieID+ '/' + elem.objID + '/' + elem.paragraphIndex] = {
 			mappingID: elem.mappingID 
 		}
