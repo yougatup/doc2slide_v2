@@ -280,11 +280,10 @@ async function getRepresentativeImageURL(queryString) {
 	console.log(queryString);
 
     var haha = await $.get({
-            url:"https://www.googleapis.com/customsearch/v1?key=AIzaSyA160fCjV5GS8HhQtYj2R29huH9lnXURKw&cx=000180283903413636684:oxqpr8tki8w&q="+queryString+"&searchType=image",
+            url:"https://www.googleapis.com/customsearch/v1/siterestrict?fileType=jpg,png,jpeg&key=AIzaSyA160fCjV5GS8HhQtYj2R29huH9lnXURKw&cx=000180283903413636684:oxqpr8tki8w&q="+queryString+"&searchType=image",
             // success: registerImageOnHighlight
             });
 
-	console.log(haha.items[0].link);
 	console.log(haha);
 
 	return haha.items[0].link;
@@ -294,8 +293,6 @@ async function writeHighlight(pageNumber, startWordIndex, endWordIndex, text) {
 	var newKey = firebase.database().ref('users/' + userName + '/mapping/' + pageNumber + '/').push().key;
 
 	var rURL = await getRepresentativeImageURL(text);
-
-	console.log(rURL);
 
 	var updates = {};
 
@@ -318,7 +315,10 @@ async function writeHighlight(pageNumber, startWordIndex, endWordIndex, text) {
 		imageURL: rURL
 	};
 
-	return newKey;
+	return {
+		key: newKey,
+	    imageURL: rURL
+	}
 }
 
 async function registerHighlight(highlightInfo) {
@@ -400,6 +400,12 @@ async function initializeSlide() {
 
 function initializeDB() {
 	readData('/users/' + userName).then(result => {
+		if("parameters" in result && "heavy" in result.parameters) {
+			if(result.parameters.heavy == "text") $("#textHeavyBtn").prop("checked", "true");
+			else $("#imageHeavyBtn").prop("checked", "true");
+		}
+		else $("#textHeavyBtn").prop("checked", "true");
+
 		if(!("parameters" in result && "initialize" in result.parameters && !result.parameters.initialize)) {
 			$("#check2").prop("checked", "true");
 
@@ -420,6 +426,7 @@ function initializeDB() {
 		}
 		else {
 			// $("#check2").prop("checked", "false");
+			$("#textHeavyBtn").prop("checked", "true");
 			$("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
 
 			highlightDB = result;
@@ -1204,7 +1211,8 @@ function organizeHighlightOnSections() {
 				endWordIndex: highlightDB.mapping[pageNumber][key].endWordIndex,
 				sectionKey: sectionKey,
 				text: highlightDB.mapping[pageNumber][key].text,
-				mappingKey: key
+				mappingKey: key,
+				imageURL: highlightDB.mapping[pageNumber][key].imageURL,
 			}
 		}
 	}
@@ -1333,7 +1341,6 @@ function automaticallyUpdateSlides() {
 
 	if($("#textHeavyBtn").prop("checked")) heavySwitch = 'text';
 	else heavySwitch = 'image';
-
 	
 	createSlidesBasedOnSelection(slideInfo, heavySwitch);
 }
@@ -1411,7 +1418,67 @@ function createTextHeavySlides(info) {
 }
 
 function createImageHeavySlides(info) {
+	var requests = [];
+	var slideInfo = []; 
+	var slideIndex = 1;
+	var updateInfo = [];
 
+	for(var sectionKey in info) {
+		var keys = Object.keys(info[sectionKey]);
+
+		// var numSlides = parseInt((keys.length % MAX_NUMBER_OF_BULLETS == 0) ? keys.length / MAX_NUMBER_OF_BULLETS : (keys.length / MAX_NUMBER_OF_BULLETS) + 1);
+		var numSlides = parseInt($(".coverageTableCell.selected[sectionKey='" + sectionKey + "']").length);
+		var numHighlightsPerSlide = parseInt((Object.keys(info[sectionKey]).length) / numSlides);
+
+		var borderline = ((Object.keys(info[sectionKey]).length) % numSlides == 0 ? 0 : (Object.keys(info[sectionKey]).length) - numHighlightsPerSlide * numSlides);
+		var cursor = 0;
+
+		for(var j=0;j<numSlides;j++) {
+			var numBullets = numHighlightsPerSlide;
+			var highlightInfo = [];
+
+			if(j < borderline) numBullets++;
+
+			for(var k=0;k<numBullets;k++) {
+				highlightInfo.push(info[sectionKey][keys[cursor]]);
+				cursor++;
+			}
+
+			var elem = {
+				slideID: makeid(10),
+				objIDs: [makeid(10)],
+				highlightInfo: highlightInfo
+			};
+
+			for(var k=0;k<numBullets;k++) {
+				updateInfo.push({
+					slideID: elem.slideID,
+					mappingID: elem.highlightInfo[k].mappingKey
+				});
+
+				elem.objIDs.push(makeid(10));
+			}
+
+			slideInfo.push(elem);
+
+			requests = requests.concat(genImageSlideRequest(elem.slideID, slideIndex, "TITLE_ONLY", elem.objIDs, getListOnKey(elem.highlightInfo, "imageURL")));
+
+			slideIndex++;
+		}
+	}
+
+	console.log(requests);
+
+	writeImageSlideMappingInfoBulk(updateInfo).then( () => {
+		initializeSlide().then( () => {
+   			gapi.client.slides.presentations.batchUpdate({
+   			  presentationId: PRESENTATION_ID,
+   			  requests: requests
+   			}).then((createSlideResponse) => {
+				//console.log(createSlideResponse);
+   			});
+		});
+	});
 }
 
 function createSlidesBasedOnSelection(info, heavySwitch) {
@@ -1419,6 +1486,43 @@ function createSlidesBasedOnSelection(info, heavySwitch) {
 	else createImageHeavySlides(info);
 }
 
+function genImageSlideRequest(slideID, slideIndex, slideType, objIDs, imageURLs) {
+	var requests = [];
+
+	console.log(objIDs);
+
+	requests.push({
+	   createSlide: {
+		objectId: slideID,
+	   	insertionIndex: slideIndex,
+	   	slideLayoutReference: {
+	       	predefinedLayout: slideType
+	   	},
+		placeholderIdMappings: [{
+			objectId: objIDs[0],
+			layoutPlaceholder: {
+				type: "TITLE",
+				index: 0
+			}
+		}
+		]
+	   }
+	});
+
+	for(var i=0;i<imageURLs.length;i++) {
+		requests.push({
+			createImage: {
+				objectId: objIDs[i+1],
+				elementProperties: {
+					pageObjectId: slideID
+				},
+				url: imageURLs[i]
+			}
+		});
+	}
+
+	return requests;
+}
 function genRequest(slideID, slideIndex, slideType, objIDs, texts) {
 	var requests = [];
 
@@ -1477,6 +1581,14 @@ $(document).ready(function() {
 				var curText = $("#resourceBoxShortTextSlider").attr("text" + curValue);
 
 				$("#resourceBoxShortTextBox").attr("value", curText);
+		});
+
+		$(document).on("click", "#textHeavyBtn", function(e) {
+			firebase.database().ref("/users/" + userName + '/parameters/heavy').set("text");
+		});
+
+		$(document).on("click", "#imageHeavyBtn", function(e) {
+			firebase.database().ref("/users/" + userName + '/parameters/heavy').set("image");
 		});
 
 		$(document).on("click", ".removeSlideObject", function(e) {
@@ -1557,15 +1669,17 @@ $(document).ready(function() {
 				if(!(pageID in slideDB)) slideDB[pageID] = {}
 				if(!(objID in slideDB[pageID])) slideDB[pageID][objID] = {};
 
-				if(Object.keys(p.objects[i].paragraph).length != Object.keys(slideDB[pageID][objID]).length) {
-					if(Object.keys(p.objects[i].paragraph).length < Object.keys(slideDB[pageID][objID]).length) {
-						var start = Object.keys(p.objects[i].paragraph.length)+1;
-						var end = Object.keys(slideDB[pageID][objID]).length;
-								
-						for(var j=start;j<=end;j++) removeSlideMappingInfo(pageID, objID, j);
-					}
-					else {
-						writeSlideMappingInfo(pageID, objID, Object.keys(p.objects[i].paragraph).length-1, "null");
+				if("paragraph" in p.objects[i]) { // if text box
+					if(Object.keys(p.objects[i].paragraph).length != Object.keys(slideDB[pageID][objID]).length) {
+						if(Object.keys(p.objects[i].paragraph).length < Object.keys(slideDB[pageID][objID]).length) {
+							var start = parseInt(p.objects[i].paragraph.length)+1;
+							var end = Object.keys(slideDB[pageID][objID]).length;
+									
+							for(var j=start;j<=end;j++) removeSlideMappingInfo(pageID, objID, j);
+						}
+						else {
+							writeSlideMappingInfo(pageID, objID, Object.keys(p.objects[i].paragraph).length-1, "null");
+						}
 					}
 				}
 			}
@@ -1835,12 +1949,12 @@ $(document).ready(function() {
 		$(document).on("pdfjs_highlighted", function(e) {
 				var p = e.detail;
 
-				registerHighlight(p).then( mappingID => {
+				registerHighlight(p).then( mapping => {
 					showLoadingSlidePlane();
 
-					return automaticallyPutText(p, mappingID).then( () => {
+					return automaticallyPutContents(p, mapping).then( () => {
 						issueEvent("root_sendMappingIdentifier", {
-							mappingID: mappingID,
+							mappingID: mapping.key,
 							pageNumber: p.pageNumber,
 							startWordIndex: p.startWordIndex,
 							endWordIndex: p.endWordIndex
@@ -2069,13 +2183,8 @@ $(document).ready(function() {
 
  		 $("#check2").change( function(){
 			var curState = $("#check2").prop("checked");
-			var updates = {};
 
-			updates['/users/' + userName + '/parameters/'] = {
-				initialize: curState
-			}
-
-			firebase.database().ref().update(updates);
+			firebase.database().ref("/users/" + userName + '/parameters/initialize').set(curState);
  		 });
 });
 
@@ -2237,6 +2346,32 @@ function toggleSlidePlane() {
     else openNav();
 }
 
+
+async function writeImageSlideMappingInfoBulk(elems) {
+	var updates = {};
+
+	for(var e=0;e<elems.length;e++) {
+		var elem = elems[e];
+
+		updates['/users/' + userName + '/slideInfo/' + elem.slideID + '/' + elem.objID + '/image'] = {
+			mappingID: elem.mappingID
+		}
+
+		if(slideDB == null) slideDB = {};
+		if(!(elem.slideID in slideDB)) slideDB[elem.slideID] = {};
+		if(!(elem.objID in slideDB[elem.slideID])) slideDB[elem.slideID][elem.objID] = [];
+
+		updates['/users/' + userName + '/slideInfo/' + elem.sldieID+ '/' + elem.objID + '/image'] = {
+			mappingID: elem.mappingID 
+		}
+
+		slideDB[elem.slideID][elem.objID][0] = {
+			mappingID: elem.mappingID
+		}
+	}
+
+	await firebase.database().ref().update(updates);
+}
 
 async function writeSlideMappingInfoBulk(elems) {
 	var updates = {};
@@ -2475,6 +2610,94 @@ function makeid(length) {
    return result;
 }
 
+async function automaticallyPutContents(textInfo, mapping) {
+	var heavy = $("#textHeavyBtn").prop("checked");
+
+	console.log(heavy);
+
+	if(heavy) {
+		return automaticallyPutText(textInfo, mapping.key);
+	}
+	else {
+		return automaticallyPutFigure(textInfo, mapping.key, mapping.imageURL);
+	}
+}
+
+async function automaticallyPutFigure(textInfo, mappingID, imageURL) {
+	/*
+	   textInfo.startWordIndex
+	   textInfo.endWordIndex
+	   textInfo.pageNumber
+	   textInfo.text
+	   textInfo.sectionKey
+	   */
+
+	var sectionKey = getSectionKey(textInfo.pageNumber, textInfo.startWordIndex, textInfo.endWordIndex);
+	var slideID = getSlideID(sectionKey);
+	var objIDs = getTitleAndBodyObjectID(sectionKey);
+
+	var titleObjectID = objIDs.titleObjectID;
+	var figureObjID = makeid(10);
+
+	var requests = [];
+
+	if(slideID == null) {
+		var index = getSlideIndexToPut(sectionKey);
+		slideID = makeid(10);
+		titleObjectID = makeid(10);
+
+	  	requests.push({
+	  	   createSlide: {
+			objectId: slideID,
+	  	   	insertionIndex: index,
+	  	   	slideLayoutReference: {
+predefinedLayout: 'TITLE_ONLY'
+	  	   	},
+			placeholderIdMappings: [{
+				objectId: titleObjectID,
+				layoutPlaceholder: {
+					type: "TITLE",
+					index: 0
+				}
+			}]
+	  	   }
+	  	});
+		requests.push({
+			createImage: {
+				objectId: figureObjID,
+				elementProperties: {
+					pageObjectId: slideID
+				},
+				url: imageURL
+			}
+		});
+
+		var updates = {};
+
+		structureHighlightDB[sectionKey].slideID = slideID;
+		structureHighlightDB[sectionKey].titleObjectID = titleObjectID;
+
+		updates['/users/' + userName + '/structureHighlightInfo/' + sectionKey] = structureHighlightDB[sectionKey];
+
+		firebase.database().ref().update(updates);
+
+        gapi.client.slides.presentations.batchUpdate({
+          presentationId: PRESENTATION_ID,
+          requests: requests
+        }).then((createSlideResponse) => {
+            // successfully pasted the text
+
+		    writeSlideMappingInfo(slideID, figureObjID, 0, mappingID);
+		    return true;
+        });
+	}
+	else if(slideID != null && bodyObjectID == null) { // Let's consider it as bug
+		alert("BUG: cannot find objectID")
+	}
+	else {
+		return addFigure(slideID, imageURL, mappingID);
+	}
+}
 async function automaticallyPutText(textInfo, mappingID) {
 	/*
 	   textInfo.startWordIndex
@@ -2563,6 +2786,10 @@ async function automaticallyPutText(textInfo, mappingID) {
 	else {
 		return appendText(slideID, bodyObjectID, textInfo.text, mappingID);
 	}
+}
+
+function addFigure(pageID, imageURL, mappingID) {
+
 }
 
 function appendText(pageID, objId, myText, mappingID) {
