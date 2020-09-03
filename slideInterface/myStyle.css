@@ -250,13 +250,14 @@ display: none;
 }
 
 .imageQueryResultItem {
-    max-width: 200px;
+max-width: 200px;
 margin: 10px;
 float: left;
+display: block;
 }
 
 .imageQueryResultItem:hover {
-    background-color: orange;
+background-color: orange;
 border: 2px solid red;
 cursor: pointer;
 }
@@ -557,6 +558,7 @@ display: none;
 }
 
 #resourceBoxDiv {
+	overflow: auto;
 	background-color: white;
 	border-top: 2px solid rgb(240, 240, 240);
 	box-sizing: border-box;
@@ -848,4 +850,10 @@ position: absolute;
 right: 30px;
 font-size: 20px;
 z-index: 987987987;
+}
+.resourceFigureResultBody 
+{
+float: left;
+width: 100%;
+>>>>>>> 93274207e9462abd745096a07acd7146d30757aa
 }
