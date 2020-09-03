@@ -400,6 +400,10 @@ async function initializeSlide() {
 
 function initializeDB() {
 	readData('/users/' + userName).then(result => {
+		console.log(result);
+
+		console.log(result.parameters.heavy);
+
 		if("parameters" in result && "heavy" in result.parameters) {
 			if(result.parameters.heavy == "text") $("#textHeavyBtn").prop("checked", "true");
 			else $("#imageHeavyBtn").prop("checked", "true");
@@ -426,7 +430,7 @@ function initializeDB() {
 		}
 		else {
 			// $("#check2").prop("checked", "false");
-			$("#textHeavyBtn").prop("checked", "true");
+			// $("#textHeavyBtn").prop("checked", "true");
 			$("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
 
 			highlightDB = result;
@@ -616,20 +620,20 @@ function visualizeSlideObjects() {
 		filmstripIndex++;
 	}
 
+	console.log(curSlideObjects);
+
 	for(var i=0;i<curSlideObjects.objects.length;i++) {
 		var bottom = -1;
 
-		for(k in curSlideObjects.objects[i].paragraph) {
+		console.log(curSlideObjects.objects[i]);
+
+		if("0" in curSlideObjects.objects[i].paragraph) { // image
 			var objectID = curSlideObjects.objects[i].objectID.substr(7);
-			var paragraphID = parseInt(k.substr(7).split('-')[2]);
-			var rectInfo = curSlideObjects.objects[i].paragraph[k];
+			var rectInfo = curSlideObjects.objects[i].paragraph[0];
 			var mappedFlag = false;
 
-			if(curSlideObjects.pageID in slideDB && 
-			   objectID in slideDB[curSlideObjects.pageID] && 
-			   paragraphID in slideDB[curSlideObjects.pageID][objectID] && 
-			   slideDB[curSlideObjects.pageID][objectID][paragraphID].mappingID != "null") {
-				  mappedFlag = true;
+			if(slideDB[curSlideObjects.pageID][objectID][0].mappingID != "null") {
+				mappedFlag = true;
 			}
 
 			$("#slidePlaneCanvas").append(
@@ -637,7 +641,7 @@ function visualizeSlideObjects() {
 				" objID='" + objectID + "' paragraphID='" + k + "'" + 
 				" paragraphIndex=" + k.split("-")[3] + "></div>" + 
 				(mappedFlag ? 
-				 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator mapped' objID='" + objectID + "' paragraphID=" + k + " mappingID=" + slideDB[curSlideObjects.pageID][objectID][paragraphID].mappingID + "></div>" 
+				 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator mapped' objID='" + objectID + "' paragraphID=" + k + " mappingID=" + slideDB[curSlideObjects.pageID][objectID][0].mappingID + "></div>" 
 				 : 
 				 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator' objID='" + objectID + "' paragraphID=" + k + "></div>")
 
@@ -659,21 +663,63 @@ function visualizeSlideObjects() {
 
 			tempCnt = tempCnt + 1;
 		}
+		else {
+			for(k in curSlideObjects.objects[i].paragraph) {
+				var objectID = curSlideObjects.objects[i].objectID.substr(7);
+				var paragraphID = parseInt(k.substr(7).split('-')[2]);
+				var rectInfo = curSlideObjects.objects[i].paragraph[k];
+				var mappedFlag = false;
 
-		$("#slidePlaneCanvas").append(
-			"<div id='objectIndicator" + tempCnt + "' class='objectIndicator endOfParagraph' pageID='" + curSlideObjects.pageID + "'" + 
-			" objID='" + objectID + "'" + 
-			" paragraphIndex=" + Object.keys(curSlideObjects.objects[i].paragraph).length + "></div>"
-		);
+				if(curSlideObjects.pageID in slideDB && 
+				   objectID in slideDB[curSlideObjects.pageID] && 
+				   paragraphID in slideDB[curSlideObjects.pageID][objectID] && 
+				   slideDB[curSlideObjects.pageID][objectID][paragraphID].mappingID != "null") {
+					  mappedFlag = true;
+				}
 
-		setFocusBox("objectIndicator" + tempCnt, {
-			top: bottom + 40 + 20,
-			left: curSlideObjects.objects[i].rect.left,
-			width: curSlideObjects.objects[i].rect.width,
-			height: 50 
-		});
+				$("#slidePlaneCanvas").append(
+					"<div id='objectIndicator" + tempCnt + "' class='objectIndicator' pageID='" + curSlideObjects.pageID + "'" + 
+					" objID='" + objectID + "' paragraphID='" + k + "'" + 
+					" paragraphIndex=" + k.split("-")[3] + "></div>" + 
+					(mappedFlag ? 
+					 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator mapped' objID='" + objectID + "' paragraphID=" + k + " mappingID=" + slideDB[curSlideObjects.pageID][objectID][paragraphID].mappingID + "></div>" 
+					 : 
+					 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator' objID='" + objectID + "' paragraphID=" + k + "></div>")
 
-		tempCnt = tempCnt + 1;
+				);
+
+				setFocusBox("objectIndicator" + tempCnt, {
+					top: rectInfo.top + 40,
+					left: curSlideObjects.objects[i].rect.left,
+					width: curSlideObjects.objects[i].rect.width,
+					height: rectInfo.height
+				});
+
+				bottom = rectInfo.top + rectInfo.height;
+
+				setMappingIndicator("mappingIndicator" + tempCnt, {
+					top: rectInfo.top + 40,
+					left: curSlideObjects.objects[i].rect.left - 15,
+				});
+
+				tempCnt = tempCnt + 1;
+			}
+
+			$("#slidePlaneCanvas").append(
+				"<div id='objectIndicator" + tempCnt + "' class='objectIndicator endOfParagraph' pageID='" + curSlideObjects.pageID + "'" + 
+				" objID='" + objectID + "'" + 
+				" paragraphIndex=" + Object.keys(curSlideObjects.objects[i].paragraph).length + "></div>"
+			);
+
+			setFocusBox("objectIndicator" + tempCnt, {
+				top: bottom + 40 + 20,
+				left: curSlideObjects.objects[i].rect.left,
+				width: curSlideObjects.objects[i].rect.width,
+				height: 50 
+			});
+
+			tempCnt = tempCnt + 1;
+		}
 	}
 
 }
@@ -1451,17 +1497,20 @@ function createImageHeavySlides(info) {
 			};
 
 			for(var k=0;k<numBullets;k++) {
+				var figObjID = makeid(10);
+
 				updateInfo.push({
 					slideID: elem.slideID,
+					objID: figObjID,
 					mappingID: elem.highlightInfo[k].mappingKey
 				});
 
-				elem.objIDs.push(makeid(10));
+				elem.objIDs.push(figObjID);
 			}
 
 			slideInfo.push(elem);
 
-			requests = requests.concat(genImageSlideRequest(elem.slideID, slideIndex, "TITLE_ONLY", elem.objIDs, getListOnKey(elem.highlightInfo, "imageURL")));
+			requests = requests.concat(genImageSlideRequest(elem.slideID, slideIndex, "TITLE_ONLY", elem.objIDs, structureHighlightDB[sectionKey].text, getListOnKey(elem.highlightInfo, "imageURL")));
 
 			slideIndex++;
 		}
@@ -1486,7 +1535,7 @@ function createSlidesBasedOnSelection(info, heavySwitch) {
 	else createImageHeavySlides(info);
 }
 
-function genImageSlideRequest(slideID, slideIndex, slideType, objIDs, imageURLs) {
+function genImageSlideRequest(slideID, slideIndex, slideType, objIDs, sectionTitleText, imageURLs) {
 	var requests = [];
 
 	console.log(objIDs);
@@ -1509,12 +1558,37 @@ function genImageSlideRequest(slideID, slideIndex, slideType, objIDs, imageURLs)
 	   }
 	});
 
+	requests.push({
+		insertText: {
+			objectId: objIDs[0],
+			text: sectionTitleText,
+			insertionIndex: 0
+		}
+	});
+
 	for(var i=0;i<imageURLs.length;i++) {
 		requests.push({
 			createImage: {
 				objectId: objIDs[i+1],
 				elementProperties: {
-					pageObjectId: slideID
+					pageObjectId: slideID,
+					size: {
+						width: {
+							magnitude: 220,
+							unit: "pt"
+						},
+						height: {
+							magnitude: 220,
+							unit: "pt"
+						},
+					},
+					transform: {
+						scaleX: 1,
+						scaleY: 1,
+						translateX: 20 + i * 230,
+						translateY: 150,
+						unit: "pt"
+					}
 				},
 				url: imageURLs[i]
 			}
@@ -2353,7 +2427,9 @@ async function writeImageSlideMappingInfoBulk(elems) {
 	for(var e=0;e<elems.length;e++) {
 		var elem = elems[e];
 
-		updates['/users/' + userName + '/slideInfo/' + elem.slideID + '/' + elem.objID + '/image'] = {
+		console.log(elem);
+
+		updates['/users/' + userName + '/slideInfo/' + elem.slideID + '/' + elem.objID + '/0'] = {
 			mappingID: elem.mappingID
 		}
 
@@ -2361,7 +2437,7 @@ async function writeImageSlideMappingInfoBulk(elems) {
 		if(!(elem.slideID in slideDB)) slideDB[elem.slideID] = {};
 		if(!(elem.objID in slideDB[elem.slideID])) slideDB[elem.slideID][elem.objID] = [];
 
-		updates['/users/' + userName + '/slideInfo/' + elem.sldieID+ '/' + elem.objID + '/image'] = {
+		updates['/users/' + userName + '/slideInfo/' + elem.sldieID+ '/' + elem.objID + '/0'] = {
 			mappingID: elem.mappingID 
 		}
 
@@ -2675,10 +2751,10 @@ predefinedLayout: 'TITLE_ONLY'
 		    writeSlideMappingInfo(slideID, figureObjID, 0, mappingID);
 		    return true;
         });
-	}
+	}/* // it can be image slide! not a bug
 	else if(slideID != null && bodyObjectID == null) { // Let's consider it as bug
 		alert("BUG: cannot find objectID")
-	}
+	}*/ 
 	else {
 		return addFigure(slideID, imageURL, mappingID);
 	}
@@ -2774,7 +2850,28 @@ async function automaticallyPutText(textInfo, mappingID) {
 }
 
 function addFigure(pageID, imageURL, mappingID) {
+	var figureObjID = makeid(10);
+	var requests = [];
 
+	requests.push({
+		createImage: {
+			objectId: figureObjID,
+			elementProperties: {
+				pageObjectId: pageID 
+			},
+			url: imageURL
+		}
+	});
+
+    gapi.client.slides.presentations.batchUpdate({
+      presentationId: PRESENTATION_ID,
+      requests: requests
+    }).then((createSlideResponse) => {
+        // successfully pasted the text
+
+	    writeSlideMappingInfo(pageID, figureObjID, 0, mappingID);
+	    return true;
+    });
 }
 
 function appendText(pageID, objId, myText, mappingID) {

@@ -147,19 +147,32 @@ function pageUpdated(mutationsList) {
 
 		$("#editor-" + getPageID()).children("g:not([id$='-bg'])").map((key, value) => { 
 			var paragraphs = DOMtoList($(value).find("[id*='-paragraph-']"));
-
+			var res = $(value).find("image");
 			var paragraphInfo = {};
 
-			paragraphs.forEach(function(elem) {
-				paragraphInfo[elem] = document.getElementById(elem).getBoundingClientRect();
-			});
+			if($(res).length <= 0) {  // text
 
-			retValue.push({
-				objectID: $(value).attr("id"),
-				rect: document.getElementById($(value).attr("id")).getBoundingClientRect(),
-				paragraph: paragraphInfo
-				// rect: $(value).getBoundingClientRect()
-			});
+				paragraphs.forEach(function(elem) {
+					paragraphInfo[elem] = document.getElementById(elem).getBoundingClientRect();
+				});
+
+				retValue.push({
+					objectID: $(value).attr("id"),
+					rect: document.getElementById($(value).attr("id")).getBoundingClientRect(),
+					paragraph: paragraphInfo
+					// rect: $(value).getBoundingClientRect()
+				});
+			} 
+			else { // image
+				paragraphInfo[0] = $(res)[0].getBoundingClientRect();
+
+				retValue.push({
+					objectID: $(value).attr("id"),
+					rect: document.getElementById($(value).attr("id")).getBoundingClientRect(),
+					paragraph: paragraphInfo
+					// rect: $(value).getBoundingClientRect()
+				});
+			}
 		});
 
 		issueEvent("extension_pageUpdated", {
