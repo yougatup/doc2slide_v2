@@ -38,6 +38,16 @@ async function analyzeSyntaxOfText(text) {
   // const text = 'Your text to analyze, e.g. Hello, world!';
 
   // Prepares a document, representing the provided text
+
+
+
+
+
+
+
+
+//////////////////
+
   const document = {
     content: text,
     type: 'PLAIN_TEXT',
@@ -45,6 +55,31 @@ async function analyzeSyntaxOfText(text) {
 
   // Need to specify an encodingType to receive word offsets
   const encodingType = 'UTF8';
+
+//////////////////
+
+
+	var retEntity = [];
+
+	// Detects entities in the document
+	const [result] = await client.analyzeEntities({document});
+	
+	const entities = result.entities;
+	
+	console.log('Entities:');
+	entities.forEach(entity => {
+		retEntity.push(entity.name);
+/*
+	  console.log(entity.name);
+	  console.log(` - Type: ${entity.type}, Salience: ${entity.salience}`);
+	  if (entity.metadata && entity.metadata.wikipedia_url) {
+	    console.log(` - Wikipedia URL: ${entity.metadata.wikipedia_url}`);
+	  }
+*/
+	});
+	
+	//////////////
+
 
   // Detects the sentiment of the document
   const [syntax] = await client.analyzeSyntax({document, encodingType});
@@ -68,9 +103,14 @@ parent: `${part.dependencyEdge.headTokenIndex}`
 			});
   });
 
+//////////
+
   console.log(retValue);
 
-  return retValue;
+  return {
+		entity: retEntity,
+		mySyntax: retValue
+	}
   // [END language_syntax_text]
 }
 
@@ -92,5 +132,5 @@ app.get('/', function(req, res){
 		});
 		});
 
-app.listen(3000);
+app.listen(3333);
 
