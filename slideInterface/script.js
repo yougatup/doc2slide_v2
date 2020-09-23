@@ -5,6 +5,7 @@ var curHighlightInfo = {
 	startWordIndex: -1,
 	endWordIndex: -1
 };
+var generalMouseDown = 0;
 var slideDB = {};
 var curSlideObjects = null;
 var curSlideState = "WAIT";
@@ -14,6 +15,58 @@ var slideObjectMousedownObject = null;
 var slideObjectMouseupObject = null;
 var popoverElement = null;
 var curSlidePage = null; 
+var structureHighlightDB = {};
+
+var MAX_NUMBER_OF_BULLETS = 3;
+var MAX_NUMBER_OF_SLIDES = 10;
+
+function presentationObjectiveRowElement(sectionKey, index) {
+	return "<tr>" + 
+		"<td class='sectionLevelCoverageRowTitle' sectionKey='" + sectionKey + "' rowIndex='" + index + "'> </td>" + 
+
+		"<td class='sectionLevelCoverageRowHighlight' sectionKey='" + sectionKey + "' rowIndex='" + index + "'> </td>" + 
+
+		"<td class='sectionLevelCoverageRowBoxes' sectionKey='" + sectionKey + "' rowIndex='" + index + "'>" + 
+		"<table class='.coverageTable' style='height: 30px; border-collapse: collapse; border-spacing: 0;' sectionKey='" + sectionKey + "' rowIndex='" + index + "'>" + 
+		"<tr>" + 
+		(function(key) {
+			var returnValue = '';
+
+			for(var i=0;i<MAX_NUMBER_OF_SLIDES;i++) {
+				returnValue += "<td class='coverageTableCell' sectionKey='" + key + "' index='" + i + "'> </td>";
+			}
+
+			return returnValue;
+		})(sectionKey) + 
+		"<tr>"
+	    "<input class='sectionLevelCoverageInput' sectionKey='" + sectionKey + "' rowIndex='" + index + "' />" + 
+		"</td> </tr>";
+
+
+}
+
+function documentStructureRowElement(id) {
+	return "<div id=" + id + " class='documentStructureBodyRow'> " +
+			"<div class='documentStructureBodyRowArrowBox'> " +
+			"<i class='arrow left'></i>" + 
+			"<i class='arrow right'></i>" + 
+			"</div>" + 
+			"<div class='documentStructureBodyRowTextBox'> yeyeye" +
+			"</div>" + 
+			"<div class='documentStructureBodyRowIconBox'> " +
+			"<button class='documentStructureBodyRowEditIcon'> </button>" + 
+			"<button class='documentStructureBodyRowDeleteIcon'> </button>" + 
+			"<button class='documentStructureBodyRowConfirmIcon'> OK </button>" + 
+			"</div>" + 
+			"</div>";
+}
+
+
+function appendDocumentStructureRow() {
+	$("#documentStructureAppendDiv").append(
+		"<div class='documentStructureBodyRow appendRow'> Add a row </div>"
+	);
+}
 
 function prepare() {
     initializeGAPI();
@@ -58,6 +111,7 @@ function initializeGAPI(callback) {
 			}).then(function () {
    				 // Listen for sign-in state changes.
    				 gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+				 // console.log(gapi.auth2.getAuthInstance().currentUser.get().Ot.yu);
 
    				 // Handle the initial sign-in state.
    				 updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
@@ -73,11 +127,12 @@ function initializeGAPI(callback) {
 	function updateSigninStatus(isSignedIn) {
 	    if (isSignedIn) {
 	        authorizeButton.style.display = 'none';
+	        // signoutButton.style.display = 'block';
 
 			callback();
 	    } else {
 	        authorizeButton.style.display = 'block';
-	        // signoutButton.style.display = 'none';
+	        signoutButton.style.display = 'none';
 	        console.log("yay?");
             $("#loadingPlane").hide();
 	    }
@@ -214,13 +269,38 @@ function highlightPage(pageNumber) {
 	}
 }
 
-async function writeHighlight(pageNumber, startWordIndex, endWordIndex) {
+async function getRepresentativeImageURL(queryString) {
+	String.prototype.replaceAll = function(search, replacement) {
+	   var target = this;
+	   return target.replace(new RegExp(search, 'g'), replacement);
+	};
+
+    queryString = queryString.replaceAll(' ', '+');
+
+	console.log(queryString);
+
+    var haha = await $.get({
+            url:"https://www.googleapis.com/customsearch/v1/siterestrict?fileType=jpg,png,jpeg&key=AIzaSyA160fCjV5GS8HhQtYj2R29huH9lnXURKw&cx=000180283903413636684:oxqpr8tki8w&q="+queryString+"&searchType=image",
+            // success: registerImageOnHighlight
+            });
+
+	console.log(haha);
+
+	return haha.items[0].link;
+}
+
+async function writeHighlight(pageNumber, startWordIndex, endWordIndex, text) {
 	var newKey = firebase.database().ref('users/' + userName + '/mapping/' + pageNumber + '/').push().key;
 
+	var rURL = await getRepresentativeImageURL(text);
+
 	var updates = {};
+
 	updates['/users/' + userName + '/mapping/' + pageNumber + '/' + newKey] = {
 		startWordIndex: startWordIndex,
-		endWordIndex: endWordIndex
+		endWordIndex: endWordIndex,
+		text: text,
+		imageURL: rURL
 	};
 
 	await firebase.database().ref().update(updates);
@@ -230,14 +310,19 @@ async function writeHighlight(pageNumber, startWordIndex, endWordIndex) {
 
 	highlightDB.mapping[pageNumber][newKey] = {
 		startWordIndex: startWordIndex,
-		endWordIndex: endWordIndex
+		endWordIndex: endWordIndex,
+		text: text,
+		imageURL: rURL
 	};
 
-	return newKey;
+	return {
+		key: newKey,
+	    imageURL: rURL
+	}
 }
 
 async function registerHighlight(highlightInfo) {
-	return new Promise(function (resolve, reject) { var ret = writeHighlight(highlightInfo.pageNumber, highlightInfo.startWordIndex, highlightInfo.endWordIndex);
+	return new Promise(function (resolve, reject) { var ret = writeHighlight(highlightInfo.pageNumber, highlightInfo.startWordIndex, highlightInfo.endWordIndex, highlightInfo.text);
 		resolve(ret);
 	});
 }
@@ -247,6 +332,17 @@ async function clearDB() {
 
 	updates['/users/' + userName + '/slideInfo/'] = {}
 	updates['/users/' + userName + '/mapping/'] = {}
+
+
+	for(var key in structureHighlightDB) {
+		if("slideID" in structureHighlightDB[key]) delete structureHighlightDB[key].slideID;
+		if("titleObjectID" in structureHighlightDB[key]) delete structureHighlightDB[key].titleObjectID;
+		if("bodyObjectID" in structureHighlightDB[key]) delete structureHighlightDB[key].bodyObjectID;
+	}
+
+	console.log(structureHighlightDB);
+
+	updates['/users/' + userName + '/structureHighlightInfo/'] = structureHighlightDB;
 
 	await firebase.database().ref().update(updates);
 }
@@ -280,7 +376,7 @@ async function initializeSlide() {
 		   }
 		 }
 	  });
-
+/*
 	  requests.push({
 		 createSlide: {
 		 	insertionIndex: '1',
@@ -288,17 +384,13 @@ async function initializeSlide() {
 		     	predefinedLayout: 'TITLE_AND_BODY'
 		 	}
 	 	 }
-	  });
+	  }); */
 
 	  gapi.client.slides.presentations.batchUpdate({
 	     presentationId: PRESENTATION_ID,
 	     requests: requests
 	  }).then((createSlideResponse) => {
 	     // successfully pasted the text
-	
-	     console.log("succeed!");
-	     console.log(createSlideResponse);
-
 		 return true;
 	  });
 	}).catch(function (err) {
@@ -308,8 +400,23 @@ async function initializeSlide() {
 
 function initializeDB() {
 	readData('/users/' + userName).then(result => {
+		console.log(result);
+
+		console.log(result.parameters.heavy);
+
+		if("parameters" in result && "heavy" in result.parameters) {
+			if(result.parameters.heavy == "text") $("#textHeavyBtn").prop("checked", "true");
+			else $("#imageHeavyBtn").prop("checked", "true");
+		}
+		else $("#textHeavyBtn").prop("checked", "true");
+
 		if(!("parameters" in result && "initialize" in result.parameters && !result.parameters.initialize)) {
 			$("#check2").prop("checked", "true");
+
+			if("structureHighlightInfo" in result) 
+				structureHighlightDB = result.structureHighlightInfo;
+			else
+				structureHighlightDB = {};
 
 			clearDB().then( () => {
 				initializeSlide().then( () => {
@@ -323,6 +430,7 @@ function initializeDB() {
 		}
 		else {
 			// $("#check2").prop("checked", "false");
+			// $("#textHeavyBtn").prop("checked", "true");
 			$("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
 
 			highlightDB = result;
@@ -332,18 +440,18 @@ function initializeDB() {
 				highlightDB['mapping'] = {};
 			}
 
-			readData('/users/' + userName + '/slideInfo/').then(r2 => {
-				slideDB = r2;
+			slideDB = result.slideInfo;
 
-				setTimeout(function() {
-					issueEvent("root_openPDF", null);
-				}, 1000);
-			}).catch(function(e) {
-				console.log(e);
-			});
+			if("structureHighlightInfo" in result) 
+				structureHighlightDB = result.structureHighlightInfo;
+			else
+				structureHighlightDB = {};
+
+			setTimeout(function() {
+				issueEvent("root_openPDF", null);
+			}, 1000);
+
 		}
-
-
 	}).catch(function(error) {
 		console.log(error);
 	});
@@ -512,20 +620,20 @@ function visualizeSlideObjects() {
 		filmstripIndex++;
 	}
 
+	console.log(curSlideObjects);
+
 	for(var i=0;i<curSlideObjects.objects.length;i++) {
 		var bottom = -1;
 
-		for(k in curSlideObjects.objects[i].paragraph) {
+		console.log(curSlideObjects.objects[i]);
+
+		if("0" in curSlideObjects.objects[i].paragraph) { // image
 			var objectID = curSlideObjects.objects[i].objectID.substr(7);
-			var paragraphID = parseInt(k.substr(7).split('-')[2]);
-			var rectInfo = curSlideObjects.objects[i].paragraph[k];
+			var rectInfo = curSlideObjects.objects[i].paragraph[0];
 			var mappedFlag = false;
 
-			if(curSlideObjects.pageID in slideDB && 
-			   objectID in slideDB[curSlideObjects.pageID] && 
-			   paragraphID in slideDB[curSlideObjects.pageID][objectID] && 
-			   slideDB[curSlideObjects.pageID][objectID][paragraphID].mappingID != "null") {
-				  mappedFlag = true;
+			if(slideDB[curSlideObjects.pageID][objectID][0].mappingID != "null") {
+				mappedFlag = true;
 			}
 
 			$("#slidePlaneCanvas").append(
@@ -533,7 +641,7 @@ function visualizeSlideObjects() {
 				" objID='" + objectID + "' paragraphID='" + k + "'" + 
 				" paragraphIndex=" + k.split("-")[3] + "></div>" + 
 				(mappedFlag ? 
-				 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator mapped' objID='" + objectID + "' paragraphID=" + k + " mappingID=" + slideDB[curSlideObjects.pageID][objectID][paragraphID].mappingID + "></div>" 
+				 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator mapped' objID='" + objectID + "' paragraphID=" + k + " mappingID=" + slideDB[curSlideObjects.pageID][objectID][0].mappingID + "></div>" 
 				 : 
 				 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator' objID='" + objectID + "' paragraphID=" + k + "></div>")
 
@@ -555,104 +663,65 @@ function visualizeSlideObjects() {
 
 			tempCnt = tempCnt + 1;
 		}
+		else {
+			for(k in curSlideObjects.objects[i].paragraph) {
+				var objectID = curSlideObjects.objects[i].objectID.substr(7);
+				var paragraphID = parseInt(k.substr(7).split('-')[2]);
+				var rectInfo = curSlideObjects.objects[i].paragraph[k];
+				var mappedFlag = false;
 
-		$("#slidePlaneCanvas").append(
-			"<div id='objectIndicator" + tempCnt + "' class='objectIndicator endOfParagraph' pageID='" + curSlideObjects.pageID + "'" + 
-			" objID='" + objectID + "'" + 
-			" paragraphIndex=" + Object.keys(curSlideObjects.objects[i].paragraph).length + "></div>"
-		);
+				if(curSlideObjects.pageID in slideDB && 
+				   objectID in slideDB[curSlideObjects.pageID] && 
+				   paragraphID in slideDB[curSlideObjects.pageID][objectID] && 
+				   slideDB[curSlideObjects.pageID][objectID][paragraphID].mappingID != "null") {
+					  mappedFlag = true;
+				}
 
-		setFocusBox("objectIndicator" + tempCnt, {
-			top: bottom + 40 + 20,
-			left: curSlideObjects.objects[i].rect.left,
-			width: curSlideObjects.objects[i].rect.width,
-			height: 50 
-		});
+				$("#slidePlaneCanvas").append(
+					"<div id='objectIndicator" + tempCnt + "' class='objectIndicator' pageID='" + curSlideObjects.pageID + "'" + 
+					" objID='" + objectID + "' paragraphID='" + k + "'" + 
+					" paragraphIndex=" + k.split("-")[3] + "></div>" + 
+					(mappedFlag ? 
+					 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator mapped' objID='" + objectID + "' paragraphID=" + k + " mappingID=" + slideDB[curSlideObjects.pageID][objectID][paragraphID].mappingID + "></div>" 
+					 : 
+					 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator' objID='" + objectID + "' paragraphID=" + k + "></div>")
 
-		tempCnt = tempCnt + 1;
+				);
+
+				setFocusBox("objectIndicator" + tempCnt, {
+					top: rectInfo.top + 40,
+					left: curSlideObjects.objects[i].rect.left,
+					width: curSlideObjects.objects[i].rect.width,
+					height: rectInfo.height
+				});
+
+				bottom = rectInfo.top + rectInfo.height;
+
+				setMappingIndicator("mappingIndicator" + tempCnt, {
+					top: rectInfo.top + 40,
+					left: curSlideObjects.objects[i].rect.left - 15,
+				});
+
+				tempCnt = tempCnt + 1;
+			}
+
+			$("#slidePlaneCanvas").append(
+				"<div id='objectIndicator" + tempCnt + "' class='objectIndicator endOfParagraph' pageID='" + curSlideObjects.pageID + "'" + 
+				" objID='" + objectID + "'" + 
+				" paragraphIndex=" + Object.keys(curSlideObjects.objects[i].paragraph).length + "></div>"
+			);
+
+			setFocusBox("objectIndicator" + tempCnt, {
+				top: bottom + 40 + 20,
+				left: curSlideObjects.objects[i].rect.left,
+				width: curSlideObjects.objects[i].rect.width,
+				height: 50 
+			});
+
+			tempCnt = tempCnt + 1;
+		}
 	}
 
-}
-
-function listSlides(callback) {
-    gapi.client.slides.presentations.get({
-	presentationId: PRESENTATION_ID
-    }).then(function(response) {
-		var presentation = response.result;
-		var length = presentation.slides.length;
-	
-		// slideDB = {};
-	
-		for (i = 0; i < length; i++) {
-		    var slide = presentation.slides[i];
-	
-		    var slideID = slide.objectId;
-		    var slideObjId = {};
-	
-		    function compare(a, b) {
-				if(a.objectId > b.objectId) return true;
-				else return false;
-		    }
-	
-		    slide.pageElements.sort(compare);
-	
-		    for(var j=0;j<slide.pageElements.length;j++) {
-				var slideItem = slide.pageElements[j];
-	
-				var slideObjParagraphId = [];
-	
-				if(slideItem.shape.text != null) {
-				    var nestingLevel = 0;
-				    var isFirstTextRun = true;
-				    var paragraphId = -1;
-	
-				    for(var k=0;k<slideItem.shape.text.textElements.length;k++) {
-					var textElem = slideItem.shape.text.textElements[k];
-	
-					if(textElem.paragraphMarker != null) {
-					    paragraphId = paragraphId + 1;
-					}
-	
-					var paragraphObjId = "editor-" + slideItem.objectId + "-paragraph-" + paragraphId;
-					var domId = '';
-	
-					if(textElem.paragraphMarker != null && textElem.paragraphMarker.bullet != null) {
-					    if(textElem.paragraphMarker.bullet.nestingLevel != null) {
-						nestingLevel = parseInt(textElem.paragraphMarker.bullet.nestingLevel);
-					    }
-					    else nestingLevel = 0;
-					}
-					else if(textElem.textRun != null){
-					    var level = (j == 0? nestingLevel : nestingLevel + 1);
-	
-					    // domId = appendOutlineLine(level, textElem.textRun.content, paragraphObjId);
-	
-					    isFirstTextRun = false;
-	
-					    slideObjParagraphId.push(paragraphObjId);
-					}
-				    }
-				}
-	
-				slideObjId[slideItem.objectId] = slideObjParagraphId;
-			}
-	
-			// slideDB[slideID] = slideObjId;
-		}
-	
-		// console.log(slideDB);
-
-		if(callback) {
-		    callback();
-		}
-	
-    }, function(response) {
-		console.log(response);
-		//appendPre('Error: ' + response.result.error.message);
-   	}).catch(function(er) {
-		console.log("WHAT?");
-		console.log(er);
-    });
 }
 
 async function putText(p, mappingID) {
@@ -1118,18 +1187,482 @@ function hideLoadingSlidePlane() {
 	$("#slidePlaneCanvas").css("background-color", "transparent");
 }
 
+function writeStructureHighlight(info) {
+	var updates = {};
+
+	updates['/users/' + userName + '/structureHighlightInfo/' + info.rowID] = {
+		pageNumber: info.pdfPageNumber,
+		startWordIndex: info.pdfStartWordIndex,
+		endWordIndex: info.pdfEndWordIndex,
+		text: info.text
+	};
+
+	structureHighlightDB[info.rowID] = {
+		pageNumber: info.pdfPageNumber,
+		startWordIndex: info.pdfStartWordIndex,
+		endWordIndex: info.pdfEndWordIndex,
+		text: info.text
+	};
+
+	firebase.database().ref().update(updates);
+}
+
+function updateStructure() {
+	$(".documentStructureBodyRow").each(function(idx, elem) {
+		if(!$(elem).hasClass("appendRow") && !($(elem).attr("id") in structureHighlightDB)) {
+			$(elem).remove();
+		}
+	});
+
+	for(var key in structureHighlightDB) {
+		var rowObject = $("#" + key);
+
+		if($(rowObject).length <= 0) {
+			$("#documentStructureElements").append(
+				documentStructureRowElement(key)
+			);
+
+			rowObject = $("#" + key);
+		}
+
+		$(rowObject).children(".documentStructureBodyRowTextBox").html(structureHighlightDB[key].text);
+
+		$(rowObject).attr("mappingPageNumber", structureHighlightDB[key].pageNumber);
+		$(rowObject).attr("mappingStartWordIndex", structureHighlightDB[key].startWordIndex);
+		$(rowObject).attr("mappingEndWordIndex", structureHighlightDB[key].endWordIndex);
+		$(rowObject).attr("level", structureHighlightDB[key].level);
+
+		var level = $(rowObject).attr("level");
+
+		if (typeof level !== typeof undefined && level !== false) { // attr is there.
+			$(rowObject).children(".documentStructureBodyRowTextBox").css("padding-left", ((level-1) * 20 + 10) + "px");
+		}
+	}
+}
+
+function organizeHighlightOnSections() {
+	var info = {};
+
+	for(var pageNumber in highlightDB.mapping) {
+		for(var key in highlightDB.mapping[pageNumber]) {
+			var sectionKey = getSectionKey(pageNumber, highlightDB.mapping[pageNumber][key].startWordIndex, highlightDB.mapping[pageNumber][key].endWordIndex);
+
+			if(!(sectionKey in info)) info[sectionKey] = {};
+			if(!(key in info[sectionKey])) info[sectionKey][key] = {};
+
+			info[sectionKey][key] = 
+			{
+				pageNumber: pageNumber,
+				startWordIndex: highlightDB.mapping[pageNumber][key].startWordIndex,
+				endWordIndex: highlightDB.mapping[pageNumber][key].endWordIndex,
+				sectionKey: sectionKey,
+				text: highlightDB.mapping[pageNumber][key].text,
+				mappingKey: key,
+				imageURL: highlightDB.mapping[pageNumber][key].imageURL,
+			}
+		}
+	}
+
+	return info;
+}
+
+function updatePresentationObjectiveStructure() {
+	$("#sectionLevelCoverageTable").html('<tr> <th> Section title </th> <th> highlight </th> <th> # slides </th> </tr>');
+	var index = 0;
+
+	var info = organizeHighlightOnSections();
+
+	for(var key in structureHighlightDB) {
+		$("#sectionLevelCoverageTable").append(
+			presentationObjectiveRowElement(key, index)
+		);
+
+		var numHighlight = parseInt((key in info ? Object.keys(info[key]).length : 0));
+
+		$(".sectionLevelCoverageRowTitle[rowIndex=" + index + "]").html(structureHighlightDB[key].text);
+		$(".sectionLevelCoverageRowHighlight[rowIndex=" + index + "]").html(numHighlight);
+
+		var cur = $(".coverageTableCell[sectionKey='" + key + "'][index='0']");
+
+		for(var i=0;i<MAX_NUMBER_OF_SLIDES;i++) {
+			if(i >= numHighlight) $(cur).addClass("disabled");
+
+			cur = $(cur).next();
+		}
+
+		index++;
+	}
+}
+
+function appearDocumentStructureBtn() {
+	updateStructure();
+
+	$("#documentStructurePlane").show();
+}
+
+function disappearDocumentStructureBtn() {
+	$("#documentStructurePlane").hide();
+}
+
+function disappearPresentationObjective() {
+	$("#presentationObjectivePlane").hide();
+}
+
+function appearPresentationObjective() {
+	updatePresentationObjectiveStructure();
+
+	$("#presentationObjectivePlane").show();
+}
+function setCurLevel(rowObjId, level) {
+	console.log(rowObjId, level);
+
+	var updates = {};
+
+	structureHighlightDB[rowObjId].level = level;
+	updates['/users/' + userName + '/structureHighlightInfo/' + rowObjId + '/level/'] = level;
+
+	$("#" + rowObjId).attr("level", level);
+
+	firebase.database().ref().update(updates);
+}
+
+function chooseElements(info, sectionKey, number) {
+	var retValue = [];
+
+	if(number <= 0) return [];
+
+	var keys = Object.keys(info[sectionKey]);
+	var n = keys.length;
+	
+	if(number >= n) {
+		for(var i=0;i<n;i++) {
+			retValue.push(info[sectionKey][keys[i]]);
+		}
+	}
+	else {
+		var optimal_a = parseInt((n-number)/2), optimal_b = 0;
+		var optimal_diff = Math.abs(optimal_a - optimal_b);
+	
+		for(var a=0;a<n/2;a++) {
+			if((n-number-(2*a) > 0)) {
+				var b = parseInt((n-number-(2*a)) / (number - 1));
+	
+				if(Math.abs(a-b) < optimal_diff || Math.abs(a-b) == optimal_diff && b > optimal_b) {
+					optimal_diff = Math.abs(a-b);
+	
+					optimal_a = a;
+					optimal_b = b;
+				}
+			}
+		}
+	
+		console.log(optimal_a, optimal_b);
+	
+		var cur = optimal_a;
+	
+		for(var i=0;i<number;i++) {
+			retValue.push(info[sectionKey][keys[cur]]);
+	
+			cur += (optimal_b+1);
+		}
+	}
+
+	return retValue;
+}
+
+function automaticallyUpdateSlides() {
+	var info = {};
+	var slideInfo = {};
+	var heavySwitch = '';
+	
+	info = organizeHighlightOnSections();
+	
+	for(var key in structureHighlightDB) {
+		var obj = $(".sectionLevelCoverageInput[sectionKey=" + key + "]");
+		var count = $(".coverageTableCell.selected[sectionKey='" + key + "']").length;
+
+		if(count != '') 
+			slideInfo[key] = chooseElements(info, key, parseInt(count)*MAX_NUMBER_OF_BULLETS);
+	}
+
+	if($("#textHeavyBtn").prop("checked")) heavySwitch = 'text';
+	else heavySwitch = 'image';
+	
+	createSlidesBasedOnSelection(slideInfo, heavySwitch);
+}
+
+function getListOnKey(li, key) {
+	var retValue = [];
+
+	for(var i=0;i<li.length;i++) {
+		retValue.push(li[i][key]);
+	}
+
+	return retValue;
+}
+
+function createTextHeavySlides(info) {
+	var requests = [];
+	var slideInfo = []; 
+	var slideIndex = 1;
+	var updateInfo = [];
+
+	for(var sectionKey in info) {
+		var keys = Object.keys(info[sectionKey]);
+
+		// var numSlides = parseInt((keys.length % MAX_NUMBER_OF_BULLETS == 0) ? keys.length / MAX_NUMBER_OF_BULLETS : (keys.length / MAX_NUMBER_OF_BULLETS) + 1);
+		var numSlides = parseInt($(".coverageTableCell.selected[sectionKey='" + sectionKey + "']").length);
+		var numHighlightsPerSlide = parseInt((Object.keys(info[sectionKey]).length) / numSlides);
+
+		var borderline = ((Object.keys(info[sectionKey]).length) % numSlides == 0 ? 0 : (Object.keys(info[sectionKey]).length) - numHighlightsPerSlide * numSlides);
+		var cursor = 0;
+
+		for(var j=0;j<numSlides;j++) {
+			var numBullets = numHighlightsPerSlide;
+			var highlightInfo = [];
+
+			if(j < borderline) numBullets++;
+
+			for(var k=0;k<numBullets;k++) {
+				highlightInfo.push(info[sectionKey][keys[cursor]]);
+				cursor++;
+			}
+
+			var elem = {
+				slideID: makeid(10),
+				objIDs: [makeid(10), makeid(10)],
+				highlightInfo: highlightInfo
+			};
+
+			for(var k=0;k<numBullets;k++) {
+				updateInfo.push({
+					slideID: elem.slideID,
+					objID: elem.objIDs[1],
+					paragraphIndex: k,
+					mappingID: elem.highlightInfo[k].mappingKey
+				});
+			}
+
+			slideInfo.push(elem);
+
+			requests = requests.concat(genRequest(elem.slideID, slideIndex, "TITLE_AND_BODY", elem.objIDs, [structureHighlightDB[sectionKey].text].concat(getListOnKey(elem.highlightInfo, "text"))));
+
+			slideIndex++;
+		}
+	}
+
+	writeSlideMappingInfoBulk(updateInfo).then( () => {
+		initializeSlide().then( () => {
+   			gapi.client.slides.presentations.batchUpdate({
+   			  presentationId: PRESENTATION_ID,
+   			  requests: requests
+   			}).then((createSlideResponse) => {
+				//console.log(createSlideResponse);
+   			});
+		});
+	});
+}
+
+function createImageHeavySlides(info) {
+	var requests = [];
+	var slideInfo = []; 
+	var slideIndex = 1;
+	var updateInfo = [];
+
+	for(var sectionKey in info) {
+		var keys = Object.keys(info[sectionKey]);
+
+		// var numSlides = parseInt((keys.length % MAX_NUMBER_OF_BULLETS == 0) ? keys.length / MAX_NUMBER_OF_BULLETS : (keys.length / MAX_NUMBER_OF_BULLETS) + 1);
+		var numSlides = parseInt($(".coverageTableCell.selected[sectionKey='" + sectionKey + "']").length);
+		var numHighlightsPerSlide = parseInt((Object.keys(info[sectionKey]).length) / numSlides);
+
+		var borderline = ((Object.keys(info[sectionKey]).length) % numSlides == 0 ? 0 : (Object.keys(info[sectionKey]).length) - numHighlightsPerSlide * numSlides);
+		var cursor = 0;
+
+		for(var j=0;j<numSlides;j++) {
+			var numBullets = numHighlightsPerSlide;
+			var highlightInfo = [];
+
+			if(j < borderline) numBullets++;
+
+			for(var k=0;k<numBullets;k++) {
+				highlightInfo.push(info[sectionKey][keys[cursor]]);
+				cursor++;
+			}
+
+			var elem = {
+				slideID: makeid(10),
+				objIDs: [makeid(10)],
+				highlightInfo: highlightInfo
+			};
+
+			for(var k=0;k<numBullets;k++) {
+				var figObjID = makeid(10);
+
+				updateInfo.push({
+					slideID: elem.slideID,
+					objID: figObjID,
+					mappingID: elem.highlightInfo[k].mappingKey
+				});
+
+				elem.objIDs.push(figObjID);
+			}
+
+			slideInfo.push(elem);
+
+			requests = requests.concat(genImageSlideRequest(elem.slideID, slideIndex, "TITLE_ONLY", elem.objIDs, structureHighlightDB[sectionKey].text, getListOnKey(elem.highlightInfo, "imageURL")));
+
+			slideIndex++;
+		}
+	}
+
+	console.log(requests);
+
+	writeImageSlideMappingInfoBulk(updateInfo).then( () => {
+		initializeSlide().then( () => {
+   			gapi.client.slides.presentations.batchUpdate({
+   			  presentationId: PRESENTATION_ID,
+   			  requests: requests
+   			}).then((createSlideResponse) => {
+				//console.log(createSlideResponse);
+   			});
+		});
+	});
+}
+
+function createSlidesBasedOnSelection(info, heavySwitch) {
+	if(heavySwitch == 'text') createTextHeavySlides(info);
+	else createImageHeavySlides(info);
+}
+
+function genImageSlideRequest(slideID, slideIndex, slideType, objIDs, sectionTitleText, imageURLs) {
+	var requests = [];
+
+	console.log(objIDs);
+
+	requests.push({
+	   createSlide: {
+		objectId: slideID,
+	   	insertionIndex: slideIndex,
+	   	slideLayoutReference: {
+	       	predefinedLayout: slideType
+	   	},
+		placeholderIdMappings: [{
+			objectId: objIDs[0],
+			layoutPlaceholder: {
+				type: "TITLE",
+				index: 0
+			}
+		}
+		]
+	   }
+	});
+
+	requests.push({
+		insertText: {
+			objectId: objIDs[0],
+			text: sectionTitleText,
+			insertionIndex: 0
+		}
+	});
+
+	for(var i=0;i<imageURLs.length;i++) {
+		requests.push({
+			createImage: {
+				objectId: objIDs[i+1],
+				elementProperties: {
+					pageObjectId: slideID,
+					size: {
+						width: {
+							magnitude: 220,
+							unit: "pt"
+						},
+						height: {
+							magnitude: 220,
+							unit: "pt"
+						},
+					},
+					transform: {
+						scaleX: 1,
+						scaleY: 1,
+						translateX: 20 + i * 230,
+						translateY: 150,
+						unit: "pt"
+					}
+				},
+				url: imageURLs[i]
+			}
+		});
+	}
+
+	return requests;
+}
+function genRequest(slideID, slideIndex, slideType, objIDs, texts) {
+	var requests = [];
+
+	requests.push({
+	   createSlide: {
+		objectId: slideID,
+	   	insertionIndex: slideIndex,
+	   	slideLayoutReference: {
+	       	predefinedLayout: slideType
+	   	},
+		placeholderIdMappings: [{
+			objectId: objIDs[0],
+			layoutPlaceholder: {
+				type: "TITLE",
+				index: 0
+			}
+		},{
+			objectId: objIDs[1],
+			layoutPlaceholder: {
+				type: "BODY",
+				index: 0
+			}
+		}
+		]
+	   }
+	});
+	requests.push({
+		insertText: {
+			objectId: objIDs[0],
+			text: texts[0],
+			insertionIndex: 0
+		}
+	});
+	requests.push({
+		insertText: {
+			objectId: objIDs[1],
+			text: texts.slice(1).join('\n'),
+			insertionIndex: 0
+		}
+	});
+
+	return requests;
+}
+
 $(document).ready(function() {
         // $("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
 
+		appendDocumentStructureRow();
+
 		initializeGAPI(initializeDB);
 
-		setTimeout(function() { listSlides(); }, 2000);
+		window.scrollTo(0, 0);
 
 		$(document).on("input", "#resourceBoxShortTextSlider", function(e) {
 				var curValue = $(e.target).val();
 				var curText = $("#resourceBoxShortTextSlider").attr("text" + curValue);
 
 				$("#resourceBoxShortTextBox").attr("value", curText);
+		});
+
+		$(document).on("click", "#textHeavyBtn", function(e) {
+			firebase.database().ref("/users/" + userName + '/parameters/heavy').set("text");
+		});
+
+		$(document).on("click", "#imageHeavyBtn", function(e) {
+			firebase.database().ref("/users/" + userName + '/parameters/heavy').set("image");
 		});
 
 		$(document).on("click", ".removeSlideObject", function(e) {
@@ -1151,6 +1684,25 @@ $(document).ready(function() {
 			setSlideState("EDIT", {
 				paragraphID: $(popoverElement).attr("paragraphID")
 			});
+		});
+
+		$(document).on("click", ".appendRow", function(e) {
+			function pad(num, size) {
+			    var s = "000000000" + num;
+			    return s.substr(s.length-size);
+			}
+
+			var rows = $(".documentStructureBodyRow");
+			var lastRowNumber = -1;
+
+			if($(rows).length <= 1) lastRowNumber = 0;
+			else lastRowNumber = parseInt($($(rows)[$(rows).length-2]).attr("id").substr(20));
+
+			console.log(lastRowNumber);
+
+			$("#documentStructureElements").append(
+				documentStructureRowElement("documentStructureRow" + pad(lastRowNumber+1, 5))
+			);
 		});
 
 		$(document).on("extension_typing", function(e) {
@@ -1191,15 +1743,17 @@ $(document).ready(function() {
 				if(!(pageID in slideDB)) slideDB[pageID] = {}
 				if(!(objID in slideDB[pageID])) slideDB[pageID][objID] = {};
 
-				if(Object.keys(p.objects[i].paragraph).length != Object.keys(slideDB[pageID][objID]).length) {
-					if(Object.keys(p.objects[i].paragraph).length < Object.keys(slideDB[pageID][objID]).length) {
-						var start = Object.keys(p.objects[i].paragraph.length)+1;
-						var end = Object.keys(slideDB[pageID][objID]).length;
-								
-						for(var j=start;j<=end;j++) removeSlideMappingInfo(pageID, objID, j);
-					}
-					else {
-						writeSlideMappingInfo(pageID, objID, Object.keys(p.objects[i].paragraph).length-1, "null");
+				if("paragraph" in p.objects[i]) { // if text box
+					if(Object.keys(p.objects[i].paragraph).length != Object.keys(slideDB[pageID][objID]).length) {
+						if(Object.keys(p.objects[i].paragraph).length < Object.keys(slideDB[pageID][objID]).length) {
+							var start = parseInt(p.objects[i].paragraph.length)+1;
+							var end = Object.keys(slideDB[pageID][objID]).length;
+									
+							for(var j=start;j<=end;j++) removeSlideMappingInfo(pageID, objID, j);
+						}
+						else {
+							writeSlideMappingInfo(pageID, objID, Object.keys(p.objects[i].paragraph).length-1, "null");
+						}
 					}
 				}
 			}
@@ -1227,6 +1781,8 @@ $(document).ready(function() {
 		});
 
 		$(document).on("mousedown", function(e) {
+			generalMouseDown++;
+
 			if($("#resourceBoxDiv").is($(e.target)) || $("#resourceBoxDiv").find($(e.target)[0]).length > 0) return;
 
 			if(curSlideState == "WAIT") {
@@ -1308,6 +1864,8 @@ $(document).ready(function() {
 
 
 		$(document).on("mouseup", function(e) {
+			generalMouseDown = 0;
+
 			if($("#resourceBoxDiv").is($(e.target)) || $("#resourceBoxDiv").find($(e.target)[0]).length > 0) return;
 
 			slideObjectMousedown = 0;
@@ -1355,8 +1913,10 @@ $(document).ready(function() {
 					issueEvent("root_getOriginalText", {
 						mappingID: $("#mappingIndicator" + $(src).attr("id").substr(15)).attr("mappingID")
 					}, "pdfjs_getOriginalText").then( result => {
-							constructResourceBox(result.detail.text, []);
-							appearResourceBox();
+							if(result.detail.text != '') {
+								constructResourceBox(result.detail.text, []);
+								appearResourceBox();
+							}
 						});
 
 				}
@@ -1463,18 +2023,73 @@ $(document).ready(function() {
 		$(document).on("pdfjs_highlighted", function(e) {
 				var p = e.detail;
 
-				registerHighlight(p).then( mappingID => {
+				registerHighlight(p).then( mapping => {
 					showLoadingSlidePlane();
 
-					return putText(p, mappingID).then( () => {
+					return automaticallyPutContents(p, mapping).then( () => {
 						issueEvent("root_sendMappingIdentifier", {
-							mappingID: mappingID,
+							mappingID: mapping.key,
 							pageNumber: p.pageNumber,
 							startWordIndex: p.startWordIndex,
 							endWordIndex: p.endWordIndex
 						});
 					})
 				});
+		});
+
+
+
+		$(document).on("click", ".arrow.left", function(e) {
+			console.log($(e.target).parent().parent());
+
+			var rowObject = $(e.target).parent().parent();
+			var rowInfo = structureHighlightDB[$(rowObject).attr("id")];
+
+			var curLevel = ("level" in rowInfo ? rowInfo.level : 1);
+			setCurLevel($(rowObject).attr("id"), curLevel <= 1 ? 1 : curLevel-1);
+
+			updateStructure();
+		});
+		
+		$(document).on("click", ".arrow.right", function(e) {
+			console.log($(e.target).parent().parent());
+
+			var rowObject = $(e.target).parent().parent();
+			var prevRowObject = $(rowObject).prev();
+			var flag = true;
+
+			var rowInfo = structureHighlightDB[$(rowObject).attr("id")];
+			var curLevel = ("level" in rowInfo ? rowInfo.level : 1);
+
+			if($(prevRowObject).hasClass("documentStructureBodyRow")) {
+				var prevObjLevel = parseInt($(prevRowObject).attr("level"));
+
+				if(curLevel > prevObjLevel) flag = false;
+			}
+
+			if(flag) {
+				setCurLevel($(rowObject).attr("id"), curLevel+1);
+				updateStructure();
+			}
+		});
+	
+		$(document).on("click", "#documentStructureDisappearBtn", function(e) {
+				disappearDocumentStructureBtn();
+		});
+		$(document).on("click", "#documentStructureBtn", function(e) {
+				appearDocumentStructureBtn();
+		});
+
+		$(document).on("click", "#presentationObjectiveConfirmBtn", function(e) {
+				automaticallyUpdateSlides();
+		});
+
+		$(document).on("click", "#presentationObjectiveDisappearBtn", function(e) {
+				disappearPresentationObjective();
+		});
+
+		$(document).on("click", "#presentationObjectiveBtn", function(e) {
+				appearPresentationObjective();
 		});
 
 		$(document).on("pdfjs_checkPreprocessed", function(e) {
@@ -1501,6 +2116,80 @@ $(document).ready(function() {
 				});
 			});
 		});
+
+		$(document).on("click", ".documentStructureBodyRowTextBox", function(e) {
+			var rowObject = $(e.target).parent();
+
+			var attr = $(rowObject).attr('mappingPageNumber');
+
+			if (typeof attr !== typeof undefined && attr !== false) { // attr is there.
+				issueEvent("root_navigateToWord", {
+					pageNumber: $(rowObject).attr("mappingPageNumber"),
+					startWordIndex: $(rowObject).attr("mappingStartWordIndex"),
+					endWordIndex: $(rowObject).attr("mappingEndWordIndex"),
+				});
+			}
+		});
+
+		$(document).on("click", ".documentStructureBodyRowEditIcon", function(e) {
+				var rowObject = $(e.target).parent().parent();
+
+				issueEvent("root_getStructureHighlight", {
+					rowID: $(rowObject).attr("id")
+				}, "pdfjs_getStructureHighlight").then( result => {
+					console.log(result.detail);
+
+					writeStructureHighlight({
+						rowID: $(rowObject).attr("id"),
+						text: result.detail.text,
+						pdfPageNumber: result.detail.pageNumber,
+						pdfStartWordIndex: result.detail.startWordIndex,
+						pdfEndWordIndex: result.detail.endWordIndex
+					});
+
+					updateStructure();
+				});
+		});
+
+		function selectCells(target) {
+			var cur = $(target);
+
+			for(var i=0;i<100;i++) {
+				if($(cur).hasClass("coverageTableCell")) {
+					$(cur).addClass("selected");
+				}
+				else break;
+
+				cur = $(cur).prev();
+			}
+
+			cur = $(target).next();
+
+			for(var i=0;i<100;i++) {
+				if($(cur).hasClass("coverageTableCell")) {
+					$(cur).removeClass("selected");
+				}
+				else break;
+
+				cur = $(cur).next();
+			}
+		}
+
+		$(document).on("click", ".coverageTableCell", function(e) {
+			if(!$(e.target).hasClass("disabled")) {
+				if($(e.target).hasClass("selected") && $(e.target).attr("index") == '0' && $(".coverageTableCell.selected[sectionKey='" + $(e.target).attr("sectionKey") + "']").length == 1) 
+					$(e.target).removeClass("selected");
+				else 
+					selectCells($(e.target));
+			}
+		});
+
+		$(document).on("mouseenter", ".coverageTableCell", function(e) {
+			if(generalMouseDown > 0 && !$(e.target).hasClass("disabled")) {
+				selectCells($(e.target));
+			}
+		});
+
 		$(document).on("extension_focusObject", function(e) {
 
 			var p = e.detail;
@@ -1568,13 +2257,8 @@ $(document).ready(function() {
 
  		 $("#check2").change( function(){
 			var curState = $("#check2").prop("checked");
-			var updates = {};
 
-			updates['/users/' + userName + '/parameters/'] = {
-				initialize: curState
-			}
-
-			firebase.database().ref().update(updates);
+			firebase.database().ref("/users/" + userName + '/parameters/initialize').set(curState);
  		 });
 });
 
@@ -1625,15 +2309,55 @@ function getStrings(data) {
 	return text;
 }
 
+function appendImageQueryResult(response) {
+	console.log(response);
+	console.log(response.queries.request[0].searchTerms);
+
+	var figDOM = $(".resourceFigureResultBody[searchTerm='" + response.queries.request[0].searchTerms + "']");
+
+	console.log($(figDOM));
+
+    for(var i=0;i<Math.min(response.items.length, 5);i++) {
+        var item = response.items[i];
+
+		$(figDOM).append("<img id='imageQueryResultItem" + i + "' class='imageQueryResultItem' src='" + item.link + "' />");
+    }
+}
+
+function getImageQueryResult(queryString) {
+    queryString = queryString.replace(' ', '+');
+
+    curImageQueryString = queryString;
+
+    $.get({
+            url:"https://www.googleapis.com/customsearch/v1?key=AIzaSyA160fCjV5GS8HhQtYj2R29huH9lnXURKw&cx=000180283903413636684:oxqpr8tki8w&q="+queryString+"&searchType=image",
+            success: appendImageQueryResult
+            });
+}
+
+
+function setFiguresOnResourceBox(entities) {
+	for(var i=0;i<entities.length;i++) {
+		$("#resourceBoxFigureList").append(
+				"<div class='resourceBoxHeader' searchTerm='" + entities[i] + "' > Figures (" + entities[i] + ") </div>" + 
+				"<div class='resourceFigureResultBody' searchTerm='" + entities[i] + "' > </div>"
+				);
+
+		getImageQueryResult(entities[i]);
+	}
+}
 
 function constructResourceBox(originalText, listOfKeywords) {
  	xmlhttp = new XMLHttpRequest();
- 	xmlhttp.open("GET","http://127.0.0.1:3000/?text=" + originalText.replace(" ", "_"), true);
+ 	xmlhttp.open("GET","http://hyungyu.com:3333/?text=" + originalText.replace(" ", "_"), true);
  	xmlhttp.onreadystatechange=function(){
  	   if (xmlhttp.readyState==4 && xmlhttp.status==200){
  		      var data=JSON.parse(xmlhttp.responseText);
 
-		  	  var result = getStrings(data);
+			  console.log(data);
+
+		  	  var result = getStrings(data.mySyntax);
+			  var entities = data.entity;
 
 			  $("#resourceBoxShortTextSlider").attr("max", result.length-1);
 			  $("#resourceBoxShortTextSlider").attr("value", parseInt(result.length / 2));
@@ -1641,6 +2365,8 @@ function constructResourceBox(originalText, listOfKeywords) {
 			  for(var i=0;i<result.length;i++) $("#resourceBoxShortTextSlider").attr("text" + i, result[i]);
 
 			  $("#resourceBoxShortTextBox").attr("value", result[parseInt(result.length/2)]);
+
+			  setFiguresOnResourceBox(entities);
  		  }
  	   }
 
@@ -1656,6 +2382,10 @@ function constructResourceBox(originalText, listOfKeywords) {
 								'<input style="float: left" type="range" min="0" max="100" value="50" id="resourceBoxShortTextSlider"> </div>');
 	$("#resourceBoxDiv").append('<br>');
 	$("#resourceBoxDiv").append("<input id='resourceBoxShortTextBox' value='Loading...'> </input> <button id='shortTextSubmitBtn' class='resourceBoxSubmitBtn'> Submit </button>");
+	$("#resourceBoxDiv").append('<br>');
+	$("#resourceBoxDiv").append('<br>');
+
+	$("#resourceBoxDiv").append("<div id='resourceBoxFigureList'> </div>");
 }
 
 function appearResourceBox() {
@@ -1690,6 +2420,59 @@ function toggleSlidePlane() {
     else openNav();
 }
 
+
+async function writeImageSlideMappingInfoBulk(elems) {
+	var updates = {};
+
+	for(var e=0;e<elems.length;e++) {
+		var elem = elems[e];
+
+		console.log(elem);
+
+		updates['/users/' + userName + '/slideInfo/' + elem.slideID + '/' + elem.objID + '/0'] = {
+			mappingID: elem.mappingID
+		}
+
+		if(slideDB == null) slideDB = {};
+		if(!(elem.slideID in slideDB)) slideDB[elem.slideID] = {};
+		if(!(elem.objID in slideDB[elem.slideID])) slideDB[elem.slideID][elem.objID] = [];
+
+		updates['/users/' + userName + '/slideInfo/' + elem.sldieID+ '/' + elem.objID + '/0'] = {
+			mappingID: elem.mappingID 
+		}
+
+		slideDB[elem.slideID][elem.objID][0] = {
+			mappingID: elem.mappingID
+		}
+	}
+
+	await firebase.database().ref().update(updates);
+}
+
+async function writeSlideMappingInfoBulk(elems) {
+	var updates = {};
+
+	for(var e=0;e<elems.length;e++) {
+		var elem = elems[e];
+
+		updates['/users/' + userName + '/slideInfo/' + elem.slideID + '/' + elem.objID + '/' + elem.paragraphIndex] = {
+			mappingID: elem.mappingID
+		}
+
+		if(slideDB == null) slideDB = {};
+		if(!(elem.slideID in slideDB)) slideDB[elem.slideID] = {};
+		if(!(elem.objID in slideDB[elem.slideID])) slideDB[elem.slideID][elem.objID] = [];
+
+		updates['/users/' + userName + '/slideInfo/' + elem.sldieID+ '/' + elem.objID + '/' + elem.paragraphIndex] = {
+			mappingID: elem.mappingID 
+		}
+		slideDB[elem.slideID][elem.objID][elem.paragraphIndex] = {
+			mappingID: elem.mappingID
+		}
+	}
+
+	await firebase.database().ref().update(updates);
+}
 
 async function writeSlideMappingInfo(pageID, objID, paragraphIndex, mappingID) {
 	var updates = {};
@@ -1817,6 +2600,278 @@ function slideSwitchText(slidePageID, objID, paragraphIndex, text) {
 			}
 		}
 	});
+}
+
+function getSectionKey(pageNumber, startWordIndex, endWordIndex) {
+	var keys = Object.keys(structureHighlightDB);
+	var len = keys.length;
+
+	for(var i=len-1;i>=0;i--) {
+		var key = keys[i];
+		var info = structureHighlightDB[key];
+
+		if(parseInt(info.pageNumber) < parseInt(pageNumber) || 
+				(parseInt(info.pageNumber) == parseInt(pageNumber) &&
+		   		parseInt(info.startWordIndex) <= parseInt(startWordIndex))) {
+			return key;
+		}
+	}
+
+	return null;
+}
+
+function getSlideID(sectionKey) {
+	if("slideID" in structureHighlightDB[sectionKey]) {
+		return structureHighlightDB[sectionKey].slideID
+	}
+	else {
+		return null;
+	}
+}
+
+function getTitleAndBodyObjectID(sectionKey) {
+	if("slideID" in structureHighlightDB[sectionKey] == null) return {
+		bodyObjectID: null,
+		titleObjectID: null
+	};
+
+	if("bodyObjectID" in structureHighlightDB[sectionKey])  {
+		return {
+			bodyObjectID: structureHighlightDB[sectionKey].bodyObjectID,
+			titleObjectID: structureHighlightDB[sectionKey].titleObjectID
+		}
+	}
+	else return {
+		bodyObjectID: null,
+		titleObjectID: null
+	};
+}
+
+function getSlideIndexToPut(sectionKey) {
+	var keys = Object.keys(structureHighlightDB);
+	var cnt = 1;
+
+	for(var i=0;i<keys.length;i++) {
+		if(sectionKey == keys[i]) return cnt;
+
+		if("slideID" in structureHighlightDB[keys[i]])
+			cnt++;
+	}
+
+	return null;
+}
+
+function makeid(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
+async function automaticallyPutContents(textInfo, mapping) {
+	var heavy = $("#textHeavyBtn").prop("checked");
+
+	console.log(heavy);
+
+	if(heavy) {
+		return automaticallyPutText(textInfo, mapping.key);
+	}
+	else {
+		return automaticallyPutFigure(textInfo, mapping.key, mapping.imageURL);
+	}
+}
+
+async function automaticallyPutFigure(textInfo, mappingID, imageURL) {
+	/*
+	   textInfo.startWordIndex
+	   textInfo.endWordIndex
+	   textInfo.pageNumber
+	   textInfo.text
+	   textInfo.sectionKey
+	   */
+
+	var sectionKey = getSectionKey(textInfo.pageNumber, textInfo.startWordIndex, textInfo.endWordIndex);
+	var slideID = getSlideID(sectionKey);
+	var objIDs = getTitleAndBodyObjectID(sectionKey);
+
+	var titleObjectID = objIDs.titleObjectID;
+	var figureObjID = makeid(10);
+
+	var requests = [];
+
+	if(slideID == null) {
+		var index = getSlideIndexToPut(sectionKey);
+		slideID = makeid(10);
+		titleObjectID = makeid(10);
+
+	  	requests.push({
+	  	   createSlide: {
+			objectId: slideID,
+	  	   	insertionIndex: index,
+	  	   	slideLayoutReference: {
+predefinedLayout: 'TITLE_ONLY'
+	  	   	},
+			placeholderIdMappings: [{
+				objectId: titleObjectID,
+				layoutPlaceholder: {
+					type: "TITLE",
+					index: 0
+				}
+			}]
+	  	   }
+	  	});
+		requests.push({
+			createImage: {
+				objectId: figureObjID,
+				elementProperties: {
+					pageObjectId: slideID
+				},
+				url: imageURL
+			}
+		});
+
+		var updates = {};
+
+		structureHighlightDB[sectionKey].slideID = slideID;
+		structureHighlightDB[sectionKey].titleObjectID = titleObjectID;
+
+		updates['/users/' + userName + '/structureHighlightInfo/' + sectionKey] = structureHighlightDB[sectionKey];
+
+		firebase.database().ref().update(updates);
+
+        gapi.client.slides.presentations.batchUpdate({
+          presentationId: PRESENTATION_ID,
+          requests: requests
+        }).then((createSlideResponse) => {
+            // successfully pasted the text
+
+		    writeSlideMappingInfo(slideID, figureObjID, 0, mappingID);
+		    return true;
+        });
+	}/* // it can be image slide! not a bug
+	else if(slideID != null && bodyObjectID == null) { // Let's consider it as bug
+		alert("BUG: cannot find objectID")
+	}*/ 
+	else {
+		return addFigure(slideID, imageURL, mappingID);
+	}
+}
+async function automaticallyPutText(textInfo, mappingID) {
+	/*
+	   textInfo.startWordIndex
+	   textInfo.endWordIndex
+	   textInfo.pageNumber
+	   textInfo.text
+	   textInfo.sectionKey
+	   */
+
+	var sectionKey = getSectionKey(textInfo.pageNumber, textInfo.startWordIndex, textInfo.endWordIndex);
+	var slideID = getSlideID(sectionKey);
+	var objIDs = getTitleAndBodyObjectID(sectionKey);
+
+	var titleObjectID = objIDs.titleObjectID;
+	var bodyObjectID = objIDs.bodyObjectID;
+
+	var requests = [];
+
+	if(slideID == null) {
+		var index = getSlideIndexToPut(sectionKey);
+		slideID = makeid(10);
+		titleObjectID = makeid(10);
+		bodyObjectID = makeid(10);
+
+	  	requests.push({
+	  	   createSlide: {
+			objectId: slideID,
+	  	   	insertionIndex: index,
+	  	   	slideLayoutReference: {
+	  	       	predefinedLayout: 'TITLE_AND_BODY'
+	  	   	},
+			placeholderIdMappings: [{
+				objectId: titleObjectID,
+				layoutPlaceholder: {
+					type: "TITLE",
+					index: 0
+				}
+			},{
+				objectId: bodyObjectID,
+				layoutPlaceholder: {
+					type: "BODY",
+					index: 0
+				}
+			}
+			]
+	  	   }
+	  	});
+		requests.push({
+			insertText: {
+				objectId: titleObjectID,
+				text: structureHighlightDB[sectionKey].text,
+				insertionIndex: 0
+			}
+		});
+		requests.push({
+			insertText: {
+				objectId: bodyObjectID,
+				text: textInfo.text,
+				insertionIndex: 0
+			}
+		});
+
+		var updates = {};
+
+		structureHighlightDB[sectionKey].slideID = slideID;
+		structureHighlightDB[sectionKey].titleObjectID = titleObjectID;
+		structureHighlightDB[sectionKey].bodyObjectID= bodyObjectID;
+
+		updates['/users/' + userName + '/structureHighlightInfo/' + sectionKey] = structureHighlightDB[sectionKey];
+
+		firebase.database().ref().update(updates);
+
+        gapi.client.slides.presentations.batchUpdate({
+          presentationId: PRESENTATION_ID,
+          requests: requests
+        }).then((createSlideResponse) => {
+            // successfully pasted the text
+
+		    writeSlideMappingInfo(slideID, bodyObjectID, 0, mappingID);
+		    return true;
+        });
+	}
+	else if(slideID != null && bodyObjectID == null) { // Let's consider it as bug
+		alert("BUG: cannot find objectID")
+	}
+	else {
+		return appendText(slideID, bodyObjectID, textInfo.text, mappingID);
+	}
+}
+
+function addFigure(pageID, imageURL, mappingID) {
+	var figureObjID = makeid(10);
+	var requests = [];
+
+	requests.push({
+		createImage: {
+			objectId: figureObjID,
+			elementProperties: {
+				pageObjectId: pageID 
+			},
+			url: imageURL
+		}
+	});
+
+    gapi.client.slides.presentations.batchUpdate({
+      presentationId: PRESENTATION_ID,
+      requests: requests
+    }).then((createSlideResponse) => {
+        // successfully pasted the text
+
+	    writeSlideMappingInfo(pageID, figureObjID, 0, mappingID);
+	    return true;
+    });
 }
 
 function appendText(pageID, objId, myText, mappingID) {

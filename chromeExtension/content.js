@@ -20,6 +20,9 @@ var eventList = {
 	"extension_getLastObject": ['extension', 'root'],
 	"root_getOriginalText": ['root', 'pdfjs'],
 	"pdfjs_getOriginalText": ['pdfjs', 'root'],
+	"root_getStructureHighlight": ['root', 'pdfjs'],
+	"pdfjs_getStructureHighlight": ['pdfjs', 'root'],
+	"root_updatePdfTextSection": ['root', 'pdfjs']
 }
 
 var curSlideState = "WAIT";
@@ -59,9 +62,6 @@ function pageUpdated(mutationsList) {
 
 	// console.log($("g[pointer-events='visiblePainted']").children())
 	// console.log($("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8'], path[fill='#1a73e8']"))	
-
-	console.log(mutationsList);
-	console.log(curSlideState);
 
 	$("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8']").attr("stroke", null);
 	$("g[pointer-events='visiblePainted']").children("path[fill='#1a73e8']").attr("fill", null);
@@ -147,19 +147,32 @@ function pageUpdated(mutationsList) {
 
 		$("#editor-" + getPageID()).children("g:not([id$='-bg'])").map((key, value) => { 
 			var paragraphs = DOMtoList($(value).find("[id*='-paragraph-']"));
-
+			var res = $(value).find("image");
 			var paragraphInfo = {};
 
-			paragraphs.forEach(function(elem) {
-				paragraphInfo[elem] = document.getElementById(elem).getBoundingClientRect();
-			});
+			if($(res).length <= 0) {  // text
 
-			retValue.push({
-				objectID: $(value).attr("id"),
-				rect: document.getElementById($(value).attr("id")).getBoundingClientRect(),
-				paragraph: paragraphInfo
-				// rect: $(value).getBoundingClientRect()
-			});
+				paragraphs.forEach(function(elem) {
+					paragraphInfo[elem] = document.getElementById(elem).getBoundingClientRect();
+				});
+
+				retValue.push({
+					objectID: $(value).attr("id"),
+					rect: document.getElementById($(value).attr("id")).getBoundingClientRect(),
+					paragraph: paragraphInfo
+					// rect: $(value).getBoundingClientRect()
+				});
+			} 
+			else { // image
+				paragraphInfo[0] = $(res)[0].getBoundingClientRect();
+
+				retValue.push({
+					objectID: $(value).attr("id"),
+					rect: document.getElementById($(value).attr("id")).getBoundingClientRect(),
+					paragraph: paragraphInfo
+					// rect: $(value).getBoundingClientRect()
+				});
+			}
 		});
 
 		issueEvent("extension_pageUpdated", {
@@ -224,7 +237,7 @@ function chromeExtensionBody() {
 }
 
 $(document).ready(function() {
-	if(this.location.hostname == "localhost" && this.location.pathname == '/') { 
+	if((this.location.hostname == "localhost" || this.location.hostname == "d2stest.web.app") && this.location.pathname == '/') { 
 	    // root script
 		var scriptEventSender = [];
 		var scriptEventReceiver = [];
@@ -247,7 +260,7 @@ $(document).ready(function() {
 	}
 
 	// pdf.js contents script
-	else if(this.location.hostname == "localhost"){
+	else if(this.location.hostname == "localhost" || this.location.hostname == "d2stest.web.app"){
 		var pdfjsEventSender = [];
 		var pdfjsEventReceiver = [];
 

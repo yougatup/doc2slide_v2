@@ -9,6 +9,12 @@ var curHighlightInfo = {
 var wordListOnPages = {};
 var popoverElement = null;
 var blink = null;
+var paperAuthors = [];
+var sectionStructure = [];
+var sectionParagraph = [];
+var sectionStructureSegments = [];
+var sectionStructureSegmentProcessed = [];
+var currentStatus = "NORMAL";
 
 /**
  * @licstart The following is the entire license notice for the
@@ -17851,6 +17857,122 @@ function getHighlightedText(curPageNumber, startElementInx, endElementInx) {
     return result;
 
 }
+
+function readTextFile(file, filetype, type)
+{
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+                var allText = rawFile.responseText.replace(/\\r\\n/g, "<br />");
+
+                allText = allText.split("\n");
+                documentString = allText;
+
+                // console.log(allText);
+                // console.log(allText.join([separator = '']));
+
+                if(type == "TEI") {
+                    tei = $.parseXML(allText.join([separator = '']))
+                    xmlMetaData = $.parseXML(allText.join([separator = '']));
+                    console.log(xmlMetaData);
+
+                    var listBibl = $(xmlMetaData).find('listBibl');
+
+				    paperTitle = $(xmlMetaData).find('teiHeader').find('titleStmt').find('title').text();
+		
+				    var authorElements = $(xmlMetaData).find('teiHeader').find('sourceDesc').find('analytic').find('author').find('persName');
+		
+				    console.log(authorElements);
+				    console.log(authorElements.length);
+		
+				    for(var i=0;i<authorElements.length;i++) {
+					paperAuthors.push('');
+		
+					for(var j=0;j<authorElements[i].children.length;j++) {
+					    paperAuthors[i] = paperAuthors[i] + (j == 0 ? '' : ' ') + $(authorElements[i].children[j]).text()
+					}
+				    }
+
+		    		console.log(paperAuthors);
+
+                    // console.log($(listBibl));
+
+                    for(var i=0;i<$(listBibl)[0].childNodes.length;i++) {
+                        var bib = $(listBibl)[0].childNodes[i];
+
+                        if($(bib).is("biblstruct")) {
+                            var result = parseBib(bib);
+
+                            parsedReferences.push(result);
+                        }
+                    }
+
+                    // console.log(parsedReferences);
+
+                    var figures = $(xmlMetaData).find('figure');
+
+                    for(var i=0;i<$(figures).length;i++) {
+                        var figure = $(figures)[i];
+
+//                         console.log($(figure));
+
+                        var result = parseFigure(figure);
+
+                        // console.log(result);
+                        parsedFigures.push(result)
+                    }
+
+                    // console.log(parsedFigures);
+
+                    var listOfReferences = $(xmlMetaData).find('back').find('biblStruct');
+
+                    for(var i=0;i<$(listOfReferences).length;i++) {
+                        var ref = $(listOfReferences)[i];
+
+                        var result = parseListOfReferences(ref);
+
+                        parsedListofReferences.push(result);
+                    }
+
+                    // console.log(parsedListofReferences);
+                }
+                else if(type == 'REFERENCE_META'){
+                    json = $.parseJSON(allText.join([separator = '']))
+                    jsonMetaData = $.parseJSON(allText.join([separator = '']))
+                    // console.log(jsonMetaData);
+                }
+                else if(type == "PDF_FIGURE"){
+                    pdffigureMetaData = $.parseJSON(allText.join([separator = '']));
+                    // console.log(pdffigureMetaData);
+                }
+                else if(type == "PDF_STRUCTURE") {
+                    json = $.parseJSON(allText.join([separator = '']))
+                    jsonPdfStructure = $.parseJSON(allText.join([separator = '']))
+                    console.log(jsonPdfStructure);
+
+                    for(var i=0;i<jsonPdfStructure.sections.length;i++) {
+                        if(jsonPdfStructure.sections[i].title != null) {
+                            sectionStructure.push(jsonPdfStructure.sections[i].title);
+						    sectionParagraph.push(jsonPdfStructure.sections[i].paragraphs);
+			    			sectionStructureSegments.push('');
+			    			sectionStructureSegmentProcessed.push(false);
+                        }
+                    }
+                 
+                    console.log(sectionStructure);
+                }
+            }
+        }
+    }
+
+    rawFile.send(null);
+}
+
 $(document).ready(function() {
 
 		// if a page is rendered
@@ -17903,16 +18025,43 @@ $(document).ready(function() {
 			$(".wordHighlighted").removeClass("wordHighlighted");
 		}
 
+		$(document).on("root_getStructureHighlight", function(e) {
+			console.log(e.detail);
+
+			currentStatus = "STRUCTURE";
+		});
+
 		$(document).on("root_navigateToWord", function(e) {
 			var p = e.detail;
+			var allElements, pageNumber;
 
-			var allElements = $(".textSegment[mappingID=" + p.mappingID + "]")
-			var startElement = $($(".textSegment[mappingID=" + p.mappingID + "]")[0]);
+			if("mappingID" in p) {
+				allElements = $(".textSegment[mappingID=" + p.mappingID + "]")
+				pageNumber = parseInt($($(allElements)[0]).attr("pageNumber"));
+			}
+			else {
+				var result= '';
 
-			var pageNumber = parseInt($(startElement).attr("pageNumber"));
+				iterateWords(p.pageNumber, p.startWordIndex, p.endWordIndex, function(elems) {
+					$(elems).addClass("tempStructureClass");
+				});
+
+				allElements = $(".tempStructureClass");
+
+				$(".tempStructureClass").removeClass("tempStructureClass");
+
+				pageNumber = p.pageNumber;
+			}
+
+			var startElement = $(allElements)[0];
 			var boundingClientRect = $(startElement).offset();
-
 			var page = $("[data-page-number=" + pageNumber + "][class='page']");
+
+			console.log(p);
+			console.log(startElement);
+			console.log(pageNumber);
+			console.log($(page));
+
 			var pageRect = $(page)[0].getBoundingClientRect();
 			var pageHeight = pageRect.height;
 
@@ -17970,6 +18119,23 @@ $(document).ready(function() {
 
 			var target = e.target;
 
+			if(currentStatus == "STRUCTURE") {
+				var text = getHighlightedText(curHighlightInfo.pageNumber, curHighlightInfo.startWordIndex, curHighlightInfo.endWordIndex);
+				
+				issueEvent("pdfjs_getStructureHighlight", {
+					text: text,
+					pageNumber: curHighlightInfo.pageNumber,
+					startWordIndex: curHighlightInfo.startWordIndex,
+					endWordIndex: curHighlightInfo.endWordIndex
+				});
+
+				currentStatus = "NORMAL";
+
+				$(".wordHighlighted").removeClass("wordHighlighted");
+
+				return;
+			}
+
 			if($(target).hasClass("endOfContent")) removePopover();
 
 			if($(target).hasClass("textSegment")) {
@@ -18023,6 +18189,10 @@ $(document).ready(function() {
 			removeHighlight(_mappingID);
 		});
 
+		$(document).on("root_updatePdfTextSection", function(e) {
+			console.log(e.detail);
+		});
+
 		$(document).on("root_getOriginalText", function(e) {
 			var result = getHighlightedTextWithMappingID(e.detail.mappingID);
 
@@ -18048,5 +18218,10 @@ $(document).ready(function() {
 				removePopover();
 			}
 		});
+
+//    readTextFile("../web/paperData/paper/metadata.tei", 'xml', "TEI");
+    readTextFile("../web/paperData/paper/metadata.json", 'json', "REFERENCE_META");
+    readTextFile("../web/paperData/paper/dataOutputpaper.json", 'json', "PDF_FIGURE");
+    readTextFile("../web/paperData/paper/structurepaper.json", 'json', "PDF_STRUCTURE");
 });
 

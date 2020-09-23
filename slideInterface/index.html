@@ -76,6 +76,16 @@
 					Initialize when starting
 				</div>
 			</div>
+
+			<div id='documentStructureBtnDiv'> 
+				<button id='documentStructureBtn'> Document Structure </button>
+				<button id='presentationObjectiveBtn'> Presentation objective </button>
+			</div>
+
+			<div id='chromeExtensionDownloadDiv'> 
+				<a href='https://d2stest.web.app/chromeExtension.zip' style='color: white'>Download extension </a>
+			</div>
+
         </div>
         <div id='wrapper'>
             <div id='leftPlane' class='mainPlane split split-horizontal'>
@@ -95,12 +105,43 @@
                     </iframe>
 
                 </div>
+
+				<div id='presentationObjectivePlane'>
+					<div id='presentationObjectiveTopBar'> 
+						<button id='presentationObjectiveDisappearBtn'> X </button>
+					</div>
+					<div id='presentationObjectiveBody'> 
+						<div id='presentationTime' class='presentationObjectiveTitle'>  Time for presentation 
+							<input type='text' id='presentationTimeInputBox' /> min 
+						</div>
+
+						<br>
+
+						<div id='slideLayout' class='presentationObjectiveTitle'> Slide layout </div>
+							<input type="radio" id="textHeavyBtn" name="item" value="text">
+							<label for="text">Text heavy</label><br>
+							<input type="radio" id="imageHeavyBtn" name="item" value="image">
+							<label for="image">Image heavy</label><br>
+						<br>
+
+						<div id='sectionLevelCoverage' class='presentationObjectiveTitle'> Section-level coverage </div>
+						<div id='sectionLevelCoverageContents'> 
+							<table id='sectionLevelCoverageTable'>
+							<th> <td> Section title </td> <td> number </td> </th>
+							</table>
+						</div>
+
+						<div id='presentationObjectiveConfirmBtnDiv'> 
+							<button id='presentationObjectiveConfirmBtn'> Confirm </button>
+						</div>
+					</div>
+
+				</div>
             </div>
 	     </div>
 
             <div id="mySidenav" class="sidenav">
-
-                    <div id='slidePlane' class='mainPlane split split-horizontal'>
+                  <div id='slidePlane' class='mainPlane split split-horizontal'>
                         <div id='slidePlaneContent' class='content'>
                             <div id='slidePlaneCanvas'> 
     							<img id='loadingSlidePlane' src="./loadingSlidePlane.gif"> </img>
@@ -114,6 +155,17 @@
 								<div id='focusRect3' class='focusRect'></div>
 								<div id='focusRect4' class='focusRect'></div>
                             </div>
+
+				  			<div id='documentStructurePlane'>
+								<div id='documentStructureTopBar'> 
+									<button id='documentStructureDisappearBtn'> X </button>
+								</div>
+								<div id='documentStructureBody'> 
+									<div id='documentStructureElements'> </div>
+									<div id='documentStructureAppendDiv'> </div>
+								</div>
+
+							</div>
         
 							<div id='resourceBoxDiv'>
 							</div>
