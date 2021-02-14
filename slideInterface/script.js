@@ -10,12 +10,14 @@ var slideDB = {};
 var curSlideObjects = null;
 var curSlideState = "WAIT";
 var highlightDB = {};
+var mappingPageNumberIndex = {};
 var slideObjectMousedown = 0;
 var slideObjectMousedownObject = null;
 var slideObjectMouseupObject = null;
 var popoverElement = null;
 var curSlidePage = null; 
 var structureHighlightDB = {};
+var recommendationLoadingHistory = {};
 
 var MAX_NUMBER_OF_BULLETS = 3;
 var MAX_NUMBER_OF_SLIDES = 10;
@@ -315,6 +317,8 @@ async function writeHighlight(pageNumber, startWordIndex, endWordIndex, text) {
 		imageURL: rURL
 	};
 
+	mappingPageNumberIndex[newKey] = pageNumber;
+
 	return {
 		key: newKey,
 	    imageURL: rURL
@@ -438,6 +442,12 @@ function initializeDB() {
 			if(highlightDB == null) {
 				highlightDB = {};
 				highlightDB['mapping'] = {};
+			}
+
+			for(var pgNumber in highlightDB.mapping) {
+				for (var k in highlightDB.mapping[pgNumber]) {
+					mappingPageNumberIndex[k] = pgNumber;
+				}
 			}
 
 			slideDB = result.slideInfo;
@@ -620,12 +630,12 @@ function visualizeSlideObjects() {
 		filmstripIndex++;
 	}
 
-	console.log(curSlideObjects);
+	// console.log(curSlideObjects);
 
 	for(var i=0;i<curSlideObjects.objects.length;i++) {
 		var bottom = -1;
 
-		console.log(curSlideObjects.objects[i]);
+		// console.log(curSlideObjects.objects[i]);
 
 		if("0" in curSlideObjects.objects[i].paragraph) { // image
 			var objectID = curSlideObjects.objects[i].objectID.substr(7);
@@ -722,6 +732,14 @@ function visualizeSlideObjects() {
 		}
 	}
 
+	$("#noteSpacePlane").show();
+
+	setFocusBox("noteSpacePlane", {
+		top: curSlideObjects.notespace.rect.top + 40,
+		left: curSlideObjects.notespace.rect.left,
+		width: curSlideObjects.notespace.rect.width - 20,
+		height: curSlideObjects.notespace.rect.height - 20
+	})
 }
 
 async function putText(p, mappingID) {
@@ -1641,8 +1659,276 @@ function genRequest(slideID, slideIndex, slideType, objIDs, texts) {
 	return requests;
 }
 
+function getLeafBoxes(nodeSet, height, width) {
+	return getLeafBoxesInternal(nodeSet, 0, 0, 0, height, width, 0);
+}
+
+function getLeafBoxesInternal(nodeSet, curNode, curLeft, curTop, curHeight, curWidth, level) {
+	var ret = [];
+
+	if (nodeSet[curNode].splitDir == -1) {
+		return [{
+			curLeft: curLeft,
+			curTop: curTop,
+			curHeight: curHeight,
+			curWidth: curWidth,
+			level: level
+		}]
+	}
+	else {
+		if (nodeSet[curNode].splitDir == 1) {
+			var numChild = nodeSet[curNode].childIndexes.length;
+
+			for (var j = 0; j < numChild; j++)
+				ret = ret.concat(getLeafBoxesInternal(nodeSet, nodeSet[curNode].childIndexes[j], curLeft + curWidth / numChild * j, curTop, curHeight, curWidth / numChild, level + 1));
+		}
+		else {
+			var numChild = nodeSet[curNode].childIndexes.length;
+
+			for (var j = 0; j < numChild; j++)
+				ret = ret.concat(getLeafBoxesInternal(nodeSet, nodeSet[curNode].childIndexes[j], curLeft, curTop + curHeight / numChild * j, curHeight / numChild, curWidth, level + 1));
+		}
+	}
+
+	return ret;
+}
+
+function loadRecommendation(pageID, text) {
+	console.log("right");
+
+	if(pageID in recommendationLoadingHistory) {
+		if(recommendationLoadingHistory[pageID].loading){
+			console.log("NOW LOADING");
+		}
+		else{
+			console.log(recommendationLoadingHistory[pageID]);
+		}
+		return;
+	}
+
+	$("#SlideRecommendation").html("Loading ...");
+
+	recommendationLoadingHistory[pageID] = {
+		loading: true,
+		result: {}
+	}
+
+	for (var i = 0; i < text.length; i++) {
+		text[i] = {
+			type: "text",
+			contents: text[i]
+		}
+	}
+
+	console.log(text);
+
+	const requestOptions = {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(
+			{
+				resources: text,
+				slideNumber: 0
+			}
+		),
+	};
+
+	fetch('http://server.hyungyu.com:1333/getSlides', requestOptions)
+		.then(response => response.json())
+		.then(data => {
+			var __renderResult = [];
+
+			recommendationLoadingHistory[pageID].loading = false;
+			recommendationLoadingHistory[pageID].result = data;
+
+			console.log(data);
+
+			var height = 300;
+			var width = 400;
+			var padding = 10;
+
+			var tmpSkeletons = [];
+			var dictForLevel = [];
+
+			var treeInfo = data.layout;
+
+			for (var i = 0; i < treeInfo.length; i++) {
+				dictForLevel = [];
+
+				var renderResultInstance = getLeafBoxes(treeInfo[i].layoutTree, height - padding * 2, width - padding * 2);
+
+				for (var j = 0; j < renderResultInstance.length; j++) {
+					var flag = false;
+
+					for (var k = 0; k < dictForLevel.length; k++) {
+						if (dictForLevel[k][0] == renderResultInstance[j].curHeight && dictForLevel[k][1] == renderResultInstance[j].curWidth) {
+							flag = true;
+							break;
+						}
+					}
+
+					if (!flag) dictForLevel.push([renderResultInstance[j].curHeight, renderResultInstance[j].curWidth]);
+				}
+
+				if (dictForLevel.length > 2) continue;
+
+				var curSkeletonIndex = __renderResult.length;
+				var slideIdx = 0;
+
+				var tmp = [];
+				var prefix = 0;
+
+				for (var j = 0; j < renderResultInstance.length; j++) {
+					var elem = renderResultInstance[j];
+
+					tmp.push({
+						className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j,
+						height: elem.curHeight,
+						width: elem.curWidth,
+						top: elem.curTop + padding,
+						left: elem.curLeft + padding,
+						type: "text",
+						contents: data.contents[j].contents
+					})
+				}
+
+				__renderResult.push({
+					className: "parentDiv slideObj_" + prefix + "_" + curSkeletonIndex + " slideIndex_" + slideIdx,
+					height: height,
+					width: width,
+					padding: padding,
+					innerBoxes: tmp,
+				})
+			}
+
+			console.log(__renderResult);
+
+			finalRendering(__renderResult, data);
+		});
+}
+function finalRendering(r, data) {
+	var result = '';
+
+	console.log(r);
+
+	for (var i = 0; i < r.length; i++) {
+		var innerBody = '';
+
+		for (var j = 0; j < r[i].innerBoxes.length; j++) {
+			var ib = r[i].innerBoxes[j];
+
+			innerBody = innerBody +
+				"<div style='" +
+				"position: absolute; " +
+				"height: " + ib.height + "px;" +
+				"width: " + ib.width + "px;" +
+				"top: " + ib.top + "px;" +
+				"left: " + ib.left + "px;" +
+				"word-wrap: break-word;" +
+				"display: table;" +
+				"'> " +
+				"<div class='" + ib.className + "' style='" +
+				"display: table-cell; " +
+				"vertical-align: middle; " +
+				"border: hide;" +
+				"overflow: none; " +
+				"height: " + ib.height + "px; " +
+				"width: " + ib.width + "px; " +
+				"'> " +
+				(ib.type == "text" ? 
+						"<div class='" + ib.className + '_body' + "'> " + 
+						ib.contents + 
+						"</div>"
+				 :
+				  ""
+				  ) +
+				"</div>" +
+				"</div>";
+		}
+
+		result = result + 
+
+			'<div class="' + r[i].className + '" style="' +
+			"display: inline-block; " +
+			"white-space: normal; " +
+			"padding: " + r[i].padding + "px; " +
+			"height: " + r[i].height + "px; " +
+			"width: " + r[i].width + "px; " +
+			"border: 1px solid black;" +
+			"position: relative;" +
+			"margin: 10px;" +
+			"box-sizing: border-box;" +
+			'">' +
+			innerBody +
+			"</div>"
+	}
+
+	$("#SlideRecommendation").html(result);
+
+	for (var i = 0; i < r.length; i++) {
+		var innerBody = '';
+
+		$("#noteSpaceExperiment").html(
+			$("." + r[i].className.split(' ')[1]).html()
+		);
+
+		for (var j = 0; j < r[i].innerBoxes.length; j++) {
+			var shorten_result = data.textShortening[j];
+			var objID = r[i].innerBoxes[j].className;
+
+			var objs = document.getElementsByClassName(objID + "_body");
+
+			var thisObj = objs[0];
+
+			thisObj.innerHTML = 'a';
+
+			var parentHeight = thisObj.parentElement.offsetHeight;
+				console.log(parentHeight);
+
+			var minHeightValue = 987987987, minText = '';
+
+			for (var k = 0; k < shorten_result.result.result.length; k++) {
+				thisObj.innerHTML = shorten_result.result.result[k].text;
+
+				var heightValue = Math.abs(thisObj.offsetHeight / parentHeight * 100 - 40);
+
+				if (heightValue < minHeightValue) {
+					minHeightValue = heightValue;
+					minText = shorten_result.result.result[k].text;
+				}
+			}
+
+			document.getElementsByClassName(objID + "_body")[1].innerHTML = minText;
+		}
+	}
+}
+
+
 $(document).ready(function() {
         // $("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
+
+		$(document).on("click", ".tablinks", function(event) {
+			var cityName = $(this).html();
+
+			// Declare all variables
+			var i, tabcontent, tablinks;
+
+			// Get all elements with class="tabcontent" and hide them
+			tabcontent = document.getElementsByClassName("tabcontent");
+			for (i = 0; i < tabcontent.length; i++) {
+				tabcontent[i].style.display = "none";
+			}
+
+			// Get all elements with class="tablinks" and remove the class "active"
+			tablinks = document.getElementsByClassName("tablinks");
+			for (i = 0; i < tablinks.length; i++) {
+				tablinks[i].className = tablinks[i].className.replace(" active", "");
+			}
+
+			// Show the current tab, and add an "active" class to the button that opened the tab
+			document.getElementById(cityName.replace(' ', '')).style.display = "block";
+			event.currentTarget.className += " active";
+		});
 
 		appendDocumentStructureRow();
 
@@ -1735,6 +2021,45 @@ $(document).ready(function() {
 			curSlideObjects = p;
 
 			var pageID = p.pageID;
+
+			var curHighlight = highlightDB.slideInfo[pageID];
+
+			console.log(highlightDB);
+			console.log(pageID);
+			console.log(curHighlight);
+			console.log(mappingPageNumberIndex);
+
+			/* Render Resources tab */
+
+			$("#Resources").html('<table id="resourceTable"> </table>');
+
+			var text = [];
+
+			for(var obj in curHighlight) {
+				for(var k in curHighlight[obj]) {
+					var mappingID = curHighlight[obj][k].mappingID;
+
+					if(mappingID == "null") continue;
+
+					var pgNumber = mappingPageNumberIndex[mappingID];
+					var t = highlightDB.mapping[pgNumber][mappingID].text;
+
+					text.push(t);
+
+					$("#resourceTable").append(
+						'<tr>' + 
+						'<td> <input type="checkbox" id="checkbox_' + mappingID + '"> </td>' + 
+						'<td> <div class="resourceItem" mappingID="' + mappingID + '"> ' + 
+						t + 
+						'</div> </td>' + 
+						'</tr>'
+					);
+				}
+			}
+
+			/* Loading recommendations */
+
+			loadRecommendation(pageID, text);
 
 			for(var i=0;i<p.objects.length;i++) {
 				var objID = p.objects[i].objectID.substr(7);
@@ -1909,6 +2234,9 @@ $(document).ready(function() {
 				var dst = $(".slideObjectSecondSelected")[0];
 
 				if(src === dst) {
+					/* 
+					// Single item has been clicked 
+
 					appearPopoverOnSlideObject(src);
 					issueEvent("root_getOriginalText", {
 						mappingID: $("#mappingIndicator" + $(src).attr("id").substr(15)).attr("mappingID")
@@ -1918,9 +2246,12 @@ $(document).ready(function() {
 								appearResourceBox();
 							}
 						});
+						*/
 
 				}
 				else if($(src).attr("objID") == $(dst).attr("objID")) {
+					// Item has been dragged
+					/*
 					var srcParagraphIndex = parseInt($(src).attr("paragraphIndex"));
 					var dstParagraphIndex = parseInt($(dst).attr("paragraphIndex"));
 
@@ -1994,6 +2325,7 @@ $(document).ready(function() {
 							}
 						}
 					}
+					*/
 				}
 			}
 		});

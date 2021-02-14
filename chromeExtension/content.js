@@ -135,7 +135,14 @@ function pageUpdated(mutationsList) {
 
 		var retValue = [];
 		var filmstripInfo = [];
+		var noteSpace = -1;
 		
+		$("[id^='speakernotes-workspace']").each(function() {
+			noteSpace = {
+				rect: document.getElementById($(this).attr("id")).getBoundingClientRect(),
+			}
+		});
+
 		$("[id^='filmstrip-slide-'][id$='-bg']").each(function() {
 			filmstripInfo.push({
 				filmstripID: $(this).attr("id"),
@@ -179,7 +186,8 @@ function pageUpdated(mutationsList) {
 			pageID: getPageID(),
 			objects: retValue,
 			filmstrip: filmstripInfo,
-			workspace: document.getElementById("workspace-container").getBoundingClientRect()
+			workspace: document.getElementById("canvas-container").getBoundingClientRect(),
+			notespace: noteSpace
 		});
 	}
 	else if(curSlideState == "EDIT") {
