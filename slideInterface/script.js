@@ -1672,7 +1672,8 @@ function getLeafBoxesInternal(nodeSet, curNode, curLeft, curTop, curHeight, curW
 			curTop: curTop,
 			curHeight: curHeight,
 			curWidth: curWidth,
-			level: level
+			level: level,
+			type: nodeSet[curNode].type
 		}]
 	}
 	else {
@@ -1777,19 +1778,40 @@ function loadRecommendation(pageID, text) {
 
 				var tmp = [];
 				var prefix = 0;
+				var cnt = 0;
 
 				for (var j = 0; j < renderResultInstance.length; j++) {
 					var elem = renderResultInstance[j];
+					var c = '';
 
-					tmp.push({
-						className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j,
-						height: elem.curHeight,
-						width: elem.curWidth,
-						top: elem.curTop + padding,
-						left: elem.curLeft + padding,
-						type: "text",
-						contents: data.contents[j].contents
-					})
+					console.log(elem);
+
+					if(elem.type == "text") {
+						c = data.contents[cnt].contents;
+						cnt = cnt + 1;
+
+						tmp.push({
+							className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j,
+							height: elem.curHeight,
+							width: elem.curWidth,
+							top: elem.curTop + padding,
+							left: elem.curLeft + padding,
+							type: "text",
+							contents: c
+						})
+					}
+					else {
+						tmp.push({
+							className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j,
+							height: elem.curHeight,
+							width: elem.curWidth,
+							top: elem.curTop + padding,
+							left: elem.curLeft + padding,
+							type: "image",
+							contents: "https://images.theconversation.com/files/93616/original/image-20150902-6700-t2axrz.jpg?ixlib=rb-1.1.0&q=30&auto=format&w=600&h=600&fit=crop&dpr=2"
+						})
+					}
+					
 				}
 
 				__renderResult.push({
@@ -1839,8 +1861,8 @@ function finalRendering(r, data) {
 						"<div class='" + ib.className + '_body' + "'> " + 
 						ib.contents + 
 						"</div>"
-				 :
-				  ""
+				:
+				ib.contents 
 				  ) +
 				"</div>" +
 				"</div>";
