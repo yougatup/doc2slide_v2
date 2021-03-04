@@ -1771,7 +1771,18 @@ function loadRecommendation(pageID, text) {
 					if (!flag) dictForLevel.push([renderResultInstance[j].curHeight, renderResultInstance[j].curWidth]);
 				}
 
-				if (dictForLevel.length > 2) continue;
+				// if (dictForLevel.length > 1) continue;
+
+				var minHeight = dictForLevel[0][0], maxHeight = dictForLevel[0][0], minWidth = dictForLevel[0][1],  maxWidth = dictForLevel[0][1];
+
+				for(var j=0;j<dictForLevel.length;j++) {
+					minHeight = Math.min(minHeight, dictForLevel[j][0]);
+					maxHeight = Math.max(maxHeight, dictForLevel[j][0]);
+					minWidth = Math.min(minWidth , dictForLevel[j][1]);
+					maxWidth = Math.max(maxWidth, dictForLevel[j][1]);
+				}
+
+				if(maxHeight / minHeight >= 1.5 || maxWidth / minWidth >= 1.5) continue;
 
 				var curSkeletonIndex = __renderResult.length;
 				var slideIdx = 0;
@@ -1780,52 +1791,17 @@ function loadRecommendation(pageID, text) {
 				var prefix = 0;
 				var cnt = 0, cnt2 = 0;
 
-				for (var j = 0; j < renderResultInstance.length; j++) {
-					var elem = renderResultInstance[j];
-					var c = '';
+				tmp = populateSlideElements(data, prefix, curSkeletonIndex, padding,renderResultInstance);
 
-					if(elem.type == "text") {
-						c = cnt < data.contents.length ? data.contents[cnt].contents : "";
-
-						tmp.push({
-							className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j,
-							height: elem.curHeight,
-							width: elem.curWidth,
-							top: elem.curTop + padding,
-							left: elem.curLeft + padding,
-							type: "text",
-							contents: c,
-							textIdx: cnt
-						})
-
-						cnt = cnt + 1;
-					}
-					else {
-						c = cnt2 < data.imageURL.length ? data.imageURL[cnt2].imgResult[0].linkList[0] : "";
-						q = cnt2 < data.imageURL.length ? data.imageURL[cnt2].imgResult[0].entity : "";
-
-						tmp.push({
-							className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + " " + "KEYWORD_" + q,
-							height: elem.curHeight,
-							width: elem.curWidth,
-							top: elem.curTop + padding,
-							left: elem.curLeft + padding,
-							type: "image",
-							contents: c
-						})
-
-						cnt2 = cnt2 + 1
-					}
-					
+				for(var j=0;j<tmp.length;j++) {
+					__renderResult.push({
+						className: "parentDiv slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + " slideIndex_" + slideIdx,
+						height: height,
+						width: width,
+						padding: padding,
+						innerBoxes: tmp[j],
+					})
 				}
-
-				__renderResult.push({
-					className: "parentDiv slideObj_" + prefix + "_" + curSkeletonIndex + " slideIndex_" + slideIdx,
-					height: height,
-					width: width,
-					padding: padding,
-					innerBoxes: tmp,
-				})
 			}
 
 			console.log(__renderResult);
@@ -1833,6 +1809,157 @@ function loadRecommendation(pageID, text) {
 			finalRendering(__renderResult, data);
 		});
 }
+
+function dataClustering(contentsCnt, num) {
+	var ret = [];
+
+	for(var i=0;i<num;i++) ret.push([]);
+
+	for(var j=0;j<contentsCnt;j++) {
+		ret[j % num].push(j);
+	}
+
+	return ret;
+}
+
+function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderResultInstance) {
+	var tmp = [];
+
+	var clusteredResult = dataClustering(data.contents.length, renderResultInstance.length);
+
+	for (var k = 0; k < 3; k++) {
+		tmp.push([]);
+
+		for (var j = 0; j < renderResultInstance.length; j++) {
+			var elem = renderResultInstance[j];
+			var c = '';
+
+			if(k == 0) {
+				var t = [];
+
+				for (var i = 0; i < clusteredResult[j].length; i++) {
+					t.push({
+						text: data.contents[clusteredResult[j][i]].contents,
+						contentIndex: clusteredResult[j][i]
+					})
+				}
+
+				tmp[k].push({
+					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
+					height: elem.curHeight,
+					width: elem.curWidth,
+					top: elem.curTop + padding,
+					left: elem.curLeft + padding,
+					type: "text",
+					contents: t
+				})
+			}
+			else if(k == 1) {
+				var t = [];
+
+				var idx = clusteredResult[j][0]; // heuristic: just pick the first one
+
+				tmp[k].push({
+					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
+					height: elem.curHeight,
+					width: elem.curWidth,
+					top: elem.curTop + padding,
+					left: elem.curLeft + padding,
+					type: "image",
+					contents: data.imageURL[idx].imgResult[0].linkList[0]
+				})
+
+			}
+			else if(k == 2) {
+				var t = [];
+				var idx = clusteredResult[j][0]; // heuristic: just pick the first one
+
+				for (var i = 0; i < clusteredResult[j].length; i++) {
+					t.push({
+						text: data.contents[clusteredResult[j][i]].contents,
+						contentIndex: clusteredResult[j][i]
+					})
+				}
+
+				tmp[k].push({
+					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
+					height: elem.curHeight > elem.curWidth ? elem.curHeight / 2 : elem.curHeight,
+					width: elem.curHeight > elem.curWidth ? elem.curWidth : elem.curWidth / 2,
+					top: elem.curHeight > elem.curWidth ? elem.curTop + (elem.curHeight / 2) + padding : elem.curTop + padding,
+					left: elem.curHeight > elem.curWidth ? elem.curLeft + padding : elem.curLeft + (elem.curWidth / 2) + padding,
+					type: "text",
+					contents: t
+				})
+
+				tmp[k].push({
+					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + "captionImage",
+					height: elem.curHeight > elem.curWidth ? elem.curHeight / 2 : elem.curHeight,
+					width: elem.curHeight > elem.curWidth ? elem.curWidth : elem.curWidth / 2,
+					top: elem.curTop + padding,
+					left: elem.curLeft + padding,
+					type: "image",
+					contents: data.imageURL[idx].imgResult[0].linkList[0]
+				})
+			}
+
+			/*
+			else if(k == 1) {
+				tmp[k].push({
+					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j,
+					height: elem.curHeight,
+					width: elem.curWidth,
+					top: elem.curTop + padding,
+					left: elem.curLeft + padding,
+					type: "image",
+					contents: makeImage(data, clusteredResult[j]) // data.imageURL[j].imageResult[0].linkList[0]
+				})
+			}
+
+			if (elem.type == "text") {
+				c = data.contents[cnt].contents;
+				cnt = cnt + 1;
+
+				tmp[k].push({
+					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j,
+					height: elem.curHeight,
+					width: elem.curWidth,
+					top: elem.curTop + padding,
+					left: elem.curLeft + padding,
+					type: "text",
+					contents: c
+				})
+			}
+			else {
+				tmp[k].push({
+					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j,
+					height: elem.curHeight,
+					width: elem.curWidth,
+					top: elem.curTop + padding,
+					left: elem.curLeft + padding,
+					type: "image",
+					contents: "https://images.theconversation.com/files/93616/original/image-20150902-6700-t2axrz.jpg?ixlib=rb-1.1.0&q=30&auto=format&w=600&h=600&fit=crop&dpr=2"
+				})
+			}
+			*/
+		}
+	}
+	
+	return tmp;
+}
+
+function renderText(t) {
+	if(t.length == 1) return t[0].text;
+	else {
+		var ret = '';
+
+		for(var i=0;i<t.length;i++) {
+			ret = ret + '<li>' + t[i].text + '</li>';
+		}
+
+		return '<ul>' + ret + '</ul>';
+	}
+}
+
 function finalRendering(r, data) {
 	var result = '';
 
@@ -1857,6 +1984,7 @@ function finalRendering(r, data) {
 				"<div class='" + ib.className + "' style='" +
 				"display: table-cell; " +
 				"vertical-align: middle; " +
+				(ib.contents.length > 1 ? "" : "text-align: center; ") +
 				"border: hide;" +
 				"overflow: none; " +
 				"text-align: middle; " +
@@ -1865,13 +1993,15 @@ function finalRendering(r, data) {
 				"'> " +
 				(ib.type == "text" ? 
 						"<div class='" + ib.className + '_body' + "'> " + 
-						ib.contents + 
+						renderText (ib.contents)  + 
 						"</div>"
 				:
-				"<img src='" + ib.contents + "' style='" + 
+				"<div class='" + ib.className + '_img' + "'> " +
+				"<img src='" + ib.contents + "' style=' " + 
 				"height: " + ib.height + "px;" +
 				"width: " + ib.width + "px;" +
-				"'> </img>"
+				"' />" + 
+				"</div>"
 				  ) +
 				"</div>" +
 				"</div>";
@@ -1898,40 +2028,55 @@ function finalRendering(r, data) {
 
 	for (var i = 0; i < r.length; i++) {
 		var innerBody = '';
+		var objList = document.getElementsByClassName(r[i].className.split(' ')[1]);
 
 		$("#noteSpaceExperiment").html(
 			$("." + r[i].className.split(' ')[1]).html()
 		);
 
 		for (var j = 0; j < r[i].innerBoxes.length; j++) {
+			var textResult = [];
+
 			if(r[i].innerBoxes[j].type == "image") continue;
 
-			var textIdx = r[i].innerBoxes[j].textIdx;
+			for(var l=0;l<r[i].innerBoxes[j].contents.length;l++) {
+				var shorten_result = data.textShortening[r[i].innerBoxes[j].contents[l].contentIndex];
+				var objID = r[i].innerBoxes[j].className;
 
-			var shorten_result = data.textShortening[textIdx];
-			var objID = r[i].innerBoxes[j].className;
+				var objs = document.getElementsByClassName(objID + "_body");
 
-			var objs = document.getElementsByClassName(objID + "_body");
+				var thisObj = objs[0];
 
-			var thisObj = objs[0];
+				thisObj.innerHTML = 'a';
 
-			thisObj.innerHTML = 'a';
-
-			var parentHeight = thisObj.parentElement.offsetHeight;
-
-			var minHeightValue = 987987987, minText = '';
+				var parentHeight = thisObj.parentElement.offsetHeight;
+				var minHeightValue = 987987987, minText = '';
 
 			for (var k = 0; k < shorten_result.result.result.length; k++) {
 				thisObj.innerHTML = shorten_result.result.result[k].text;
 				var heightValue = Math.abs(thisObj.offsetHeight - 40);
 
-				if (heightValue < minHeightValue) {
-					minHeightValue = heightValue;
-					minText = shorten_result.result.result[k].text;
+				for (var k = 0; k < shorten_result.result.result.length; k++) {
+					thisObj.innerHTML = 
+					r[i].innerBoxes[j].contents.length > 1 ? 
+						"<ul> <li>" + shorten_result.result.result[k].text + "</li> </ul>"
+						:
+						shorten_result.result.result[k].text;
+
+					var heightValue = Math.abs(thisObj.offsetHeight / parentHeight * 100 - 
+						(40 / r[i].innerBoxes[j].contents.length));
+
+					if (heightValue < minHeightValue) {
+						minHeightValue = heightValue;
+						minText = shorten_result.result.result[k].text;
+					}
 				}
+
+				textResult.push({text: minText});
+				// document.getElementsByClassName(objID + "_body")[1].innerHTML = minText;
 			}
 
-			document.getElementsByClassName(objID + "_body")[1].innerHTML = minText;
+			document.getElementsByClassName(objID + "_body")[1].innerHTML = renderText(textResult);
 		}
 	}
 }
