@@ -921,3 +921,26 @@ width: 100%;
   #noteSpaceExperiment {
 	  visibility: hidden;
   }
+
+  .slideBullet {
+	  margin-top: 5px;
+	  margin-bottom: 5px;
+  }
+
+  .slideBulletUl {
+	  padding-inline-start: 20px;
+  }
+
+  .slideStat {
+	  position: absolute;
+	  bottom: 0px;
+  }
+
+  .slideSlider {
+	  width: 170px;
+  }
+
+  .slideValueDiv {
+	  float: right;
+	  margin-right: 15px;
+  }

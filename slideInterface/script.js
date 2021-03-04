@@ -5,6 +5,7 @@ var curHighlightInfo = {
 	startWordIndex: -1,
 	endWordIndex: -1
 };
+var curRecommendedSlideList;
 var generalMouseDown = 0;
 var slideDB = {};
 var curSlideObjects = null;
@@ -1695,14 +1696,14 @@ function getLeafBoxesInternal(nodeSet, curNode, curLeft, curTop, curHeight, curW
 }
 
 function loadRecommendation(pageID, text) {
-	console.log("right");
+	// console.log("right");
 
 	if(pageID in recommendationLoadingHistory) {
 		if(recommendationLoadingHistory[pageID].loading){
-			console.log("NOW LOADING");
+			//console.log("NOW LOADING");
 		}
 		else{
-			console.log(recommendationLoadingHistory[pageID]);
+			//console.log(recommendationLoadingHistory[pageID]);
 		}
 		return;
 	}
@@ -1827,7 +1828,7 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 
 	var clusteredResult = dataClustering(data.contents.length, renderResultInstance.length);
 
-	for (var k = 0; k < 3; k++) {
+	for (var k = 0; k < 4; k++) {
 		tmp.push([]);
 
 		for (var j = 0; j < renderResultInstance.length; j++) {
@@ -1846,8 +1847,8 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 
 				tmp[k].push({
 					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
-					height: elem.curHeight,
-					width: elem.curWidth,
+					height: elem.curHeight - 2 * padding,
+					width: elem.curWidth - 2 * padding,
 					top: elem.curTop + padding,
 					left: elem.curLeft + padding,
 					type: "text",
@@ -1861,8 +1862,8 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 
 				tmp[k].push({
 					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
-					height: elem.curHeight,
-					width: elem.curWidth,
+					height: elem.curHeight - 2 * padding,
+					width: elem.curWidth - 2 * padding,
 					top: elem.curTop + padding,
 					left: elem.curLeft + padding,
 					type: "image",
@@ -1883,8 +1884,8 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 
 				tmp[k].push({
 					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
-					height: elem.curHeight > elem.curWidth ? elem.curHeight / 2 : elem.curHeight,
-					width: elem.curHeight > elem.curWidth ? elem.curWidth : elem.curWidth / 2,
+					height: (-2 * padding) + (elem.curHeight > elem.curWidth ? elem.curHeight / 2 : elem.curHeight),
+					width: (-2 * padding) + (elem.curHeight > elem.curWidth ? elem.curWidth : elem.curWidth / 2),
 					top: elem.curHeight > elem.curWidth ? elem.curTop + (elem.curHeight / 2) + padding : elem.curTop + padding,
 					left: elem.curHeight > elem.curWidth ? elem.curLeft + padding : elem.curLeft + (elem.curWidth / 2) + padding,
 					type: "text",
@@ -1893,8 +1894,31 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 
 				tmp[k].push({
 					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + "captionImage",
-					height: elem.curHeight > elem.curWidth ? elem.curHeight / 2 : elem.curHeight,
-					width: elem.curHeight > elem.curWidth ? elem.curWidth : elem.curWidth / 2,
+					height: (elem.curHeight > elem.curWidth ? elem.curHeight / 2 : elem.curHeight),
+					width: (elem.curHeight > elem.curWidth ? elem.curWidth : elem.curWidth / 2),
+					top: elem.curTop,
+					left: elem.curLeft,
+					type: "image",
+					contents: data.imageURL[idx].imgResult[0].linkList[0]
+				})
+			}
+			else if(k == 3) {
+				var idx = clusteredResult[j][0]; // heuristic: just pick the first one
+
+				tmp[k].push({
+					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + "captionText",
+					height: 10,
+					width: elem.curWidth - 2 * padding,
+					top: elem.curTop + (elem.curHeight - 2 * padding) + padding,
+					left: elem.curLeft + padding,
+					type: "textCaption",
+					contents: [{text: data.imageURL[idx].imgResult[0].entity}]
+				})
+
+				tmp[k].push({
+					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
+					height: elem.curHeight - 2 * padding,
+					width: elem.curWidth - 2 * padding,
 					top: elem.curTop + padding,
 					left: elem.curLeft + padding,
 					type: "image",
@@ -1953,20 +1977,91 @@ function renderText(t) {
 		var ret = '';
 
 		for(var i=0;i<t.length;i++) {
-			ret = ret + '<li>' + t[i].text + '</li>';
+			ret = ret + '<li class="slideBullet">' + t[i].text + '</li>';
 		}
 
-		return '<ul>' + ret + '</ul>';
+		return '<ul class="slideBulletUl">' + ret + '</ul>';
 	}
 }
 
-function finalRendering(r, data) {
+function sortSlides(value) {
+	console.log(value);
+
+	var slideList = [];
+
+	$("#recommendedSlideList").children().each(function (e, item) {
+		slideList.push({
+			html: $(item)[0].outerHTML,
+			numObj: parseInt($(item).attr("numobj")),
+			numText: parseInt($(item).attr("numtext")),
+			numFigure: parseInt($(item).attr("numfigure")),
+		});
+	});
+
+	for(var i=0;i<slideList.length;i++) {
+		var dist = /* Math.abs(value.numObj - slideList[i].numObj) + */
+				   Math.abs(value.numText - slideList[i].numText) + 
+				   Math.abs(value.numFigure - slideList[i].numFigure);
+
+		slideList[i].dist = dist;
+	}
+
+	slideList.sort(function(first, second) {
+		if(first.dist > second.dist) return 1;
+		else if(first.dist == second.dist) return 0;
+		else return -1;
+    });
+
+	console.log(slideList);
+	
 	var result = '';
+
+	for(var i=0;i<slideList.length;i++) {
+		result = result + slideList[i].html;
+	}
+
+	$("#recommendedSlideList").html(result);
+}
+
+function finalRendering(r, data) {
+	var result = 
+	"<table>" + 
+		"<tr> " + 
+			"<td> # obj </td>" + 
+			"<td> # text </td>" + 
+			"<td> # image </td>" + 
+		"</tr>" + 
+		"<tr>" + 
+			"<td>" + 
+				'<div id="objController" class="slideSlider">' + 
+					'<input type="range" min="0" max="100" value="50" class="slideSlider" id="slideObjSlider" disabled>' + 
+					'<div class="slideValueDiv" id="slideObjValueDiv"> 0 </div>' + 
+				'</div>' + 
+			"</td>" + 
+			"<td>" + 
+				'<div id="textController" class="slideSlider">' + 
+					'<input type="range" min="0" max="100" value="50" class="slideSlider" id="slideTextSlider">' + 
+					'<div class="slideValueDiv" id="slideTextValueDiv"> 0 </div>' + 
+				'</div>' + 
+			"</td>" + 
+			"<td>" + 
+				'<div id="imageController" class="slideSlider">' +  
+					'<input type="range" min="0" max="100" value="50" class="slideSlider" id="slideImageSlider">' + 
+					'<div class="slideValueDiv" id="slideFigureValueDiv"> 0 </div>' + 
+				'</div>' + 
+			"</td>" + 
+		"</tr>" + 
+	"</table>";
+				
+	var slideList = [];
 
 	console.log(r);
 
+	var maxNumObj = 0, maxNumText = 0, maxNumFigure = 0;
+
 	for (var i = 0; i < r.length; i++) {
 		var innerBody = '';
+		var numText = 0, numObj = 0, numFigure = 0;
 
 		for (var j = 0; j < r[i].innerBoxes.length; j++) {
 			var ib = r[i].innerBoxes[j];
@@ -1991,40 +2086,75 @@ function finalRendering(r, data) {
 				"height: " + ib.height + "px; " +
 				"width: " + ib.width + "px; " +
 				"'> " +
-				(ib.type == "text" ? 
-						"<div class='" + ib.className + '_body' + "'> " + 
-						renderText (ib.contents)  + 
-						"</div>"
-				:
-				"<div class='" + ib.className + '_img' + "'> " +
-				"<img src='" + ib.contents + "' style=' " + 
-				"height: " + ib.height + "px;" +
-				"width: " + ib.width + "px;" +
-				"' />" + 
-				"</div>"
-				  ) +
+				(ib.type == "text" || ib.type == "textCaption" ?
+					"<div class='" + ib.className + '_body' + "'> " +
+					renderText(ib.contents) +
+					"</div>"
+					:
+					"<div class='" + ib.className + '_img' + "'> " +
+					"<img src='" + ib.contents + "' style=' " +
+					"height: " + ib.height + "px;" +
+					"width: " + ib.width + "px;" +
+					"' />" +
+					"</div>"
+				) +
 				"</div>" +
 				"</div>";
+
+			numText = numText + (ib.type == "text" ? ib.contents.length : 0);
+			numFigure = numFigure + (ib.type == "image" ? 1 : 0);
+			numObj = numObj + (ib.type == "text" ? ib.contents.length : 0) + (ib.type == "image" ? 1 : 0);
+
+			maxNumText = Math.max(maxNumText, numText);
+			maxNumFigure = Math.max(maxNumFigure, numFigure);
+			maxNumObj = Math.max(maxNumObj, numObj);
 		}
 
-		result = result + 
-
-			'<div class="' + r[i].className + '" style="' +
-			"display: inline-block; " +
-			"white-space: normal; " +
-			"padding: " + r[i].padding + "px; " +
-			"height: " + r[i].height + "px; " +
-			"width: " + r[i].width + "px; " +
-			"border: 1px solid black;" +
-			"position: relative;" +
-			"margin: 10px;" +
-			"box-sizing: border-box;" +
-			'">' +
-			innerBody +
-			"</div>"
+		slideList.push({
+			html:
+				'<div class="' + r[i].className + '" style="' +
+				"display: inline-block; " +
+				"white-space: normal; " +
+				"padding: " + r[i].padding + "px; " +
+				"height: " + r[i].height + "px; " +
+				"width: " + r[i].width + "px; " +
+				"border: 1px solid black;" +
+				"position: relative;" +
+				"margin: 10px;" +
+				"box-sizing: border-box;" +
+				'"' + " numText='" + numText + "'" + 
+				" numFigure='" + numFigure + "'" + 
+				" numObj='" + numObj + "'" +  
+				">" +
+				innerBody +
+				"<div class='slideStat'>" + 
+				numObj + '\t' + numText + '\t' + numFigure + 
+				"</div>" + 
+				"</div>",
+		})
 	}
 
+	result = result + "<div id='recommendedSlideList'>";
+
+	for(var i=0;i<slideList.length;i++) result = result + slideList[i].html;
+
+	result = result + "</div>";
+
 	$("#SlideRecommendation").html(result);
+
+	$("#slideObjSlider")[0].max = maxNumObj;
+	$("#slideTextSlider")[0].max = maxNumText;
+	$("#slideImageSlider")[0].max = maxNumFigure;
+
+	$("#slideObjSlider")[0].value = 0; 
+	$("#slideTextSlider")[0].value = 0;
+	$("#slideImageSlider")[0].value = 0;
+
+	sortSlides( {
+		numObj: 0,
+		numText: 0,
+		numFigure: 0
+	} );
 
 	for (var i = 0; i < r.length; i++) {
 		var innerBody = '';
@@ -2037,9 +2167,9 @@ function finalRendering(r, data) {
 		for (var j = 0; j < r[i].innerBoxes.length; j++) {
 			var textResult = [];
 
-			if(r[i].innerBoxes[j].type == "image") continue;
+			if (r[i].innerBoxes[j].type != "text") continue;
 
-			for(var l=0;l<r[i].innerBoxes[j].contents.length;l++) {
+			for (var l = 0; l < r[i].innerBoxes[j].contents.length; l++) {
 				var shorten_result = data.textShortening[r[i].innerBoxes[j].contents[l].contentIndex];
 				var objID = r[i].innerBoxes[j].className;
 
@@ -2052,31 +2182,31 @@ function finalRendering(r, data) {
 				var parentHeight = thisObj.parentElement.offsetHeight;
 				var minHeightValue = 987987987, minText = '';
 
-			for (var k = 0; k < shorten_result.result.result.length; k++) {
-				thisObj.innerHTML = shorten_result.result.result[k].text;
-				var heightValue = Math.abs(thisObj.offsetHeight - 40);
-
 				for (var k = 0; k < shorten_result.result.result.length; k++) {
-					thisObj.innerHTML = 
-					r[i].innerBoxes[j].contents.length > 1 ? 
-						"<ul> <li>" + shorten_result.result.result[k].text + "</li> </ul>"
-						:
-						shorten_result.result.result[k].text;
+					thisObj.innerHTML = shorten_result.result.result[k].text;
 
-					var heightValue = Math.abs(thisObj.offsetHeight / parentHeight * 100 - 
-						(40 / r[i].innerBoxes[j].contents.length));
+					for (var k = 0; k < shorten_result.result.result.length; k++) {
+						thisObj.innerHTML =
+							r[i].innerBoxes[j].contents.length > 1 ?
+								"<ul class='slideBulletUl'> <li class='slideBullet'>" + shorten_result.result.result[k].text + "</li> </ul>"
+								:
+								shorten_result.result.result[k].text;
 
-					if (heightValue < minHeightValue) {
-						minHeightValue = heightValue;
-						minText = shorten_result.result.result[k].text;
+						var heightValue = Math.abs(thisObj.offsetHeight / parentHeight * 100 -
+							(40 / r[i].innerBoxes[j].contents.length));
+
+						if (heightValue < minHeightValue) {
+							minHeightValue = heightValue;
+							minText = shorten_result.result.result[k].text;
+						}
 					}
+
+					textResult.push({ text: minText });
+					// document.getElementsByClassName(objID + "_body")[1].innerHTML = minText;
 				}
 
-				textResult.push({text: minText});
-				// document.getElementsByClassName(objID + "_body")[1].innerHTML = minText;
+				document.getElementsByClassName(objID + "_body")[1].innerHTML = renderText(textResult);
 			}
-
-			document.getElementsByClassName(objID + "_body")[1].innerHTML = renderText(textResult);
 		}
 	}
 }
@@ -2084,6 +2214,25 @@ function finalRendering(r, data) {
 
 $(document).ready(function() {
         // $("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
+
+
+		$(document).on("input", ".slideSlider", function(e) {
+			console.log("YAY");
+
+			var numObj = $("#slideObjSlider")[0].value;
+			var numText = $("#slideTextSlider")[0].value;
+			var numFigure = $("#slideImageSlider")[0].value;
+
+			$("#slideObjValueDiv").html(numObj);
+			$("#slideTextValueDiv").html(numText);
+			$("#slideFigureValueDiv").html(numFigure);
+
+			sortSlides({
+				numObj: numObj,
+				numText: numText,
+				numFigure: numFigure
+			});
+		})
 
 		$(document).on("click", ".tablinks", function(event) {
 			var cityName = $(this).html();
@@ -2201,11 +2350,12 @@ $(document).ready(function() {
 			var pageID = p.pageID;
 
 			var curHighlight = highlightDB.slideInfo[pageID];
-
+/*
 			console.log(highlightDB);
 			console.log(pageID);
 			console.log(curHighlight);
 			console.log(mappingPageNumberIndex);
+			*/
 
 			/* Render Resources tab */
 
@@ -3269,6 +3419,7 @@ predefinedLayout: 'TITLE_ONLY'
 		return addFigure(slideID, imageURL, mappingID);
 	}
 }
+
 async function automaticallyPutText(textInfo, mappingID) {
 	/*
 	   textInfo.startWordIndex
@@ -3536,4 +3687,3 @@ function doBFS(myGraph, r) {
 
 	return result;
 }
-
