@@ -1778,17 +1778,14 @@ function loadRecommendation(pageID, text) {
 
 				var tmp = [];
 				var prefix = 0;
-				var cnt = 0;
+				var cnt = 0, cnt2 = 0;
 
 				for (var j = 0; j < renderResultInstance.length; j++) {
 					var elem = renderResultInstance[j];
 					var c = '';
 
-					console.log(elem);
-
 					if(elem.type == "text") {
-						c = data.contents[cnt].contents;
-						cnt = cnt + 1;
+						c = cnt < data.contents.length ? data.contents[cnt].contents : "";
 
 						tmp.push({
 							className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j,
@@ -1797,19 +1794,27 @@ function loadRecommendation(pageID, text) {
 							top: elem.curTop + padding,
 							left: elem.curLeft + padding,
 							type: "text",
-							contents: c
+							contents: c,
+							textIdx: cnt
 						})
+
+						cnt = cnt + 1;
 					}
 					else {
+						c = cnt2 < data.imageURL.length ? data.imageURL[cnt2].imgResult[0].linkList[0] : "";
+						q = cnt2 < data.imageURL.length ? data.imageURL[cnt2].imgResult[0].entity : "";
+
 						tmp.push({
-							className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j,
+							className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + " " + "KEYWORD_" + q,
 							height: elem.curHeight,
 							width: elem.curWidth,
 							top: elem.curTop + padding,
 							left: elem.curLeft + padding,
 							type: "image",
-							contents: "https://images.theconversation.com/files/93616/original/image-20150902-6700-t2axrz.jpg?ixlib=rb-1.1.0&q=30&auto=format&w=600&h=600&fit=crop&dpr=2"
+							contents: c
 						})
+
+						cnt2 = cnt2 + 1
 					}
 					
 				}
@@ -1854,6 +1859,7 @@ function finalRendering(r, data) {
 				"vertical-align: middle; " +
 				"border: hide;" +
 				"overflow: none; " +
+				"text-align: middle; " +
 				"height: " + ib.height + "px; " +
 				"width: " + ib.width + "px; " +
 				"'> " +
@@ -1862,7 +1868,10 @@ function finalRendering(r, data) {
 						ib.contents + 
 						"</div>"
 				:
-				ib.contents 
+				"<img src='" + ib.contents + "' style='" + 
+				"height: " + ib.height + "px;" +
+				"width: " + ib.width + "px;" +
+				"'> </img>"
 				  ) +
 				"</div>" +
 				"</div>";
@@ -1895,7 +1904,11 @@ function finalRendering(r, data) {
 		);
 
 		for (var j = 0; j < r[i].innerBoxes.length; j++) {
-			var shorten_result = data.textShortening[j];
+			if(r[i].innerBoxes[j].type == "image") continue;
+
+			var textIdx = r[i].innerBoxes[j].textIdx;
+
+			var shorten_result = data.textShortening[textIdx];
 			var objID = r[i].innerBoxes[j].className;
 
 			var objs = document.getElementsByClassName(objID + "_body");
@@ -1905,14 +1918,12 @@ function finalRendering(r, data) {
 			thisObj.innerHTML = 'a';
 
 			var parentHeight = thisObj.parentElement.offsetHeight;
-				console.log(parentHeight);
 
 			var minHeightValue = 987987987, minText = '';
 
 			for (var k = 0; k < shorten_result.result.result.length; k++) {
 				thisObj.innerHTML = shorten_result.result.result[k].text;
-
-				var heightValue = Math.abs(thisObj.offsetHeight / parentHeight * 100 - 40);
+				var heightValue = Math.abs(thisObj.offsetHeight - 40);
 
 				if (heightValue < minHeightValue) {
 					minHeightValue = heightValue;
