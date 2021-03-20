@@ -115,14 +115,62 @@
 							<input type='text' id='presentationTimeInputBox' /> min 
 						</div>
 
+
+
+
 						<br>
 
-						<div id='slideLayout' class='presentationObjectiveTitle'> Slide layout </div>
-							<input type="radio" id="textHeavyBtn" name="item" value="text">
-							<label for="text">Text heavy</label><br>
-							<input type="radio" id="imageHeavyBtn" name="item" value="image">
-							<label for="image">Image heavy</label><br>
+						<div class='presentationObjectiveTitle'> Sparse/Dense </div>
+						<table class='objectiveTable'>
+							<tr>
+								<td style='width: 15%'> Sparse</td>
+								<td style='width: 70%'>
+									<input id='sparseDenseSlider' type="range" min="1" max="100" value="50" class="objectiveSlider">
+								</td>
+								<td style='width: 15%'> Dense </td>
+							</tr>
+						</table>
+
+
+						<div id='slideLayout' class='presentationObjectiveTitle'> Descriptive/Abstractive </div>
+						<table class='objectiveTable'>
+							<tr>
+								<td style='width: 15%'> Descriptive </td>
+								<td style='width: 70%'>
+									<input id='slideLayoutSlider' type="range" min="1" max="100" value="50" class="objectiveSlider">
+								</td>
+								<td style='width: 15%'> Abstractive </td>
+							</tr>
+						</table>
 						<br>
+
+
+						<div class='presentationObjectiveTitle'> Text length </div>
+						<table class='objectiveTable'>
+							<tr>
+								<td style='width: 15%'> Short </td>
+								<td style='width: 70%'>
+									<input id='textLengthSlider' type="range" min="1" max="100" value="50" class="objectiveSlider">
+								</td>
+								<td style='width: 15%'> Long </td>
+							</tr>
+						</table>
+						<br>
+
+						<div class='presentationObjectiveTitle'> Image types </div>
+
+						<div id='imageTypeRadio'> 
+							<input type="radio" id="imgTypeNotSpecified" name="imgTypeRadioName" value="imgTypeNotSpecified">
+							<label for="NotSpecified">Not specified</label><br>
+							<input type="radio" id="imgTypePicture" name="imgTypeRadioName" value="imgTypePicture">
+							<label for="Picture">Picture</label><br>
+							<input type="radio" id="imgTypeIllustration" name="imgTypeRadioName" value="imgTypeIllustration">
+							<label for="Illustration">Illustration</label><br>
+							<input type="radio" id="imgTypeSymbol" name="imgTypeRadioName" value="imgTypeSymbol">
+							<label for="Symbol">Symbol</label><br>
+						</div>
+						<br>
+
 
 						<div id='sectionLevelCoverage' class='presentationObjectiveTitle'> Section-level coverage </div>
 						<div id='sectionLevelCoverageContents'> 

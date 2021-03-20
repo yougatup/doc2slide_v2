@@ -1,3 +1,5 @@
+var MAX_ELEMENTS_PER_SLIDE = 4;
+var SLIDES_PER_MIN = 2;
 var userName = 'tempUser';
 var PRESENTATION_ID = '1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY'
 var curHighlightInfo = {
@@ -19,6 +21,7 @@ var popoverElement = null;
 var curSlidePage = null; 
 var structureHighlightDB = {};
 var recommendationLoadingHistory = {};
+var T, C;
 
 var MAX_NUMBER_OF_BULLETS = 3;
 var MAX_NUMBER_OF_SLIDES = 10;
@@ -30,6 +33,7 @@ function presentationObjectiveRowElement(sectionKey, index) {
 		"<td class='sectionLevelCoverageRowHighlight' sectionKey='" + sectionKey + "' rowIndex='" + index + "'> </td>" + 
 
 		"<td class='sectionLevelCoverageRowBoxes' sectionKey='" + sectionKey + "' rowIndex='" + index + "'>" + 
+		/*
 		"<table class='.coverageTable' style='height: 30px; border-collapse: collapse; border-spacing: 0;' sectionKey='" + sectionKey + "' rowIndex='" + index + "'>" + 
 		"<tr>" + 
 		(function(key) {
@@ -41,8 +45,11 @@ function presentationObjectiveRowElement(sectionKey, index) {
 
 			return returnValue;
 		})(sectionKey) + 
-		"<tr>"
+		"</tr>" +
+		*/
+		"<button class='sectionLevelCoverageMinusBtn" + sectionKey + "' rowIndex='" + index + "' > - </button>" + 
 	    "<input class='sectionLevelCoverageInput' sectionKey='" + sectionKey + "' rowIndex='" + index + "' />" + 
+		"<button class='sectionLevelCoveragePlusBtn" + sectionKey + "' rowIndex='" + index + "' > + </button>" + 
 		"</td> </tr>";
 
 
@@ -1266,20 +1273,32 @@ function organizeHighlightOnSections() {
 		for(var key in highlightDB.mapping[pageNumber]) {
 			var sectionKey = getSectionKey(pageNumber, highlightDB.mapping[pageNumber][key].startWordIndex, highlightDB.mapping[pageNumber][key].endWordIndex);
 
-			if(!(sectionKey in info)) info[sectionKey] = {};
-			if(!(key in info[sectionKey])) info[sectionKey][key] = {};
+			if(!(sectionKey in info)) info[sectionKey] = [];
+			// if(!(key in info[sectionKey])) info[sectionKey][key] = {};
 
-			info[sectionKey][key] = 
+			info[sectionKey].push( 
 			{
-				pageNumber: pageNumber,
+				pageNumber: parseInt(pageNumber),
 				startWordIndex: highlightDB.mapping[pageNumber][key].startWordIndex,
 				endWordIndex: highlightDB.mapping[pageNumber][key].endWordIndex,
 				sectionKey: sectionKey,
 				text: highlightDB.mapping[pageNumber][key].text,
 				mappingKey: key,
 				imageURL: highlightDB.mapping[pageNumber][key].imageURL,
-			}
+			})
+			
 		}
+	}
+
+	for(m in info) {
+		info[m].sort( function(first, second) {
+			if(first.pageNumber > second.pageNumber) return 1;
+			else if(first.pageNumber == second.pageNumber) {
+				if(first.startWordIndex > second.startWordIndex) return 1;
+				else return -1;
+			}
+			else return -1;
+		})
 	}
 
 	return info;
@@ -1389,13 +1408,313 @@ function chooseElements(info, sectionKey, number) {
 	return retValue;
 }
 
-function automaticallyUpdateSlides() {
-	var info = {};
+function printLink(info, T, C, numSlides) {
+	var res = [];
+	var Ckeys = Object.keys(C);
+	var curSection = T.length-1;
+	var numPages = [];
+	var curSlideNum = numSlides;
+
+	if(T[curSection][numSlides].l == -1) {
+		alert("NOT POSSIBLE");
+		return -1;
+	}
+	for(var i=0;i<T.length;i++) numPages.push(0);
+
+	console.log(numPages);
+
+	while(1) {
+		console.log(curSection, curSlideNum);
+
+		numPages[curSection] = T[curSection][curSlideNum].l;
+
+		if(curSection == 0) break;
+
+		curSlideNum -= T[curSection][curSlideNum].l;
+		curSection = curSection - 1;
+	}
+
+	console.log(numPages);
+
+	for(var i=0;i<numPages.length;i++) {
+		var p = numPages[i];
+
+		res.push([]);
+
+		for(var j=0;j<p;j++) res[i].push(0);
+
+		var curPage = p;
+		var curElement = C[Ckeys[i]][0].length-1;
+
+		while(1) {
+			res[i][curPage-1] = curElement;
+
+			if(curPage == 1) break;
+
+			curElement = C[Ckeys[i]][curPage][curElement].l
+
+			curPage = curPage - 1;
+		}
+	}
+
+	console.log(res);
+
+	var finalRepresentation = {};
+
+	for(var i=0;i<Ckeys.length;i++) {
+		finalRepresentation[Ckeys[i]] = [];
+
+		for(var j=0;j<res[i].length;j++){
+			var start = j == 0 ? 0 : res[i][j-1] + 1;
+			var end = res[i][j];
+
+			finalRepresentation[Ckeys[i]].push([])
+
+			for(var k=start;k<=end;k++) {
+				finalRepresentation[Ckeys[i]][j].push(info[Ckeys[i]][k])
+			}
+		}
+	}
+
+	console.log(finalRepresentation);
+
+	return finalRepresentation;
+}
+
+function createSlidesOnGoogleSlide(finalRepresentation) {
+	var requests = [];
+	var slideInfo = [];
+	var slideIndex = 1;
+	var updateInfo = [];
+
+	for(var s in finalRepresentation) {
+
+		for (var j = 0; j < finalRepresentation[s].length; j++) {
+			var h = [];
+
+			for (var k = 0; k < finalRepresentation[s][j].length; k++) {
+				var mappingKey = finalRepresentation[s][j][k].mappingKey;
+				var dic = finalRepresentation[s][j][k];
+
+				h.push(dic);
+			}
+
+			console.log(h);
+
+			var elem = {
+				slideID: makeid(10),
+				objIDs: [makeid(10), makeid(10)],
+				highlightInfo: h
+			};
+
+			for (var k = 0; k < finalRepresentation[s][j].length; k++) {
+				updateInfo.push({
+					slideID: elem.slideID,
+					objID: elem.objIDs[1],
+					paragraphIndex: k,
+					mappingID: elem.highlightInfo[k].mappingKey
+				});
+			}
+
+			requests = requests.concat(genRequest(elem.slideID, slideIndex, "TITLE_AND_BODY", elem.objIDs, [structureHighlightDB[s].text].concat(getListOnKey(elem.highlightInfo, "text"))));
+
+			slideIndex++;
+		}
+
+	}
+/*
+	for (var sectionKey in info) {
+		var keys = Object.keys(info[sectionKey]);
+
+		// var numSlides = parseInt((keys.length % MAX_NUMBER_OF_BULLETS == 0) ? keys.length / MAX_NUMBER_OF_BULLETS : (keys.length / MAX_NUMBER_OF_BULLETS) + 1);
+		var numSlides = parseInt($(".coverageTableCell.selected[sectionKey='" + sectionKey + "']").length);
+		var numHighlightsPerSlide = parseInt((Object.keys(info[sectionKey]).length) / numSlides);
+
+		var borderline = ((Object.keys(info[sectionKey]).length) % numSlides == 0 ? 0 : (Object.keys(info[sectionKey]).length) - numHighlightsPerSlide * numSlides);
+		var cursor = 0;
+
+		for (var j = 0; j < numSlides; j++) {
+			var numBullets = numHighlightsPerSlide;
+			var highlightInfo = [];
+
+			if (j < borderline) numBullets++;
+
+			for (var k = 0; k < numBullets; k++) {
+				highlightInfo.push(info[sectionKey][keys[cursor]]);
+				cursor++;
+			}
+
+			var elem = {
+				slideID: makeid(10),
+				objIDs: [makeid(10), makeid(10)],
+				highlightInfo: highlightInfo
+			};
+
+			for (var k = 0; k < numBullets; k++) {
+				updateInfo.push({
+					slideID: elem.slideID,
+					objID: elem.objIDs[1],
+					paragraphIndex: k,
+					mappingID: elem.highlightInfo[k].mappingKey
+				});
+			}
+
+			slideInfo.push(elem);
+
+			requests = requests.concat(genRequest(elem.slideID, slideIndex, "TITLE_AND_BODY", elem.objIDs, [structureHighlightDB[sectionKey].text].concat(getListOnKey(elem.highlightInfo, "text"))));
+
+			slideIndex++;
+		}
+	}
+	*/
+
+	console.log(updateInfo);
+	console.log(requests);
+
+	writeSlideMappingInfoBulk(updateInfo).then(() => {
+		initializeSlide().then(() => {
+			gapi.client.slides.presentations.batchUpdate({
+				presentationId: PRESENTATION_ID,
+				requests: requests
+			}).then((createSlideResponse) => {
+				//console.log(createSlideResponse);
+			});
+		});
+	});
+}
+
+function getNumSlides() {
+	var time = parseInt($("#presentationTimeInputBox")[0].value);
+
+	return time;
+}
+
+function computeTC(info) {
+	function getDist(d, start, end) {
+		var keys = Object.keys(d);
+
+		var temp_page_penalty = 2000;
+		var res = 0;
+
+		for (var i = start; i <= end; i++) {
+			for (var j = i + 1; j <= end; j++) {
+				if (d[keys[j]].pageNumber != d[keys[i]].pageNumber) res += temp_page_penalty;
+				else res += d[keys[j]].startWordIndex - d[keys[i]].startWordIndex;
+			}
+		}
+
+		return res;
+	}
+
 	var slideInfo = {};
 	var heavySwitch = '';
-	
-	info = organizeHighlightOnSections();
-	
+	var mappingList = [];
+
+	for (var m in info) {
+		for (var mm in info[m]) {
+			mappingList.push(info[m][mm])
+		}
+	}
+
+	console.log(mappingList);
+
+	console.log(info);
+
+	var T = [];
+	var C = {};
+	var totalNumHighlight = 0;
+
+	var maxElementsPerSlide = MAX_ELEMENTS_PER_SLIDE;
+
+	for (var m in info) {
+		C[m] = [];
+
+		var numElements = info[m].length;
+
+		totalNumHighlight += numElements;
+
+		for (var i = 0; i <= numElements; i++) {
+			C[m].push([]);
+
+			for (var j = 0; j < numElements; j++) {
+				C[m][i].push({
+					v: 987987987,
+					l: -1
+				});
+			}
+		}
+
+		for (var j = 0; j < Math.min(numElements, maxElementsPerSlide); j++) C[m][1][j].v = getDist(info[m], 0, j);
+
+		for (var i = 2; i <= numElements; i++) {
+			for (var j = i - 1; j < numElements; j++) {
+				for (var k = j - 1; k >= i - 2; k--) {
+					if (j - k + 1 > maxElementsPerSlide) break;
+
+					var dist = getDist(info[m], k + 1, j);
+
+					if (C[m][i][j].v > C[m][i - 1][k].v + dist) {
+						C[m][i][j].v = C[m][i - 1][k].v + dist;
+						C[m][i][j].l = k;
+					}
+				}
+			}
+		}
+	}
+
+	var numSections = Object.keys(info).length;
+	var sectionKeys = Object.keys(info);
+
+	for (var i = 0; i < numSections; i++) {
+		T.push([]);
+
+		for (var j = 0; j <= totalNumHighlight; j++) {
+			T[i].push({
+				v: 987987987,
+				l: -1
+			});
+		}
+	}
+
+	for (var i = 0; i < info[sectionKeys[0]].length; i++) {
+		T[0][i + 1].v = C[sectionKeys[0]][i + 1][info[sectionKeys[0]].length - 1].v;
+		T[0][i + 1].l = i + 1;
+	}
+
+	for (var i = 1; i < numSections; i++) {
+		for (var j = 1; j <= totalNumHighlight; j++) {
+			var numElements = info[sectionKeys[i]].length;
+
+			for (var k = 1; k <= numElements; k++) {
+				if (j - k <= 0) continue;
+				if (T[i - 1][j - k].v >= 987987987) continue;
+
+				if (T[i][j].v > T[i - 1][j - k].v + C[sectionKeys[i]][k][numElements - 1].v) {
+					T[i][j].v = T[i - 1][j - k].v + C[sectionKeys[i]][k][numElements - 1].v;
+					T[i][j].l = k;
+				}
+			}
+		}
+	}
+
+	return {
+		T: T,
+		C: C
+	}
+}
+
+function automaticallyUpdateSlides() {
+	var info = organizeHighlightOnSections();
+
+	var numSlides = getNumSlides();
+
+	var finalRepresentation = printLink(info, T, C, numSlides);
+
+	if(finalRepresentation == -1) return;
+
+	createSlidesOnGoogleSlide(finalRepresentation);
+
+	/*
 	for(var key in structureHighlightDB) {
 		var obj = $(".sectionLevelCoverageInput[sectionKey=" + key + "]");
 		var count = $(".coverageTableCell.selected[sectionKey='" + key + "']").length;
@@ -1403,11 +1722,15 @@ function automaticallyUpdateSlides() {
 		if(count != '') 
 			slideInfo[key] = chooseElements(info, key, parseInt(count)*MAX_NUMBER_OF_BULLETS);
 	}
+	*/
+
+	/*
 
 	if($("#textHeavyBtn").prop("checked")) heavySwitch = 'text';
 	else heavySwitch = 'image';
 	
 	createSlidesBasedOnSelection(slideInfo, heavySwitch);
+	*/
 }
 
 function getListOnKey(li, key) {
@@ -1704,11 +2027,10 @@ function loadRecommendation(pageID, text) {
 		}
 		else{
 			//console.log(recommendationLoadingHistory[pageID]);
+			recommendationRender(recommendationLoadingHistory[pageID].result);
 		}
 		return;
 	}
-
-	$("#SlideRecommendation").html("Loading ...");
 
 	recommendationLoadingHistory[pageID] = {
 		loading: true,
@@ -1738,77 +2060,82 @@ function loadRecommendation(pageID, text) {
 	fetch('http://server.hyungyu.com:1333/getSlides', requestOptions)
 		.then(response => response.json())
 		.then(data => {
-			var __renderResult = [];
 
 			recommendationLoadingHistory[pageID].loading = false;
+			recommendationLoadingHistory[pageID].text = text;
 			recommendationLoadingHistory[pageID].result = data;
 
-			console.log(data);
+			recommendationRender(data);
+		});
+}
 
-			var height = 300;
-			var width = 400;
-			var padding = 10;
+function recommendationRender(data) {
+	var __renderResult = [];
+	console.log(data);
 
-			var tmpSkeletons = [];
-			var dictForLevel = [];
+	var height = 300;
+	var width = 400;
+	var padding = 10;
 
-			var treeInfo = data.layout;
+	var tmpSkeletons = [];
+	var dictForLevel = [];
 
-			for (var i = 0; i < treeInfo.length; i++) {
-				dictForLevel = [];
+	var treeInfo = data.layout;
 
-				var renderResultInstance = getLeafBoxes(treeInfo[i].layoutTree, height - padding * 2, width - padding * 2);
+	for (var i = 0; i < treeInfo.length; i++) {
+		dictForLevel = [];
 
-				for (var j = 0; j < renderResultInstance.length; j++) {
-					var flag = false;
+		var renderResultInstance = getLeafBoxes(treeInfo[i].layoutTree, height - padding * 2, width - padding * 2);
 
-					for (var k = 0; k < dictForLevel.length; k++) {
-						if (dictForLevel[k][0] == renderResultInstance[j].curHeight && dictForLevel[k][1] == renderResultInstance[j].curWidth) {
-							flag = true;
-							break;
-						}
-					}
+		for (var j = 0; j < renderResultInstance.length; j++) {
+			var flag = false;
 
-					if (!flag) dictForLevel.push([renderResultInstance[j].curHeight, renderResultInstance[j].curWidth]);
-				}
-
-				// if (dictForLevel.length > 1) continue;
-
-				var minHeight = dictForLevel[0][0], maxHeight = dictForLevel[0][0], minWidth = dictForLevel[0][1],  maxWidth = dictForLevel[0][1];
-
-				for(var j=0;j<dictForLevel.length;j++) {
-					minHeight = Math.min(minHeight, dictForLevel[j][0]);
-					maxHeight = Math.max(maxHeight, dictForLevel[j][0]);
-					minWidth = Math.min(minWidth , dictForLevel[j][1]);
-					maxWidth = Math.max(maxWidth, dictForLevel[j][1]);
-				}
-
-				if(maxHeight / minHeight >= 1.5 || maxWidth / minWidth >= 1.5) continue;
-
-				var curSkeletonIndex = __renderResult.length;
-				var slideIdx = 0;
-
-				var tmp = [];
-				var prefix = 0;
-				var cnt = 0, cnt2 = 0;
-
-				tmp = populateSlideElements(data, prefix, curSkeletonIndex, padding,renderResultInstance);
-
-				for(var j=0;j<tmp.length;j++) {
-					__renderResult.push({
-						className: "parentDiv slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + " slideIndex_" + slideIdx,
-						height: height,
-						width: width,
-						padding: padding,
-						innerBoxes: tmp[j],
-					})
+			for (var k = 0; k < dictForLevel.length; k++) {
+				if (dictForLevel[k][0] == renderResultInstance[j].curHeight && dictForLevel[k][1] == renderResultInstance[j].curWidth) {
+					flag = true;
+					break;
 				}
 			}
 
-			console.log(__renderResult);
+			if (!flag) dictForLevel.push([renderResultInstance[j].curHeight, renderResultInstance[j].curWidth]);
+		}
 
-			finalRendering(__renderResult, data);
-		});
+		// if (dictForLevel.length > 1) continue;
+
+		var minHeight = dictForLevel[0][0], maxHeight = dictForLevel[0][0], minWidth = dictForLevel[0][1], maxWidth = dictForLevel[0][1];
+
+		for (var j = 0; j < dictForLevel.length; j++) {
+			minHeight = Math.min(minHeight, dictForLevel[j][0]);
+			maxHeight = Math.max(maxHeight, dictForLevel[j][0]);
+			minWidth = Math.min(minWidth, dictForLevel[j][1]);
+			maxWidth = Math.max(maxWidth, dictForLevel[j][1]);
+		}
+
+		if (maxHeight / minHeight >= 1.5 || maxWidth / minWidth >= 1.5) continue;
+
+		var curSkeletonIndex = __renderResult.length;
+		var slideIdx = 0;
+
+		var tmp = [];
+		var prefix = 0;
+		var cnt = 0, cnt2 = 0;
+
+		tmp = populateSlideElements(data, prefix, curSkeletonIndex, padding, renderResultInstance);
+
+		for (var j = 0; j < tmp.length; j++) {
+			__renderResult.push({
+				className: "parentDiv slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + " slideIndex_" + slideIdx,
+				height: height,
+				width: width,
+				padding: padding,
+				innerBoxes: tmp[j],
+			})
+		}
+	}
+
+	console.log(__renderResult);
+
+	finalRendering(__renderResult, data);
 }
 
 function dataClustering(contentsCnt, num) {
@@ -2387,7 +2714,10 @@ $(document).ready(function() {
 
 			/* Loading recommendations */
 
-			loadRecommendation(pageID, text);
+			if(curSlidePage != p.pageID){
+				$("#SlideRecommendation").html("Loading ...");
+				loadRecommendation(pageID, text);
+			}
 
 			for(var i=0;i<p.objects.length;i++) {
 				var objID = p.objects[i].objectID.substr(7);
@@ -2411,11 +2741,13 @@ $(document).ready(function() {
 				}
 			}
 
+			visualizeSlideObjects();
+
+					/*
 			if(curSlidePage == p.pageID) {
 			}
 			else {
 				if(curSlideState == "WAIT")
-					visualizeSlideObjects();
 				else if(curSlideState == "EDIT") {
 					editFocus( {
 						parent: $("#workspaceRect")[0].getBoundingClientRect(),
@@ -2423,8 +2755,10 @@ $(document).ready(function() {
 					});
 				}
 			}
-
+			*/
 			hideLoadingSlidePlane();
+
+			curSlidePage = p.pageID;
 		});
 
 		$(document).on("click", ".mappingIndicator.mapped", function(e) {
@@ -2748,7 +3082,63 @@ $(document).ready(function() {
 				disappearPresentationObjective();
 		});
 
+		$(document).on("input", "#sparseDenseSlider", function(e) {
+			var value = $("#sparseDenseSlider")[0].value;
+
+			var minPageNum = $("#sparseDenseSlider")[0].min;
+			var maxPageNum = $("#sparseDenseSlider")[0].max;
+
+			$("#presentationTimeInputBox")[0].value = maxPageNum - (value - minPageNum);
+		});
+
+		$(document).on("input", "#presentationTimeInputBox", function(e) {
+			var value = parseInt($("#presentationTimeInputBox")[0].value)
+
+			console.log(T);
+			console.log(value);
+
+			if(value > T[T.length-1].length || T[T.length-1][value].l == -1) {
+				$("#presentationTimeInputBox").css("background-color", "red");
+			}
+			else {
+				$("#presentationTimeInputBox").css("background-color", "white");
+
+				var minPageNum = parseInt($("#sparseDenseSlider")[0].min);
+				var maxPageNum = parseInt($("#sparseDenseSlider")[0].max);
+
+				console.log(minPageNum);
+				console.log(maxPageNum);
+				console.log(minPageNum + (maxPageNum-value));
+
+				$("#sparseDenseSlider")[0].value = minPageNum + (maxPageNum-value);
+			}
+		});
+
 		$(document).on("click", "#presentationObjectiveBtn", function(e) {
+				var info = organizeHighlightOnSections();
+				var res = computeTC(info);
+
+				T = res.T;
+				C = res.C;
+
+				var maxPageNum = -1, minPageNum = 987987987;
+
+				for (var i = T[T.length - 1].length - 1; i >= 0; i--) {
+					if (T[T.length - 1][i].l != -1) {
+						maxPageNum = Math.max(maxPageNum, i);
+						minPageNum = Math.min(minPageNum, i);
+					}
+				}
+
+				$("#sparseDenseSlider")[0].max = maxPageNum;
+				$("#sparseDenseSlider")[0].min = minPageNum;
+
+				$("#sparseDenseSlider")[0].value = parseInt((minPageNum + maxPageNum) / 2);
+				$("#presentationTimeInputBox")[0].value = maxPageNum - (parseInt((minPageNum + maxPageNum) / 2) - minPageNum);
+
+				console.log(maxPageNum);
+				console.log(minPageNum);
+
 				appearPresentationObjective();
 		});
 
