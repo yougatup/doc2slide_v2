@@ -1,5 +1,12 @@
 var MAX_ELEMENTS_PER_SLIDE = 4;
 var SLIDES_PER_MIN = 2;
+
+var GOOGLE_SLIDE_HEIGHT = 540;
+var GOOGLE_SLIDE_WIDTH = 960;
+
+var RENDER_SLIDE_HEIGHT = 225;
+var RENDER_SLIDE_WIDTH = 400;
+
 var userName = 'tempUser';
 var PRESENTATION_ID = '1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY'
 var curHighlightInfo = {
@@ -408,6 +415,14 @@ async function initializeSlide() {
 	}).catch(function (err) {
 	  console.log(err);
 	});
+}
+
+function getSlideHeight(x) {
+	return x / RENDER_SLIDE_HEIGHT * GOOGLE_SLIDE_HEIGHT;
+}
+
+function getSlideWidth(x) {
+	return x / RENDER_SLIDE_WIDTH * GOOGLE_SLIDE_WIDTH;
 }
 
 function initializeDB() {
@@ -1347,8 +1362,6 @@ function disappearPresentationObjective() {
 }
 
 function appearPresentationObjective() {
-	updatePresentationObjectiveStructure();
-
 	$("#presentationObjectivePlane").show();
 }
 function setCurLevel(rowObjId, level) {
@@ -2027,7 +2040,10 @@ function loadRecommendation(pageID, text) {
 		}
 		else{
 			//console.log(recommendationLoadingHistory[pageID]);
-			recommendationRender(recommendationLoadingHistory[pageID].result);
+			var constraints = getConstraints();
+			console.log(constraints);
+
+			recommendationRender(recommendationLoadingHistory[pageID].result, constraints, pageID);
 		}
 		return;
 	}
@@ -2040,7 +2056,8 @@ function loadRecommendation(pageID, text) {
 	for (var i = 0; i < text.length; i++) {
 		text[i] = {
 			type: "text",
-			contents: text[i]
+			contents: text[i].text,
+			mappingID: text[i].mappingID
 		}
 	}
 
@@ -2065,16 +2082,36 @@ function loadRecommendation(pageID, text) {
 			recommendationLoadingHistory[pageID].text = text;
 			recommendationLoadingHistory[pageID].result = data;
 
-			recommendationRender(data);
+			var constraints = getConstraints();
+
+			recommendationRender(data, constraints, pageID);
 		});
 }
 
-function recommendationRender(data) {
+function getConstraints() {
+	var time = parseInt($("#presentationTimeInputBox")[0].value);
+
+	var sparseDense = parseInt($("#sparseDenseSlider")[0].value);
+	var descAbst = parseInt($("#slideLayoutSlider")[0].value);
+	var textLength = parseInt($("#textLengthSlider")[0].value);
+
+	return {
+		time: time,
+		sparseDense: sparseDense,
+		descAbst: descAbst,
+		textLength: textLength
+	}
+}
+
+function recommendationRender(data, constraints, pageID) {
+	console.log(constraints);
+
 	var __renderResult = [];
 	console.log(data);
 
-	var height = 300;
+	var height = 225;
 	var width = 400;
+
 	var padding = 10;
 
 	var tmpSkeletons = [];
@@ -2124,7 +2161,7 @@ function recommendationRender(data) {
 
 		for (var j = 0; j < tmp.length; j++) {
 			__renderResult.push({
-				className: "parentDiv slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + " slideIndex_" + slideIdx,
+				className: "parentDiv slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + " slideIndex_" + slideIdx + ' recSlide',
 				height: height,
 				width: width,
 				padding: padding,
@@ -2135,7 +2172,9 @@ function recommendationRender(data) {
 
 	console.log(__renderResult);
 
-	finalRendering(__renderResult, data);
+	recommendationLoadingHistory[pageID].renderResult = __renderResult;
+
+	finalRendering(recommendationLoadingHistory[pageID].renderResult, data, constraints);
 }
 
 function dataClustering(contentsCnt, num) {
@@ -2168,7 +2207,8 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 				for (var i = 0; i < clusteredResult[j].length; i++) {
 					t.push({
 						text: data.contents[clusteredResult[j][i]].contents,
-						contentIndex: clusteredResult[j][i]
+						contentIndex: clusteredResult[j][i],
+						mappingID: data.contents[clusteredResult[j][i]].mappingID
 					})
 				}
 
@@ -2205,7 +2245,8 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 				for (var i = 0; i < clusteredResult[j].length; i++) {
 					t.push({
 						text: data.contents[clusteredResult[j][i]].contents,
-						contentIndex: clusteredResult[j][i]
+						contentIndex: clusteredResult[j][i],
+						mappingID: data.contents[clusteredResult[j][i]].mappingID
 					})
 				}
 
@@ -2311,10 +2352,16 @@ function renderText(t) {
 	}
 }
 
-function sortSlides(value) {
-	console.log(value);
-
+function sortSlides(constraints, numResources) {
 	var slideList = [];
+
+	console.log(constraints);
+	console.log(numResources);
+
+	var targetNumText = numResources - parseInt(numResources * constraints.descAbst / 4)
+	var targetNumFigure = numResources - targetNumText;
+
+	console.log(targetNumText, targetNumFigure);
 
 	$("#recommendedSlideList").children().each(function (e, item) {
 		slideList.push({
@@ -2327,8 +2374,8 @@ function sortSlides(value) {
 
 	for(var i=0;i<slideList.length;i++) {
 		var dist = /* Math.abs(value.numObj - slideList[i].numObj) + */
-				   Math.abs(value.numText - slideList[i].numText) + 
-				   Math.abs(value.numFigure - slideList[i].numFigure);
+				   Math.abs(targetNumText - slideList[i].numText) + 
+				   Math.abs(targetNumFigure - slideList[i].numFigure);
 
 		slideList[i].dist = dist;
 	}
@@ -2350,8 +2397,9 @@ function sortSlides(value) {
 	$("#recommendedSlideList").html(result);
 }
 
-function finalRendering(r, data) {
-	var result = 
+function finalRendering(r, data, constraints) {
+	var result = "";
+	/*
 	"<table>" + 
 		"<tr> " + 
 			"<td> # obj </td>" + 
@@ -2378,11 +2426,9 @@ function finalRendering(r, data) {
 				'</div>' + 
 			"</td>" + 
 		"</tr>" + 
-	"</table>";
+	"</table>";*/
 				
 	var slideList = [];
-
-	console.log(r);
 
 	var maxNumObj = 0, maxNumText = 0, maxNumFigure = 0;
 
@@ -2428,7 +2474,7 @@ function finalRendering(r, data) {
 				"</div>" +
 				"</div>";
 
-			numText = numText + (ib.type == "text" ? ib.contents.length : 0);
+			numText = numText + (ib.type == "text" ? 1 /*ib.contents.length*/ : 0);
 			numFigure = numFigure + (ib.type == "image" ? 1 : 0);
 			numObj = numObj + (ib.type == "text" ? ib.contents.length : 0) + (ib.type == "image" ? 1 : 0);
 
@@ -2468,7 +2514,7 @@ function finalRendering(r, data) {
 	result = result + "</div>";
 
 	$("#SlideRecommendation").html(result);
-
+/*
 	$("#slideObjSlider")[0].max = maxNumObj;
 	$("#slideTextSlider")[0].max = maxNumText;
 	$("#slideImageSlider")[0].max = maxNumFigure;
@@ -2476,16 +2522,15 @@ function finalRendering(r, data) {
 	$("#slideObjSlider")[0].value = 0; 
 	$("#slideTextSlider")[0].value = 0;
 	$("#slideImageSlider")[0].value = 0;
+	*/
 
-	sortSlides( {
-		numObj: 0,
-		numText: 0,
-		numFigure: 0
-	} );
+	sortSlides( constraints, data.contents.length );
 
 	for (var i = 0; i < r.length; i++) {
 		var innerBody = '';
 		var objList = document.getElementsByClassName(r[i].className.split(' ')[1]);
+
+		console.log(r[i].className);
 
 		$("#noteSpaceExperiment").html(
 			$("." + r[i].className.split(' ')[1]).html()
@@ -2499,6 +2544,9 @@ function finalRendering(r, data) {
 			for (var l = 0; l < r[i].innerBoxes[j].contents.length; l++) {
 				var shorten_result = data.textShortening[r[i].innerBoxes[j].contents[l].contentIndex];
 				var objID = r[i].innerBoxes[j].className;
+
+				console.log(objID);
+				console.log(shorten_result);
 
 				var objs = document.getElementsByClassName(objID + "_body");
 
@@ -2532,6 +2580,11 @@ function finalRendering(r, data) {
 					// document.getElementsByClassName(objID + "_body")[1].innerHTML = minText;
 				}
 
+				console.log(objID);
+
+				for(var k=0;k<textResult.length;k++) 
+					r[i].innerBoxes[j].contents[k].text = textResult[k].text;
+				
 				document.getElementsByClassName(objID + "_body")[1].innerHTML = renderText(textResult);
 			}
 		}
@@ -2542,7 +2595,7 @@ function finalRendering(r, data) {
 $(document).ready(function() {
         // $("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
 
-
+/*
 		$(document).on("input", ".slideSlider", function(e) {
 			console.log("YAY");
 
@@ -2560,6 +2613,29 @@ $(document).ready(function() {
 				numFigure: numFigure
 			});
 		})
+		*/
+
+		$(document).on("click", ".recSlide", function(e) {
+			var t = e.target;
+			
+			while(1) {
+				if(t == null) break;
+
+				if($(t).hasClass("recSlide")) break;
+
+				t = $(t).parent();
+			}
+
+			console.log(t);
+			console.log(curSlidePage);
+
+			var slideInfo = getSlideInfoOnRecommendation($(t)[0].className, recommendationLoadingHistory[curSlidePage].renderResult );
+
+			console.log(slideInfo);
+
+			if(slideInfo != -1)
+				renderSlideOnGoogle(slideInfo, curSlidePage);
+		});
 
 		$(document).on("click", ".tablinks", function(event) {
 			var cityName = $(this).html();
@@ -2697,7 +2773,10 @@ $(document).ready(function() {
 					if(mappingID == "null") continue;
 
 					var pgNumber = mappingPageNumberIndex[mappingID];
-					var t = highlightDB.mapping[pgNumber][mappingID].text;
+					var t = {
+						text: highlightDB.mapping[pgNumber][mappingID].text,
+						mappingID: mappingID
+					}
 
 					text.push(t);
 
@@ -3082,6 +3161,12 @@ $(document).ready(function() {
 				disappearPresentationObjective();
 		});
 
+		$(document).on("input", "#slideLayoutSlider", function(e) {
+			var constraints = getConstraints();
+
+			recommendationRender(recommendationLoadingHistory[curSlidePage].result, constraints, curSlidePage);
+		});
+
 		$(document).on("input", "#sparseDenseSlider", function(e) {
 			var value = $("#sparseDenseSlider")[0].value;
 
@@ -3089,6 +3174,8 @@ $(document).ready(function() {
 			var maxPageNum = $("#sparseDenseSlider")[0].max;
 
 			$("#presentationTimeInputBox")[0].value = maxPageNum - (value - minPageNum);
+
+			updateSectionLevelCoverageValue();
 		});
 
 		$(document).on("input", "#presentationTimeInputBox", function(e) {
@@ -3106,11 +3193,9 @@ $(document).ready(function() {
 				var minPageNum = parseInt($("#sparseDenseSlider")[0].min);
 				var maxPageNum = parseInt($("#sparseDenseSlider")[0].max);
 
-				console.log(minPageNum);
-				console.log(maxPageNum);
-				console.log(minPageNum + (maxPageNum-value));
-
 				$("#sparseDenseSlider")[0].value = minPageNum + (maxPageNum-value);
+
+				updateSectionLevelCoverageValue();
 			}
 		});
 
@@ -3132,12 +3217,19 @@ $(document).ready(function() {
 
 				$("#sparseDenseSlider")[0].max = maxPageNum;
 				$("#sparseDenseSlider")[0].min = minPageNum;
-
 				$("#sparseDenseSlider")[0].value = parseInt((minPageNum + maxPageNum) / 2);
+
+				$("#slideLayoutSlider")[0].min = 0;
+				$("#slideLayoutSlider")[0].max = 4;
+				$("#slideLayoutSlider")[0].value = 0;
+
 				$("#presentationTimeInputBox")[0].value = maxPageNum - (parseInt((minPageNum + maxPageNum) / 2) - minPageNum);
 
 				console.log(maxPageNum);
 				console.log(minPageNum);
+
+				updatePresentationObjectiveStructure();
+				updateSectionLevelCoverageValue();
 
 				appearPresentationObjective();
 		});
@@ -4076,4 +4168,119 @@ function doBFS(myGraph, r) {
 	}
 
 	return result;
+}
+
+function updateSectionLevelCoverageValue() {
+	var info = organizeHighlightOnSections();
+	var numSlides = getNumSlides();
+	var finalRepresentation = printLink(info, T, C, numSlides);
+
+	console.log(finalRepresentation);
+
+	$(".sectionLevelCoverageInput").each(function (idx, elem) {
+		var sectionKey = $(elem).attr("sectionkey");
+
+		if(sectionKey in finalRepresentation)
+			$(elem)[0].value = finalRepresentation[sectionKey].length;
+		else 
+			$(elem)[0].value = 0;
+	})
+}
+
+function getSlideInfoOnRecommendation(className, recommendedSlides) {
+	console.log(className);
+	console.log(recommendedSlides);
+
+	for(var i=0;i<recommendedSlides.length;i++) {
+		if(recommendedSlides[i].className == className)
+		return recommendedSlides[i];
+	}
+
+	return -1;
+}
+
+function renderSlideOnGoogle(slideInfo, curSlidePage) {
+	console.log(slideInfo);
+	console.log(curSlidePage);
+	console.log(slideDB);
+	
+	var requests = [];
+
+	for(var key in slideDB[curSlidePage]) {
+		requests.push({
+			"deleteObject": {
+				"objectId": key,
+			},
+		});
+	}
+
+	var updateInfo = [];
+
+	for(var i=0;i<slideInfo.innerBoxes.length;i++) {
+		var objID = makeid(10);
+
+		var resText = '';
+		var curStartIndex = 0;
+		var curEndIndex = 0;
+		var listID = makeid(10);
+
+		for(var j=0;j<slideInfo.innerBoxes[i].contents.length;j++) {
+			updateInfo.push({
+				slideID: curSlidePage,
+				objID: objID,
+				paragraphIndex: j,
+				mappingID: slideInfo.innerBoxes[i].contents[j].mappingID
+			});
+
+			resText = (resText == '' ? '' : '\n') + slideInfo.innerBoxes[i].contents[j].text;
+
+		}
+
+		requests.push({
+			"createShape": {
+				objectId: objID,
+				elementProperties: {
+					pageObjectId: curSlidePage,
+					size: {
+						width: {
+							magnitude: getSlideWidth(slideInfo.innerBoxes[i].width) * 0.75292857248934,
+							unit: "pt"
+						},
+						height: {
+							magnitude: getSlideHeight(slideInfo.innerBoxes[i].height) * 0.75292857248934,
+							unit: "pt"
+						},
+					},
+					transform: {
+						scaleX: 1,
+						scaleY: 1,
+						translateX: getSlideWidth(slideInfo.innerBoxes[i].left) * 0.75292857248934,
+						translateY: getSlideHeight(slideInfo.innerBoxes[i].top) * 0.75292857248934,
+						unit: "pt"
+					}
+				},
+				shapeType: "TEXT_BOX"
+			}
+		});
+
+		requests.push({
+			"insertText": {
+				"objectId": objID,
+				"text": resText,
+				}
+		});
+	}
+
+	console.log(updateInfo);
+
+	// requests = requests.concat(genRequest(elem.slideID, slideIndex, "TITLE_AND_BODY", elem.objIDs, [structureHighlightDB[s].text].concat(getListOnKey(elem.highlightInfo, "text"))));
+
+	writeSlideMappingInfoBulk(updateInfo).then(() => {
+		gapi.client.slides.presentations.batchUpdate({
+			presentationId: PRESENTATION_ID,
+			requests: requests
+		}).then((createSlideResponse) => {
+			//console.log(createSlideResponse);
+		});
+	});
 }
