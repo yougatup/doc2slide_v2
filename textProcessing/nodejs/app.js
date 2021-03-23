@@ -109,7 +109,8 @@ parent: `${part.dependencyEdge.headTokenIndex}`
 
   return {
 		entity: retEntity,
-		mySyntax: retValue
+		mySyntax: retValue,
+		syntax: syntax
 	}
   // [END language_syntax_text]
 }
@@ -124,13 +125,63 @@ app.use(function(req, res, next) {
 			  next();
 			  });
 
+function writeCache(text, result) {
+    var mysql = require('sync-mysql');
+
+    var con = new mysql( {
+        "host": "localhost",
+        "user": "doc2slide",
+        "database": "doc2slide",
+        "password": "Rhaehfl12!@"
+    });
+
+    var queryString = "INSERT INTO GoogleQueryCache (queryString, result) values (?, ?)";
+
+    var res = con.query(queryString, [text, JSON.stringify(result)]);
+    console.log("result : " + result);
+
+    con.close()
+}
+
+function dbHIT(text) {
+    var mysql = require('sync-mysql');
+
+    var con = new mysql( {
+        "host": "localhost",
+        "user": "doc2slide",
+        "database": "doc2slide",
+        "password": "Rhaehfl12!@"
+    });
+
+    var queryString = "SELECT * from GoogleQueryCache where queryString = ?"
+    var res = con.query(queryString, [text]);
+
+    console.log(res);
+
+    con.close()
+
+    if(res.length <= 0) return -1;
+    else return res;
+}
+
 app.get('/', function(req, res){
 		console.log(req.query);
 
+        var cache = dbHIT(req.query.text);
+
+        if(cache != -1){
+            console.log(cache[0].result);
+            console.log(JSON.parse(cache[0].result));
+
+            res.send(JSON.parse(cache[0].result));
+            return;
+        }
+
 		analyzeSyntaxOfText(req.query.text.replace("_", ' ')).then(result => {
 			res.send(result);
+            writeCache(req.query.text, result);
 		});
-		});
+});
 
 app.listen(3333);
 
