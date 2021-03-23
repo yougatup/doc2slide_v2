@@ -384,7 +384,7 @@ pointer-events: none !important;
 
 .workspaceRect {
 position: absolute;
-pointer-events: auto !important;
+ /* pointer-events: auto !important; */
 }
 
 .workspaceRect.onEditing {
@@ -962,6 +962,7 @@ width: 100%;
 
   .recSlide {
 	  cursor: pointer;
+	  font-family: "Arial";
   }
 
   .recSlide:hover {

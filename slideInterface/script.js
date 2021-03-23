@@ -366,54 +366,69 @@ async function clearDB() {
 	await firebase.database().ref().update(updates);
 }
 
-async function initializeSlide() {
-	gapi.client.slides.presentations.get({
-	  presentationId: PRESENTATION_ID
-	}).then(function(response) {
-	  var slides = response.result.slides;
-	
-	  initialSlideCnt = slides.length;
-	  removedSlideCnt = 0;
-	
-	  var requests = [];
+async function writeInitializeSlides() {
+	var updates = {}
 
-	  for(var i=0;i<slides.length;i++) {
-			var pageID = slides[i].objectId;
+	for(var key in slideDB) {
+		updates['/users/' + userName + '/slideInfo/' + key] = {}
+
+		delete slideDB[key]
+	}
+
+	await firebase.database().ref().update(updates);
+}
+async function initializeSlide() {
+	writeInitializeSlides().then(() => {
+		console.log(slideDB);
+
+		gapi.client.slides.presentations.get({
+			presentationId: PRESENTATION_ID
+		}).then(function (response) {
+			var slides = response.result.slides;
+
+			initialSlideCnt = slides.length;
+			removedSlideCnt = 0;
+
+			var requests = [];
+
+			for (var i = 0; i < slides.length; i++) {
+				var pageID = slides[i].objectId;
+
+				requests.push({
+					"deleteObject": {
+						"objectId": pageID,
+					},
+				});
+			}
 
 			requests.push({
-	    		"deleteObject": {
-	     		"objectId": pageID,
-	         	},
+				createSlide: {
+					insertionIndex: '0',
+					slideLayoutReference: {
+						predefinedLayout: 'TITLE'
+					}
+				}
 			});
-	  }
+			/*
+				  requests.push({
+					 createSlide: {
+						  insertionIndex: '1',
+						  slideLayoutReference: {
+							  predefinedLayout: 'TITLE_AND_BODY'
+						  }
+					   }
+				  }); */
 
-	  requests.push({
-		createSlide: {
-	    	insertionIndex: '0',
-		   	slideLayoutReference: {
-			    predefinedLayout: 'TITLE'
-		   }
-		 }
-	  });
-/*
-	  requests.push({
-		 createSlide: {
-		 	insertionIndex: '1',
-		 	slideLayoutReference: {
-		     	predefinedLayout: 'TITLE_AND_BODY'
-		 	}
-	 	 }
-	  }); */
-
-	  gapi.client.slides.presentations.batchUpdate({
-	     presentationId: PRESENTATION_ID,
-	     requests: requests
-	  }).then((createSlideResponse) => {
-	     // successfully pasted the text
-		 return true;
-	  });
-	}).catch(function (err) {
-	  console.log(err);
+			gapi.client.slides.presentations.batchUpdate({
+				presentationId: PRESENTATION_ID,
+				requests: requests
+			}).then((createSlideResponse) => {
+				// successfully pasted the text
+				return true;
+			});
+		}).catch(function (err) {
+			console.log(err);
+		});
 	});
 }
 
@@ -773,6 +788,17 @@ async function putText(p, mappingID) {
 	});
 }
 
+async function removeSlideMappingInPage(pageID) {
+	var updates = {};
+
+	for(var key in slideDB[pageID]) {
+		updates['/users/' + userName + '/slideInfo/' + pageID] = {}
+
+		delete slideDB[pageID][key]
+	}
+
+	await firebase.database().ref().update(updates);
+}
 async function removeSlideMappingInfo(pageID, objID, paragraphIndex) {
 	var updates = {};
 
@@ -1501,7 +1527,6 @@ function createSlidesOnGoogleSlide(finalRepresentation) {
 	var updateInfo = [];
 
 	for(var s in finalRepresentation) {
-
 		for (var j = 0; j < finalRepresentation[s].length; j++) {
 			var h = [];
 
@@ -1584,8 +1609,8 @@ function createSlidesOnGoogleSlide(finalRepresentation) {
 	console.log(updateInfo);
 	console.log(requests);
 
-	writeSlideMappingInfoBulk(updateInfo).then(() => {
-		initializeSlide().then(() => {
+	initializeSlide().then(() => {
+		writeSlideMappingInfoBulk(updateInfo).then(() => {
 			gapi.client.slides.presentations.batchUpdate({
 				presentationId: PRESENTATION_ID,
 				requests: requests
@@ -2031,9 +2056,7 @@ function getLeafBoxesInternal(nodeSet, curNode, curLeft, curTop, curHeight, curW
 	return ret;
 }
 
-function loadRecommendation(pageID, text) {
-	// console.log("right");
-
+function loadRecommendation(pageID) {
 	if(pageID in recommendationLoadingHistory) {
 		if(recommendationLoadingHistory[pageID].loading){
 			//console.log("NOW LOADING");
@@ -2046,6 +2069,26 @@ function loadRecommendation(pageID, text) {
 			recommendationRender(recommendationLoadingHistory[pageID].result, constraints, pageID);
 		}
 		return;
+	}
+
+	var curHighlight = highlightDB.slideInfo[pageID];
+
+	var text = [];
+
+	for (var obj in curHighlight) {
+		for (var k in curHighlight[obj]) {
+			var mappingID = curHighlight[obj][k].mappingID;
+
+			if (mappingID == "null") continue;
+
+			var pgNumber = mappingPageNumberIndex[mappingID];
+			var t = {
+				text: highlightDB.mapping[pgNumber][mappingID].text,
+				mappingID: mappingID
+			}
+
+			text.push(t);
+		}
 	}
 
 	recommendationLoadingHistory[pageID] = {
@@ -2530,8 +2573,6 @@ function finalRendering(r, data, constraints) {
 		var innerBody = '';
 		var objList = document.getElementsByClassName(r[i].className.split(' ')[1]);
 
-		console.log(r[i].className);
-
 		$("#noteSpaceExperiment").html(
 			$("." + r[i].className.split(' ')[1]).html()
 		);
@@ -2544,9 +2585,6 @@ function finalRendering(r, data, constraints) {
 			for (var l = 0; l < r[i].innerBoxes[j].contents.length; l++) {
 				var shorten_result = data.textShortening[r[i].innerBoxes[j].contents[l].contentIndex];
 				var objID = r[i].innerBoxes[j].className;
-
-				console.log(objID);
-				console.log(shorten_result);
 
 				var objs = document.getElementsByClassName(objID + "_body");
 
@@ -2579,8 +2617,6 @@ function finalRendering(r, data, constraints) {
 					textResult.push({ text: minText });
 					// document.getElementsByClassName(objID + "_body")[1].innerHTML = minText;
 				}
-
-				console.log(objID);
 
 				for(var k=0;k<textResult.length;k++) 
 					r[i].innerBoxes[j].contents[k].text = textResult[k].text;
@@ -2795,7 +2831,7 @@ $(document).ready(function() {
 
 			if(curSlidePage != p.pageID){
 				$("#SlideRecommendation").html("Loading ...");
-				loadRecommendation(pageID, text);
+				loadRecommendation(pageID);
 			}
 
 			for(var i=0;i<p.objects.length;i++) {
@@ -4217,70 +4253,190 @@ function renderSlideOnGoogle(slideInfo, curSlidePage) {
 	var updateInfo = [];
 
 	for(var i=0;i<slideInfo.innerBoxes.length;i++) {
-		var objID = makeid(10);
+		if (slideInfo.innerBoxes[i].type == 'text') {
+			var objID = makeid(10);
 
-		var resText = '';
-		var curStartIndex = 0;
-		var curEndIndex = 0;
-		var listID = makeid(10);
+			var resText = '';
+			var curStartIndex = 0;
+			var curEndIndex = 0;
+			var listID = makeid(10);
 
-		for(var j=0;j<slideInfo.innerBoxes[i].contents.length;j++) {
-			updateInfo.push({
-				slideID: curSlidePage,
-				objID: objID,
-				paragraphIndex: j,
-				mappingID: slideInfo.innerBoxes[i].contents[j].mappingID
+			var isBullet = false;
+
+			if (slideInfo.innerBoxes[i].contents.length > 1) isBullet = true;
+
+			for (var j = 0; j < slideInfo.innerBoxes[i].contents.length; j++) {
+				updateInfo.push({
+					slideID: curSlidePage,
+					objID: objID,
+					paragraphIndex: j,
+					mappingID: slideInfo.innerBoxes[i].contents[j].mappingID
+				});
+
+				resText = resText + (resText == '' ? '' : '\n') + slideInfo.innerBoxes[i].contents[j].text;
+			}
+
+			requests.push({
+				"createShape": {
+					objectId: objID,
+					elementProperties: {
+						pageObjectId: curSlidePage,
+						size: {
+							width: {
+								magnitude: getSlideWidth(slideInfo.innerBoxes[i].width) * 0.75292857248934,
+								unit: "pt"
+							},
+							height: {
+								magnitude: getSlideHeight(slideInfo.innerBoxes[i].height) * 0.75292857248934,
+								unit: "pt"
+							},
+						},
+						transform: {
+							scaleX: 1,
+							scaleY: 1,
+							translateX: getSlideWidth(slideInfo.innerBoxes[i].left) * 0.75292857248934,
+							translateY: getSlideHeight(slideInfo.innerBoxes[i].top) * 0.75292857248934,
+							unit: "pt"
+						}
+					},
+					shapeType: "TEXT_BOX"
+				}
 			});
 
-			resText = (resText == '' ? '' : '\n') + slideInfo.innerBoxes[i].contents[j].text;
-
-		}
-
-		requests.push({
-			"createShape": {
-				objectId: objID,
-				elementProperties: {
-					pageObjectId: curSlidePage,
-					size: {
-						width: {
-							magnitude: getSlideWidth(slideInfo.innerBoxes[i].width) * 0.75292857248934,
-							unit: "pt"
+			requests.push({
+				"updateShapeProperties": {
+					objectId: objID,
+					shapeProperties: {
+						/*
+						outline: {
+							outlineFill: {
+								solidFill: {
+									color: {
+										rgbColor: {
+											red: 0,
+											green: 0,
+											blue: 0
+										}
+									}
+								}
+							},
+							weight: {
+								magnitude: 1,
+								unit: "pt"
+							},
+							dashStyle: "SOLID",
 						},
-						height: {
-							magnitude: getSlideHeight(slideInfo.innerBoxes[i].height) * 0.75292857248934,
-							unit: "pt"
+						*/
+						contentAlignment: "MIDDLE"
+					},
+					fields: "outline.outlineFill.solidFill.color, contentAlignment"
+				}
+			});
+
+			requests.push({
+				"insertText": {
+					"objectId": objID,
+					"text": resText,
+				}
+			});
+
+			requests.push({
+				"updateTextStyle": {
+					objectId: objID,
+					style: {
+						fontSize: {
+							"magnitude": 25.5,
+							"unit": "pt"
 						},
 					},
-					transform: {
-						scaleX: 1,
-						scaleY: 1,
-						translateX: getSlideWidth(slideInfo.innerBoxes[i].left) * 0.75292857248934,
-						translateY: getSlideHeight(slideInfo.innerBoxes[i].top) * 0.75292857248934,
-						unit: "pt"
-					}
-				},
-				shapeType: "TEXT_BOX"
-			}
-		});
-
-		requests.push({
-			"insertText": {
-				"objectId": objID,
-				"text": resText,
+					fields: "fontSize"
 				}
-		});
+			});
+
+			if (isBullet) {
+
+				requests.push({
+					createParagraphBullets: {
+						objectId: objID,
+						textRange: {
+							type: "ALL"
+						},
+						bulletPreset: "BULLET_DISC_CIRCLE_SQUARE"
+					}
+				});
+
+				requests.push({
+					"updateParagraphStyle": {
+						objectId: objID,
+						style: {
+							lineSpacing: 110,
+						},
+						textRange: {
+							type: "ALL"
+						},
+						fields: "lineSpacing"
+					}
+				});
+			}
+			else {
+				requests.push({
+					"updateParagraphStyle": {
+						objectId: objID,
+						style: {
+							alignment: "CENTER"
+						},
+						fields: "alignment"
+					}
+				});
+			}
+		}
+		else {
+			console.log(slideInfo.innerBoxes[i]);
+
+			var objID = makeid(10);
+			var imageURL = slideInfo.innerBoxes[i].contents;
+
+			requests.push({
+				createImage: {
+					objectId: objID,
+					elementProperties: {
+						pageObjectId: curSlidePage,
+						size: {
+							width: {
+								magnitude: getSlideWidth(slideInfo.innerBoxes[i].width) * 0.75292857248934,
+								unit: "pt"
+							},
+							height: {
+								magnitude: getSlideHeight(slideInfo.innerBoxes[i].height) * 0.75292857248934,
+								unit: "pt"
+							},
+						},
+						transform: {
+							scaleX: 1,
+							scaleY: 1,
+							translateX: getSlideWidth(slideInfo.innerBoxes[i].left) * 0.75292857248934,
+							translateY: getSlideHeight(slideInfo.innerBoxes[i].top) * 0.75292857248934,
+							unit: "pt"
+						}
+					},
+					url: imageURL
+				}
+			});
+		}
 	}
 
 	console.log(updateInfo);
 
 	// requests = requests.concat(genRequest(elem.slideID, slideIndex, "TITLE_AND_BODY", elem.objIDs, [structureHighlightDB[s].text].concat(getListOnKey(elem.highlightInfo, "text"))));
 
-	writeSlideMappingInfoBulk(updateInfo).then(() => {
-		gapi.client.slides.presentations.batchUpdate({
-			presentationId: PRESENTATION_ID,
-			requests: requests
-		}).then((createSlideResponse) => {
-			//console.log(createSlideResponse);
+	removeSlideMappingInPage(curSlidePage).then( () => {
+		writeSlideMappingInfoBulk(updateInfo).then(() => {
+			gapi.client.slides.presentations.batchUpdate({
+				presentationId: PRESENTATION_ID,
+				requests: requests
+			}).then((createSlideResponse) => {
+				//console.log(createSlideResponse);
+			});
 		});
-	});
+	})
 }
