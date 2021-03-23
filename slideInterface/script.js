@@ -33,6 +33,10 @@ var T, C;
 var MAX_NUMBER_OF_BULLETS = 3;
 var MAX_NUMBER_OF_SLIDES = 10;
 
+function getImgList(x) { 
+	return x[Object.keys(x)[0]][0];
+}
+
 function presentationObjectiveRowElement(sectionKey, index) {
 	return "<tr>" + 
 		"<td class='sectionLevelCoverageRowTitle' sectionKey='" + sectionKey + "' rowIndex='" + index + "'> </td>" + 
@@ -2277,7 +2281,7 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 					top: elem.curTop + padding,
 					left: elem.curLeft + padding,
 					type: "image",
-					contents: data.imageURL[idx].imgResult[0].linkList[0]
+					contents: getImgList(data.imageURL[idx].imgResult[0].linkList)
 				})
 
 			}
@@ -2310,7 +2314,7 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 					top: elem.curTop,
 					left: elem.curLeft,
 					type: "image",
-					contents: data.imageURL[idx].imgResult[0].linkList[0]
+					contents: getImgList(data.imageURL[idx].imgResult[0].linkList)
 				})
 			}
 			else if(k == 3) {
@@ -2333,7 +2337,7 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 					top: elem.curTop + padding,
 					left: elem.curLeft + padding,
 					type: "image",
-					contents: data.imageURL[idx].imgResult[0].linkList[0]
+					contents: getImgList(data.imageURL[idx].imgResult[0].linkList)
 				})
 			}
 
