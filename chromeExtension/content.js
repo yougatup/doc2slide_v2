@@ -63,9 +63,11 @@ function pageUpdated(mutationsList) {
 	// console.log($("g[pointer-events='visiblePainted']").children())
 	// console.log($("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8'], path[fill='#1a73e8']"))	
 
+	/*
 	$("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8']").attr("stroke", null);
 	$("g[pointer-events='visiblePainted']").children("path[fill='#1a73e8']").attr("fill", null);
 	$("path[stroke='#8ab4f8'][stroke-opacity='0.6']").attr("stroke", null);
+	*/
 
 	if(curSlideState == "WAIT") {
 		function get_common_ancestor(a, b)

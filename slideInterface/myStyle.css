@@ -370,7 +370,7 @@ pointer-events: auto !important;
 position: absolute;
 border: 2px dashed lightgray;
 z-index: 1000 !important;
-pointer-events: auto !important;
+/* pointer-events: auto !important; */
 }
 
 .objectIndicator.onEditing {
