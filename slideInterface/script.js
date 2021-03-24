@@ -2265,8 +2265,8 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 
 				tmp[k].push({
 					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
-					height: elem.curHeight - 2 * padding,
-					width: elem.curWidth - 2 * padding,
+					height: elem.curHeight - 1 * padding,
+					width: elem.curWidth - 1 * padding,
 					top: elem.curTop + padding,
 					left: elem.curLeft + padding,
 					type: "text",
@@ -2280,8 +2280,8 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 
 				tmp[k].push({
 					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
-					height: elem.curHeight - 2 * padding,
-					width: elem.curWidth - 2 * padding,
+					height: elem.curHeight - padding,
+					width: elem.curWidth - padding,
 					top: elem.curTop + padding,
 					left: elem.curLeft + padding,
 					type: "image",
@@ -2303,8 +2303,8 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 
 				tmp[k].push({
 					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
-					height: (-2 * padding) + (elem.curHeight > elem.curWidth ? elem.curHeight / 2 : elem.curHeight),
-					width: (-2 * padding) + (elem.curHeight > elem.curWidth ? elem.curWidth : elem.curWidth / 2),
+					height: (-1 * padding) + (elem.curHeight > elem.curWidth ? elem.curHeight / 2 : elem.curHeight),
+					width: (-1 * padding) + (elem.curHeight > elem.curWidth ? elem.curWidth : elem.curWidth / 2),
 					top: elem.curHeight > elem.curWidth ? elem.curTop + (elem.curHeight / 2) + padding : elem.curTop + padding,
 					left: elem.curHeight > elem.curWidth ? elem.curLeft + padding : elem.curLeft + (elem.curWidth / 2) + padding,
 					type: "text",
@@ -2327,8 +2327,8 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 				tmp[k].push({
 					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + "captionText",
 					height: 10,
-					width: elem.curWidth - 2 * padding,
-					top: elem.curTop + (elem.curHeight - 2 * padding) + padding,
+					width: elem.curWidth - 1 * padding,
+					top: elem.curTop + (elem.curHeight - 1 * padding) + padding,
 					left: elem.curLeft + padding,
 					type: "textCaption",
 					contents: [{text: data.imageURL[idx].imgResult[0].entity}]
@@ -2336,8 +2336,8 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 
 				tmp[k].push({
 					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
-					height: elem.curHeight - 2 * padding,
-					width: elem.curWidth - 2 * padding,
+					height: elem.curHeight - 1 * padding,
+					width: elem.curWidth - 1 * padding,
 					top: elem.curTop + padding,
 					left: elem.curLeft + padding,
 					type: "image",
@@ -2580,6 +2580,8 @@ function finalRendering(r, data, constraints) {
 
 	sortSlides( constraints, data.contents.length );
 
+	console.log(constraints.textLength);
+
 	for (var i = 0; i < r.length; i++) {
 		var innerBody = '';
 		var objList = document.getElementsByClassName(r[i].className.split(' ')[1]);
@@ -2593,7 +2595,25 @@ function finalRendering(r, data, constraints) {
 
 			if (r[i].innerBoxes[j].type != "text") continue;
 
+			var objID = r[i].innerBoxes[j].className;
+
 			for (var l = 0; l < r[i].innerBoxes[j].contents.length; l++) {
+				var contentIndex = r[i].innerBoxes[j].contents[l].contentIndex;
+				var text_to_render = '';
+
+				for(var k=0;k<data.textShortening.shortenResult[contentIndex].result.length;k++) {
+					var text = data.textShortening.shortenResult[contentIndex].result[k].text;
+
+					if(text.length < constraints.textLength) {
+						text_to_render = text;
+						break;
+					}
+				}
+
+				textResult.push({text: text_to_render});
+				r[i].innerBoxes[j].contents[l].text = text_to_render;
+
+				/*
 				var shorten_result = data.textShortening[r[i].innerBoxes[j].contents[l].contentIndex];
 				var objID = r[i].innerBoxes[j].className;
 
@@ -2631,9 +2651,11 @@ function finalRendering(r, data, constraints) {
 
 				for(var k=0;k<textResult.length;k++) 
 					r[i].innerBoxes[j].contents[k].text = textResult[k].text;
-				
-				document.getElementsByClassName(objID + "_body")[1].innerHTML = renderText(textResult);
+				*/ 
+
 			}
+
+			document.getElementsByClassName(objID + "_body")[1].innerHTML = renderText(textResult);
 		}
 	}
 }
@@ -3214,6 +3236,12 @@ $(document).ready(function() {
 			recommendationRender(recommendationLoadingHistory[curSlidePage].result, constraints, curSlidePage);
 		});
 
+		$(document).on("input", "#textLengthSlider", function(e) {
+			var constraints = getConstraints();
+
+			recommendationRender(recommendationLoadingHistory[curSlidePage].result, constraints, curSlidePage);
+		});
+
 		$(document).on("input", "#sparseDenseSlider", function(e) {
 			var value = $("#sparseDenseSlider")[0].value;
 
@@ -3272,8 +3300,17 @@ $(document).ready(function() {
 
 				$("#presentationTimeInputBox")[0].value = maxPageNum - (parseInt((minPageNum + maxPageNum) / 2) - minPageNum);
 
-				console.log(maxPageNum);
-				console.log(minPageNum);
+				var maxLength = 0;
+				for(var s in info) {
+					for(var i=0;i<info[s].length;i++) {
+						maxLength = Math.max(maxLength, info[s][i].text.length)
+					}
+				}
+
+				$("#textLengthSlider")[0].min = 0;
+				$("#textLengthSlider")[0].max = maxLength;
+				$("#textLengthSlider")[0].value = parseInt(maxLength / 2);
+
 
 				updatePresentationObjectiveStructure();
 				updateSectionLevelCoverageValue();
