@@ -34,7 +34,11 @@ var MAX_NUMBER_OF_BULLETS = 3;
 var MAX_NUMBER_OF_SLIDES = 10;
 
 function getImgList(x) { 
-	return x[Object.keys(x)[0]][0];
+	for(var i in x) {
+		if(x[i].length > 0)
+			return x[i][0];
+	}
+	return -1;
 }
 
 function presentationObjectiveRowElement(sectionKey, index) {
@@ -2485,6 +2489,9 @@ function finalRendering(r, data, constraints) {
 
 		for (var j = 0; j < r[i].innerBoxes.length; j++) {
 			var ib = r[i].innerBoxes[j];
+
+			console.log(ib);
+			console.log(ib.contents);
 
 			innerBody = innerBody +
 				"<div style='" +
