@@ -111,13 +111,20 @@
 						<button id='presentationObjectiveDisappearBtn'> X </button>
 					</div>
 
-					<div id='presentationObjectiveBody'> 
-						<div id='presentationTime' class='presentationObjectiveTitle'>  Time for presentation 
-							<input type='text' id='presentationTimeInputBox' /> min 
+					<div class='myTab'>
+						<div id='entireSlideDeckBtn' style="border-left: 2px solid gray;" class='levelBtn btnSelected firstBtn'>
+							Slide-deck level
 						</div>
+						<div id='singleSlideBtn' style="border-left: 2px solid gray;" class='levelBtn'> Single slide level </div>
+						<div id='objectBtn' style="border-left: 2px solid gray; border-right: 2px solid gray" class='levelBtn'> Object
+							level
+						</div>
+					</div>
 
-
-
+					<div id='slideDeckLevelConstraints' class='presentationObjectiveBody'> 
+						<div class='presentationObjectiveTitle'>  Time for presentation 
+							<input type='text' id='slideDeck_presentationTimeInputBox' /> min 
+						</div>
 
 						<br>
 
@@ -126,7 +133,7 @@
 							<tr>
 								<td style='width: 15%'> Sparse</td>
 								<td style='width: 70%'>
-									<input id='sparseDenseSlider' type="range" min="1" max="100" value="50" class="objectiveSlider">
+									<input id='slideDeck_sparseDenseSlider' type="range" min="1" max="100" value="50" class="objectiveSlider">
 								</td>
 								<td style='width: 15%'> Dense </td>
 							</tr>
@@ -138,7 +145,7 @@
 							<tr>
 								<td style='width: 15%'> Descriptive </td>
 								<td style='width: 70%'>
-									<input id='slideLayoutSlider' type="range" min="0" max="4" value="0" class="objectiveSlider">
+									<input id='slideDeck_slideLayoutSlider' type="range" min="0" max="4" value="0" class="objectiveSlider">
 								</td>
 								<td style='width: 15%'> Abstractive </td>
 							</tr>
@@ -151,7 +158,7 @@
 							<tr>
 								<td style='width: 15%'> Short </td>
 								<td style='width: 70%'>
-									<input id='textLengthSlider' type="range" min="1" max="100" value="50" class="objectiveSlider">
+									<input id='slideDeck_textLengthSlider' type="range" min="1" max="100" value="50" class="objectiveSlider">
 								</td>
 								<td style='width: 15%'> Long </td>
 							</tr>
@@ -161,28 +168,105 @@
 						<div class='presentationObjectiveTitle'> Image types </div>
 
 						<div id='imageTypeRadio'> 
-							<input type="radio" id="imgTypeNotSpecified" name="imgTypeRadioName" value="imgTypeNotSpecified" checked>
+							<input type="radio" id="slideDeck_imgTypeNotSpecified" name="slideDeck_imgTypeRadioName" value="slideDeck_imgTypeNotSpecified" checked>
 							<label for="NotSpecified">Not specified</label><br>
-							<input type="radio" id="imgTypePicture" name="imgTypeRadioName" value="imgTypePicture">
+							<input type="radio" id="slideDeck_imgTypePicture" name="slideDeck_imgTypeRadioName" value="slideDeck_imgTypePicture">
 							<label for="Picture">Picture</label><br>
-							<input type="radio" id="imgTypeIllustration" name="imgTypeRadioName" value="imgTypeIllustration">
+							<input type="radio" id="slideDeck_imgTypeIllustration" name="slideDeck_imgTypeRadioName" value="slideDeck_imgTypeIllustration">
 							<label for="Illustration">Illustration</label><br>
-							<input type="radio" id="imgTypeSymbol" name="imgTypeRadioName" value="imgTypeSymbol">
+							<input type="radio" id="slideDeck_imgTypeSymbol" name="slideDeck_imgTypeRadioName" value="slideDeck_imgTypeSymbol">
 							<label for="Symbol">Symbol</label><br>
 						</div>
 						<br>
 
 
-						<div id='sectionLevelCoverage' class='presentationObjectiveTitle'> Section-level coverage </div>
-						<div id='sectionLevelCoverageContents'> 
-							<table id='sectionLevelCoverageTable'>
+						<div id='slideDeck_sectionLevelCoverage' class='presentationObjectiveTitle'> Section-level coverage </div>
+						<div id='slideDeck_sectionLevelCoverageContents'> 
+							<table id='slideDeck_sectionLevelCoverageTable'>
 							<th> <td> Section title </td> <td> number </td> </th>
 							</table>
 						</div>
 
-						<div id='presentationObjectiveConfirmBtnDiv'> 
-							<button id='presentationObjectiveConfirmBtn'> Confirm </button>
+						<div> 
+							<button id='slideDeck_presentationObjectiveConfirmBtn'> Confirm </button>
 						</div>
+					</div>
+
+
+
+					<div id='singleSlideLevelConstraints' class='presentationObjectiveBody'> 
+						<div class='presentationObjectiveTitle'> Descriptive/Abstractive </div>
+						<table class='objectiveTable'>
+							<tr>
+								<td style='width: 15%'> Descriptive </td>
+								<td style='width: 70%'>
+									<input id='singleSlide_slideLayoutSlider' type="range" min="0" max="4" value="0" class="objectiveSlider">
+								</td>
+								<td style='width: 15%'> Abstractive </td>
+							</tr>
+						</table>
+						<br>
+
+						<div class='presentationObjectiveTitle'> Text length </div>
+						<table class='objectiveTable'>
+							<tr>
+								<td style='width: 15%'> Short </td>
+								<td style='width: 70%'>
+									<input id='singleSlide_textLengthSlider' type="range" min="1" max="100" value="50" class="objectiveSlider">
+								</td>
+								<td style='width: 15%'> Long </td>
+							</tr>
+						</table>
+						<br>
+
+						<div class='presentationObjectiveTitle'> Image types </div>
+
+						<div id='singleSlide_imageTypeRadio'> 
+							<input type="radio" id="singleSlide_imgTypeNotSpecified" name="singleSlide_imgTypeRadioName" value="singleSlide_imgTypeNotSpecified" checked>
+							<label for="NotSpecified">Not specified</label><br>
+							<input type="radio" id="singleSlide_imgTypePicture" name="singleSlide_imgTypeRadioName" value="singleSlide_imgTypePicture">
+							<label for="Picture">Picture</label><br>
+							<input type="radio" id="singleSlide_imgTypeIllustration" name="singleSlide_imgTypeRadioName" value="singleSlide_imgTypeIllustration">
+							<label for="Illustration">Illustration</label><br>
+							<input type="radio" id="sinleSlide_imgTypeSymbol" name="singleSlide_imgTypeRadioName" value="singleSlide_imgTypeSymbol">
+							<label for="Symbol">Symbol</label><br>
+						</div>
+						<br>
+					</div>
+
+
+
+
+					<div id='objectLevelConstraints' class='presentationObjectiveBody'> 
+						<div id='objectiveLevelTextLengthConstraint'>
+							<div class='presentationObjectiveTitle'> Text length </div>
+							<table class='objectiveTable'>
+								<tr>
+									<td style='width: 15%'> Short </td>
+									<td style='width: 70%'>
+										<input id='object_textLengthSlider' type="range" min="1" max="100" value="50" class="objectiveSlider">
+									</td>
+									<td style='width: 15%'> Long </td>
+								</tr>
+							</table>
+						</div>
+						<br>
+
+						<div id='objectiveLevelImageTypeConstraint'>
+							<div class='presentationObjectiveTitle'> Image types </div>
+							<div id='imageTypeRadio'> 
+								<input type="radio" id="object_imgTypeNotSpecified" name="object_imgTypeRadioName" value="object_imgTypeNotSpecified" checked>
+								<label for="NotSpecified">Not specified</label><br>
+								<input type="radio" id="object_imgTypePicture" name="object_imgTypeRadioName" value="object_imgTypePicture">
+								<label for="Picture">Picture</label><br>
+								<input type="radio" id="object_imgTypeIllustration" name="object_imgTypeRadioName" value="object_imgTypeIllustration">
+								<label for="Illustration">Illustration</label><br>
+								<input type="radio" id="object_imgTypeSymbol" name="object_imgTypeRadioName" value="object_imgTypeSymbol">
+								<label for="Symbol">Symbol</label><br>
+							</div>
+						</div>
+
+						<br>
 					</div>
 
 				</div>
