@@ -223,9 +223,10 @@ function chromeExtensionBody() {
 	$(document).on("mouseup", function(e) {
 		var clickedElement = $("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8']").length;
 		var clickedSlide = $(".punch-filmstrip-thumbnail").children("rect[style='stroke: rgb(242, 153, 0); stroke-width: 3px;']").length;
-
+/*
 		console.log(clickedElement);
 		console.log(clickedSlide);
+		*/
 
 		issueEvent("extension_mouseup", {
 			clickedElement: clickedElement,
@@ -237,13 +238,13 @@ function chromeExtensionBody() {
 		var p = e.detail;
 		var pageID = p.pageID;
 
+		/*
 		console.log($("[id^='filmstrip-slide'][id$='" + pageID + "']"));
 		console.log($("[id^='filmstrip-slide'][id$='" + pageID + "']").children("[id^='filmstrip']"));
+		*/
 
 		var objs = $("[id^='filmstrip-slide'][id$='" + pageID + "']").children("[id^='filmstrip']");
 		var lastObj = $(objs)[$(objs).length-1];
-
-		console.log(lastObj);
 
 		issueEvent("extension_getLastObject", {
 			objID: $(lastObj).attr("id").split('-')[3]

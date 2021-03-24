@@ -29,6 +29,10 @@ var curSlidePage = null;
 var structureHighlightDB = {};
 var recommendationLoadingHistory = {};
 var clickedElements = false;
+var userLevelCoverageConstraints = {};
+
+var currentSlideDeckConstraints = {};
+var currentSingleSlideConstraints = {};
 
 var T, C;
 
@@ -64,9 +68,9 @@ function presentationObjectiveRowElement(sectionKey, index) {
 		})(sectionKey) + 
 		"</tr>" +
 		*/
-		"<button class='sectionLevelCoverageMinusBtn" + sectionKey + "' rowIndex='" + index + "' > - </button>" + 
+		"<button class='sectionLevelCoverageMinusBtn' sectionKey='" + sectionKey + "' rowIndex='" + index + "' > - </button>" + 
 	    "<input class='sectionLevelCoverageInput' sectionKey='" + sectionKey + "' rowIndex='" + index + "' />" + 
-		"<button class='sectionLevelCoveragePlusBtn" + sectionKey + "' rowIndex='" + index + "' > + </button>" + 
+		"<button class='sectionLevelCoveragePlusBtn' sectionKey='" + sectionKey + "' rowIndex='" + index + "' > + </button>" + 
 		"</td> </tr>";
 
 
@@ -683,7 +687,7 @@ function visualizeSlideObjects() {
 	for(var i=0;i<curSlideObjects.objects.length;i++) {
 		var bottom = -1;
 
-		// console.log(curSlideObjects.objects[i]);
+		console.log(curSlideObjects.objects[i]);
 
 		if("0" in curSlideObjects.objects[i].paragraph) { // image
 			var objectID = curSlideObjects.objects[i].objectID.substr(7);
@@ -696,10 +700,10 @@ function visualizeSlideObjects() {
 
 			$("#slidePlaneCanvas").append(
 				"<div id='objectIndicator" + tempCnt + "' class='objectIndicator' pageID='" + curSlideObjects.pageID + "'" + 
-				" objID='" + objectID + "' paragraphID='" + k + "'" + 
-				" paragraphIndex=" + k.split("-")[3] + "></div>" + 
+				" objID='" + objectID + "' paragraphID='" + 0 + "'" + 
+				" paragraphIndex=" + 0 + "></div>" + 
 				(mappedFlag ? 
-				 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator mapped' objID='" + objectID + "' paragraphID=" + k + " mappingID=" + slideDB[curSlideObjects.pageID][objectID][0].mappingID + "></div>" 
+				 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator mapped' objID='" + objectID + "' paragraphID=" + 0 + " mappingID=" + slideDB[curSlideObjects.pageID][objectID][0].mappingID + "></div>" 
 				 : 
 				 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator' objID='" + objectID + "' paragraphID=" + k + "></div>")
 
@@ -1457,7 +1461,7 @@ function chooseElements(info, sectionKey, number) {
 	return retValue;
 }
 
-function printLink(info, T, C, numSlides) {
+function printLink(info, T, C, numSlides, coverage) {
 	var res = [];
 	var Ckeys = Object.keys(C);
 	var curSection = T.length-1;
@@ -1470,29 +1474,41 @@ function printLink(info, T, C, numSlides) {
 	}
 	for(var i=0;i<T.length;i++) numPages.push(0);
 
-	while(1) {
-		numPages[curSection] = T[curSection][curSlideNum].l;
+	if(coverage != null) numPages = coverage;
+	else {
+		while (1) {
+			numPages[curSection] = T[curSection][curSlideNum].l;
 
-		if(curSection == 0) break;
+			if (curSection == 0) break;
 
-		curSlideNum -= T[curSection][curSlideNum].l;
-		curSection = curSection - 1;
+			curSlideNum -= T[curSection][curSlideNum].l;
+
+			curSection = curSection - 1;
+		}
 	}
 
-	for(var i=0;i<numPages.length;i++) {
+	console.log(numPages);
+
+	for (var i = 0; i < numPages.length; i++) {
 		var p = numPages[i];
 
 		res.push([]);
 
-		for(var j=0;j<p;j++) res[i].push(0);
+		for (var j = 0; j < p; j++) res[i].push(0);
 
 		var curPage = p;
-		var curElement = C[Ckeys[i]][0].length-1;
 
-		while(1) {
-			res[i][curPage-1] = curElement;
+		console.log(C);
+		console.log(Ckeys);
+		console.log(i);
+		console.log(C[Ckeys[i]]);
 
-			if(curPage == 1) break;
+		var curElement = C[Ckeys[i]][0].length - 1;
+
+		while (1) {
+			res[i][curPage - 1] = curElement;
+
+			if (curPage == 1) break;
 
 			curElement = C[Ckeys[i]][curPage][curElement].l
 
@@ -1790,7 +1806,15 @@ function automaticallyUpdateSlides() {
 
 	var numSlides = getNumSlides();
 
-	var finalRepresentation = printLink(info, T, C, numSlides);
+	var coverage = [];
+
+	for(var k in info) {
+		var value = $(".sectionLevelCoverageInput[sectionKey='" + k + "']")[0].value;
+
+		coverage.push(parseInt(value));
+	}
+
+	var finalRepresentation = printLink(info, T, C, numSlides, coverage);
 
 	if(finalRepresentation == -1) return;
 
@@ -2172,7 +2196,6 @@ function loadRecommendation(pageID) {
 	}
 
 	var curHighlight = highlightDB.slideInfo[pageID];
-
 	var text = [];
 
 	for (var obj in curHighlight) {
@@ -2190,6 +2213,8 @@ function loadRecommendation(pageID) {
 			text.push(t);
 		}
 	}
+
+	if(text.length <= 0) return;
 
 	recommendationLoadingHistory[pageID] = {
 		loading: true,
@@ -2238,12 +2263,23 @@ function getConstraints(type) {
 		var sparseDense = parseInt($("#slideDeck_sparseDenseSlider")[0].value);
 		var descAbst = parseInt($("#slideDeck_slideLayoutSlider")[0].value);
 		var textLength = parseInt($("#slideDeck_textLengthSlider")[0].value);
+		var imageType =  $("input[name='slideDeck_imgTypeRadioName']:checked").val();
+		var sectionLevelCoverage = {};
+
+		$(".sectionLevelCoverageInput").each( function(idx, elem) {
+			var sectionKey = $(elem).attr("sectionkey");
+			var value = $(elem)[0].value;
+
+			sectionLevelCoverage[sectionKey] = value;
+		})
 
 		return {
 			time: time,
 			sparseDense: sparseDense,
 			descAbst: descAbst,
-			textLength: textLength
+			textLength: textLength,
+			imageType: imageType,
+			sectionLevelCoverage: sectionLevelCoverage
 		}
 	}
 	else if(type == "singleSlide") {
@@ -2265,10 +2301,10 @@ function getConstraints(type) {
 }
 
 function recommendationRender(data, constraints, pageID, renderFlag) {
-	console.log(constraints);
+	// console.log(constraints);
 
 	var __renderResult = [];
-	console.log(data);
+	// console.log(data);
 
 	var height = 225;
 	var width = 400;
@@ -2330,13 +2366,14 @@ function recommendationRender(data, constraints, pageID, renderFlag) {
 			})
 		}
 	}
-
+/*
 	console.log(__renderResult);
 	console.log(pageID);
+	*/
 
 	recommendationLoadingHistory[pageID].renderResult = __renderResult;
 
-	console.log(recommendationLoadingHistory[pageID].renderResult);
+//	console.log(recommendationLoadingHistory[pageID].renderResult);
 
 	finalRendering(recommendationLoadingHistory[pageID], data, constraints, renderFlag);
 }
@@ -2391,6 +2428,9 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 
 				var idx = clusteredResult[j][0]; // heuristic: just pick the first one
 
+				console.log(idx);
+				console.log(data.contents);
+
 				tmp[k].push({
 					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
 					height: elem.curHeight - padding,
@@ -2398,7 +2438,16 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 					top: elem.curTop + padding,
 					left: elem.curLeft + padding,
 					type: "image",
-					contents: data.imageURL.length > 0 ? getImgList(data.imageURL[idx].imgResult[0].linkList) : ''
+					contents: data.imageURL.length > 0 ? {
+						imgResult: getImgList(data.imageURL[idx].imgResult[0].linkList),
+						contentIndex: idx,
+						mappingID: data.contents[idx].mappingID
+					}
+						: {
+							imgResult: [],
+							contentIndex: idx,
+							mappingID: data.contents[idx].mappingID
+						}
 				})
 			}
 			else if(k == 2) {
@@ -2430,7 +2479,16 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 					top: elem.curTop,
 					left: elem.curLeft,
 					type: "image",
-					contents: data.imageURL.length > 0 ? getImgList(data.imageURL[idx].imgResult[0].linkList) : ''
+					contents: data.imageURL.length > 0 ? {
+						imgResult: getImgList(data.imageURL[idx].imgResult[0].linkList),
+						contentIndex: idx,
+						mappingID: data.contents[idx].mappingID
+					}
+						: {
+							imgResult: [],
+							contentIndex: idx,
+							mappingID: data.contents[idx].mappingID
+						}
 				})
 			}
 			else if(k == 3) {
@@ -2453,7 +2511,16 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 					top: elem.curTop + padding,
 					left: elem.curLeft + padding,
 					type: "image",
-					contents: data.imageURL.length > 0 ? getImgList(data.imageURL[idx].imgResult[0].linkList) : ''
+					contents: data.imageURL.length > 0 ? {
+						imgResult: getImgList(data.imageURL[idx].imgResult[0].linkList),
+						contentIndex: idx,
+						mappingID: data.contents[idx].mappingID
+					}
+						: {
+							imgResult: [],
+							contentIndex: idx,
+							mappingID: data.contents[idx].mappingID
+						}
 				})
 			}
 
@@ -2662,7 +2729,7 @@ function finalRendering(h, data, constraints, renderFlag) {
 					"</div>"
 					:
 					"<div class='" + ib.className + '_img' + "'> " +
-					"<img src='" + ib.contents + "' style=' " +
+					"<img src='" + ib.contents.imgResult + "' style=' " +
 					"height: " + ib.height + "px;" +
 					"width: " + ib.width + "px;" +
 					"' />" +
@@ -3034,9 +3101,11 @@ $(document).ready(function() {
 
 			var curHighlight = highlightDB.slideInfo[pageID];
 
+			/*
 			console.log(highlightDB);
 			console.log(pageID);
 			console.log(curHighlight);
+			*/
 
 			/* Render Resources tab */
 
@@ -3433,7 +3502,10 @@ $(document).ready(function() {
 				appearDocumentStructureBtn();
 		});
 
-		$(document).on("click", "#presentationObjectiveConfirmBtn", function(e) {
+		$(document).on("click", "#slideDeck_presentationObjectiveConfirmBtn", function(e) {
+				currentSlideDeckConstraints = getConstraints("slideDeck");
+				checkConstraintsDifference("slideDeck");
+
 				automaticallyUpdateSlides();
 		});
 
@@ -3462,6 +3534,7 @@ $(document).ready(function() {
 			$("#slideDeck_presentationTimeInputBox")[0].value = maxPageNum - (value - minPageNum);
 
 			updateSectionLevelCoverageValue();
+			checkConstraintsDifference("slideDeck");
 		});
 
 		$(document).on("input", "#slideDeck_presentationTimeInputBox", function(e) {
@@ -3482,6 +3555,7 @@ $(document).ready(function() {
 				$("#slideDeck_sparseDenseSlider")[0].value = minPageNum + (maxPageNum-value);
 
 				updateSectionLevelCoverageValue();
+				checkConstraintsDifference("slideDeck");
 			}
 		});
 
@@ -3625,6 +3699,93 @@ $(document).ready(function() {
 				selectCells($(e.target));
 			}
 		});
+
+		$(document).on("click", ".sectionLevelCoveragePlusBtn", function(e) {
+			var sectionKey = $(e.target).attr("sectionKey");
+			var value = parseInt($(".sectionLevelCoverageInput[sectionKey='" + sectionKey + "']").val());
+
+			sectionLevelCoverageValueUpdate(e.target, value+1);
+		});
+
+		$(document).on("click", ".sectionLevelCoverageMinusBtn", function(e) {
+			var sectionKey = $(e.target).attr("sectionKey");
+			var value = parseInt($(".sectionLevelCoverageInput[sectionKey='" + sectionKey + "']").val());
+
+			sectionLevelCoverageValueUpdate(e.target, value-1);
+		});
+
+		function sectionLevelCoverageValueUpdate(target, value) {
+			console.log($(target));
+
+			var timeDOM = $("#slideDeck_presentationTimeInputBox");
+			var sectionKey = $(target).attr("sectionKey");
+			var inputDOM = $(".sectionLevelCoverageInput[sectionKey='" + sectionKey + "']");
+
+			var numHighlights = parseInt($(".sectionLevelCoverageRowHighlight[sectionKey='" + sectionKey + "']").text());
+
+			if(Math.ceil(numHighlights / MAX_ELEMENTS_PER_SLIDE) <= value && value <= numHighlights) {
+				$(inputDOM).val(value);
+
+				console.log(value);
+
+				var sum = 0;
+
+				$(".sectionLevelCoverageInput").each(function (idx, elem) {
+					sum = sum + parseInt($(elem).val())
+				});
+
+				$(timeDOM).val(sum);
+
+				var minPageNum = parseInt($("#slideDeck_sparseDenseSlider")[0].min);
+				var maxPageNum = parseInt($("#slideDeck_sparseDenseSlider")[0].max);
+
+				$("#slideDeck_sparseDenseSlider")[0].value = minPageNum + (maxPageNum-sum);
+			}
+
+			checkConstraintsDifference("slideDeck");
+		}
+
+		function checkConstraintsDifference(name) {
+			if(name == "slideDeck") {
+				var c = getConstraints("slideDeck");
+
+				var timeDOM = $("#slideDeck_presentationTimeInputBox");
+
+				if(c.time != currentSlideDeckConstraints.time) {
+					$(timeDOM).addClass("slideDeck_timeDifferent")
+				}
+				else {
+					$(timeDOM).removeClass("slideDeck_timeDifferent")
+				}
+
+				if(c.sparseDense != currentSlideDeckConstraints.sparseDense) {
+
+				}
+
+				if(c.descAbst != currentSlideDeckConstraints.descAbst) {
+
+				}
+
+				if(c.textLength != currentSlideDeckConstraints.textLength) {
+
+				}
+
+				if(c.imageType != currentSlideDeckConstraints.imageType) {
+
+				}
+
+				for(var s in c.sectionLevelCoverage) {
+					var inputDOM = $(".sectionLevelCoverageInput[sectionKey='" + s + "']");
+
+					if(c.sectionLevelCoverage[s] != currentSlideDeckConstraints.sectionLevelCoverage[s]) {
+						$(inputDOM).addClass("sectionLevelCoverageInputValueDifferent");
+					}
+					else {
+						$(inputDOM).removeClass("sectionLevelCoverageInputValueDifferent");
+					}
+				}
+			}
+		}
 
 		$(document).on("extension_focusObject", function(e) {
 
@@ -4467,7 +4628,7 @@ function doBFS(myGraph, r) {
 function updateSectionLevelCoverageValue() {
 	var info = organizeHighlightOnSections();
 	var numSlides = getNumSlides();
-	var finalRepresentation = printLink(info, T, C, numSlides);
+	var finalRepresentation = printLink(info, T, C, numSlides, null);
 
 	$(".sectionLevelCoverageInput").each(function (idx, elem) {
 		var sectionKey = $(elem).attr("sectionkey");
@@ -4652,7 +4813,14 @@ function renderSlideOnGoogle(slideInfo, curSlidePage, applyFlag) {
 			console.log(slideInfo.innerBoxes[i]);
 
 			var objID = makeid(10);
-			var imageURL = slideInfo.innerBoxes[i].contents;
+			var imageURL = slideInfo.innerBoxes[i].contents.imgResult;
+
+			updateInfo.push({
+				slideID: curSlidePage,
+				objID: objID,
+				paragraphIndex: 0,
+				mappingID: slideInfo.innerBoxes[i].contents.mappingID
+			});
 
 			requests.push({
 				createImage: {

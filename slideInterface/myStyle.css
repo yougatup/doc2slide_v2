@@ -1016,3 +1016,17 @@ width: 100%;
   #singleSlideLevelConstraints {
 	  display: hide;
   }
+
+  #slideDeck_presentationObjectiveConfirmBtn {
+	  float: right;
+	  margin-right: 30px;
+	  font-size: 16px;
+  }
+
+  .sectionLevelCoverageInputValueDifferent {
+	  background-color: yellow;
+  }
+
+  .slideDeck_timeDifferent {
+	  background-color: yellow;
+  }
