@@ -1030,3 +1030,7 @@ width: 100%;
   .slideDeck_timeDifferent {
 	  background-color: yellow;
   }
+
+  .imageInSlide {
+	  object-fit: contain;
+  }

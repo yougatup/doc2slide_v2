@@ -553,11 +553,11 @@ function initializeConstraintsPlane() {
 	$("#slideDeck_sparseDenseSlider")[0].value = currentSlideDeckConstraints.sparseDense;
 
 	$("#slideDeck_slideLayoutSlider")[0].min = 0;
-	$("#slideDeck_slideLayoutSlider")[0].max = 4;
+	$("#slideDeck_slideLayoutSlider")[0].max = 100;
 	$("#slideDeck_slideLayoutSlider")[0].value = currentSlideDeckConstraints.descAbst;
 
 	$("#singleSlide_slideLayoutSlider")[0].min = 0;
-	$("#singleSlide_slideLayoutSlider")[0].max = 4;
+	$("#singleSlide_slideLayoutSlider")[0].max = 100;
 
 	$("#slideDeck_presentationTimeInputBox")[0].value = currentSlideDeckConstraints.time;
 
@@ -767,7 +767,7 @@ function visualizeSlideObjects() {
 				(mappedFlag ? 
 				 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator mapped' objID='" + objectID + "' paragraphID=" + 0 + " mappingID=" + slideDB[curSlideObjects.pageID][objectID][0].mappingID + "></div>" 
 				 : 
-				 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator' objID='" + objectID + "' paragraphID=" + k + "></div>")
+				 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator' objID='" + objectID + "' paragraphID=" + 0 + "></div>")
 
 			);
 
@@ -2389,8 +2389,8 @@ function recommendationRender(data, constraints, pageID, renderFlag) {
 	var __renderResult = [];
 	// console.log(data);
 
-	var height = 225;
-	var width = 400;
+	var height = RENDER_SLIDE_HEIGHT;
+	var width = RENDER_SLIDE_WIDTH;
 
 	var padding = 10;
 
@@ -2402,7 +2402,7 @@ function recommendationRender(data, constraints, pageID, renderFlag) {
 	for (var i = 0; i < treeInfo.length; i++) {
 		dictForLevel = [];
 
-		var renderResultInstance = getLeafBoxes(treeInfo[i].layoutTree, height - padding * 2, width - padding * 2);
+		var renderResultInstance = getLeafBoxes(treeInfo[i].layoutTree, height, width);
 
 		for (var j = 0; j < renderResultInstance.length; j++) {
 			var flag = false;
@@ -2485,6 +2485,13 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 	console.log(clusteredResult);
 	*/
 
+	var slideConstraints = getConstraints("singleSlide", curSlidePage);
+	var descriptiveValue = slideConstraints.descAbst;
+	var maxValue = $("#singleSlide_slideLayoutSlider")[0].max;
+	var ratio = descriptiveValue / maxValue;
+	
+	console.log(ratio);
+
 	for (var k = 0; k < 4; k++) {
 		tmp.push([]);
 
@@ -2493,52 +2500,59 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 			var c = '';
 
 			if(k == 0) {
-				var t = [];
+				if (ratio == 0) {
+					var t = [];
 
-				for (var i = 0; i < clusteredResult[j].length; i++) {
-					t.push({
-						text: data.contents[clusteredResult[j][i]].contents,
-						contentIndex: clusteredResult[j][i],
-						mappingID: data.contents[clusteredResult[j][i]].mappingID
+					for (var i = 0; i < clusteredResult[j].length; i++) {
+						t.push({
+							text: data.contents[clusteredResult[j][i]].contents,
+							contentIndex: clusteredResult[j][i],
+							mappingID: data.contents[clusteredResult[j][i]].mappingID
+						})
+					}
+
+					tmp[k].push({
+						className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
+						height: elem.curHeight - 1 * padding,
+						width: elem.curWidth - 1 * padding,
+						top: elem.curTop + padding,
+						left: elem.curLeft + padding,
+						type: "text",
+						contents: t
 					})
 				}
-
-				tmp[k].push({
-					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
-					height: elem.curHeight - 1 * padding,
-					width: elem.curWidth - 1 * padding,
-					top: elem.curTop + padding,
-					left: elem.curLeft + padding,
-					type: "text",
-					contents: t
-				})
 			}
 			else if(k == 1) {
-				var t = [];
+				if (ratio > 0) {
+					var t = [];
 
-				var idx = clusteredResult[j][0]; // heuristic: just pick the first one
+					console.log(elem);
 
-				console.log(idx);
-				console.log(data.contents);
+					var idx = clusteredResult[j][0]; // heuristic: just pick the first one
+					var w = (elem.curWidth) * ratio;
+					var h = (elem.curHeight) * ratio;
+					var top = (elem.curHeight * (1 - ratio) ) / 2 + elem.curTop;
+					var left = (elem.curWidth * (1 - ratio) ) / 2 + elem.curLeft;
 
-				tmp[k].push({
-					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
-					height: elem.curHeight - padding,
-					width: elem.curWidth - padding,
-					top: elem.curTop + padding,
-					left: elem.curLeft + padding,
-					type: "image",
-					contents: data.imageURL.length > 0 ? {
-						imgResult: getImgList(data.imageURL[idx].imgResult[0].linkList),
-						contentIndex: idx,
-						mappingID: data.contents[idx].mappingID
-					}
-						: {
-							imgResult: [],
+					tmp[k].push({
+						className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
+						height: h,
+						width: w,
+						top: top,
+						left: left,
+						type: "image",
+						contents: data.imageURL.length > 0 ? {
+							imgResult: getImgList(data.imageURL[idx].imgResult[0].linkList),
 							contentIndex: idx,
 							mappingID: data.contents[idx].mappingID
 						}
-				})
+							: {
+								imgResult: [],
+								contentIndex: idx,
+								mappingID: data.contents[idx].mappingID
+							}
+					})
+				}
 			}
 			else if(k == 2) {
 				var t = [];
@@ -2552,22 +2566,48 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 					})
 				}
 
+				var w1, h1, t1, l1;
+				var w2, h2, t2, l2;
+
+				if(elem.curHeight > elem.curWidth) {
+					w1 = elem.curWidth;
+					h1 = elem.curHeight * (1-ratio);
+					t1 = elem.curTop + elem.curHeight * ratio;
+					l1 = elem.curLeft;
+
+					w2 = elem.curWidth;
+					h2 = elem.curHeight * (ratio);
+					t2 = elem.curTop;
+					l2 = elem.curLeft;
+				}
+				else {
+					w1 = elem.curWidth * (1-ratio);
+					h1 = elem.curHeight;
+					t1 = elem.curTop;
+					l1 = elem.curLeft + elem.curWidth * (ratio);
+
+					w2 = elem.curWidth * (ratio);
+					h2 = elem.curHeight;
+					t2 = elem.curTop;
+					l2 = elem.curLeft;
+				}
+
 				tmp[k].push({
 					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
-					height: (-1 * padding) + (elem.curHeight > elem.curWidth ? elem.curHeight / 2 : elem.curHeight),
-					width: (-1 * padding) + (elem.curHeight > elem.curWidth ? elem.curWidth : elem.curWidth / 2),
-					top: elem.curHeight > elem.curWidth ? elem.curTop + (elem.curHeight / 2) + padding : elem.curTop + padding,
-					left: elem.curHeight > elem.curWidth ? elem.curLeft + padding : elem.curLeft + (elem.curWidth / 2) + padding,
+					height: h1,
+					width: w1,
+					top: t1,
+					left: l1,
 					type: "text",
 					contents: t
 				})
 
 				tmp[k].push({
 					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + "captionImage",
-					height: (elem.curHeight > elem.curWidth ? elem.curHeight / 2 : elem.curHeight),
-					width: (elem.curHeight > elem.curWidth ? elem.curWidth : elem.curWidth / 2),
-					top: elem.curTop,
-					left: elem.curLeft,
+					height: h2,
+					width: w2,
+					top: t2,
+					left: l2,
 					type: "image",
 					contents: data.imageURL.length > 0 ? {
 						imgResult: getImgList(data.imageURL[idx].imgResult[0].linkList),
@@ -2584,22 +2624,35 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 			else if(k == 3) {
 				var idx = clusteredResult[j][0]; // heuristic: just pick the first one
 
+				console.log(data.contents);
+				console.log(idx);
+
+				var w = (elem.curWidth) * ratio;
+				var h = (elem.curHeight) * ratio;
+				var top = (elem.curHeight * (1 - ratio)) / 2 + elem.curTop;
+				var left = (elem.curWidth * (1 - ratio)) / 2 + elem.curLeft;
+
 				tmp[k].push({
 					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + "captionText",
-					height: 10,
-					width: elem.curWidth - 1 * padding,
-					top: elem.curTop + (elem.curHeight - 1 * padding) + padding,
-					left: elem.curLeft + padding,
+					height: 20,
+					width: w,
+					top: top + h - 20,
+					left: left,
 					type: "textCaption",
-					contents: [{text: data.imageURL[idx].imgResult[0].entity}]
+					contents: [
+						{
+							text: data.imageURL[idx].imgResult[0].entity,
+							contentIndex: idx,
+							mappingID: data.contents[idx].mappingID
+						}]
 				})
 
 				tmp[k].push({
 					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
-					height: elem.curHeight - 1 * padding,
-					width: elem.curWidth - 1 * padding,
-					top: elem.curTop + padding,
-					left: elem.curLeft + padding,
+					height: h - 20,
+					width: w,
+					top: top,
+					left: left,
 					type: "image",
 					contents: data.imageURL.length > 0 ? {
 						imgResult: getImgList(data.imageURL[idx].imgResult[0].linkList),
@@ -2747,10 +2800,10 @@ function finalRendering(h, data, constraints, renderFlag) {
 		r[i].numObj = numObj;
 	}
 
-	var res = sortSlides( constraints, r, data.contents.length );
+	// var res = sortSlides( constraints, r, data.contents.length );
 
-	h.renderResult = res;
-	r = res;
+	// h.renderResult = res;
+	// r = res;
 
 	/*
 	"<table>" + 
@@ -2819,7 +2872,7 @@ function finalRendering(h, data, constraints, renderFlag) {
 					"</div>"
 					:
 					"<div class='" + ib.className + '_img' + "'> " +
-					"<img src='" + ib.contents.imgResult + "' style=' " +
+					"<img class='imageInSlide' src='" + ib.contents.imgResult + "' style=' " +
 					"height: " + ib.height + "px;" +
 					"width: " + ib.width + "px;" +
 					"' />" +
@@ -4811,7 +4864,7 @@ function renderSlideOnGoogle(slideInfo, curSlidePage, applyFlag) {
 	var updateInfo = [];
 
 	for(var i=0;i<slideInfo.innerBoxes.length;i++) {
-		if (slideInfo.innerBoxes[i].type == 'text') {
+		if (slideInfo.innerBoxes[i].type == 'text' || slideInfo.innerBoxes[i].type == 'textCaption') {
 			var objID = makeid(10);
 
 			var resText = '';
