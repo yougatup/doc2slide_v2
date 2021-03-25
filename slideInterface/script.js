@@ -1468,6 +1468,10 @@ function printLink(info, T, C, numSlides, coverage) {
 	var numPages = [];
 	var curSlideNum = numSlides;
 
+	console.log(coverage);
+	console.log(JSON.parse(JSON.stringify(T)));
+	console.log(JSON.parse(JSON.stringify(C)));
+
 	if(T[curSection][numSlides].l == -1) {
 		alert("NOT POSSIBLE");
 		return -1;
@@ -1516,6 +1520,8 @@ function printLink(info, T, C, numSlides, coverage) {
 		}
 	}
 
+	console.log(res);
+	
 	var finalRepresentation = {};
 
 	for(var i=0;i<Ckeys.length;i++) {
@@ -1647,10 +1653,14 @@ async function getRequestForBulkGeneration(slideInfo, finalRepresentation) {
 	var updateInfo = [];
 	var requests = [];
 
+	console.log(finalRepresentation);
+
 	for(var s in finalRepresentation) {
 		for(var i=0;i<finalRepresentation[s].length;i++) {
 			var objects = finalRepresentation[s][i];
 			var slideID = makeid(10);
+
+			console.log(objects);
 
 			await loadRecommendationByResources(objects, slideID);
 
@@ -1747,7 +1757,7 @@ function computeTC(info) {
 		for (var i = 2; i <= numElements; i++) {
 			for (var j = i - 1; j < numElements; j++) {
 				for (var k = j - 1; k >= i - 2; k--) {
-					if (j - k + 1 > maxElementsPerSlide) break;
+					if (j - k > maxElementsPerSlide) break;
 
 					var dist = getDist(info[m], k + 1, j);
 
@@ -2127,6 +2137,8 @@ function getLeafBoxesInternal(nodeSet, curNode, curLeft, curTop, curHeight, curW
 async function loadRecommendationByResources(resource, slideID) {
 	var text = [];
 
+	console.log(resource);
+
 	for(var i=0;i<resource.length;i++) {
 		var mappingID = resource[i].mappingKey;
 
@@ -2169,7 +2181,7 @@ async function loadRecommendationByResources(resource, slideID) {
 	var data = await fetch('http://server.hyungyu.com:1333/getSlides', requestOptions)
 						  .then(response => response.json())
 
-    console.log(data);
+    console.log(JSON.parse(JSON.stringify(data)));
 
 	recommendationLoadingHistory[slideID].loading = false;
 	recommendationLoadingHistory[slideID].text = text;
@@ -2245,6 +2257,8 @@ function loadRecommendation(pageID) {
 	fetch('http://server.hyungyu.com:1333/getSlides', requestOptions)
 		.then(response => response.json())
 		.then(data => {
+
+			console.log(JSON.parse(JSON.stringify(data)));
 
 			recommendationLoadingHistory[pageID].loading = false;
 			recommendationLoadingHistory[pageID].text = text;
@@ -2394,6 +2408,11 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 	var tmp = [];
 
 	var clusteredResult = dataClustering(data.contents.length, renderResultInstance.length);
+
+	console.log(JSON.stringify(data));
+	console.log(JSON.parse(JSON.stringify(data.contents)));
+	console.log(data.contents[0]);
+	console.log(clusteredResult);
 
 	for (var k = 0; k < 4; k++) {
 		tmp.push([]);
@@ -3560,6 +3579,7 @@ $(document).ready(function() {
 		});
 
 		$(document).on("click", "#presentationObjectiveBtn", function(e) {
+			if (Object.keys(currentSlideDeckConstraints) <= 0) {
 				var info = organizeHighlightOnSections();
 				var res = computeTC(info);
 
@@ -3586,8 +3606,8 @@ $(document).ready(function() {
 				$("#slideDeck_presentationTimeInputBox")[0].value = maxPageNum - (parseInt((minPageNum + maxPageNum) / 2) - minPageNum);
 
 				var maxLength = 0;
-				for(var s in info) {
-					for(var i=0;i<info[s].length;i++) {
+				for (var s in info) {
+					for (var i = 0; i < info[s].length; i++) {
 						maxLength = Math.max(maxLength, info[s][i].text.length)
 					}
 				}
@@ -3599,7 +3619,14 @@ $(document).ready(function() {
 				updatePresentationObjectiveStructure();
 				updateSectionLevelCoverageValue();
 
+				currentSlideDeckConstraints = getConstraints("slideDeck");
+				checkConstraintsDifference("slideDeck");
+
 				appearPresentationObjective();
+			}
+			else {
+				appearPresentationObjective();
+			}
 		});
 
 		$(document).on("pdfjs_checkPreprocessed", function(e) {
