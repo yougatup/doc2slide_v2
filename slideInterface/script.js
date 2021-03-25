@@ -1621,8 +1621,6 @@ async function createSlidesOnGoogleSlide(finalRepresentation) {
 				h.push(dic);
 			}
 
-			console.log(h);
-
 			/*
 			var elem = {
 				slideID: makeid(10),
@@ -1692,9 +1690,6 @@ async function createSlidesOnGoogleSlide(finalRepresentation) {
 	}
 	*/
 
-	console.log(updateInfo);
-	console.log(requests);
-
 	initializeSlide().then(async () => {
 			// console.log(highlightDB.slideInfo);
 
@@ -1726,14 +1721,10 @@ async function getRequestForBulkGeneration(slideInfo, finalRepresentation) {
 	var updateInfo = [];
 	var requests = [];
 
-	console.log(finalRepresentation);
-
 	for(var s in finalRepresentation) {
 		for(var i=0;i<finalRepresentation[s].length;i++) {
 			var objects = finalRepresentation[s][i];
 			var slideID = makeid(10);
-
-			console.log(objects);
 
 			await loadRecommendationByResources(objects, slideID);
 
@@ -2210,8 +2201,6 @@ function getLeafBoxesInternal(nodeSet, curNode, curLeft, curTop, curHeight, curW
 async function loadRecommendationByResources(resource, slideID) {
 	var text = [];
 
-	console.log(resource);
-
 	for(var i=0;i<resource.length;i++) {
 		var mappingID = resource[i].mappingKey;
 
@@ -2238,8 +2227,6 @@ async function loadRecommendationByResources(resource, slideID) {
 		}
 	}
 
-	console.log(text);
-
 	const requestOptions = {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -2253,8 +2240,6 @@ async function loadRecommendationByResources(resource, slideID) {
 
 	var data = await fetch('http://server.hyungyu.com:1333/getSlides', requestOptions)
 						  .then(response => response.json())
-
-    console.log(JSON.parse(JSON.stringify(data)));
 
 	recommendationLoadingHistory[slideID].loading = false;
 	recommendationLoadingHistory[slideID].text = text;
@@ -2440,13 +2425,15 @@ function recommendationRender(data, constraints, pageID, renderFlag) {
 		tmp = populateSlideElements(data, prefix, curSkeletonIndex, padding, renderResultInstance);
 
 		for (var j = 0; j < tmp.length; j++) {
-			__renderResult.push({
-				className: "parentDiv slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + " slideIndex_" + slideIdx + ' recSlide',
-				height: height,
-				width: width,
-				padding: padding,
-				innerBoxes: tmp[j],
-			})
+			if (tmp[j].length > 0) {
+				__renderResult.push({
+					className: "parentDiv slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + " slideIndex_" + slideIdx + ' recSlide',
+					height: height,
+					width: width,
+					padding: padding,
+					innerBoxes: tmp[j],
+				})
+			}
 		}
 	}
 /*
@@ -2490,8 +2477,6 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 	var maxValue = $("#singleSlide_slideLayoutSlider")[0].max;
 	var ratio = descriptiveValue / maxValue;
 	
-	console.log(ratio);
-
 	for (var k = 0; k < 4; k++) {
 		tmp.push([]);
 
@@ -2525,8 +2510,6 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 			else if(k == 1) {
 				if (ratio > 0) {
 					var t = [];
-
-					console.log(elem);
 
 					var idx = clusteredResult[j][0]; // heuristic: just pick the first one
 					var w = (elem.curWidth) * ratio;
@@ -2623,9 +2606,6 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 			}
 			else if(k == 3) {
 				var idx = clusteredResult[j][0]; // heuristic: just pick the first one
-
-				console.log(data.contents);
-				console.log(idx);
 
 				var w = (elem.curWidth) * ratio;
 				var h = (elem.curHeight) * ratio;
@@ -2933,8 +2913,6 @@ function finalRendering(h, data, constraints, renderFlag) {
 	$("#slideImageSlider")[0].value = 0;
 	*/
 
-	console.log(constraints.textLength);
-
 	for (var i = 0; i < r.length; i++) {
 		var innerBody = '';
 		var objList = document.getElementsByClassName(r[i].className.split(' ')[1]);
@@ -3015,9 +2993,6 @@ function finalRendering(h, data, constraints, renderFlag) {
 }
 
 function setConstraints(name, value, slideID, writeFlag) {
-	console.log(currentSingleSlideConstraints);
-	console.log(slideID);
-
 	if (value == null) {
 		if (name == "slideDeck") {
 			currentSlideDeckConstraints = getConstraints("slideDeck");
@@ -4845,10 +4820,6 @@ function getSlideInfoOnRecommendation(className, recommendedSlides) {
 }
 
 function renderSlideOnGoogle(slideInfo, curSlidePage, applyFlag) {
-	console.log(slideInfo);
-	console.log(curSlidePage);
-	console.log(slideDB);
-	
 	var requests = [];
 
 	if(applyFlag) {
@@ -5002,8 +4973,6 @@ function renderSlideOnGoogle(slideInfo, curSlidePage, applyFlag) {
 			}
 		}
 		else {
-			console.log(slideInfo.innerBoxes[i]);
-
 			var objID = makeid(10);
 			var imageURL = slideInfo.innerBoxes[i].contents.imgResult;
 
@@ -5042,8 +5011,6 @@ function renderSlideOnGoogle(slideInfo, curSlidePage, applyFlag) {
 			});
 		}
 	}
-
-	console.log(updateInfo);
 
 	// requests = requests.concat(genRequest(elem.slideID, slideIndex, "TITLE_AND_BODY", elem.objIDs, [structureHighlightDB[s].text].concat(getListOnKey(elem.highlightInfo, "text"))));
 
