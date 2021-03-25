@@ -1636,9 +1636,17 @@ async function createSlidesOnGoogleSlide(finalRepresentation) {
 	initializeSlide().then(async () => {
 			// console.log(highlightDB.slideInfo);
 
-			var myRequest = await getRequestForBulkGeneration(highlightDB.slideInfo, finalRepresentation)
+		var myRequest = await getRequestForBulkGeneration(highlightDB.slideInfo, finalRepresentation)
+		var slideDeckConstraints = getConstraints("slideDeck");
 
-		 writeSlideMappingInfoBulk(myRequest.updateInfo).then(() => {
+		for (var i = 0; i < myRequest.updateInfo.length; i++) {
+			currentSingleSlideConstraints[myRequest.updateInfo[i].slideID] = {
+				descAbst: slideDeckConstraints.descAbst,
+				textLength: slideDeckConstraints.textLength
+			}
+		}
+
+		writeSlideMappingInfoBulk(myRequest.updateInfo).then(() => {
 			 gapi.client.slides.presentations.batchUpdate({
 				 presentationId: PRESENTATION_ID,
 				 requests: myRequest.requests
@@ -2199,8 +2207,7 @@ function loadRecommendation(pageID) {
 		}
 		else{
 			//console.log(recommendationLoadingHistory[pageID]);
-			var constraints = getConstraints("singleSlide");
-			console.log(constraints);
+			var constraints = currentSingleSlideConstraints[pageID];
 
 			recommendationRender(recommendationLoadingHistory[pageID].result, constraints, pageID, true);
 		}
@@ -2257,14 +2264,11 @@ function loadRecommendation(pageID) {
 	fetch('http://server.hyungyu.com:1333/getSlides', requestOptions)
 		.then(response => response.json())
 		.then(data => {
-
-			console.log(JSON.parse(JSON.stringify(data)));
-
 			recommendationLoadingHistory[pageID].loading = false;
 			recommendationLoadingHistory[pageID].text = text;
 			recommendationLoadingHistory[pageID].result = data;
 
-			var constraints = getConstraints("singleSlide");
+			var constraints = currentSingleSlideConstraints[pageID];
 
 			recommendationRender(data, constraints, pageID, true);
 		});
@@ -2409,10 +2413,12 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 
 	var clusteredResult = dataClustering(data.contents.length, renderResultInstance.length);
 
+	/*
 	console.log(JSON.stringify(data));
 	console.log(JSON.parse(JSON.stringify(data.contents)));
 	console.log(data.contents[0]);
 	console.log(clusteredResult);
+	*/
 
 	for (var k = 0; k < 4; k++) {
 		tmp.push([]);
@@ -2890,6 +2896,15 @@ function finalRendering(h, data, constraints, renderFlag) {
 	}
 }
 
+function setConstraints(name, slideID) {
+	console.log(currentSingleSlideConstraints);
+	console.log(slideID);
+
+	if (name == "singleSlide") {
+		$("#singleSlide_slideLayoutSlider")[0].value = currentSingleSlideConstraints[slideID].descAbst;
+		$("#singleSlide_textLengthSlider")[0].value = currentSingleSlideConstraints[slideID].textLength;
+	}
+}
 
 $(document).ready(function() {
         // $("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
@@ -2931,6 +2946,10 @@ $(document).ready(function() {
 			$(".levelBtn").removeClass("btnSelected");
 
 			$(obj).addClass("btnSelected");
+
+			if($(obj)[0].id == 'singleSlideBtn') {
+				setConstraints("singleSlide", curSlidePage);
+			}
 
 			appearConstraints($(obj)[0].id);
 		});
@@ -3089,9 +3108,15 @@ $(document).ready(function() {
 				appearConstraints("object");
 			} 
 			else {
-				if(clickedElements) 
+				if(clickedElements) {
 					appearConstraints("singleSlide");
-				else if(p.clickedSlide > 0) appearConstraints("singleSlide");
+					setConstraints("singleSlide", curSlidePage);
+				}
+
+				else if(p.clickedSlide > 0) {
+					appearConstraints("singleSlide");
+					setConstraints("singleSlide", curSlidePage);
+				}
 
 				clickedElements = false;
 			}
@@ -3535,11 +3560,15 @@ $(document).ready(function() {
 		$(document).on("input", "#singleSlide_slideLayoutSlider", function(e) {
 			var constraints = getConstraints("singleSlide");
 
+			currentSingleSlideConstraints[curSlidePage] = constraints;
+
 			recommendationRender(recommendationLoadingHistory[curSlidePage].result, constraints, curSlidePage, true);
 		});
 
 		$(document).on("input", "#singleSlide_textLengthSlider", function(e) {
 			var constraints = getConstraints("singleSlide");
+
+			currentSingleSlideConstraints[curSlidePage] = constraints;
 
 			recommendationRender(recommendationLoadingHistory[curSlidePage].result, constraints, curSlidePage, true);
 		});
