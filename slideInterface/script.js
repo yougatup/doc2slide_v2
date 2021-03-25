@@ -457,7 +457,6 @@ function getSlideWidth(x) {
 function initializeDB() {
 	readData('/users/' + userName).then(result => {
 		console.log(result);
-
 		console.log(result.parameters.heavy);
 
 		if("parameters" in result && "heavy" in result.parameters) {
@@ -509,6 +508,20 @@ function initializeDB() {
 			else
 				structureHighlightDB = {};
 
+			if("slideDeckConstraints" in result) {
+				setConstraints("slideDeck", result.slideDeckConstraints, null, false);
+				console.log(result.slideDeckConstraints);
+			}
+			else {
+				result.slideDeckConstraints = getConstraints("slideDeck");
+			}
+			
+			if ("singleSlideConstraints" in result) {
+				setConstraints("singleSlide", result.singleSlideConstraints, "all", false);
+			}
+
+			initializeConstraintsPlane();
+
 			setTimeout(function() {
 				issueEvent("root_openPDF", null);
 			}, 1000);
@@ -517,6 +530,57 @@ function initializeDB() {
 	}).catch(function(error) {
 		console.log(error);
 	});
+}
+
+function initializeConstraintsPlane() {
+	var info = organizeHighlightOnSections();
+	var res = computeTC(info);
+
+	T = res.T;
+	C = res.C;
+
+	var maxPageNum = -1, minPageNum = 987987987;
+
+	for (var i = T[T.length - 1].length - 1; i >= 0; i--) {
+		if (T[T.length - 1][i].l != -1) {
+			maxPageNum = Math.max(maxPageNum, i);
+			minPageNum = Math.min(minPageNum, i);
+		}
+	}
+
+	$("#slideDeck_sparseDenseSlider")[0].max = maxPageNum;
+	$("#slideDeck_sparseDenseSlider")[0].min = minPageNum;
+	$("#slideDeck_sparseDenseSlider")[0].value = currentSlideDeckConstraints.sparseDense;
+
+	$("#slideDeck_slideLayoutSlider")[0].min = 0;
+	$("#slideDeck_slideLayoutSlider")[0].max = 4;
+	$("#slideDeck_slideLayoutSlider")[0].value = currentSlideDeckConstraints.descAbst;
+
+	$("#singleSlide_slideLayoutSlider")[0].min = 0;
+	$("#singleSlide_slideLayoutSlider")[0].max = 4;
+
+	$("#slideDeck_presentationTimeInputBox")[0].value = currentSlideDeckConstraints.time;
+
+	var maxLength = 0;
+	for (var s in info) {
+		for (var i = 0; i < info[s].length; i++) {
+			maxLength = Math.max(maxLength, info[s][i].text.length)
+		}
+	}
+
+	$("#slideDeck_textLengthSlider")[0].min = 0;
+	$("#slideDeck_textLengthSlider")[0].max = maxLength;
+	$("#slideDeck_textLengthSlider")[0].value = currentSlideDeckConstraints.textLength;
+
+	$("#singleSlide_textLengthSlider")[0].min = 0;
+	$("#singleSlide_textLengthSlider")[0].max = maxLength;
+
+	updatePresentationObjectiveStructure();
+
+	for (var s in currentSlideDeckConstraints.sectionLevelCoverage) {
+		$(".sectionLevelCoverageInput[sectionKey='" + s + "']")[0].value = currentSlideDeckConstraints.sectionLevelCoverage[s];
+	}
+
 }
 
 function findSlideWithMapping(key) {
@@ -686,8 +750,6 @@ function visualizeSlideObjects() {
 
 	for(var i=0;i<curSlideObjects.objects.length;i++) {
 		var bottom = -1;
-
-		console.log(curSlideObjects.objects[i]);
 
 		if("0" in curSlideObjects.objects[i].paragraph) { // image
 			var objectID = curSlideObjects.objects[i].objectID.substr(7);
@@ -1638,13 +1700,16 @@ async function createSlidesOnGoogleSlide(finalRepresentation) {
 
 		var myRequest = await getRequestForBulkGeneration(highlightDB.slideInfo, finalRepresentation)
 		var slideDeckConstraints = getConstraints("slideDeck");
+		var singleSlideConstraints = {};
 
 		for (var i = 0; i < myRequest.updateInfo.length; i++) {
-			currentSingleSlideConstraints[myRequest.updateInfo[i].slideID] = {
+			singleSlideConstraints[myRequest.updateInfo[i].slideID] = {
 				descAbst: slideDeckConstraints.descAbst,
 				textLength: slideDeckConstraints.textLength
 			}
 		}
+
+		setConstraints("singleSlide", singleSlideConstraints, "all", true)
 
 		writeSlideMappingInfoBulk(myRequest.updateInfo).then(() => {
 			 gapi.client.slides.presentations.batchUpdate({
@@ -2896,13 +2961,76 @@ function finalRendering(h, data, constraints, renderFlag) {
 	}
 }
 
-function setConstraints(name, slideID) {
+function setConstraints(name, value, slideID, writeFlag) {
 	console.log(currentSingleSlideConstraints);
 	console.log(slideID);
 
-	if (name == "singleSlide") {
+	if (value == null) {
+		if (name == "slideDeck") {
+			currentSlideDeckConstraints = getConstraints("slideDeck");
+		}
+		else if (name == "singleSlide") {
+			currentSingleSlideConstraints[slideID] = getConstraints("singleSlide", slideID);
+		}
+	}
+	else {
+		if(name == "slideDeck") currentSlideDeckConstraints = value;
+		else if(name == "singleSlide") {
+			if(slideID == "all") currentSingleSlideConstraints = value;
+			else currentSingleSlideConstraints[slideID] = value;
+		}
+	}
+
+	if(name == "slideDeck") displayConstraints("slideDeck");
+	else if(name == 'singleSlide') {
+		if(slideID != "all")
+			displayConstraints("singleSlide", slideID);
+	}
+
+	if (writeFlag) {
+		var updates = {};
+
+		if (name == "slideDeck") {
+			updates['/users/' + userName + '/slideDeckConstraints/'] = currentSlideDeckConstraints;
+		}
+		else if (name == "singleSlide") {
+			if(slideID == "all") {
+				updates['/users/' + userName + '/singleSlideConstraints/'] = currentSingleSlideConstraints;
+			}
+			else {
+				updates['/users/' + userName + '/singleSlideConstraints/' + slideID + '/'] = currentSingleSlideConstraints[slideID]
+
+			}
+		}
+		firebase.database().ref().update(updates);
+	}
+}
+
+function displayConstraints(name, slideID) {
+	if(name == "slideDeck") {
+		$("#slideDeck_presentationTimeInputBox")[0].value = currentSlideDeckConstraints.time;
+		$("#slideDeck_sparseDenseSlider")[0].value = currentSlideDeckConstraints.sparseDense;
+		$("#slideDeck_slideLayoutSlider")[0].value = currentSlideDeckConstraints.descAbst;
+		$("#slideDeck_textLengthSlider")[0].value = currentSlideDeckConstraints.textLength;
+
+		// var imageType =  $("input[name='slideDeck_imgTypeRadioName']:checked").val();
+		var sectionLevelCoverage = {};
+
+		$(".sectionLevelCoverageInput").each( function(idx, elem) {
+			var sectionKey = $(elem).attr("sectionkey");
+			var value = $(elem)[0].value;
+
+			$(elem).text(currentSlideDeckConstraints.sectionLevelCoverage[sectionKey]);
+		})
+	}
+	else if(name == "singleSlide") {
 		$("#singleSlide_slideLayoutSlider")[0].value = currentSingleSlideConstraints[slideID].descAbst;
 		$("#singleSlide_textLengthSlider")[0].value = currentSingleSlideConstraints[slideID].textLength;
+
+		// Image
+	}
+	else {
+
 	}
 }
 
@@ -2948,7 +3076,7 @@ $(document).ready(function() {
 			$(obj).addClass("btnSelected");
 
 			if($(obj)[0].id == 'singleSlideBtn') {
-				setConstraints("singleSlide", curSlidePage);
+				displayConstraints("singleSlide", curSlidePage);
 			}
 
 			appearConstraints($(obj)[0].id);
@@ -2989,8 +3117,10 @@ $(document).ready(function() {
 
 			console.log(slideInfo);
 
-			if(slideInfo != -1)
+			if(slideInfo != -1) {
+				setConstraints("singleSlide", getConstraints("singleSlide"), curSlidePage, true);
 				renderSlideOnGoogle(slideInfo, curSlidePage, true);
+			}
 		});
 
 		$(document).on("click", ".tablinks", function(event) {
@@ -3110,12 +3240,12 @@ $(document).ready(function() {
 			else {
 				if(clickedElements) {
 					appearConstraints("singleSlide");
-					setConstraints("singleSlide", curSlidePage);
+					displayConstraints("singleSlide", curSlidePage);
 				}
 
 				else if(p.clickedSlide > 0) {
 					appearConstraints("singleSlide");
-					setConstraints("singleSlide", curSlidePage);
+					displayConstraints("singleSlide", curSlidePage);
 				}
 
 				clickedElements = false;
@@ -3547,7 +3677,7 @@ $(document).ready(function() {
 		});
 
 		$(document).on("click", "#slideDeck_presentationObjectiveConfirmBtn", function(e) {
-				currentSlideDeckConstraints = getConstraints("slideDeck");
+				setConstraints("slideDeck", getConstraints("slideDeck"), null, true)
 				checkConstraintsDifference("slideDeck");
 
 				automaticallyUpdateSlides();
@@ -3608,54 +3738,7 @@ $(document).ready(function() {
 		});
 
 		$(document).on("click", "#presentationObjectiveBtn", function(e) {
-			if (Object.keys(currentSlideDeckConstraints) <= 0) {
-				var info = organizeHighlightOnSections();
-				var res = computeTC(info);
-
-				T = res.T;
-				C = res.C;
-
-				var maxPageNum = -1, minPageNum = 987987987;
-
-				for (var i = T[T.length - 1].length - 1; i >= 0; i--) {
-					if (T[T.length - 1][i].l != -1) {
-						maxPageNum = Math.max(maxPageNum, i);
-						minPageNum = Math.min(minPageNum, i);
-					}
-				}
-
-				$("#slideDeck_sparseDenseSlider")[0].max = maxPageNum;
-				$("#slideDeck_sparseDenseSlider")[0].min = minPageNum;
-				$("#slideDeck_sparseDenseSlider")[0].value = parseInt((minPageNum + maxPageNum) / 2);
-
-				$("#slideDeck_slideLayoutSlider")[0].min = 0;
-				$("#slideDeck_slideLayoutSlider")[0].max = 4;
-				$("#slideDeck_slideLayoutSlider")[0].value = 0;
-
-				$("#slideDeck_presentationTimeInputBox")[0].value = maxPageNum - (parseInt((minPageNum + maxPageNum) / 2) - minPageNum);
-
-				var maxLength = 0;
-				for (var s in info) {
-					for (var i = 0; i < info[s].length; i++) {
-						maxLength = Math.max(maxLength, info[s][i].text.length)
-					}
-				}
-
-				$("#slideDeck_textLengthSlider")[0].min = 0;
-				$("#slideDeck_textLengthSlider")[0].max = maxLength;
-				$("#slideDeck_textLengthSlider")[0].value = parseInt(maxLength / 2);
-
-				updatePresentationObjectiveStructure();
-				updateSectionLevelCoverageValue();
-
-				currentSlideDeckConstraints = getConstraints("slideDeck");
-				checkConstraintsDifference("slideDeck");
-
 				appearPresentationObjective();
-			}
-			else {
-				appearPresentationObjective();
-			}
 		});
 
 		$(document).on("pdfjs_checkPreprocessed", function(e) {
