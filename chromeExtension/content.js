@@ -237,45 +237,45 @@ function chromeExtensionBody() {
 	})
 
 	$(document).on("root_getSlideIndex", function(e) {
-		function get_common_ancestor(a, b)
-			{
-			$parentsa = $(a).parents();
-			$parentsb = $(b).parents();
-			
-			var found = null;
-			
-			$parentsa.each(function() {
-			    var thisa = this;
-			
-			    $parentsb.each(function() {
-			    if (thisa == this)
-			    {
-			        found = this;
-			        return false;
-			    }
-			    });
-			
-			    if (found) return false;
-			});
-			
-			return found;
-		}
-
-		var cnt = 1;
-		var retValue = {};
+		var retValue = [];
 
 		$("[id^='filmstrip-slide-']").each(function () {
+
 			var id = $(this).attr("id");
 
 			if (id.endsWith("-bg")) {
 				var pageId = id.split('-')[3];
+				var current = $(this);
 
-				retValue[pageId] = cnt;
-				cnt = cnt + 1;
+				for (var i = 0; i < 1000; i++) {
+					if ($(current).hasClass("punch-filmstrip-thumbnail")) break;
+
+					current = $(current).parent();
+				}
+
+				var y_coordinate = $(current).attr("transform").split(' ')[1];
+				y_coordinate = y_coordinate.substr(0, y_coordinate.length-1);
+
+				retValue.push({
+					pageID: pageId,
+					y_coordinate: parseInt(y_coordinate)
+				})
 			}
 		});
 
-		issueEvent("extension_getSlideIndex", retValue);
+		retValue.sort(function (first, second) {
+			if (first.y_coordinate > second.y_coordinate) return 1;
+			else if (first.y_coordinate == second.y_coordinate) return 0;
+			else return -1;
+		});
+
+		var retValue2 = {};
+
+		for(var i=0;i<retValue.length;i++) {
+			retValue2[retValue[i].pageID] = i+1;
+		}
+
+		issueEvent("extension_getSlideIndex", retValue2);
 	})
 
 	$(document).on("root_getLastObject", function(e) {

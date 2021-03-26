@@ -34,7 +34,7 @@ var userLevelCoverageConstraints = {};
 var currentSlideDeckConstraints = {};
 var currentSingleSlideConstraints = {};
 
-var T, C;
+var T = null, C = null;
 
 var MAX_NUMBER_OF_BULLETS = 3;
 var MAX_NUMBER_OF_SLIDES = 10;
@@ -477,6 +477,21 @@ function initializeDB() {
 				initializeSlide().then( () => {
 					issueEvent("root_openPDF", null);
 
+					currentSlideDeckConstraints.sparseDense = 0;
+					currentSlideDeckConstraints.textLength = 50;
+					currentSlideDeckConstraints.descAbst = 0;
+					currentSlideDeckConstraints.time = 1;
+					currentSlideDeckConstraints.sectionLevelCoverage = {};
+
+					highlightDB.slideInfo = {};
+					slideDB = highlightDB.slideInfo;
+					
+					for (var key in structureHighlightDB) {
+						currentSlideDeckConstraints.sectionLevelCoverage[key] = 0;
+					}
+
+					initializeConstraintsPlane();
+
 					setTimeout(function() {
 							$("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
 						}, 1000);
@@ -541,6 +556,30 @@ function initializeConstraintsPlane() {
 	T = res.T;
 	C = res.C;
 
+	$("#constraints_emptyScreen").hide();
+	$("#constraints_noHighlightFound").hide();
+	$(".presentationObjectiveBody").hide();
+
+	if (T.length <= 0) {
+		$("#constraints_emptyScreen").show();
+
+		$("#slideDeck_sparseDenseSlider")[0].value = currentSlideDeckConstraints.sparseDense;
+		$("#slideDeck_slideLayoutSlider")[0].value = currentSlideDeckConstraints.descAbst;
+		$("#slideDeck_presentationTimeInputBox")[0].value = currentSlideDeckConstraints.time;
+		$("#slideDeck_textLengthSlider")[0].value = currentSlideDeckConstraints.textLength;
+/*
+		for (var s in currentSlideDeckConstraints.sectionLevelCoverage) {
+			$(".sectionLevelCoverageInput[sectionKey='" + s + "']")[0].value = currentSlideDeckConstraints.sectionLevelCoverage[s];
+		}
+		*/
+
+		return;
+	}
+	else {
+		$("#constraints_emptyScreen").hide();
+		$("#slideDeckLevelConstraints").show();
+	}
+
 	var maxPageNum = -1, minPageNum = 987987987;
 
 	for (var i = T[T.length - 1].length - 1; i >= 0; i--) {
@@ -549,6 +588,8 @@ function initializeConstraintsPlane() {
 			minPageNum = Math.min(minPageNum, i);
 		}
 	}
+
+	console.log(currentSlideDeckConstraints);
 
 	$("#slideDeck_sparseDenseSlider")[0].max = maxPageNum;
 	$("#slideDeck_sparseDenseSlider")[0].min = minPageNum;
@@ -1404,6 +1445,8 @@ function updateStructure() {
 function organizeHighlightOnSections() {
 	var info = {};
 
+	console.log(JSON.parse(JSON.stringify(highlightDB)));
+
 	for(var pageNumber in highlightDB.mapping) {
 		for(var key in highlightDB.mapping[pageNumber]) {
 			var sectionKey = getSectionKey(pageNumber, highlightDB.mapping[pageNumber][key].startWordIndex, highlightDB.mapping[pageNumber][key].endWordIndex);
@@ -1541,16 +1584,39 @@ function chooseElements(info, sectionKey, number) {
 	return retValue;
 }
 
+function setTimeConstraint(value) {
+	if (value > T[T.length - 1].length || T[T.length - 1][value].l == -1) {
+		$("#slideDeck_presentationTimeInputBox").css("background-color", "red");
+	}
+	else {
+		$("#slideDeck_presentationTimeInputBox").css("background-color", "white");
+
+		var minPageNum = parseInt($("#slideDeck_sparseDenseSlider")[0].min);
+		var maxPageNum = parseInt($("#slideDeck_sparseDenseSlider")[0].max);
+
+		$("#slideDeck_sparseDenseSlider")[0].value = minPageNum + (maxPageNum - value);
+
+		updateSectionLevelCoverageValue();
+		checkConstraintsDifference("slideDeck");
+	}
+}
+
 function printLink(info, T, C, numSlides, coverage, isFlexible) {
+	if(T == null || T.length <= 0) return {};
+
 	var res = [];
 	var Ckeys = Object.keys(C);
 	var curSection = T.length-1;
 	var numPages = [];
-	var curSlideNum = numSlides;
 
 	console.log(coverage);
 	console.log(JSON.parse(JSON.stringify(T)));
 	console.log(JSON.parse(JSON.stringify(C)));
+
+	console.log(numSlides);
+	console.log(isFlexible);
+
+	var numSlidesChanged = false;
 
 	if(T[curSection][numSlides].l == -1) {
 		if(isFlexible) {
@@ -1560,6 +1626,10 @@ function printLink(info, T, C, numSlides, coverage, isFlexible) {
 			}
 
 			numSlides = numSlides + 1;
+
+			$("#slideDeck_presentationTimeInputBox")[0].value = numSlides;
+
+			numSlidesChanged = true;
 		}
 		else {
 			alert("NOT POSSIBLE");
@@ -1567,11 +1637,16 @@ function printLink(info, T, C, numSlides, coverage, isFlexible) {
 		}
 	}
 
+
+	var curSlideNum = numSlides;
+
 	for(var i=0;i<T.length;i++) numPages.push(0);
 
 	if(coverage != null) numPages = coverage;
 	else {
 		while (1) {
+			console.log(curSection, curSlideNum);
+
 			numPages[curSection] = T[curSection][curSlideNum].l;
 
 			if (curSection == 0) break;
@@ -1628,6 +1703,19 @@ function printLink(info, T, C, numSlides, coverage, isFlexible) {
 				finalRepresentation[Ckeys[i]][j].push(info[Ckeys[i]][k])
 			}
 		}
+	}
+
+	if(numSlidesChanged) {
+		$(".sectionLevelCoverageInput").each(function (idx, elem) {
+			var sectionKey = $(elem).attr("sectionkey");
+
+			if (sectionKey in finalRepresentation)
+				$(elem)[0].value = finalRepresentation[sectionKey].length;
+			else
+				$(elem)[0].value = 0;
+		})
+
+		setConstraints("slideDeck", null);
 	}
 
 	return finalRepresentation;
@@ -1791,6 +1879,13 @@ function getNumSlides() {
 }
 
 function computeTC(info) {
+	if(Object.keys(info) <= 0) {
+		return {
+			T: [],
+			C: {}
+		}
+	}
+
 	function getDist(d, start, end) {
 		var keys = Object.keys(d);
 
@@ -1878,8 +1973,16 @@ function computeTC(info) {
 	}
 
 	for (var i = 0; i < info[sectionKeys[0]].length; i++) {
-		T[0][i + 1].v = C[sectionKeys[0]][i + 1][info[sectionKeys[0]].length - 1].v;
-		T[0][i + 1].l = i + 1;
+		var value = C[sectionKeys[0]][i + 1][info[sectionKeys[0]].length - 1].v;
+
+		if(value >= 987987987) {
+			T[0][i + 1].v = 987987987;
+			T[0][i + 1].l = -1 ;
+		}
+		else {
+			T[0][i + 1].v = C[sectionKeys[0]][i + 1][info[sectionKeys[0]].length - 1].v;
+			T[0][i + 1].l = i + 1;
+		}
 	}
 
 	for (var i = 1; i < numSections; i++) {
@@ -1906,10 +2009,10 @@ function computeTC(info) {
 
 function automaticallyUpdateSlides() {
 	var info = organizeHighlightOnSections();
-
 	var numSlides = getNumSlides();
-
 	var coverage = [];
+
+	console.log(info);
 
 	for(var k in info) {
 		var value = $(".sectionLevelCoverageInput[sectionKey='" + k + "']")[0].value;
@@ -2284,6 +2387,8 @@ async function loadRecommendationByResources(resource, slideID) {
 }
 
 function getResources(pageID) {
+	if(!(pageID in highlightDB.slideInfo)) return [];
+
 	var curHighlight = highlightDB.slideInfo[pageID];
 	var resources = [];
 
@@ -2628,113 +2733,117 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 				}
 			}
 			else if(k == 2) {
-				var t = [];
-				var idx = clusteredResult[j][0]; // heuristic: just pick the first one
+				if (ratio > 0) {
+					var t = [];
+					var idx = clusteredResult[j][0]; // heuristic: just pick the first one
 
-				for (var i = 0; i < clusteredResult[j].length; i++) {
-					t.push({
-						text: data.contents[clusteredResult[j][i]].contents,
-						contentIndex: clusteredResult[j][i],
-						mappingID: data.contents[clusteredResult[j][i]].mappingID
+					for (var i = 0; i < clusteredResult[j].length; i++) {
+						t.push({
+							text: data.contents[clusteredResult[j][i]].contents,
+							contentIndex: clusteredResult[j][i],
+							mappingID: data.contents[clusteredResult[j][i]].mappingID
+						})
+					}
+
+					var w1, h1, t1, l1;
+					var w2, h2, t2, l2;
+
+					if (elem.curHeight > elem.curWidth) {
+						w1 = elem.curWidth;
+						h1 = elem.curHeight * (1 - ratio);
+						t1 = elem.curTop + elem.curHeight * ratio;
+						l1 = elem.curLeft;
+
+						w2 = elem.curWidth;
+						h2 = elem.curHeight * (ratio);
+						t2 = elem.curTop;
+						l2 = elem.curLeft;
+					}
+					else {
+						w1 = elem.curWidth * (1 - ratio);
+						h1 = elem.curHeight;
+						t1 = elem.curTop;
+						l1 = elem.curLeft + elem.curWidth * (ratio);
+
+						w2 = elem.curWidth * (ratio);
+						h2 = elem.curHeight;
+						t2 = elem.curTop;
+						l2 = elem.curLeft;
+					}
+
+					tmp[k].push({
+						className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
+						height: h1,
+						width: w1,
+						top: t1,
+						left: l1,
+						type: "text",
+						contents: t
+					})
+
+					tmp[k].push({
+						className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + "captionImage",
+						height: h2,
+						width: w2,
+						top: t2,
+						left: l2,
+						type: "image",
+						contents: data.imageURL.length > 0 ? {
+							imgResult: getImgList(data.imageURL[idx].imgResult[0].linkList),
+							contentIndex: idx,
+							mappingID: data.contents[idx].mappingID
+						}
+							: {
+								imgResult: [],
+								contentIndex: idx,
+								mappingID: data.contents[idx].mappingID
+							}
 					})
 				}
-
-				var w1, h1, t1, l1;
-				var w2, h2, t2, l2;
-
-				if(elem.curHeight > elem.curWidth) {
-					w1 = elem.curWidth;
-					h1 = elem.curHeight * (1-ratio);
-					t1 = elem.curTop + elem.curHeight * ratio;
-					l1 = elem.curLeft;
-
-					w2 = elem.curWidth;
-					h2 = elem.curHeight * (ratio);
-					t2 = elem.curTop;
-					l2 = elem.curLeft;
-				}
-				else {
-					w1 = elem.curWidth * (1-ratio);
-					h1 = elem.curHeight;
-					t1 = elem.curTop;
-					l1 = elem.curLeft + elem.curWidth * (ratio);
-
-					w2 = elem.curWidth * (ratio);
-					h2 = elem.curHeight;
-					t2 = elem.curTop;
-					l2 = elem.curLeft;
-				}
-
-				tmp[k].push({
-					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
-					height: h1,
-					width: w1,
-					top: t1,
-					left: l1,
-					type: "text",
-					contents: t
-				})
-
-				tmp[k].push({
-					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + "captionImage",
-					height: h2,
-					width: w2,
-					top: t2,
-					left: l2,
-					type: "image",
-					contents: data.imageURL.length > 0 ? {
-						imgResult: getImgList(data.imageURL[idx].imgResult[0].linkList),
-						contentIndex: idx,
-						mappingID: data.contents[idx].mappingID
-					}
-						: {
-							imgResult: [],
-							contentIndex: idx,
-							mappingID: data.contents[idx].mappingID
-						}
-				})
 			}
 			else if(k == 3) {
-				var idx = clusteredResult[j][0]; // heuristic: just pick the first one
+				if (ratio > 0) {
+					var idx = clusteredResult[j][0]; // heuristic: just pick the first one
 
-				var w = (elem.curWidth) * ratio;
-				var h = (elem.curHeight) * ratio;
-				var top = (elem.curHeight * (1 - ratio)) / 2 + elem.curTop;
-				var left = (elem.curWidth * (1 - ratio)) / 2 + elem.curLeft;
+					var w = (elem.curWidth) * ratio;
+					var h = (elem.curHeight) * ratio;
+					var top = (elem.curHeight * (1 - ratio)) / 2 + elem.curTop;
+					var left = (elem.curWidth * (1 - ratio)) / 2 + elem.curLeft;
 
-				tmp[k].push({
-					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + "captionText",
-					height: 20,
-					width: w,
-					top: top + h - 20,
-					left: left,
-					type: "textCaption",
-					contents: [
-						{
-							text: data.imageURL[idx].imgResult[0].entity,
-							contentIndex: idx,
-							mappingID: data.contents[idx].mappingID
-						}]
-				})
+					tmp[k].push({
+						className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + "captionText",
+						height: 20,
+						width: w,
+						top: top + h - 20,
+						left: left,
+						type: "textCaption",
+						contents: [
+							{
+								text: data.imageURL[idx].imgResult[0].entity,
+								contentIndex: idx,
+								mappingID: data.contents[idx].mappingID
+							}]
+					})
 
-				tmp[k].push({
-					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
-					height: h - 20,
-					width: w,
-					top: top,
-					left: left,
-					type: "image",
-					contents: data.imageURL.length > 0 ? {
-						imgResult: getImgList(data.imageURL[idx].imgResult[0].linkList),
-						contentIndex: idx,
-						mappingID: data.contents[idx].mappingID
-					}
-						: {
-							imgResult: [],
+					tmp[k].push({
+						className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
+						height: h - 20,
+						width: w,
+						top: top,
+						left: left,
+						type: "image",
+						contents: data.imageURL.length > 0 ? {
+							imgResult: getImgList(data.imageURL[idx].imgResult[0].linkList),
 							contentIndex: idx,
 							mappingID: data.contents[idx].mappingID
 						}
-				})
+							: {
+								imgResult: [],
+								contentIndex: idx,
+								mappingID: data.contents[idx].mappingID
+							}
+					})
+				}
 			}
 
 			/*
@@ -3146,11 +3255,14 @@ function displayConstraints(name, slideID) {
 
 			$(elem).text(currentSlideDeckConstraints.sectionLevelCoverage[sectionKey]);
 		})
+
+		$("#slideDeckLevelConstraints").show();
 	}
 	else if(name == "singleSlide") {
-		$("#singleSlide_slideLayoutSlider")[0].value = currentSingleSlideConstraints[slideID].descAbst;
-		$("#singleSlide_textLengthSlider")[0].value = currentSingleSlideConstraints[slideID].textLength;
-
+		if(slideID in currentSingleSlideConstraints) {
+			$("#singleSlide_slideLayoutSlider")[0].value = currentSingleSlideConstraints[slideID].descAbst;
+			$("#singleSlide_textLengthSlider")[0].value = currentSingleSlideConstraints[slideID].textLength;
+		}
 		// Image
 	}
 	else {
@@ -3208,14 +3320,28 @@ $(document).ready(function() {
 
 		function appearConstraints(name) {
 			$(".presentationObjectiveBody").hide();
+			$("#constraints_emptyScreen").hide();
+			$("#constraints_noHighlightFound").hide();
 
 			if(name == "entireSlideDeckBtn" || name == "slideDeck") {
-				$("#slideDeckLevelConstraints").show();
-				enableBtn("slideDeck");
+				var info = organizeHighlightOnSections();
+
+				if(Object.keys(info) <= 0) {
+					$("#constraints_emptyScreen").show();
+				}
+				else {
+					$("#slideDeckLevelConstraints").show();
+					enableBtn("slideDeck");
+				}
 			}
 			else if(name == "singleSlideBtn" || name == "singleSlide") {
-				$("#singleSlideLevelConstraints").show();
-				enableBtn("singleSlide");
+				if (curSlidePage in currentSingleSlideConstraints) {
+					$("#singleSlideLevelConstraints").show();
+					enableBtn("singleSlide");
+				}
+				else {
+					$("#constraints_noHighlightFound").show();
+				}
 			}
 			else {
 				$("#objectLevelConstraints").show();
@@ -3391,15 +3517,6 @@ $(document).ready(function() {
 			curSlideObjects = p;
 
 			var pageID = p.pageID;
-
-			var curHighlight = highlightDB.slideInfo[pageID];
-
-			/*
-			console.log(highlightDB);
-			console.log(pageID);
-			console.log(curHighlight);
-			*/
-
 			/* Render Resources tab */
 
 			$("#Resources").html('<table id="resourceTable"> </table>');
@@ -3434,31 +3551,36 @@ $(document).ready(function() {
 
 			/* Loading recommendations */
 
-			if(curSlidePage != p.pageID){
-				$("#SlideRecommendation").html("Loading ...");
-				loadRecommendation(pageID);
-			}
+			if (pageID in highlightDB.slideInfo) {
+				if (curSlidePage != p.pageID) {
+					$("#SlideRecommendation").html("Loading ...");
+					loadRecommendation(pageID);
+				}
 
-			for(var i=0;i<p.objects.length;i++) {
-				var objID = p.objects[i].objectID.substr(7);
+				for (var i = 0; i < p.objects.length; i++) {
+					var objID = p.objects[i].objectID.substr(7);
 
-				if(slideDB == null) slideDB = {};
-				if(!(pageID in slideDB)) slideDB[pageID] = {}
-				if(!(objID in slideDB[pageID])) slideDB[pageID][objID] = {};
+					if (slideDB == null) slideDB = {};
+					if (!(pageID in slideDB)) slideDB[pageID] = {}
+					if (!(objID in slideDB[pageID])) slideDB[pageID][objID] = {};
 
-				if("paragraph" in p.objects[i]) { // if text box
-					if(Object.keys(p.objects[i].paragraph).length != Object.keys(slideDB[pageID][objID]).length) {
-						if(Object.keys(p.objects[i].paragraph).length < Object.keys(slideDB[pageID][objID]).length) {
-							var start = parseInt(p.objects[i].paragraph.length)+1;
-							var end = Object.keys(slideDB[pageID][objID]).length;
-									
-							for(var j=start;j<=end;j++) removeSlideMappingInfo(pageID, objID, j);
-						}
-						else {
-							writeSlideMappingInfo(pageID, objID, Object.keys(p.objects[i].paragraph).length-1, "null");
+					if ("paragraph" in p.objects[i]) { // if text box
+						if (Object.keys(p.objects[i].paragraph).length != Object.keys(slideDB[pageID][objID]).length) {
+							if (Object.keys(p.objects[i].paragraph).length < Object.keys(slideDB[pageID][objID]).length) {
+								var start = parseInt(p.objects[i].paragraph.length) + 1;
+								var end = Object.keys(slideDB[pageID][objID]).length;
+
+								for (var j = start; j <= end; j++) removeSlideMappingInfo(pageID, objID, j);
+							}
+							else {
+								writeSlideMappingInfo(pageID, objID, Object.keys(p.objects[i].paragraph).length - 1, "null");
+							}
 						}
 					}
 				}
+			}
+			else {
+				$("#SlideRecommendation").html("No recommendation");
 			}
 
 			visualizeSlideObjects();
@@ -3738,11 +3860,19 @@ $(document).ready(function() {
 
 		$(document).on("pdfjs_highlighted", function(e) {
 			var p = e.detail;
+			var numSlides = getNumSlides();
+			var info = organizeHighlightOnSections();
+
+			console.log(info);
+			console.log(T);
+			console.log(C);
+
+			var before_finalRepresentation = printLink(info, T, C, numSlides, null, false);
 
 			registerHighlight(p).then(mapping => {
 				showLoadingSlidePlane();
 
-				return automaticallyPutContents(p, mapping).then(() => {
+				return automaticallyPutContents(p, mapping, before_finalRepresentation).then(() => {
 					issueEvent("root_sendMappingIdentifier", {
 						mappingID: mapping.key,
 						pageNumber: p.pageNumber,
@@ -3841,20 +3971,7 @@ $(document).ready(function() {
 			console.log(T);
 			console.log(value);
 
-			if(value > T[T.length-1].length || T[T.length-1][value].l == -1) {
-				$("#slideDeck_presentationTimeInputBox").css("background-color", "red");
-			}
-			else {
-				$("#slideDeck_presentationTimeInputBox").css("background-color", "white");
-
-				var minPageNum = parseInt($("#slideDeck_sparseDenseSlider")[0].min);
-				var maxPageNum = parseInt($("#slideDeck_sparseDenseSlider")[0].max);
-
-				$("#slideDeck_sparseDenseSlider")[0].value = minPageNum + (maxPageNum-value);
-
-				updateSectionLevelCoverageValue();
-				checkConstraintsDifference("slideDeck");
-			}
+			setTimeConstraint(value);
 		});
 
 		$(document).on("click", "#presentationObjectiveBtn", function(e) {
@@ -4527,53 +4644,59 @@ function makeid(length) {
    return result;
 }
 
-function putTextOnSection(textInfo, sectionKey) {
+function putTextOnSection(textInfo, sectionKey, before_finalRepresentation) {
 	var numSlides = getNumSlides();
 	var info = organizeHighlightOnSections();
 
-	var before_finalRepresentation = printLink(info, T, C, numSlides, null, false);
+	// var before_finalRepresentation = printLink(info, T, C, numSlides, null, false);
 	
+	console.log(JSON.parse(JSON.stringify(before_finalRepresentation)));
+
 	initializeConstraintsPlane();
 
 	console.log(info);
 	console.log(numSlides);
 
 	var after_finalRepresentation = printLink(info, T, C, numSlides, null, true);
+	console.log(JSON.parse(JSON.stringify(after_finalRepresentation)));
 
 	var before_removal_index = [];
 	var after_addition_index = [];
-	
-	var before_array = [];
-	var after_array = [];
 
-	for(var i=0;i<before_finalRepresentation[sectionKey].length;i++) {
-		var flag = false;
+	if (sectionKey in before_finalRepresentation && sectionKey in after_finalRepresentation) {
+		for (var i = 0; i < before_finalRepresentation[sectionKey].length; i++) {
+			var flag = false;
 
-		for(var j=0;j<after_finalRepresentation[sectionKey].length;j++) {
-			if(JSON.stringify(before_finalRepresentation[sectionKey][i]) === JSON.stringify(after_finalRepresentation[sectionKey][j])) {
-				flag = true;
-				break;
+			for (var j = 0; j < after_finalRepresentation[sectionKey].length; j++) {
+				if (JSON.stringify(before_finalRepresentation[sectionKey][i]) === JSON.stringify(after_finalRepresentation[sectionKey][j])) {
+					flag = true;
+					break;
+				}
+			}
+
+			if (!flag) {
+				before_removal_index.push(i);
 			}
 		}
 
-		if(!flag) {
-			before_removal_index.push(i);
+		for (var i = 0; i < after_finalRepresentation[sectionKey].length; i++) {
+			var flag = false;
+
+			for (var j = 0; j < before_finalRepresentation[sectionKey].length; j++) {
+				if (JSON.stringify(after_finalRepresentation[sectionKey][i]) === JSON.stringify(before_finalRepresentation[sectionKey][j])) {
+					flag = true;
+					break;
+				}
+			}
+
+			if (!flag) {
+				after_addition_index.push(i);
+			}
 		}
 	}
-
-	for(var i=0;i<after_finalRepresentation[sectionKey].length;i++) {
-		var flag = false;
-
-		for(var j=0;j<before_finalRepresentation[sectionKey].length;j++) {
-			if(JSON.stringify(after_finalRepresentation[sectionKey][i]) === JSON.stringify(before_finalRepresentation[sectionKey][j])) {
-				flag = true;
-				break;
-			}
-		}
-
-		if(!flag) {
+	else {
+		for(var i=0;i<after_finalRepresentation[sectionKey].length;i++) 
 			after_addition_index.push(i);
-		}
 	}
 
 	console.log(before_removal_index);
@@ -4604,23 +4727,19 @@ function putTextOnSection(textInfo, sectionKey) {
 			console.log(res.sequence[i]);
 
 			if(!res.sequence[i].flag) {
-				if(!(res.sequence[i].slideID in highlightDB.slideInfo)) {
-					requests.unshift({
-						createSlide: {
-							objectId: res.sequence[i].slideID,
-							insertionIndex: res.sequence[i].pos+1,
-							slideLayoutReference: {
-								predefinedLayout: "BLANK"
-							},
-						}
-					});
+				requests.unshift({
+					createSlide: {
+						objectId: res.sequence[i].slideID,
+						insertionIndex: res.sequence[i].pos + 1,
+						slideLayoutReference: {
+							predefinedLayout: "BLANK"
+						},
+					}
+				});
 
-					setConstraints("singleSlide", "deck", res.sequence[i].slideID, true)
-				}
-
-				pages.push(res.sequence[i].slideID);
+				setConstraints("singleSlide", "deck", res.sequence[i].slideID, true)
 			}
-
+			else pages.push(res.sequence[i].slideID);
 		}
 
 		console.log(requests);
@@ -4638,54 +4757,167 @@ function putTextOnSection(textInfo, sectionKey) {
 		})
 	});
 }
+
+function getLastPageOfPreviousSection(sectionKey, finalRepresentation) {
+	var keys = Object.keys(structureHighlightDB);
+
+	var idx = keys.indexOf(sectionKey);
+
+	console.log(keys);
+	console.log(sectionKey);
+	console.log(finalRepresentation);
+
+	for(var i=idx-1;i>=0;i--) {
+		if(keys[i] in finalRepresentation) {
+			if(finalRepresentation[keys[i]].length <= 0) return -1;
+
+			var l = finalRepresentation[keys[i]];
+
+			console.log(l);
+
+			return findCorrespondingSlide(l[l.length-1]);
+		}
+	}
+
+	return -1;
+}
+
 async function slideUpdate_fillSlides(before_finalRepresentation, after_finalRepresentation, sectionKey, removal_index, addition_index) {
-	var currentSlideID = '';
-	var before_cursor = -1;
-
 	var result = await issueEvent("root_getSlideIndex", null, "extension_getSlideIndex");
-
-	var res = [];
 	var Indexes = result.detail;
+	var res = [];
 
 	console.log(Indexes);
-	console.log(removal_index);
-	console.log(addition_index);
+	console.log(sectionKey);
 
-	for (var i = 0; i < after_finalRepresentation[sectionKey].length; i++) {
-		if (addition_index.indexOf(i) >= 0) { // newly added
-			before_cursor = before_cursor + 1;
 
-			if (before_cursor < before_finalRepresentation[sectionKey].length) {
-				var flag = false;
+	if((!(sectionKey in before_finalRepresentation)) || before_finalRepresentation[sectionKey].length <= 0) {
+		var page = getLastPageOfPreviousSection(sectionKey, before_finalRepresentation);
+		var pageIndex = 0;
 
-				for(var j=0;j<removal_index.length;j++) {
-					if(removal_index[j].index == i) {
-						flag = true;
-						break;
-					}
-				}
+		console.log(page);
 
-				if(flag) {
+		if(page != -1) 
+			pageIndex = Indexes[page]-1;
+
+		for (var i = 0; i < after_finalRepresentation[sectionKey].length; i++) {
+			res.push({
+				slideID: makeid(10),
+				pos: pageIndex,
+				flag: false
+			})
+
+			pageIndex++;
+		}
+	}
+	else {
+
+		var currentSlideID = '';
+		var before_cursor = 0;
+		var before_slide = findCorrespondingSlide(before_finalRepresentation[sectionKey][0]);
+		var prev_pos = -1;
+
+		console.log(before_cursor, before_slide);
+
+
+		console.log(Indexes);
+		console.log(removal_index);
+		console.log(addition_index);
+
+		var before_position = Indexes[before_slide];
+
+		var i = 0;
+		var tmpPos = before_position - 1;
+
+		var flag = false;
+
+		for (var j = 0; j < removal_index.length; j++) {
+			if (removal_index[j].index == 0) {
+				flag = true;
+				break;
+			}
+		}
+
+		if (!flag) {
+			for (; i < after_finalRepresentation[sectionKey].length; i++) {
+				if (addition_index.indexOf(i) < 0) break;
+				else {
 					res.push({
-						slideID: findCorrespondingSlide(before_finalRepresentation[sectionKey][before_cursor]),
-						pos: -1,
-						flag: true
+						slideID: makeid(10),
+						pos: tmpPos,
+						flag: false
 					})
+
+					tmpPos++;
+				}
+			}
+		}
+
+
+		for (; i < after_finalRepresentation[sectionKey].length; i++) {
+			if (addition_index.indexOf(i) >= 0) { // newly added
+				if (before_cursor < before_finalRepresentation[sectionKey].length) {
+					var flag = false;
+
+					for (var j = 0; j < removal_index.length; j++) {
+						if (removal_index[j].index == before_cursor) {
+							flag = true;
+							break;
+						}
+					}
+
+					if (flag) {
+						console.log(JSON.parse(JSON.stringify(before_finalRepresentation[sectionKey][before_cursor])));
+
+						res.push({
+							slideID: findCorrespondingSlide(before_finalRepresentation[sectionKey][before_cursor]),
+							pos: -1,
+							flag: true
+						})
+
+						console.log(res[res.length - 1]);
+
+						prev_pos = before_position;
+
+						before_cursor = before_cursor + 1;
+
+						if (before_cursor < before_finalRepresentation[sectionKey].length) {
+							before_slide = findCorrespondingSlide(before_finalRepresentation[sectionKey][before_cursor]);
+							before_position = Indexes[before_slide];
+						}
+						else before_cursor = 987987987;
+					}
+					else {
+						res.push({
+							slideID: makeid(10),
+							pos: prev_pos - 1,
+							flag: false
+						})
+
+						prev_pos = prev_pos + 1;
+					}
 				}
 				else {
 					res.push({
 						slideID: makeid(10),
-						pos: i,
+						pos: prev_pos - 1,
 						flag: false
 					})
+
+					prev_pos++;
 				}
 			}
 			else {
-				res.push({
-					slideID: makeid(10),
-					pos: i,
-					flag: false
-				})
+				prev_pos = before_position;
+
+				before_cursor = before_cursor + 1;
+
+				if (before_cursor < before_finalRepresentation[sectionKey].length) {
+					before_slide = findCorrespondingSlide(before_finalRepresentation[sectionKey][before_cursor]);
+					before_position = Indexes[before_slide];
+				}
+
+				console.log(before_cursor, before_slide);
 			}
 		}
 	}
@@ -4740,6 +4972,8 @@ function findCorrespondingSlide(elem) {
 }
 
 function slideUpdate_removeSlides(finalRepresentation, sectionKey, removal_index) {
+	if(!(sectionKey in finalRepresentation)) return [];
+
 	var requests = [];
 
 	console.log("what?");
@@ -4760,7 +4994,7 @@ function slideUpdate_removeSlides(finalRepresentation, sectionKey, removal_index
 					console.log("got it");
 					removal_index[j] = {
 						slideID: slideID,
-						index: j
+						index: i
 					}
 					console.log(removal_index[j]);
 				}
@@ -4801,7 +5035,6 @@ function getSlideIDWithMappingSet(mappingSet) {
 			}
 		}
 
-		console.log(mappingSet2);
 		if(JSON.stringify(mappingSet) === JSON.stringify(mappingSet2)) 
 			return s;
 	}
@@ -4810,7 +5043,7 @@ function getSlideIDWithMappingSet(mappingSet) {
 }
 
 
-async function automaticallyPutContents(textInfo, mapping) {
+async function automaticallyPutContents(textInfo, mapping, before_finalRepresentation) {
 	console.log(textInfo);
 	console.log(mapping);
 
@@ -4818,7 +5051,7 @@ async function automaticallyPutContents(textInfo, mapping) {
 
 	console.log(sectionKey);
 	
-	putTextOnSection(textInfo, sectionKey);
+	putTextOnSection(textInfo, sectionKey, before_finalRepresentation);
 
 	/*
 	var heavy = $("#textHeavyBtn").prop("checked");
