@@ -1706,6 +1706,8 @@ async function createSlidesOnGoogleSlide(finalRepresentation) {
 
 		setConstraints("singleSlide", singleSlideConstraints, "all", true)
 
+		console.log(JSON.parse(JSON.stringify(myRequest)));
+
 		writeSlideMappingInfoBulk(myRequest.updateInfo).then(() => {
 			 gapi.client.slides.presentations.batchUpdate({
 				 presentationId: PRESENTATION_ID,
@@ -1728,8 +1730,8 @@ async function getRequestForBulkGeneration(slideInfo, finalRepresentation) {
 
 			await loadRecommendationByResources(objects, slideID);
 
-			// console.log(slideID);
-			// console.log(recommendationLoadingHistory[slideID].renderResult);
+			console.log(slideID);
+			console.log(JSON.parse(JSON.stringify(recommendationLoadingHistory[slideID].renderResult)));
 
 			requests.push({
 				createSlide: {
@@ -1741,8 +1743,6 @@ async function getRequestForBulkGeneration(slideInfo, finalRepresentation) {
 			});
 
 			var renderInfo = renderSlideOnGoogle(recommendationLoadingHistory[slideID].renderResult[0], slideID, false);
-
-			// console.log(renderInfo);
 
 			updateInfo = updateInfo.concat(renderInfo.updateInfo);
 			requests = requests.concat(renderInfo.requests);
@@ -1891,6 +1891,8 @@ function automaticallyUpdateSlides() {
 	var finalRepresentation = printLink(info, T, C, numSlides, coverage);
 
 	if(finalRepresentation == -1) return;
+
+	console.log(JSON.parse(JSON.stringify(finalRepresentation)));
 
 	createSlidesOnGoogleSlide(finalRepresentation);
 
@@ -2201,6 +2203,8 @@ function getLeafBoxesInternal(nodeSet, curNode, curLeft, curTop, curHeight, curW
 async function loadRecommendationByResources(resource, slideID) {
 	var text = [];
 
+	console.log(resource);
+
 	for(var i=0;i<resource.length;i++) {
 		var mappingID = resource[i].mappingKey;
 
@@ -2250,6 +2254,68 @@ async function loadRecommendationByResources(resource, slideID) {
 	recommendationRender(data, constraints, slideID, false);
 }
 
+function getResources(pageID) {
+	var curHighlight = highlightDB.slideInfo[pageID];
+	var resources = [];
+
+	var resourceDictionary = {};
+
+	for (var obj in curHighlight) {
+		for (var k in curHighlight[obj]) {
+			var mappingID = curHighlight[obj][k].mappingID;
+
+			if (mappingID == "null") continue;
+
+			var pgNumber = mappingPageNumberIndex[mappingID];
+
+			resourceDictionary[mappingID] = highlightDB.mapping[pgNumber][mappingID].text
+		}
+	}
+
+	for (var s in resourceDictionary) {
+		resources.push( {
+			text: resourceDictionary[s],
+			mappingID: s
+		})
+	}
+
+	resources = sortMappings(resources);
+
+	return resources;
+}
+
+function getLocation(mappingID) {
+	for(var pageNumber in highlightDB.mapping) {
+		if(mappingID in highlightDB.mapping[pageNumber]) {
+			return parseInt(pageNumber) * 1000000 + highlightDB.mapping[pageNumber][mappingID].startWordIndex;
+		}
+	}
+
+	return -1;
+}
+
+function sortMappings(resources) {
+	var r = JSON.parse(JSON.stringify(resources));
+
+	for(var i=0;i<r.length;i++) {
+		r[i].location = getLocation(r[i].mappingID);
+		r[i].index = i;
+	}
+
+	r.sort(function(first, second) {
+		if(first.location > second.location) return 1;
+		else if(first.location == second.location) return 0;
+		else return -1;
+	});
+	
+	for(var i=0;i<r.length;i++) {
+		delete r[i].location;
+		delete r[i].index;
+	}
+
+	return r;
+}
+
 function loadRecommendation(pageID) {
 	if(pageID in recommendationLoadingHistory) {
 		if(recommendationLoadingHistory[pageID].loading){
@@ -2264,58 +2330,41 @@ function loadRecommendation(pageID) {
 		return;
 	}
 
-	var curHighlight = highlightDB.slideInfo[pageID];
-	var text = [];
+	var resources = getResources(pageID);
 
-	for (var obj in curHighlight) {
-		for (var k in curHighlight[obj]) {
-			var mappingID = curHighlight[obj][k].mappingID;
-
-			if (mappingID == "null") continue;
-
-			var pgNumber = mappingPageNumberIndex[mappingID];
-			var t = {
-				text: highlightDB.mapping[pgNumber][mappingID].text,
-				mappingID: mappingID
-			}
-
-			text.push(t);
-		}
-	}
-
-	if(text.length <= 0) return;
+	if(resources.length <= 0) return;
 
 	recommendationLoadingHistory[pageID] = {
 		loading: true,
 		result: {}
 	}
 
-	for (var i = 0; i < text.length; i++) {
-		text[i] = {
+	for (var i = 0; i < resources.length; i++) {
+		resources[i] = {
 			type: "text",
-			contents: text[i].text,
-			mappingID: text[i].mappingID
+			contents: resources[i].text,
+			mappingID: resources[i].mappingID
 		}
 	}
-
-	console.log(text);
 
 	const requestOptions = {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(
 			{
-				resources: text,
+				resources: resources,
 				slideNumber: 0
 			}
 		),
 	};
 
+	console.log(JSON.parse(JSON.stringify(resources)));
+
 	fetch('http://server.hyungyu.com:1333/getSlides', requestOptions)
 		.then(response => response.json())
 		.then(data => {
 			recommendationLoadingHistory[pageID].loading = false;
-			recommendationLoadingHistory[pageID].text = text;
+			recommendationLoadingHistory[pageID].text = resources;
 			recommendationLoadingHistory[pageID].result = data;
 
 			var constraints = currentSingleSlideConstraints[pageID];
@@ -2368,11 +2417,24 @@ function getConstraints(type) {
 	}
 }
 
+function checkMappingSpan(elem, cnt) {
+	var mappingSet = {};
+
+	for (var i = 0; i < elem.length; i++) {
+		for (var j = 0; j < elem[i].contents.length; j++) {
+			mappingSet[elem[i].contents[j].mappingID] = 1;
+		}
+	}
+
+	if(Object.keys(mappingSet).length >= cnt) return true;
+	else return false;
+
+}
 function recommendationRender(data, constraints, pageID, renderFlag) {
 	// console.log(constraints);
 
 	var __renderResult = [];
-	// console.log(data);
+	console.log(data);
 
 	var height = RENDER_SLIDE_HEIGHT;
 	var width = RENDER_SLIDE_WIDTH;
@@ -2425,7 +2487,7 @@ function recommendationRender(data, constraints, pageID, renderFlag) {
 		tmp = populateSlideElements(data, prefix, curSkeletonIndex, padding, renderResultInstance);
 
 		for (var j = 0; j < tmp.length; j++) {
-			if (tmp[j].length > 0) {
+			if (tmp[j].length > 0 && checkMappingSpan(tmp[j], data.contents.length)) {
 				__renderResult.push({
 					className: "parentDiv slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + " slideIndex_" + slideIdx + ' recSlide',
 					height: height,
@@ -2436,10 +2498,9 @@ function recommendationRender(data, constraints, pageID, renderFlag) {
 			}
 		}
 	}
-/*
+
 	console.log(__renderResult);
 	console.log(pageID);
-	*/
 
 	recommendationLoadingHistory[pageID].renderResult = __renderResult;
 
@@ -3138,12 +3199,7 @@ $(document).ready(function() {
 				t = $(t).parent();
 			}
 
-			console.log(t);
-			console.log(curSlidePage);
-
 			var slideInfo = getSlideInfoOnRecommendation($(t)[0].className, recommendationLoadingHistory[curSlidePage].renderResult );
-
-			console.log(slideInfo);
 
 			if(slideInfo != -1) {
 				setConstraints("singleSlide", getConstraints("singleSlide"), curSlidePage, true);
@@ -3313,7 +3369,9 @@ $(document).ready(function() {
 
 			$("#Resources").html('<table id="resourceTable"> </table>');
 
-			var text = [];
+			var resources = getResources(pageID);
+/*
+			var resourceDictionary = {};
 
 			for(var obj in curHighlight) {
 				for(var k in curHighlight[obj]) {
@@ -3322,22 +3380,21 @@ $(document).ready(function() {
 					if(mappingID == "null") continue;
 
 					var pgNumber = mappingPageNumberIndex[mappingID];
-					var t = {
-						text: highlightDB.mapping[pgNumber][mappingID].text,
-						mappingID: mappingID
-					}
 
-					text.push(t);
-
-					$("#resourceTable").append(
-						'<tr>' + 
-						'<td> <input type="checkbox" id="checkbox_' + mappingID + '"> </td>' + 
-						'<td> <div class="resourceItem" mappingID="' + mappingID + '"> ' + 
-						t.text + 
-						'</div> </td>' + 
-						'</tr>'
-					);
+					resourceDictionary[mappingID] = highlightDB.mapping[pgNumber][mappingID].text
 				}
+			}
+			*/
+
+			for(var i=0;i<resources.length;i++) {
+				$("#resourceTable").append(
+					'<tr>' +
+					'<td> <input type="checkbox" id="checkbox_' + resources[i].mappingID + '"> </td>' +
+					'<td> <div class="resourceItem" mappingID="' + resources[i].mappingID + '"> ' +
+					resources[i].text +
+					'</div> </td>' +
+					'</tr>'
+				);
 			}
 
 			/* Loading recommendations */
@@ -4834,6 +4891,9 @@ function renderSlideOnGoogle(slideInfo, curSlidePage, applyFlag) {
 
 	var updateInfo = [];
 
+	console.log(slideInfo);
+//	console.log(JSON.parse(JSON.stringify(slideInfo)));
+
 	for(var i=0;i<slideInfo.innerBoxes.length;i++) {
 		if (slideInfo.innerBoxes[i].type == 'text' || slideInfo.innerBoxes[i].type == 'textCaption') {
 			var objID = makeid(10);
@@ -5016,6 +5076,8 @@ function renderSlideOnGoogle(slideInfo, curSlidePage, applyFlag) {
 
 	if (applyFlag) {
 		removeSlideMappingInPage(curSlidePage).then(() => {
+			console.log(JSON.parse(JSON.stringify(slideDB)));
+
 			writeSlideMappingInfoBulk(updateInfo).then(() => {
 				gapi.client.slides.presentations.batchUpdate({
 					presentationId: PRESENTATION_ID,
