@@ -24,6 +24,8 @@ var eventList = {
 	"pdfjs_getStructureHighlight": ['pdfjs', 'root'],
 	"root_updatePdfTextSection": ['root', 'pdfjs'],
 	"extension_mouseup": ["extension", "root"],
+	"root_getSlideIndex": ["root", "extension"],
+	"extension_getSlideIndex": ["extension", "root"]
 }
 
 var curSlideState = "WAIT";
@@ -232,6 +234,48 @@ function chromeExtensionBody() {
 			clickedElement: clickedElement,
 			clickedSlide: clickedSlide
 		});
+	})
+
+	$(document).on("root_getSlideIndex", function(e) {
+		function get_common_ancestor(a, b)
+			{
+			$parentsa = $(a).parents();
+			$parentsb = $(b).parents();
+			
+			var found = null;
+			
+			$parentsa.each(function() {
+			    var thisa = this;
+			
+			    $parentsb.each(function() {
+			    if (thisa == this)
+			    {
+			        found = this;
+			        return false;
+			    }
+			    });
+			
+			    if (found) return false;
+			});
+			
+			return found;
+		}
+
+		var cnt = 1;
+		var retValue = {};
+
+		$("[id^='filmstrip-slide-']").each(function () {
+			var id = $(this).attr("id");
+
+			if (id.endsWith("-bg")) {
+				var pageId = id.split('-')[3];
+
+				retValue[pageId] = cnt;
+				cnt = cnt + 1;
+			}
+		});
+
+		issueEvent("extension_getSlideIndex", retValue);
 	})
 
 	$(document).on("root_getLastObject", function(e) {
