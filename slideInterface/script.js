@@ -1381,7 +1381,7 @@ function showLoadingSlidePlane(){
 	$("#loadingSlidePlane").show();
 	$("#slidePlaneCanvas").css("background-color", "rgb(0, 0, 0, 0.3)");
 
-	setTimeout(function() { hideLoadingSlidePlane(); }, 3000);
+	setTimeout(function() { hideLoadingSlidePlane(); }, 60000);
 }
 
 function hideLoadingSlidePlane() {
