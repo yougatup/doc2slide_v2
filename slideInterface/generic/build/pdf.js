@@ -18091,7 +18091,7 @@ $(document).ready(function() {
 		});
 
 		$(document).on("mousedown", function(e) {
-			mouseDown++;
+			mouseDown = 1;
 
 			var target = e.target;
 
@@ -18117,7 +18117,7 @@ $(document).ready(function() {
 		});
 
 		$(document).on("mouseup", function(e) {
-			mouseDown--;
+			mouseDown = 0;
 
 			var target = e.target;
 
