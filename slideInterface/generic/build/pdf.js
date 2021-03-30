@@ -17770,6 +17770,7 @@ function popoverOnWord(target) {
 	$(target).attr("data-toggle", "popover");
 	$(target).attr("data-placement", "top");
 
+  /*
 	$(target).popover(
 			{
 			    html: true,
@@ -17778,6 +17779,7 @@ function popoverOnWord(target) {
 			     }
 			}
 			);
+      */
 
 	popoverElement = target;
 }
