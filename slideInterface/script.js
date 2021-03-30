@@ -1629,6 +1629,11 @@ function printLink(info, T, C, numSlides, coverage, isFlexible) {
 
 			$("#slideDeck_presentationTimeInputBox")[0].value = numSlides;
 
+			var minPageNum = parseInt($("#slideDeck_sparseDenseSlider")[0].min);
+			var maxPageNum = parseInt($("#slideDeck_sparseDenseSlider")[0].max);
+
+			$("#slideDeck_sparseDenseSlider")[0].value = minPageNum + (maxPageNum - numSlides);
+
 			numSlidesChanged = true;
 		}
 		else {
@@ -1811,8 +1816,11 @@ async function createSlidesOnGoogleSlide(finalRepresentation) {
 			// console.log(highlightDB.slideInfo);
 
 		var myRequest = await getRequestForBulkGeneration(highlightDB.slideInfo, finalRepresentation)
+
 		var slideDeckConstraints = getConstraints("slideDeck");
 		var singleSlideConstraints = {};
+
+		console.log(slideDeckConstraints);
 
 		for (var i = 0; i < myRequest.updateInfo.length; i++) {
 			singleSlideConstraints[myRequest.updateInfo[i].slideID] = {
@@ -2618,7 +2626,10 @@ function recommendationRender(data, constraints, pageID, renderFlag) {
 		var prefix = 0;
 		var cnt = 0, cnt2 = 0;
 
-		tmp = populateSlideElements(data, prefix, curSkeletonIndex, padding, renderResultInstance);
+		if(constraints == null) 
+			constriants = getConstraints("slideDeck", pageID);
+	
+		tmp = populateSlideElements(data, prefix, curSkeletonIndex, padding, renderResultInstance, constraints);
 
 		for (var j = 0; j < tmp.length; j++) {
 			if (tmp[j].length > 0 && checkMappingSpan(tmp[j], data.contents.length)) {
@@ -2655,7 +2666,7 @@ function dataClustering(contentsCnt, num) {
 	return ret;
 }
 
-function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderResultInstance) {
+function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderResultInstance, constraints) {
 	var tmp = [];
 
 	var clusteredResult = dataClustering(data.contents.length, renderResultInstance.length);
@@ -2667,8 +2678,7 @@ function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderRe
 	console.log(clusteredResult);
 	*/
 
-	var slideConstraints = getConstraints("singleSlide", curSlidePage);
-	var descriptiveValue = slideConstraints.descAbst;
+	var descriptiveValue = constraints.descAbst;
 	var maxValue = $("#singleSlide_slideLayoutSlider")[0].max;
 	var ratio = descriptiveValue / maxValue;
 	
