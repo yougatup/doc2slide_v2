@@ -25,7 +25,9 @@ var eventList = {
 	"root_updatePdfTextSection": ['root', 'pdfjs'],
 	"extension_mouseup": ["extension", "root"],
 	"root_getSlideIndex": ["root", "extension"],
-	"extension_getSlideIndex": ["extension", "root"]
+	"extension_getSlideIndex": ["extension", "root"],
+	"pdfjs_getDocumentStructure": ["pdfjs", "root"],
+	"root_getDocumentStructure": ["root", "pdfjs"]
 }
 
 var curSlideState = "WAIT";

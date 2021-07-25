@@ -18203,6 +18203,45 @@ $(document).ready(function() {
 			});
 		});
 
+    $(document).on("click", "#structureDivTopBarCloseBtn", function(e) {
+      $("#structureDiv").hide();
+    });
+
+    $(document).on("click", ".structureViewButton", function(e) {
+      console.log("HIT");
+
+			issueEvent("pdfjs_getDocumentStructure", null, 
+                 "root_getDocumentStructure").then( result => {
+                   var data = result.detail;
+                   var h = '';
+
+                   for(var k in data.sectionStructure) {
+                     var numHighlight = 0;
+
+                     if(k in data.info) numHighlight = data.info[k].length;
+
+                     h = h + 
+                     '<tr>' + 
+                        '<td class="structureDivSectionTitleBody">' + data.sectionStructure[k].text + '</td>' + 
+                        '<td class="structureDivNumHighlightBody">' + numHighlight + '</td>' + 
+                        '<td class="structureDivIncludeBody">' + '<input type="checkbox"> </input>'
+                        + '</td>' + 
+                      '</tr>'
+                   }
+
+                   $("#structureDivTable").html(
+                    '<tr>' + 
+                    '<th class="structureDivSectionTitle"> Section title </th>' + 
+                    '<th class="structureDivNumHighlight"> The number of highlight </th>' + 
+                    '<th class="structureDivInclude"> Include? </th>' + 
+                    '</tr>' + 
+                    h
+                   )
+
+                   $("#structureDiv").show();
+      });
+    });
+
 		$(document).on("click", ".removeHighlightBtn", function(e) {
 			if(popoverElement != null) {
 				var mappingID = $(popoverElement).attr("mappingID");

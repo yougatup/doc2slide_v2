@@ -33,11 +33,12 @@
 		  firebase.analytics();
 		</script>
 
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script src="./splitjs/split.js"></script>
 
-        <script src="https://code.jquery.com/ui/jquery-ui-git.js"></script>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        <script src="./splitjs/split.js"></script>
 
         <script src="https://apis.google.com/js/api.js"></script>
         <script src="https://apis.google.com/js/platform.js" async defer></script>
@@ -79,7 +80,8 @@
 
 			<div id='documentStructureBtnDiv'> 
 				<!-- <button id='documentStructureBtn'> Document Structure </button> --> 
-				<button id='presentationObjectiveBtn'> Presentation objective </button>
+				<!--
+				<button id='presentationObjectiveBtn'> Presentation objective </button> -->
 			</div>
 
 			<div id='chromeExtensionDownloadDiv'> 
@@ -101,8 +103,37 @@
     
                     <button id='insertText'> Insert text </button> -->
 
-                     <iframe id='pdfjsIframe' src='./generic/web/viewer.html' frameborder='0' marginwidth='0' marginheight='0' >
-                    </iframe>
+					<div id='sourceSelectPlane'> 
+
+						<div id="sourceTabs">
+							<ul>
+							  <li><a href="#tabs-document">Document</a></li>
+							  <li><a href="#tabs-slide">Slide</a></li>
+							</ul>
+							<div id="tabs-document">
+								<iframe id='pdfjsIframe' src='./generic/web/viewer.html' frameborder='0' marginwidth='0' marginheight='0'>
+								</iframe>
+							</div>
+							<div id="tabs-slide">
+								<div id='sourceSlideDiv'> 
+									<div id="sourceSelectionDiv">
+									<span>Slide Deck</span>
+									<label class="slideRepresentationSwitch">
+										<input type="checkbox">
+										<span class="slideRepresentationSlider"></span>
+									  </label>
+									  Single Slide
+									</div>
+
+									<div id="sourceSlideBodyDiv">
+
+									</div>
+								</div>
+							</div>
+						  </div>
+	
+
+					</div>
 
                 </div>
 

@@ -1034,3 +1034,166 @@ width: 100%;
   .imageInSlide {
 	  object-fit: contain;
   }
+
+  #sourceSelectPlane {
+	  box-sizing: border-box;
+	  height: 100%;
+	  width: 100%;
+  }
+
+  #sourceTabs {
+	  box-sizing: border-box;
+	  height: 100%;
+	  width: 100%;
+  }
+
+  #tabs-document {
+	  padding-left: 4px;
+	  padding-top: 0px;
+	  padding-right: 0px;
+  }
+
+  #sourceSlideDiv {
+	  height: calc(100% - 90px);
+	  width: 100%;
+	  box-sizing: border-box;
+	  padding: 20px;
+  }
+
+  /* The switch - the box around the slider */
+.slideRepresentationSwitch {
+	position: relative;
+	display: inline-block;
+	width: 40px;
+	height: 22px;
+	vertical-align: middle;
+	margin-left: 5px;
+	margin-right: 5px;
+  }
+  
+  /* Hide default HTML checkbox */
+  .slideRepresentationSwitch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+  }
+  
+  /* The slider */
+  .slideRepresentationSlider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #2196F3;
+	-webkit-transition: .4s;
+	transition: .4s;
+  }
+  
+  .slideRepresentationSlider:before {
+	position: absolute;
+	content: "";
+	height: 13px;
+	width: 13px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
+  }
+  
+  input:checked + .slideRepresentationSlider{
+	background-color: #2196F3;
+  }
+  
+  input:focus + .slideRepresentationSlider{
+	box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slideRepresentationSlider:before {
+	-webkit-transform: translateX(20px);
+	-ms-transform: translateX(20px);
+	transform: translateX(20px);
+  }
+  
+  /* Rounded sliders */
+  .slideRepresentationSlider.round {
+	border-radius: 34px;
+  }
+  
+  .slideRepresentationSlider.round:before {
+	border-radius: 50%;
+  }
+
+
+  #sourceSlideBodyDiv {
+	  height: calc(100% - 20px);
+	  border: 1px solid black;
+	  margin-top: 5px;
+	  padding: 5px;
+  }
+
+  #singleSlideBodyDiv{
+	  height: calc(100% - 20px);
+	  border: 1px solid black;
+
+	  margin-top: 5px;
+  }
+
+  .slideDeckItem {
+	  height: 150px;
+	  width: 200px;
+	  border: 2px solid lightgray;
+	  margin: 10px;
+	  border-radius: 7px;
+	  cursor: pointer;
+  }
+  .slideDeckItem:hover {
+	  border: 2px solid red;
+  }
+
+  .slideImageDiv {
+	  height: 100px;
+	  width: 200px;
+	  box-sizing: border-box;
+	  top: calc(50% - 60px);
+	  position: relative;
+  }
+
+  .slideDeckThumbnailImage {
+	  height: 100%;
+	  width: 100%;
+	  border-bottom: 1px solid lightgray;
+	  border-top: 1px solid lightgray;
+  }
+
+  .slideImageLeftBtn {
+	  float: left;
+	  position: relative;
+	  height: 100%;
+	  top: -100%;
+	  display: none;
+	  border: 0px;
+	  background-color: rgba(240, 240, 240, 0.4);
+	  width: 40px;
+	  cursor: pointer;
+  }
+
+  .slideImageRightBtn {
+	  float: right;
+	  position: relative;
+	  height: 100%;
+	  top: -100%;
+	  display: none;
+	  border: 0px;
+	  background-color: rgba(240, 240, 240, 0.4);
+	  width: 40px;
+	  cursor: pointer;
+  }
+
+  .slideImageDivBottom {
+	  top: 20px;
+	  position: relative;
+	  text-align: center;
+  }

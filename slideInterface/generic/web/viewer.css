@@ -2412,3 +2412,99 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
 .textSegment.blinkingWord {
 	background-color: blue;
 }
+
+
+.HIDE_BUTTON {
+    display: none;
+}
+
+.structureViewButton {
+    font-size: 13px;
+    margin-top: 1px;
+    margin-left: 3px;
+    margin-right: 3px;
+    padding-left: 3px;
+    padding-right: 3px;
+    background-color: rgb(70, 70, 70);
+    color: white;
+}
+
+#structureDiv {
+    border-radius: 10px;
+    position: absolute;
+    border: 1px solid black;
+    width: 800px;
+    height: 80%;
+    left: calc(50% - 400px);
+    z-index: 9999999;
+    margin-top: 10%;
+    background-color: white;
+    display: none;
+}
+
+#structureDivTopBar {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    height: 40px;
+    width: 100%;
+    background-color: lightgray;
+}
+
+#structureDivTopBarCloseBtn {
+    float: right;
+    margin: 5px;
+    width: 30px;
+    height: 30px;
+    font-size: 15px;
+}
+
+#structureDivBody {
+    box-sizing: border-box;
+    height: calc(100% - 40px);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    width: 100%;
+    padding: 20px;
+}
+
+#structureDivBodyTitle {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#structureDivTable {
+    width: 100%;
+    font-size: 15px;
+    border: 1px solid black;
+}
+
+#structureDivTable > tr > td, th {
+    border: 1px solid black;
+}
+
+.structureDivSectionTitle {
+    width: 50%;
+    text-align: center;
+}
+
+.structureDivNumHighlight {
+    width: 40%;
+    text-align: center;
+}
+
+.structureDivInclude {
+    width: 10%;
+    text-align: center;
+}
+
+.structureDivSectionTitleBody {
+    padding: 3px;
+}
+
+.structureDivNumHighlightBody {
+    text-align: center;
+}
+
+.structureDivIncludeBody {
+    text-align: center;
+}

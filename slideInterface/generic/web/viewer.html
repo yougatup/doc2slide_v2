@@ -47,6 +47,21 @@ See https://github.com/adobe-type-tools/cmap-resources
 
   <body tabindex="1" class="loadingInProgress">
     <div id="outerContainer">
+      <div id="structureDiv"> 
+        <div id="structureDivTopBar"> 
+          <button id="structureDivTopBarCloseBtn"> X </button>
+        </div>
+          <div id="structureDivBody"> 
+            <div id="structureDivBodyTitle"> Structure </div>
+            <table id="structureDivTable"> 
+              <tr>
+                <th class="structureDivSectionTitle"> Section title </th>
+                <th class="structureDivNumHighlight"> The number of highlight </th>
+                <th class="structureDivInclude"> Include? </th>
+              </tr>
+            </table>
+          </div>
+      </div>
       <div id="sidebarContainer">
         <div id="toolbarSidebar">
           <div class="splitToolbarButton toggled">
@@ -192,19 +207,32 @@ See https://github.com/adobe-type-tools/cmap-resources
                 <button id="viewFind" class="toolbarButton" title="Find in Document" tabindex="12" data-l10n-id="findbar">
                   <span data-l10n-id="findbar_label">Find</span>
                 </button>
+
+
                 <div class="splitToolbarButton hiddenSmallView">
-                  <button class="toolbarButton pageUp" title="Previous Page" id="previous" tabindex="13" data-l10n-id="previous">
+                  <button class="structureViewButton" title="View Structure" id="structureBtn" tabindex="13" data-l10n-id="structure">
+                    <span data-l10n-id="view_structure_label">View structure</span>
+                  </button>
+                </div>
+
+
+                <div class="splitToolbarButton hiddenSmallView">
+                  <button class="toolbarButton pageUp HIDE_BUTTON" title="Previous Page" id="previous" tabindex="13" data-l10n-id="previous">
                     <span data-l10n-id="previous_label">Previous</span>
                   </button>
                   <div class="splitToolbarButtonSeparator"></div>
-                  <button class="toolbarButton pageDown" title="Next Page" id="next" tabindex="14" data-l10n-id="next">
+                  <button class="toolbarButton pageDown HIDE_BUTTON" title="Next Page" id="next" tabindex="14" data-l10n-id="next">
                     <span data-l10n-id="next_label">Next</span>
                   </button>
                 </div>
+
+
+
+
                 <input type="number" id="pageNumber" class="toolbarField pageNumber" title="Page" value="1" size="4" min="1" tabindex="15" data-l10n-id="page">
                 <span id="numPages" class="toolbarLabel"></span>
               </div>
-              <div id="toolbarViewerRight">
+              <div id="toolbarViewerRight" class="HIDE_BUTTON">
                 <button id="presentationMode" class="toolbarButton presentationMode hiddenLargeView" title="Switch to Presentation Mode" tabindex="31" data-l10n-id="presentation_mode">
                   <span data-l10n-id="presentation_mode_label">Presentation Mode</span>
                 </button>
