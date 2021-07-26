@@ -3322,7 +3322,32 @@ function makeSlideTransition(presentationID, curSlideIndex, dir) {
 	}
 }
 
+function getSlideThumbnail(slide) {
+	return "<div class='slideThumbnailDiv'>" + 
+				"<img class='slideThumbnailImage' src='" + slide.thumbnailURL + "'> </img>" +
+			"</div>"
+}
+
+function slideDeckAdaptationDivAppear(presentationID) {
+	if (presentationID in slideDeckInfo) {
+		$("#slideDeckCompareDivOriginalSlidesList").html('');
+
+		var bodyHTML = '';
+
+		for(var i=0;i<slideDeckInfo[presentationID].length;i++) {
+			bodyHTML = bodyHTML + getSlideThumbnail(slideDeckInfo[presentationID][i]);
+		}
+
+		$("#slideDeckCompareDivOriginalSlidesList").html(bodyHTML);
+		$("#slideDeckCompareDiv").show();
+	}
+}
+
 $(document).ready(function() {
+	$(document).on("click", "#slideDeckCompareDivTopBarCloseBtn", function(e) {
+		$("#slideDeckCompareDiv").hide();
+	})
+
 	$(document).on("click", ".slideImageLeftBtn", function(e) {
 		var slideObj = $(e.target).parents();
 		
@@ -3341,7 +3366,13 @@ $(document).ready(function() {
 		makeSlideTransition(presentationID, curSlideIndex, 1);
 	});
 
+	$(document).on("click", ".slideDeckThumbnailImage", function(e) {
+		console.log(e.target);
 
+		var presentationID = $($(e.target).parent()).attr("presentationID");
+
+		slideDeckAdaptationDivAppear(presentationID);
+	});
 
 	$(document).on("mouseenter", ".slideImageDiv", function(e) {
 		var cur = e.target;
@@ -3349,7 +3380,7 @@ $(document).ready(function() {
 		for(var i=0;i<100;i++) {
 			if($(cur).hasClass("slideImageDiv")) break;
 
-			cur = $(cur).parents();
+			cur = $(cur).parent();
 		}
 
 		$($(cur).find(".slideImageLeftBtn")[0]).show();

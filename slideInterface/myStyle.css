@@ -15,13 +15,14 @@ position: relative;
 #topBar {
 position: relative;
 padding: 5px;
-height: 30px;
+height: 40px;
 width: 100%;
 background-color: rgb(45, 79, 126);
 color: white;
 font-weight: bold;
 font-family: Arial, Helvetica, sans-serif;
 font-size: 30px;
+box-sizing: border-box;
 }
 
 #slidePlane {
@@ -1142,23 +1143,25 @@ width: 100%;
   }
 
   .slideDeckItem {
-	  height: 150px;
-	  width: 200px;
+	  height: 300px;
+	  width: 400px;
 	  border: 2px solid lightgray;
 	  margin: 10px;
 	  border-radius: 7px;
 	  cursor: pointer;
+	  float: left;
   }
   .slideDeckItem:hover {
 	  border: 2px solid red;
   }
 
   .slideImageDiv {
-	  height: 100px;
-	  width: 200px;
+	  height: 70%;
+	  width: 100%;
 	  box-sizing: border-box;
-	  top: calc(50% - 60px);
+	  top: 15%;
 	  position: relative;
+	  overflow: hidden;
   }
 
   .slideDeckThumbnailImage {
@@ -1166,6 +1169,7 @@ width: 100%;
 	  width: 100%;
 	  border-bottom: 1px solid lightgray;
 	  border-top: 1px solid lightgray;
+	  object-fit: contain;
   }
 
   .slideImageLeftBtn {
@@ -1193,7 +1197,80 @@ width: 100%;
   }
 
   .slideImageDivBottom {
-	  top: 20px;
+	  top: 20%;
 	  position: relative;
 	  text-align: center;
+  }
+
+  #slideDeckCompareDiv {
+	  height: 90%;
+	  width: 90%;
+	  top: calc((100% - 30px) * 0.05 + 30px);
+	  left: 5%;
+	  border: 1px solid gray;
+	  position: absolute;
+	  z-index: 987987987;
+	border-radius: 20px;
+	background-color: white;
+	box-sizing: border-box;
+	margin: 0px;
+	padding: 0px;
+	display: none;
+  }
+
+  #slideDeckCompareDivTopBar {
+	  height: 50px;
+	  width: 100%;
+	  background-color: lightgray;
+	  border-top-left-radius: 20px;
+	  border-top-right-radius: 20px;
+	box-sizing: border-box;
+	margin: 0px;
+  }
+
+  #slideDeckCompareDivTopBarCloseBtn {
+	  font-size: 20px;
+	  margin: auto;
+	  float: right;
+	  margin: 10px;
+  }
+
+  #slideDeckCompareDivBody {
+	  height: calc(100% - 20px);
+	  width: 100%;
+	  border-bottom-left-radius: 20px;
+	  border-bottom-right-radius: 20px;
+	  box-sizing: border-box;
+  }
+
+  #slideDeckCompareDivOriginalSlides {
+	  height: 90%;
+	  width: 40%;
+	  top: 5%;
+	  left: 5%;
+	  position: relative;
+	  box-sizing: border-box;
+	  border: 1px solid black;
+	  overflow: auto;
+  }
+
+  #slideDeckCompareDivOriginalSlidesTitle {
+	  font-size: 20px;
+	  font-weight: bold;
+	  margin: 20px;
+  }
+
+  .slideThumbnailDiv {
+	  height: 400px;
+	  width: 500px;
+	  border: 1px solid black;
+	  margin: auto;
+	  margin-top: 30px;
+	  object-fit: contain;
+  }
+
+  .slideThumbnailImage {
+	  height: 100%;
+	  width: 100%;
+	  object-fit: contain;
   }

@@ -1,4 +1,10 @@
-var SLIDE_ID = ['1Mq57f3Hqi67Nu3fKdUNSwB02nTtlX39i2LEnqAg1Q-Y']
+var SLIDE_ID = [//'1Mq57f3Hqi67Nu3fKdUNSwB02nTtlX39i2LEnqAg1Q-Y',
+// '1k3R3mRDwvQFk6GyigP3gdIBfEq1tYfFNDi3CByF6sXo',
+// '1Ht4gApdoNs802gEpFX4ynl6-nnmnhO0KRP6SBN1KDew',
+// '150baW1RkP6MChIuzY1GHZ6DRWBFWtGfE-NYVG0m6_EE',
+'1v45gBikHSZcBB_6oNZH0p_NZiWEwFWNuZKEwQmp3ipQ',
+//'1ZtUhGdNzvvWb3RoHdxLmq0VRBml27lsL7LHwDbu-Hfw',
+]
 
 function initializeGAPI(callback) {
     // Client ID and API key from the Developer Console
@@ -212,18 +218,41 @@ function loadThumbnail() {
                         console.log(my_index);
                         console.log(response);
 
-                        $("#" + my_s_id + "_img").html(
-                            "<img src=" + response.result.contentUrl + " class='slideThumbnail'> </img>");
-                        $("#" + my_s_id + "_url").html(response.result.contentUrl);
 
                         var updates = {};
 
-                        updates['/referenceSlides/' + slide + '/slides/' + my_index] = {
-                            slideID: my_s_id,
-                            thumbnailURL: response.result.contentUrl
-                        }
 
-                        firebase.database().ref().update(updates);
+                        fetch(response.result.contentUrl)
+                            .then(res => res.blob()) // Gets the response and returns it as a blob
+                            .then(blob => {
+                                // Here's where you get access to the blob
+                                // And you can use it for whatever you want
+                                // Like calling ref().put(blob)
+
+                                // Here, I use it to make an image appear on the page
+                                console.log(blob);
+
+                                const ref = firebase.storage().ref("/" + slide);
+
+                                ref.child(my_index + "___" + my_s_id + ".png").put(blob).then(function(obj) {
+                                    obj.ref.getDownloadURL().then(u => {
+                                        console.log(u);
+
+                                        $("#" + my_s_id + "_img").html(
+                                            "<img src=" + u + " class='slideThumbnail'> </img>");
+                                        $("#" + my_s_id + "_url").html(u);
+
+                                        updates['/referenceSlides/' + slide + '/slides/' + my_index] = {
+                                            slideID: my_s_id,
+                                            thumbnailURL: u 
+                                        }
+
+                                        firebase.database().ref().update(updates);
+                                    })
+                                });
+                            });
+
+
                 }
                 })(j, s_id)
                 );
