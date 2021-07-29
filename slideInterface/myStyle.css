@@ -38,19 +38,51 @@ border: 1px solid black;
 height: 70%;
 width: 100%;
 box-sizing: border-box;
+transition: all .3s ease-in-out;
 }
 
 #adaptationView {
 	height: 30%;
 	width: 100%;
 	box-sizing: border-box;
+	transition: all .3s ease-in-out;
+}
+
+#adaptationViewBody {
+	height: calc(100% - 30px);
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.adaptationViewDiv {
+	height: 100%;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.adaptationViewDocument {
+	height: 100%;
+	width: 50%;
+	box-sizing: border-box;
+	float: left;
+}
+
+.adaptationViewSlide {
+	height: calc(100% - 40px);
+	width: calc(50% - 40px);
+	box-sizing: border-box;
+	float: left;
+	border-radius: 20px;
+	border: 1px solid black;
+	margin: 20px;
 }
 
 #adaptationViewTopBar {
 	height: 30px;
 	width: 100%;
-	border: 1px solid black;
 	box-sizing: border-box;
+	border-top: 3px solid lightgray;
+	border-bottom: 1px solid lightgray;
 }
 
 #documentAdaptationViewTitle {
@@ -1389,4 +1421,18 @@ width: 100%;
 	  font-size: 40px;
 	  margin-right: 30px;
 	  margin-bottom: 30px;
+  }
+
+  #adaptationViewEnlargeBtn {
+	  width: 25px;
+	  height: 25px;
+	  float: right;
+	  margin-right: 20px;
+  }
+
+  #adaptationViewHideBtn {
+	  width: 25px;
+	  height: 25px;
+	  float: right;
+	  margin-right: 20px;
   }
