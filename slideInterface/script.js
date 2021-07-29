@@ -9,6 +9,8 @@ var RENDER_SLIDE_WIDTH = 400;
 
 var slideDeckInfo = {};
 
+var docSlideStructure = [{},];
+
 var userName = 'tempUser';
 var PRESENTATION_ID = '1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY'
 var curHighlightInfo = {
@@ -365,9 +367,9 @@ async function registerHighlight(highlightInfo) {
 async function clearDB() {
 	var updates = {};
 
-	updates['/users/' + userName + '/slideInfo/'] = {}
+	updates['/users/' + userName + '/slideInfo/'] = {};
+	updates['/users/' + userName + '/docSlideStructure/'] = [{}];
 	updates['/users/' + userName + '/mapping/'] = {}
-
 
 	for(var key in structureHighlightDB) {
 		if("slideID" in structureHighlightDB[key]) delete structureHighlightDB[key].slideID;
@@ -487,6 +489,8 @@ function initializeDB() {
 
 					highlightDB.slideInfo = {};
 					slideDB = highlightDB.slideInfo;
+
+					docSlideStructure = [{}];
 					
 					for (var key in structureHighlightDB) {
 						currentSlideDeckConstraints.sectionLevelCoverage[key] = 0;
@@ -506,6 +510,9 @@ function initializeDB() {
 			$("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
 
 			highlightDB = result;
+			docSlideStructure = result.docSlideStructure;
+
+			if(docSlideStructure == null) docSlideStructure = [];
 
 			if(highlightDB == null) {
 				highlightDB = {};
@@ -2396,9 +2403,43 @@ async function loadRecommendationByResources(resource, slideID) {
 	recommendationRender(data, constraints, slideID, false);
 }
 
+function getResourcesInternal(r) {
+	var retValue = [];
+
+	for(var i=0;i<r.length;i++) {
+		var flag = false;
+		var k = r[i];
+
+		for(var j=1;j<highlightDB.mapping.length;j++) {
+			if(k in highlightDB.mapping[j]) {
+				retValue.push(highlightDB.mapping[j][k].text)
+				flag = true;
+				break;
+			}
+		}
+		if(!flag) retValue.push('');
+	}
+
+	return retValue;
+}
+
 function getResources(pageID) {
 	if(!(pageID in highlightDB.slideInfo)) return [];
 
+	console.log(pageID);
+	console.log(docSlideStructure);
+
+	for(var i=0;i<docSlideStructure.length;i++) {
+		if(docSlideStructure[i] != null && "slide" in docSlideStructure[i] && docSlideStructure[i].slide.id == pageID) {
+			var r = getResourcesInternal(docSlideStructure[i].resources);
+
+			return r;
+		}
+	}
+
+	return [];
+
+	/*
 	var curHighlight = highlightDB.slideInfo[pageID];
 	var resources = [];
 
@@ -2426,6 +2467,7 @@ function getResources(pageID) {
 	resources = sortMappings(resources);
 
 	return resources;
+	*/
 }
 
 function getLocation(mappingID) {
@@ -3718,6 +3760,30 @@ $(document).ready(function() {
 			$("#Resources").html('<table id="resourceTable"> </table>');
 
 			var resources = getResources(pageID);
+
+			var tableBody = '';
+
+			for(var i=0;i<resources.length;i++) {
+				tableBody = tableBody + 
+							"<tr>" + 
+							"<td>" + (i+1) + "</td>" + 
+							"<td>" + resources[i] + "</td>" + 
+							"<tr>"
+			}
+
+			$("#documentAdaptationTable").html(
+				"<tr>" + 
+					"<th> index </th>" + 
+					"<th> resource </th>" + 
+				"</tr>" + 
+				tableBody
+			)
+
+			curSlidePage = p.pageID;
+
+			visualizeSlideObjects();
+
+			return;
 /*
 			var resourceDictionary = {};
 
@@ -3749,8 +3815,8 @@ $(document).ready(function() {
 
 			if (pageID in highlightDB.slideInfo) {
 				if (curSlidePage != p.pageID) {
-					$("#SlideRecommendation").html("Loading ...");
-					loadRecommendation(pageID);
+					// $("#SlideRecommendation").html("Loading ...");
+					// loadRecommendation(pageID);
 				}
 
 				for (var i = 0; i < p.objects.length; i++) {
@@ -4069,13 +4135,22 @@ $(document).ready(function() {
 
 		$(document).on("pdfjs_highlighted", function(e) {
 			var p = e.detail;
-			var numSlides = getNumSlides();
-			var info = organizeHighlightOnSections();
+//			var info = organizeHighlightOnSections();
 
-			console.log(info);
-			console.log(T);
-			console.log(C);
+			registerHighlight(p).then(mapping => {
+				showLoadingSlidePlane();
 
+				return automaticallyPutContents(p, mapping).then(() => {
+					issueEvent("root_sendMappingIdentifier", {
+						mappingID: mapping.key,
+						pageNumber: p.pageNumber,
+						startWordIndex: p.startWordIndex,
+						endWordIndex: p.endWordIndex
+					});
+				})
+			});
+
+			/*
 			var before_finalRepresentation = printLink(info, T, C, numSlides, null, false);
 
 			registerHighlight(p).then(mapping => {
@@ -4090,6 +4165,7 @@ $(document).ready(function() {
 					});
 				})
 			});
+			*/
 		});
 
 
@@ -5251,8 +5327,12 @@ function getSlideIDWithMappingSet(mappingSet) {
 	return -1;
 }
 
+function isPossibleToAdd(dsStructure) {
+	if(dsStructure.resources.length <= 2) return true;
+	else return false;
+}
 
-async function automaticallyPutContents(textInfo, mapping, before_finalRepresentation) {
+async function automaticallyPutContents(textInfo, mapping) {
 	console.log(textInfo);
 	console.log(mapping);
 
@@ -5260,7 +5340,150 @@ async function automaticallyPutContents(textInfo, mapping, before_finalRepresent
 
 	console.log(sectionKey);
 	
-	putTextOnSection(textInfo, sectionKey, before_finalRepresentation);
+	var flag = false;
+	var index = -1;
+
+	console.log(docSlideStructure);
+
+	for(i=docSlideStructure.length-1;i>=1;i--) {
+		if(docSlideStructure[i].sectionKey == sectionKey) {
+			index = i;
+			
+			if(isPossibleToAdd(docSlideStructure[i])) flag = true;
+
+			break;
+		}
+	}
+
+	/*
+		.resources = []
+		.sectionKey 
+		.template 
+	*/
+
+	if(flag) { // add to the current slide
+		if(docSlideStructure[index].template.id == "DEFAULT") {
+			var slideID = docSlideStructure[index].slide.id;
+			var bodyObjID = docSlideStructure[index].template.structure.body[0];
+
+			docSlideStructure[index].resources.push(mapping.key);
+			docSlideStructure[index].mapping.push({
+				source: mapping.key,
+				destination: bodyObjID,
+			});
+
+			appendText(slideID, bodyObjID, textInfo.text, mapping.key);
+		}
+		else {
+			// don't know yet
+		}
+	}
+	else {
+		if(index == -1) { // create the section
+			index = 0;
+
+			for(var i=docSlideStructure.length-1;i>=1;i--) {
+				var sectionIdx = parseInt(docSlideStructure[i].sectionKey.substring(20));
+				var myIdx = parseInt(sectionKey.substring(20));
+
+				if(sectionIdx < myIdx) {
+					index = i+1;
+					break;
+				}
+			}
+		}
+
+		// add a new slide to (index+1)
+
+		var titleID = makeid(10);
+		var bodyID = makeid(10);
+		var slideID = makeid(10);
+
+		docSlideStructure.splice(index+1, 0, {
+			resources: [mapping.key],
+			sectionKey: sectionKey,
+			template: {
+				id: "DEFAULT",
+				structure: {
+					title: titleID,
+					body: [bodyID]
+				}
+			},
+			slide: {
+				id: slideID
+			},
+			mapping: [
+				{
+					source: mapping.key,
+					destination: bodyID
+				}
+			]
+		});
+
+		var requests = [];
+
+		requests.push({
+			createSlide: {
+				objectId: slideID,
+				insertionIndex: index+1,
+				slideLayoutReference: {
+					predefinedLayout: 'TITLE_AND_BODY'
+				},
+				placeholderIdMappings: [{
+					objectId: titleID,
+					layoutPlaceholder: {
+						type: "TITLE",
+						index: 0
+					}
+				}, {
+					objectId: bodyID,
+					layoutPlaceholder: {
+						type: "BODY",
+						index: 0
+					}
+				}
+				]
+			}
+		});
+
+		requests.push({
+			insertText: {
+				objectId: titleID,
+				text: structureHighlightDB[sectionKey].text,
+				insertionIndex: 0
+			}
+		});
+		requests.push({
+			insertText: {
+				objectId: bodyID,
+				text: textInfo.text,
+				insertionIndex: 0
+			}
+		});
+
+		var updates = {};
+
+		// updates['/users/' + userName + '/structureHighlightInfo/' + sectionKey] = structureHighlightDB[sectionKey];
+
+		firebase.database().ref().update(updates);
+
+		gapi.client.slides.presentations.batchUpdate({
+			presentationId: PRESENTATION_ID,
+			requests: requests
+		}).then((createSlideResponse) => {
+			// successfully pasted the text
+
+			writeSlideMappingInfo(slideID, bodyID, 0, mapping.key);
+			return true;
+		});
+
+	}
+
+	firebase.database().ref("/users/" + userName + '/docSlideStructure').set(docSlideStructure);
+
+	console.log(docSlideStructure);
+
+	// putTextOnSection(textInfo, sectionKey, before_finalRepresentation);
 
 	/*
 	var heavy = $("#textHeavyBtn").prop("checked");
