@@ -2410,8 +2410,14 @@ function getResourcesInternal(r) {
 		var flag = false;
 		var k = r[i];
 
-		for(var j=1;j<highlightDB.mapping.length;j++) {
+		console.log(k);
+
+		for(j in highlightDB.mapping) {
+			console.log(highlightDB.mapping[j]);
 			if(k in highlightDB.mapping[j]) {
+				console.log(k);
+				console.log(highlightDB.mapping[j][k].text);
+
 				retValue.push(highlightDB.mapping[j][k].text)
 				flag = true;
 				break;
@@ -3748,7 +3754,13 @@ $(document).ready(function() {
 		});
 		*/
 
+	$(document).on("extension_hideLoading", function (e) {
+		hideLoadingSlidePlane();
+	})
+
 		$(document).on("extension_pageUpdated", function(e) {
+			console.log(docSlideStructure);
+
 			var tempCnt = 1;
 			var p = e.detail;
 
@@ -3760,6 +3772,7 @@ $(document).ready(function() {
 			$("#Resources").html('<table id="resourceTable"> </table>');
 
 			var resources = getResources(pageID);
+			console.log(resources);
 
 			var tableBody = '';
 
@@ -3782,6 +3795,7 @@ $(document).ready(function() {
 			curSlidePage = p.pageID;
 
 			visualizeSlideObjects();
+			hideLoadingSlidePlane();
 
 			return;
 /*
@@ -5387,7 +5401,7 @@ async function automaticallyPutContents(textInfo, mapping) {
 				var myIdx = parseInt(sectionKey.substring(20));
 
 				if(sectionIdx < myIdx) {
-					index = i+1;
+					index = i;
 					break;
 				}
 			}

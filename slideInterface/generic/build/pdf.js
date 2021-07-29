@@ -16,6 +16,8 @@ var sectionStructureSegments = [];
 var sectionStructureSegmentProcessed = [];
 var currentStatus = "NORMAL";
 
+var automaticFlag = true;
+
 /**
  * @licstart The following is the entire license notice for the
  * Javascript code in this page
@@ -18240,6 +18242,12 @@ $(document).ready(function() {
 
                    $("#structureDiv").show();
       });
+    });
+
+    $(document).on("click", ".destinationSlider", function(e) {
+      var flag = $($(".destinationSwitch").find("input")).prop("checked");
+
+      automaticFlag = flag;
     });
 
 		$(document).on("click", ".removeHighlightBtn", function(e) {

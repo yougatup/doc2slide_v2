@@ -1098,8 +1098,11 @@ width: 100%;
 	  height: calc(100% - 90px);
 	  width: 100%;
 	  box-sizing: border-box;
-	  padding: 20px;
+	  padding-left: 20px;
   }
+
+
+
 
   /* The switch - the box around the slider */
 .slideRepresentationSwitch {
@@ -1166,6 +1169,8 @@ width: 100%;
   .slideRepresentationSlider.round:before {
 	border-radius: 50%;
   }
+
+
 
 
   #sourceSlideBodyDiv {
@@ -1365,6 +1370,9 @@ width: 100%;
   #sourceSelectionDiv {
 	  margin: 20px;
   }
+
+
+
 
 
   #slideDeckCompareApplyBtn {

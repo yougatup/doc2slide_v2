@@ -27,7 +27,8 @@ var eventList = {
 	"root_getSlideIndex": ["root", "extension"],
 	"extension_getSlideIndex": ["extension", "root"],
 	"pdfjs_getDocumentStructure": ["pdfjs", "root"],
-	"root_getDocumentStructure": ["root", "pdfjs"]
+	"root_getDocumentStructure": ["root", "pdfjs"],
+	"extension_hideLoading": ["extension", "root"]
 }
 
 var curSlideState = "WAIT";
@@ -62,8 +63,38 @@ function focusObject(objID) {
 	});
 }
 
+function filmstripUpdated(mutationsList) {
+	console.log(mutationsList);
+	var flag = false;
+
+	for(var i=0;i<mutationsList.length;i++) {
+		if(mutationsList[i].addedNodes.length > 0 && ((
+			mutationsList[i].addedNodes[0].id != null && 
+			mutationsList[i].addedNodes[0].id.startsWith("filmstrip-slide-")) || (
+				mutationsList[i].addedNodes[0].classList.contains("punch-filmstrip-thumbnail")
+			))
+			) {
+				console.log(mutationsList[i].addedNodes[0]);
+				flag = true;
+			}
+
+		if(mutationsList[i].removedNodes.length > 0 && ((
+			mutationsList[i].removedNodes[0].id!= null && 
+			mutationsList[i].removedNodes[0].id.startsWith("filmstrip-slide-")) || (
+				mutationsList[i].removedNodes[0].classList.contains("punch-filmstrip-thumbnail")
+			))
+			) {
+				console.log(mutationsList[i].removedNodes[0]);
+				flag = true;
+			}
+
+		if(flag) {
+			issueEvent("extension_hideLoading", null);
+		}
+	}
+}
+
 function pageUpdated(mutationsList) {
-	// console.log(mutationsList);
 
 	// console.log($("g[pointer-events='visiblePainted']").children())
 	// console.log($("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8'], path[fill='#1a73e8']"))	
@@ -213,11 +244,21 @@ function pageUpdated(mutationsList) {
 }
 
 function setObserver() {
+	console.log(document.getElementById("pages"));
+	console.log(document.getElementById("filmstrip"));
+
 	if(document.getElementById("pages") != null) {
 		pageUpdateObserver = new MutationObserver(pageUpdated);
 
 		pageUpdateObserverConfig = { attributes: true, subtree: true };
 		pageUpdateObserver.observe(document.getElementById("pages"), pageUpdateObserverConfig);
+	}
+
+	if(document.getElementById("filmstrip") != null) {
+		filmstripObserver = new MutationObserver(filmstripUpdated);
+
+		filmstripObserverConfig = { subtree: true, childList: true };
+		filmstripObserver.observe(document.getElementById("filmstrip"), filmstripObserverConfig);
 	}
 }
 
