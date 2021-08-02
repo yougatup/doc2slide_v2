@@ -990,6 +990,8 @@ async function removeParagraph(slidePageID, objectID, paragraphIndex) {
     return await gapi.client.slides.presentations.get({
 		presentationId: PRESENTATION_ID
     }).then(function(response) {
+		paragraphIndex = parseInt(paragraphIndex);
+
 		var presentation = response.result;
 		var length = presentation.slides.length;
 	
@@ -1030,11 +1032,26 @@ async function removeParagraph(slidePageID, objectID, paragraphIndex) {
 									var numParagraphs = Object.keys(slideDB[slidePageID][objectID]).length;
 									var updates = {};
 
+									console.log(slideDB[slidePageID][objectID][0]);
+									console.log(slideDB[slidePageID][objectID][1]);
+									console.log(slideDB[slidePageID][objectID][2]);
+
 									if(numParagraphs-1 == paragraphIndex) lastParagraphFlag = true;
+
+									console.log(paragraphIndex);
 
 									for(var l=paragraphIndex;l<numParagraphs-1;l++) {
 										updates['/users/' + userName + '/slideInfo/' + slidePageID + '/' + objectID+ '/' + l] = slideDB[slidePageID][objectID][l+1];
+
+										console.log(l);
+										console.log(slideDB[slidePageID][objectID][l]);
+										console.log(slideDB[slidePageID][objectID][l+1]);
+
 										slideDB[slidePageID][objectID][l] = slideDB[slidePageID][objectID][l+1];
+
+										console.log(slideDB[slidePageID][objectID][l]);
+										console.log(slideDB[slidePageID][objectID][l+1]);
+
 									}
 
 									updates['/users/' + userName + '/slideInfo/' + slidePageID+ '/' + objectID+ '/' + (numParagraphs-1)] = {
@@ -1042,6 +1059,9 @@ async function removeParagraph(slidePageID, objectID, paragraphIndex) {
 									}
 
 									delete slideDB[slidePageID][objectID][numParagraphs-1];
+
+									console.log(slideDB[slidePageID][objectID]);
+									console.log(updates);
 
 									firebase.database().ref().update(updates);
 								}
@@ -3461,6 +3481,10 @@ function showLoadingAdaptationRow(slideIndex, resourceIndex) {
 	$(rowObj).addClass("onLoading");
 }
 
+function getObj(key) {
+
+}
+
 function getImage(slideIndex, resourceIndex) {
 	var queryString = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
 
@@ -3468,7 +3492,6 @@ function getImage(slideIndex, resourceIndex) {
 
 	const requestOptions = {
 		method: 'POST',
-		mode: "cors",
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(
 			{
@@ -3477,12 +3500,52 @@ function getImage(slideIndex, resourceIndex) {
 		),
 	};
 
-	fetch('http://server.hyungyu.com:3232/findQueriess', requestOptions)
+	fetch('http://localhost:8010/proxy/findQueriess', requestOptions)
 		.then(response => response.json())
-		.then(data => {
-			console.log(data);
-		});
+		.then(data => function(s, r, d) {
+			var rowObj = $(".adaptationTableRow[slideindex='" + s + "'][resourceindex='" + r + "']")
 
+			console.log(rowObj);
+
+			var slidePageID = docSlideStructure[s].slide.id;
+			var objID = docSlideStructure[s].resources[r].currentContent.objID;
+			var paragraphIndex = r;
+
+			console.log(slidePageID, objID, paragraphIndex);
+
+			removeParagraph(slidePageID, objID, paragraphIndex).then(res => {
+				removeSingleRowOnDocSlideStructure(s, r);
+
+				$(rowObj).removeClass("onLoading");
+			})
+		}(slideIndex, resourceIndex, data)
+
+		);
+
+}
+
+function removeSingleRowOnDocSlideStructure(s, r) {
+	var updates = {};
+
+	docSlideStructure[s].resources.splice(r, 1);
+
+	updates['/users/' + userName + '/docSlideStructure/' + s + '/resources/'] = docSlideStructure[s].resources;
+
+	firebase.database().ref().update(updates);
+
+	$(".adaptationTableRow[slideindex='" + s + "'][resourceindex='" + r + "']").remove();
+
+	for(var rr=r;rr<100;rr++) {
+		if($(".adaptationTableRow[slideindex='" + s + "'][resourceindex='" + rr + "']").length > 0) 
+			$(".adaptationTableRow[slideindex='" + s + "'][resourceindex='" + rr + "']").attr("resourceindex", rr-1);
+
+		else
+			break;
+	}
+
+	var v = getDocSlideStructureView(s);
+
+	$(".adaptationViewDiv[index='" + s + "']")[0].outerHTML = v;
 }
 
 $(document).ready(function() {
@@ -5574,7 +5637,8 @@ async function automaticallyPutContents(textInfo, mapping) {
 				},
 				currentContent:  {
 					type: "text",
-					contents: mapping.text
+					contents: mapping.text,
+					objID: bodyObjID
 				}
 			});
 
@@ -5627,7 +5691,8 @@ async function automaticallyPutContents(textInfo, mapping) {
 				},
 				currentContent:  {
 					type: "text",
-					contents: mapping.text
+					contents: mapping.text,
+					objID: bodyID 
 				}
 			}],
 			sectionKey: sectionKey,
