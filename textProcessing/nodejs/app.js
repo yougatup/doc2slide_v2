@@ -117,7 +117,10 @@ parent: `${part.dependencyEdge.headTokenIndex}`
 
 
 var express = require('express');
+var cors = require('cors')
 var app = express();
+
+app.use(cors())
 
 app.use(function(req, res, next) {
 		  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
@@ -140,7 +143,7 @@ function writeCache(text, result) {
     var res = con.query(queryString, [text, JSON.stringify(result)]);
     console.log("result : " + result);
 
-    con.close()
+    con.dispose()
 }
 
 function dbHIT(text) {
@@ -158,7 +161,7 @@ function dbHIT(text) {
 
     console.log(res);
 
-    con.close()
+    con.dispose()
 
     if(res.length <= 0) return -1;
     else return res;

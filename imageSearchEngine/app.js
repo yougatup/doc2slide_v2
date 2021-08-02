@@ -1,8 +1,11 @@
 const express = require('express')
+const cors = require('cors')
 const fetch = require('node-fetch');
 const app = express()
 const sstk = require("shutterstock-api");
 sstk.setAccessToken("v2/V2V0Z25XQUxDUmRHeVFPNURvNTlPcFc2clJZTXVhcmcvMjk3MTE2MzM4L2N1c3RvbWVyLzQvdDJyT1U2ZUYwc0tjbGVxUWg0ZlZHZWZQakZxUFRReEpJaFZibTZoQ29QQk9DWEFiRGtoQks4ZmlLajRHbTdYQ1V4MnMtOWV4dU5ER2U4UzZ1MFZ3VlFlQW9KRkhtU014OUV2LTI2bjFieGRWZ2p4eEVfNmNSUVhzdEphclJkLUpsZENWRFpocHQzSFFJSEM0eV9EZ3p0eVBhd2Z4R0hJa0V2R25xZnFPRXVLUjRxaDQwNjhGb3FVREcyaF9HWGtlb0dYRjJRai0wckk1ano2Y1FJdGRQQS9VbGhCSEhCdlFkNVdEQjBxRTVGZEFB");
+
+app.use(cors())
 
 async function getIllustrationFromShutterstock(query) {
     return new Promise(async function(resolve, reject) {
@@ -50,9 +53,9 @@ async function getPhotoFromUnsplash(query) {
           .catch(err => reject(err));
     });
 }
-async function getPhotoFromPixabay(query) {
+async function getPhotoFromPixabay(query, type) {
     return new Promise(async function(resolve, reject) {
-        const url = 'https://pixabay.com/api/?key=20814953-0288b783def99e3ddd3967655&q=' + query + '&image_type=photo';
+        const url = 'https://pixabay.com/api/?key=20814953-0288b783def99e3ddd3967655&q=' + query + '&image_type=' + type;
         const options = {
           method: 'GET',
         };
@@ -99,9 +102,33 @@ async function getIconsFromIconfinder(query) {
     });
 }
 
+async function getImagesFromGoogle(query, type) {
+    return new Promise(async function(resolve, reject) {
+        const url = 'https://www.googleapis.com/customsearch/v1?key=AIzaSyBLn8HDbzhQB5Obwg39AMHYxSvhn_F2vdQ&cx=000180283903413636684:oxqpr8tki8w&searchType=image&q=' + query + '&imgType=' + type;
+        
+        const options = {
+          method: 'GET',
+        };
+        
+        fetch(url, options)
+          .then(res => res.json())
+          .then(json => {
+                  var result = [];
+
+                  for(var i in json.items) {
+                  result.push(json.items[i].link);
+                  }
+
+                  resolve(result)
+
+                  })
+          .catch(err => reject(err));
+      });
+}
+
 async function getIconsFromNounproject(query) {
     return new Promise(async function(resolve, reject) {
-    var result = await nounProject.getIconsByTerm('setting', function (err, data) {
+    var result = await nounProject.getIconsByTerm(query, function (err, data) {
         if (!err) {
             var retValue = [];
 
@@ -110,6 +137,9 @@ async function getIconsFromNounproject(query) {
             }
 
             resolve(retValue);
+        }
+        else{
+            resolve([])
         }
     });
             });
@@ -133,39 +163,69 @@ app.use(express.json())
 app.post('/getImage', async (req, res) => {
       var query = req.body.query;
       var type = req.body.imageType;
+      var idx = req.body.index;
       var result = {};
 
       console.log(req.body);
 
-      if(type == "photo") {
-        var unsplashResult = await getPhotoFromUnsplash(query);
-        var pixabayResult = await getPhotoFromPixabay(query);
+      result["img"] = {};
 
-        result = {
+      if(type == "photo" || type == "all") {
+        var unsplashResult = await getPhotoFromUnsplash(query);
+        // var pixabayResult = await getPhotoFromPixabay(query, "photo");
+
+        result["img"]["photo"] = {
             unsplash: unsplashResult,
-            pixabay: pixabayResult
+          //  pixabay: pixabayResult
         }
       }
-      else if(type == "illustration") {
-        var shutterStockResult = await getIllustrationFromShutterstock(query);
+      if(type == "illustration" || type == "all") {
+        var shutterStockResult = await getPhotoFromPixabay(query, "illustration")
 
-        result = {
+        result["img"]["illustration"] = {
             shutterStock: shutterStockResult
         }
       }
-      else if(type == "symbol") {
+      if(type == "symbol" || type == "all") {
         var nounProjectResult = await getIconsFromNounproject(query);
         var iconFinderResult = await getIconsFromIconfinder(query);
 
-        result = {
+        result["img"]["symbol"] = {
             nounProject: nounProjectResult,
             iconFinder: iconFinderResult
         }
       }
-      else {
 
-      }
+      result["index"] = idx;
+      result["query"] = query;
 
+      res.send(result)
+})
+
+app.post('/getImagesFromGoogle', async (req, res) => {
+      var query = req.body.query;
+      var type = req.body.imageType;
+      var idx = req.body.index;
+      var result = {};
+
+      console.log(req.body);
+
+      result["img"] = {};
+
+      var _type = "";
+
+      if(type == "symbol") _type = "LINEART";
+      else if(type == "illustration") _type="CLIPART";
+      else if(type == "photo") _type = "PHOTO";
+      else _type = "IMG_TYPE_UNDEFINED";
+
+      var imgResult = await getImagesFromGoogle(query, _type);
+
+      result["index"] = idx;
+      result["query"] = query;
+
+      result["img"]["google"] = {};
+      result["img"]["google"]["all"] = imgResult;
 
       res.send(result)
 })
