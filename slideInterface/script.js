@@ -3468,6 +3468,7 @@ function getImage(slideIndex, resourceIndex) {
 
 	const requestOptions = {
 		method: 'POST',
+		mode: "cors",
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(
 			{
@@ -3476,7 +3477,7 @@ function getImage(slideIndex, resourceIndex) {
 		),
 	};
 
-	fetch('http://server.hyungyu.com:5712/findQueries/', requestOptions)
+	fetch('http://server.hyungyu.com:3232/findQueriess', requestOptions)
 		.then(response => response.json())
 		.then(data => {
 			console.log(data);
