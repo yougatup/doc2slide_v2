@@ -22,7 +22,13 @@ var eventList = {
 	"pdfjs_getOriginalText": ['pdfjs', 'root'],
 	"root_getStructureHighlight": ['root', 'pdfjs'],
 	"pdfjs_getStructureHighlight": ['pdfjs', 'root'],
-	"root_updatePdfTextSection": ['root', 'pdfjs']
+	"root_updatePdfTextSection": ['root', 'pdfjs'],
+	"extension_mouseup": ["extension", "root"],
+	"root_getSlideIndex": ["root", "extension"],
+	"extension_getSlideIndex": ["extension", "root"],
+	"pdfjs_getDocumentStructure": ["pdfjs", "root"],
+	"root_getDocumentStructure": ["root", "pdfjs"],
+	"extension_hideLoading": ["extension", "root"]
 }
 
 var curSlideState = "WAIT";
@@ -57,17 +63,57 @@ function focusObject(objID) {
 	});
 }
 
+function filmstripUpdated(mutationsList) {
+	console.log(mutationsList);
+	var flag = false;
+
+	for(var i=0;i<mutationsList.length;i++) {
+		if(mutationsList[i].addedNodes.length > 0 && ((
+			mutationsList[i].addedNodes[0].id != null && 
+			mutationsList[i].addedNodes[0].id.startsWith("filmstrip-slide-")) || (
+				mutationsList[i].addedNodes[0].classList.contains("punch-filmstrip-thumbnail")
+			))
+			) {
+				console.log(mutationsList[i].addedNodes[0]);
+				flag = true;
+			}
+
+		if(mutationsList[i].removedNodes.length > 0 && ((
+			mutationsList[i].removedNodes[0].id!= null && 
+			mutationsList[i].removedNodes[0].id.startsWith("filmstrip-slide-")) || (
+				mutationsList[i].removedNodes[0].classList.contains("punch-filmstrip-thumbnail")
+			))
+			) {
+				console.log(mutationsList[i].removedNodes[0]);
+				flag = true;
+			}
+
+		if(flag) {
+			issueEvent("extension_hideLoading", null);
+		}
+	}
+}
+
 function pageUpdated(mutationsList) {
-	// console.log(mutationsList);
 
 	// console.log($("g[pointer-events='visiblePainted']").children())
 	// console.log($("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8'], path[fill='#1a73e8']"))	
 
+	/*
 	$("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8']").attr("stroke", null);
 	$("g[pointer-events='visiblePainted']").children("path[fill='#1a73e8']").attr("fill", null);
 	$("path[stroke='#8ab4f8'][stroke-opacity='0.6']").attr("stroke", null);
+	*/
 
 	if(curSlideState == "WAIT") {
+		var clickedElement = $("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8']").length;
+
+		if(clickedElement > 0) {
+			issueEvent("extension_objClicked", null);
+		}
+		else
+		 	issueEvent("extension_objNotClicked", null);
+
 		function get_common_ancestor(a, b)
 			{
 			$parentsa = $(a).parents();
@@ -135,7 +181,14 @@ function pageUpdated(mutationsList) {
 
 		var retValue = [];
 		var filmstripInfo = [];
+		var noteSpace = -1;
 		
+		$("[id^='speakernotes-workspace']").each(function() {
+			noteSpace = {
+				rect: document.getElementById($(this).attr("id")).getBoundingClientRect(),
+			}
+		});
+
 		$("[id^='filmstrip-slide-'][id$='-bg']").each(function() {
 			filmstripInfo.push({
 				filmstripID: $(this).attr("id"),
@@ -179,7 +232,8 @@ function pageUpdated(mutationsList) {
 			pageID: getPageID(),
 			objects: retValue,
 			filmstrip: filmstripInfo,
-			workspace: document.getElementById("workspace-container").getBoundingClientRect()
+			workspace: document.getElementById("canvas-container").getBoundingClientRect(),
+			notespace: noteSpace,
 		});
 	}
 	else if(curSlideState == "EDIT") {
@@ -190,28 +244,94 @@ function pageUpdated(mutationsList) {
 }
 
 function setObserver() {
+	console.log(document.getElementById("pages"));
+	console.log(document.getElementById("filmstrip"));
+
 	if(document.getElementById("pages") != null) {
 		pageUpdateObserver = new MutationObserver(pageUpdated);
 
 		pageUpdateObserverConfig = { attributes: true, subtree: true };
 		pageUpdateObserver.observe(document.getElementById("pages"), pageUpdateObserverConfig);
 	}
+
+	if(document.getElementById("filmstrip") != null) {
+		filmstripObserver = new MutationObserver(filmstripUpdated);
+
+		filmstripObserverConfig = { subtree: true, childList: true };
+		filmstripObserver.observe(document.getElementById("filmstrip"), filmstripObserverConfig);
+	}
 }
 
 function chromeExtensionBody() {
 	setObserver();
 	
+	$(document).on("mouseup", function(e) {
+		var clickedElement = $("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8']").length;
+		var clickedSlide = $(".punch-filmstrip-thumbnail").children("rect[style='stroke: rgb(242, 153, 0); stroke-width: 3px;']").length;
+/*
+		console.log(clickedElement);
+		console.log(clickedSlide);
+		*/
+
+		issueEvent("extension_mouseup", {
+			clickedElement: clickedElement,
+			clickedSlide: clickedSlide
+		});
+	})
+
+	$(document).on("root_getSlideIndex", function(e) {
+		var retValue = [];
+
+		$("[id^='filmstrip-slide-']").each(function () {
+
+			var id = $(this).attr("id");
+
+			if (id.endsWith("-bg")) {
+				var pageId = id.split('-')[3];
+				var current = $(this);
+
+				for (var i = 0; i < 1000; i++) {
+					if ($(current).hasClass("punch-filmstrip-thumbnail")) break;
+
+					current = $(current).parent();
+				}
+
+				var y_coordinate = $(current).attr("transform").split(' ')[1];
+				y_coordinate = y_coordinate.substr(0, y_coordinate.length-1);
+
+				retValue.push({
+					pageID: pageId,
+					y_coordinate: parseInt(y_coordinate)
+				})
+			}
+		});
+
+		retValue.sort(function (first, second) {
+			if (first.y_coordinate > second.y_coordinate) return 1;
+			else if (first.y_coordinate == second.y_coordinate) return 0;
+			else return -1;
+		});
+
+		var retValue2 = {};
+
+		for(var i=0;i<retValue.length;i++) {
+			retValue2[retValue[i].pageID] = i+1;
+		}
+
+		issueEvent("extension_getSlideIndex", retValue2);
+	})
+
 	$(document).on("root_getLastObject", function(e) {
 		var p = e.detail;
 		var pageID = p.pageID;
 
+		/*
 		console.log($("[id^='filmstrip-slide'][id$='" + pageID + "']"));
 		console.log($("[id^='filmstrip-slide'][id$='" + pageID + "']").children("[id^='filmstrip']"));
+		*/
 
 		var objs = $("[id^='filmstrip-slide'][id$='" + pageID + "']").children("[id^='filmstrip']");
 		var lastObj = $(objs)[$(objs).length-1];
-
-		console.log(lastObj);
 
 		issueEvent("extension_getLastObject", {
 			objID: $(lastObj).attr("id").split('-')[3]

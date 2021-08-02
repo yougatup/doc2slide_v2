@@ -16,6 +16,8 @@ var sectionStructureSegments = [];
 var sectionStructureSegmentProcessed = [];
 var currentStatus = "NORMAL";
 
+var automaticFlag = true;
+
 /**
  * @licstart The following is the entire license notice for the
  * Javascript code in this page
@@ -17770,6 +17772,7 @@ function popoverOnWord(target) {
 	$(target).attr("data-toggle", "popover");
 	$(target).attr("data-placement", "top");
 
+  /*
 	$(target).popover(
 			{
 			    html: true,
@@ -17778,6 +17781,7 @@ function popoverOnWord(target) {
 			     }
 			}
 			);
+      */
 
 	popoverElement = target;
 }
@@ -18089,7 +18093,7 @@ $(document).ready(function() {
 		});
 
 		$(document).on("mousedown", function(e) {
-			mouseDown++;
+			mouseDown = 1;
 
 			var target = e.target;
 
@@ -18115,7 +18119,7 @@ $(document).ready(function() {
 		});
 
 		$(document).on("mouseup", function(e) {
-			mouseDown--;
+			mouseDown = 0;
 
 			var target = e.target;
 
@@ -18200,6 +18204,51 @@ $(document).ready(function() {
 				text: result
 			});
 		});
+
+    $(document).on("click", "#structureDivTopBarCloseBtn", function(e) {
+      $("#structureDiv").hide();
+    });
+
+    $(document).on("click", ".structureViewButton", function(e) {
+      console.log("HIT");
+
+			issueEvent("pdfjs_getDocumentStructure", null, 
+                 "root_getDocumentStructure").then( result => {
+                   var data = result.detail;
+                   var h = '';
+
+                   for(var k in data.sectionStructure) {
+                     var numHighlight = 0;
+
+                     if(k in data.info) numHighlight = data.info[k].length;
+
+                     h = h + 
+                     '<tr>' + 
+                        '<td class="structureDivSectionTitleBody">' + data.sectionStructure[k].text + '</td>' + 
+                        '<td class="structureDivNumHighlightBody">' + numHighlight + '</td>' + 
+                        '<td class="structureDivIncludeBody">' + '<input type="checkbox"> </input>'
+                        + '</td>' + 
+                      '</tr>'
+                   }
+
+                   $("#structureDivTable").html(
+                    '<tr>' + 
+                    '<th class="structureDivSectionTitle"> Section title </th>' + 
+                    '<th class="structureDivNumHighlight"> The number of highlight </th>' + 
+                    '<th class="structureDivInclude"> Include? </th>' + 
+                    '</tr>' + 
+                    h
+                   )
+
+                   $("#structureDiv").show();
+      });
+    });
+
+    $(document).on("click", ".destinationSlider", function(e) {
+      var flag = $($(".destinationSwitch").find("input")).prop("checked");
+
+      automaticFlag = flag;
+    });
 
 		$(document).on("click", ".removeHighlightBtn", function(e) {
 			if(popoverElement != null) {

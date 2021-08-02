@@ -1,3 +1,17 @@
+var MAX_ELEMENTS_PER_SLIDE = 4;
+var SLIDES_PER_MIN = 2;
+
+var GOOGLE_SLIDE_HEIGHT = 540;
+var GOOGLE_SLIDE_WIDTH = 960;
+
+var RENDER_SLIDE_HEIGHT = 225;
+var RENDER_SLIDE_WIDTH = 400;
+
+var adaptivePlaneStatus = 0;
+var slideDeckInfo = {};
+
+var docSlideStructure = [{},];
+
 var userName = 'tempUser';
 var PRESENTATION_ID = '1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY'
 var curHighlightInfo = {
@@ -5,20 +19,38 @@ var curHighlightInfo = {
 	startWordIndex: -1,
 	endWordIndex: -1
 };
+var curRecommendedSlideList;
 var generalMouseDown = 0;
 var slideDB = {};
 var curSlideObjects = null;
 var curSlideState = "WAIT";
 var highlightDB = {};
+var mappingPageNumberIndex = {};
 var slideObjectMousedown = 0;
 var slideObjectMousedownObject = null;
 var slideObjectMouseupObject = null;
 var popoverElement = null;
 var curSlidePage = null; 
 var structureHighlightDB = {};
+var recommendationLoadingHistory = {};
+var clickedElements = false;
+var userLevelCoverageConstraints = {};
+
+var currentSlideDeckConstraints = {};
+var currentSingleSlideConstraints = {};
+
+var T = null, C = null;
 
 var MAX_NUMBER_OF_BULLETS = 3;
 var MAX_NUMBER_OF_SLIDES = 10;
+
+function getImgList(x) { 
+	for(var i in x) {
+		if(x[i].length > 0)
+			return x[i][0];
+	}
+	return -1;
+}
 
 function presentationObjectiveRowElement(sectionKey, index) {
 	return "<tr>" + 
@@ -27,6 +59,7 @@ function presentationObjectiveRowElement(sectionKey, index) {
 		"<td class='sectionLevelCoverageRowHighlight' sectionKey='" + sectionKey + "' rowIndex='" + index + "'> </td>" + 
 
 		"<td class='sectionLevelCoverageRowBoxes' sectionKey='" + sectionKey + "' rowIndex='" + index + "'>" + 
+		/*
 		"<table class='.coverageTable' style='height: 30px; border-collapse: collapse; border-spacing: 0;' sectionKey='" + sectionKey + "' rowIndex='" + index + "'>" + 
 		"<tr>" + 
 		(function(key) {
@@ -38,8 +71,11 @@ function presentationObjectiveRowElement(sectionKey, index) {
 
 			return returnValue;
 		})(sectionKey) + 
-		"<tr>"
+		"</tr>" +
+		*/
+		"<button class='sectionLevelCoverageMinusBtn' sectionKey='" + sectionKey + "' rowIndex='" + index + "' > - </button>" + 
 	    "<input class='sectionLevelCoverageInput' sectionKey='" + sectionKey + "' rowIndex='" + index + "' />" + 
+		"<button class='sectionLevelCoveragePlusBtn' sectionKey='" + sectionKey + "' rowIndex='" + index + "' > + </button>" + 
 		"</td> </tr>";
 
 
@@ -292,7 +328,7 @@ async function getRepresentativeImageURL(queryString) {
 async function writeHighlight(pageNumber, startWordIndex, endWordIndex, text) {
 	var newKey = firebase.database().ref('users/' + userName + '/mapping/' + pageNumber + '/').push().key;
 
-	var rURL = await getRepresentativeImageURL(text);
+	// var rURL = await getRepresentativeImageURL(text);
 
 	var updates = {};
 
@@ -300,7 +336,7 @@ async function writeHighlight(pageNumber, startWordIndex, endWordIndex, text) {
 		startWordIndex: startWordIndex,
 		endWordIndex: endWordIndex,
 		text: text,
-		imageURL: rURL
+		// imageURL: rURL
 	};
 
 	await firebase.database().ref().update(updates);
@@ -312,12 +348,15 @@ async function writeHighlight(pageNumber, startWordIndex, endWordIndex, text) {
 		startWordIndex: startWordIndex,
 		endWordIndex: endWordIndex,
 		text: text,
-		imageURL: rURL
+		// imageURL: rURL
 	};
+
+	mappingPageNumberIndex[newKey] = pageNumber;
 
 	return {
 		key: newKey,
-	    imageURL: rURL
+		text: text
+	    // imageURL: rURL
 	}
 }
 
@@ -327,12 +366,33 @@ async function registerHighlight(highlightInfo) {
 	});
 }
 
+function showDocSlideView(i) {
+	console.log(i);
+
+	if(i == -1)	$(".adaptationViewDiv").show();
+	else {
+		$(".adaptationViewDiv").hide();
+		$(".adaptationViewDiv[index='" + i + "']").show();
+	}
+}
+
+function setDocSlideStructure(dsStructure) {
+	var tableBody = '';
+
+	for(var i=0;i<dsStructure.length;i++) {
+		tableBody = tableBody + getDocSlideStructureView(i);
+	}
+
+	$("#adaptationViewBody").html(tableBody);
+
+	/* Render Resources tab */
+}
 async function clearDB() {
 	var updates = {};
 
-	updates['/users/' + userName + '/slideInfo/'] = {}
+	updates['/users/' + userName + '/slideInfo/'] = {};
+	updates['/users/' + userName + '/docSlideStructure/'] = [{}];
 	updates['/users/' + userName + '/mapping/'] = {}
-
 
 	for(var key in structureHighlightDB) {
 		if("slideID" in structureHighlightDB[key]) delete structureHighlightDB[key].slideID;
@@ -347,61 +407,83 @@ async function clearDB() {
 	await firebase.database().ref().update(updates);
 }
 
-async function initializeSlide() {
-	gapi.client.slides.presentations.get({
-	  presentationId: PRESENTATION_ID
-	}).then(function(response) {
-	  var slides = response.result.slides;
-	
-	  initialSlideCnt = slides.length;
-	  removedSlideCnt = 0;
-	
-	  var requests = [];
+async function writeInitializeSlides() {
+	var updates = {}
 
-	  for(var i=0;i<slides.length;i++) {
-			var pageID = slides[i].objectId;
+	for(var key in slideDB) {
+		updates['/users/' + userName + '/slideInfo/' + key] = {}
+
+		delete slideDB[key]
+	}
+
+	await firebase.database().ref().update(updates);
+}
+async function initializeSlide() {
+	writeInitializeSlides().then(() => {
+		console.log(slideDB);
+
+		gapi.client.slides.presentations.get({
+			presentationId: PRESENTATION_ID
+		}).then(function (response) {
+			var slides = response.result.slides;
+
+			initialSlideCnt = slides.length;
+			removedSlideCnt = 0;
+
+			var requests = [];
+
+			for (var i = 0; i < slides.length; i++) {
+				var pageID = slides[i].objectId;
+
+				requests.push({
+					"deleteObject": {
+						"objectId": pageID,
+					},
+				});
+			}
 
 			requests.push({
-	    		"deleteObject": {
-	     		"objectId": pageID,
-	         	},
+				createSlide: {
+					insertionIndex: '0',
+					slideLayoutReference: {
+						predefinedLayout: 'TITLE'
+					}
+				}
 			});
-	  }
+			/*
+				  requests.push({
+					 createSlide: {
+						  insertionIndex: '1',
+						  slideLayoutReference: {
+							  predefinedLayout: 'TITLE_AND_BODY'
+						  }
+					   }
+				  }); */
 
-	  requests.push({
-		createSlide: {
-	    	insertionIndex: '0',
-		   	slideLayoutReference: {
-			    predefinedLayout: 'TITLE'
-		   }
-		 }
-	  });
-/*
-	  requests.push({
-		 createSlide: {
-		 	insertionIndex: '1',
-		 	slideLayoutReference: {
-		     	predefinedLayout: 'TITLE_AND_BODY'
-		 	}
-	 	 }
-	  }); */
-
-	  gapi.client.slides.presentations.batchUpdate({
-	     presentationId: PRESENTATION_ID,
-	     requests: requests
-	  }).then((createSlideResponse) => {
-	     // successfully pasted the text
-		 return true;
-	  });
-	}).catch(function (err) {
-	  console.log(err);
+			gapi.client.slides.presentations.batchUpdate({
+				presentationId: PRESENTATION_ID,
+				requests: requests
+			}).then((createSlideResponse) => {
+				// successfully pasted the text
+				return true;
+			});
+		}).catch(function (err) {
+			console.log(err);
+		});
 	});
+}
+
+function getSlideHeight(x) {
+	return x / RENDER_SLIDE_HEIGHT * GOOGLE_SLIDE_HEIGHT;
+}
+
+function getSlideWidth(x) {
+	return x / RENDER_SLIDE_WIDTH * GOOGLE_SLIDE_WIDTH;
 }
 
 function initializeDB() {
 	readData('/users/' + userName).then(result => {
 		console.log(result);
-
 		console.log(result.parameters.heavy);
 
 		if("parameters" in result && "heavy" in result.parameters) {
@@ -422,6 +504,26 @@ function initializeDB() {
 				initializeSlide().then( () => {
 					issueEvent("root_openPDF", null);
 
+					currentSlideDeckConstraints.sparseDense = 0;
+					currentSlideDeckConstraints.textLength = 50;
+					currentSlideDeckConstraints.descAbst = 0;
+					currentSlideDeckConstraints.time = 1;
+					currentSlideDeckConstraints.sectionLevelCoverage = {};
+
+					highlightDB.slideInfo = {};
+					slideDB = highlightDB.slideInfo;
+
+					docSlideStructure = [{}];
+
+					setDocSlideStructure(docSlideStructure);
+					showDocSlideView(0);
+
+					for (var key in structureHighlightDB) {
+						currentSlideDeckConstraints.sectionLevelCoverage[key] = 0;
+					}
+
+					initializeConstraintsPlane();
+
 					setTimeout(function() {
 							$("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
 						}, 1000);
@@ -434,10 +536,22 @@ function initializeDB() {
 			$("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
 
 			highlightDB = result;
+			docSlideStructure = result.docSlideStructure;
+
+			setDocSlideStructure(docSlideStructure);
+			showDocSlideView(0);
+
+			if(docSlideStructure == null) docSlideStructure = [];
 
 			if(highlightDB == null) {
 				highlightDB = {};
 				highlightDB['mapping'] = {};
+			}
+
+			for(var pgNumber in highlightDB.mapping) {
+				for (var k in highlightDB.mapping[pgNumber]) {
+					mappingPageNumberIndex[k] = pgNumber;
+				}
 			}
 
 			slideDB = result.slideInfo;
@@ -447,6 +561,20 @@ function initializeDB() {
 			else
 				structureHighlightDB = {};
 
+			if("slideDeckConstraints" in result) {
+				setConstraints("slideDeck", result.slideDeckConstraints, null, false);
+				console.log(result.slideDeckConstraints);
+			}
+			else {
+				result.slideDeckConstraints = getConstraints("slideDeck");
+			}
+			
+			if ("singleSlideConstraints" in result) {
+				setConstraints("singleSlide", result.singleSlideConstraints, "all", false);
+			}
+
+			initializeConstraintsPlane();
+
 			setTimeout(function() {
 				issueEvent("root_openPDF", null);
 			}, 1000);
@@ -455,6 +583,85 @@ function initializeDB() {
 	}).catch(function(error) {
 		console.log(error);
 	});
+}
+
+function initializeConstraintsPlane() {
+	var info = organizeHighlightOnSections();
+	console.log(info);
+
+	var res = computeTC(info);
+
+	T = res.T;
+	C = res.C;
+
+	$("#constraints_emptyScreen").hide();
+	$("#constraints_noHighlightFound").hide();
+	$(".presentationObjectiveBody").hide();
+
+	if (T.length <= 0) {
+		$("#constraints_emptyScreen").show();
+
+		$("#slideDeck_sparseDenseSlider")[0].value = currentSlideDeckConstraints.sparseDense;
+		$("#slideDeck_slideLayoutSlider")[0].value = currentSlideDeckConstraints.descAbst;
+		$("#slideDeck_presentationTimeInputBox")[0].value = currentSlideDeckConstraints.time;
+		$("#slideDeck_textLengthSlider")[0].value = currentSlideDeckConstraints.textLength;
+/*
+		for (var s in currentSlideDeckConstraints.sectionLevelCoverage) {
+			$(".sectionLevelCoverageInput[sectionKey='" + s + "']")[0].value = currentSlideDeckConstraints.sectionLevelCoverage[s];
+		}
+		*/
+
+		return;
+	}
+	else {
+		$("#constraints_emptyScreen").hide();
+		$("#slideDeckLevelConstraints").show();
+	}
+
+	var maxPageNum = -1, minPageNum = 987987987;
+
+	for (var i = T[T.length - 1].length - 1; i >= 0; i--) {
+		if (T[T.length - 1][i].l != -1) {
+			maxPageNum = Math.max(maxPageNum, i);
+			minPageNum = Math.min(minPageNum, i);
+		}
+	}
+
+	console.log(currentSlideDeckConstraints);
+
+	$("#slideDeck_sparseDenseSlider")[0].max = maxPageNum;
+	$("#slideDeck_sparseDenseSlider")[0].min = minPageNum;
+	$("#slideDeck_sparseDenseSlider")[0].value = currentSlideDeckConstraints.sparseDense;
+
+	$("#slideDeck_slideLayoutSlider")[0].min = 0;
+	$("#slideDeck_slideLayoutSlider")[0].max = 100;
+	$("#slideDeck_slideLayoutSlider")[0].value = currentSlideDeckConstraints.descAbst;
+
+	$("#singleSlide_slideLayoutSlider")[0].min = 0;
+	$("#singleSlide_slideLayoutSlider")[0].max = 100;
+
+	$("#slideDeck_presentationTimeInputBox")[0].value = currentSlideDeckConstraints.time;
+
+	var maxLength = 0;
+	for (var s in info) {
+		for (var i = 0; i < info[s].length; i++) {
+			maxLength = Math.max(maxLength, info[s][i].text.length)
+		}
+	}
+
+	$("#slideDeck_textLengthSlider")[0].min = 0;
+	$("#slideDeck_textLengthSlider")[0].max = maxLength;
+	$("#slideDeck_textLengthSlider")[0].value = currentSlideDeckConstraints.textLength;
+
+	$("#singleSlide_textLengthSlider")[0].min = 0;
+	$("#singleSlide_textLengthSlider")[0].max = maxLength;
+
+	updatePresentationObjectiveStructure();
+
+	for (var s in currentSlideDeckConstraints.sectionLevelCoverage) {
+		$(".sectionLevelCoverageInput[sectionKey='" + s + "']")[0].value = currentSlideDeckConstraints.sectionLevelCoverage[s];
+	}
+
 }
 
 function findSlideWithMapping(key) {
@@ -620,12 +827,10 @@ function visualizeSlideObjects() {
 		filmstripIndex++;
 	}
 
-	console.log(curSlideObjects);
+	// console.log(curSlideObjects);
 
 	for(var i=0;i<curSlideObjects.objects.length;i++) {
 		var bottom = -1;
-
-		console.log(curSlideObjects.objects[i]);
 
 		if("0" in curSlideObjects.objects[i].paragraph) { // image
 			var objectID = curSlideObjects.objects[i].objectID.substr(7);
@@ -638,12 +843,12 @@ function visualizeSlideObjects() {
 
 			$("#slidePlaneCanvas").append(
 				"<div id='objectIndicator" + tempCnt + "' class='objectIndicator' pageID='" + curSlideObjects.pageID + "'" + 
-				" objID='" + objectID + "' paragraphID='" + k + "'" + 
-				" paragraphIndex=" + k.split("-")[3] + "></div>" + 
+				" objID='" + objectID + "' paragraphID='" + 0 + "'" + 
+				" paragraphIndex=" + 0 + "></div>" + 
 				(mappedFlag ? 
-				 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator mapped' objID='" + objectID + "' paragraphID=" + k + " mappingID=" + slideDB[curSlideObjects.pageID][objectID][0].mappingID + "></div>" 
+				 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator mapped' objID='" + objectID + "' paragraphID=" + 0 + " mappingID=" + slideDB[curSlideObjects.pageID][objectID][0].mappingID + "></div>" 
 				 : 
-				 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator' objID='" + objectID + "' paragraphID=" + k + "></div>")
+				 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator' objID='" + objectID + "' paragraphID=" + 0 + "></div>")
 
 			);
 
@@ -722,6 +927,14 @@ function visualizeSlideObjects() {
 		}
 	}
 
+	// $("#noteSpacePlane").show();
+
+	setFocusBox("noteSpacePlane", {
+		top: curSlideObjects.notespace.rect.top + 40,
+		left: curSlideObjects.notespace.rect.left,
+		width: curSlideObjects.notespace.rect.width - 20,
+		height: curSlideObjects.notespace.rect.height - 20
+	})
 }
 
 async function putText(p, mappingID) {
@@ -732,6 +945,33 @@ async function putText(p, mappingID) {
 	});
 }
 
+async function removeSlideMappingInPage(pageID) {
+	var updates = {};
+
+	for(var key in slideDB[pageID]) {
+		updates['/users/' + userName + '/slideInfo/' + pageID] = {}
+
+		delete slideDB[pageID][key]
+	}
+
+	await firebase.database().ref().update(updates);
+}
+
+async function removeSlideMappingInPages(pageIDs) {
+	var updates = {};
+
+	for(var i=0;i<pageIDs.length;i++) {
+		var pageID = pageIDs[i];
+
+		for (var key in slideDB[pageID]) {
+			updates['/users/' + userName + '/slideInfo/' + pageID] = {}
+
+			delete slideDB[pageID][key]
+		}
+	}
+
+	await firebase.database().ref().update(updates);
+}
 async function removeSlideMappingInfo(pageID, objID, paragraphIndex) {
 	var updates = {};
 
@@ -1179,7 +1419,7 @@ function showLoadingSlidePlane(){
 	$("#loadingSlidePlane").show();
 	$("#slidePlaneCanvas").css("background-color", "rgb(0, 0, 0, 0.3)");
 
-	setTimeout(function() { hideLoadingSlidePlane(); }, 3000);
+	setTimeout(function() { hideLoadingSlidePlane(); }, 5000);
 }
 
 function hideLoadingSlidePlane() {
@@ -1243,37 +1483,51 @@ function updateStructure() {
 function organizeHighlightOnSections() {
 	var info = {};
 
+	console.log(JSON.parse(JSON.stringify(highlightDB)));
+
 	for(var pageNumber in highlightDB.mapping) {
 		for(var key in highlightDB.mapping[pageNumber]) {
 			var sectionKey = getSectionKey(pageNumber, highlightDB.mapping[pageNumber][key].startWordIndex, highlightDB.mapping[pageNumber][key].endWordIndex);
 
-			if(!(sectionKey in info)) info[sectionKey] = {};
-			if(!(key in info[sectionKey])) info[sectionKey][key] = {};
+			if(!(sectionKey in info)) info[sectionKey] = [];
+			// if(!(key in info[sectionKey])) info[sectionKey][key] = {};
 
-			info[sectionKey][key] = 
+			info[sectionKey].push( 
 			{
-				pageNumber: pageNumber,
+				pageNumber: parseInt(pageNumber),
 				startWordIndex: highlightDB.mapping[pageNumber][key].startWordIndex,
 				endWordIndex: highlightDB.mapping[pageNumber][key].endWordIndex,
 				sectionKey: sectionKey,
 				text: highlightDB.mapping[pageNumber][key].text,
 				mappingKey: key,
 				imageURL: highlightDB.mapping[pageNumber][key].imageURL,
-			}
+			})
+			
 		}
+	}
+
+	for(m in info) {
+		info[m].sort( function(first, second) {
+			if(first.pageNumber > second.pageNumber) return 1;
+			else if(first.pageNumber == second.pageNumber) {
+				if(first.startWordIndex > second.startWordIndex) return 1;
+				else return -1;
+			}
+			else return -1;
+		})
 	}
 
 	return info;
 }
 
 function updatePresentationObjectiveStructure() {
-	$("#sectionLevelCoverageTable").html('<tr> <th> Section title </th> <th> highlight </th> <th> # slides </th> </tr>');
+	$("#slideDeck_sectionLevelCoverageTable").html('<tr> <th> Section title </th> <th> highlight </th> <th> # slides </th> </tr>');
 	var index = 0;
 
 	var info = organizeHighlightOnSections();
 
 	for(var key in structureHighlightDB) {
-		$("#sectionLevelCoverageTable").append(
+		$("#slideDeck_sectionLevelCoverageTable").append(
 			presentationObjectiveRowElement(key, index)
 		);
 
@@ -1309,8 +1563,6 @@ function disappearPresentationObjective() {
 }
 
 function appearPresentationObjective() {
-	updatePresentationObjectiveStructure();
-
 	$("#presentationObjectivePlane").show();
 }
 function setCurLevel(rowObjId, level) {
@@ -1370,13 +1622,459 @@ function chooseElements(info, sectionKey, number) {
 	return retValue;
 }
 
-function automaticallyUpdateSlides() {
-	var info = {};
+function setTimeConstraint(value) {
+	if (value > T[T.length - 1].length || T[T.length - 1][value].l == -1) {
+		$("#slideDeck_presentationTimeInputBox").css("background-color", "red");
+	}
+	else {
+		$("#slideDeck_presentationTimeInputBox").css("background-color", "white");
+
+		var minPageNum = parseInt($("#slideDeck_sparseDenseSlider")[0].min);
+		var maxPageNum = parseInt($("#slideDeck_sparseDenseSlider")[0].max);
+
+		$("#slideDeck_sparseDenseSlider")[0].value = minPageNum + (maxPageNum - value);
+
+		updateSectionLevelCoverageValue();
+		checkConstraintsDifference("slideDeck");
+	}
+}
+
+function printLink(info, T, C, numSlides, coverage, isFlexible) {
+	if(T == null || T.length <= 0) return {};
+
+	var res = [];
+	var Ckeys = Object.keys(C);
+	var curSection = T.length-1;
+	var numPages = [];
+
+	console.log(coverage);
+	console.log(JSON.parse(JSON.stringify(T)));
+	console.log(JSON.parse(JSON.stringify(C)));
+
+	console.log(numSlides);
+	console.log(isFlexible);
+
+	var numSlidesChanged = false;
+
+	if(T[curSection][numSlides].l == -1) {
+		if(isFlexible) {
+			if(T[curSection][numSlides+1].l == -1) {
+				alert("STILL NOT POSSIBLE");
+				return -1;
+			}
+
+			numSlides = numSlides + 1;
+
+			$("#slideDeck_presentationTimeInputBox")[0].value = numSlides;
+
+			var minPageNum = parseInt($("#slideDeck_sparseDenseSlider")[0].min);
+			var maxPageNum = parseInt($("#slideDeck_sparseDenseSlider")[0].max);
+
+			$("#slideDeck_sparseDenseSlider")[0].value = minPageNum + (maxPageNum - numSlides);
+
+			numSlidesChanged = true;
+		}
+		else {
+			alert("NOT POSSIBLE");
+			return -1;
+		}
+	}
+
+
+	var curSlideNum = numSlides;
+
+	for(var i=0;i<T.length;i++) numPages.push(0);
+
+	if(coverage != null) numPages = coverage;
+	else {
+		while (1) {
+			console.log(curSection, curSlideNum);
+
+			numPages[curSection] = T[curSection][curSlideNum].l;
+
+			if (curSection == 0) break;
+
+			curSlideNum -= T[curSection][curSlideNum].l;
+
+			curSection = curSection - 1;
+		}
+	}
+
+	console.log(numPages);
+
+	for (var i = 0; i < numPages.length; i++) {
+		var p = numPages[i];
+
+		res.push([]);
+
+		for (var j = 0; j < p; j++) res[i].push(0);
+
+		var curPage = p;
+
+		console.log(C);
+		console.log(Ckeys);
+		console.log(i);
+		console.log(C[Ckeys[i]]);
+
+		var curElement = C[Ckeys[i]][0].length - 1;
+
+		while (1) {
+			res[i][curPage - 1] = curElement;
+
+			if (curPage == 1) break;
+
+			curElement = C[Ckeys[i]][curPage][curElement].l
+
+			curPage = curPage - 1;
+		}
+	}
+
+	console.log(res);
+	
+	var finalRepresentation = {};
+
+	for(var i=0;i<Ckeys.length;i++) {
+		finalRepresentation[Ckeys[i]] = [];
+
+		for(var j=0;j<res[i].length;j++){
+			var start = j == 0 ? 0 : res[i][j-1] + 1;
+			var end = res[i][j];
+
+			finalRepresentation[Ckeys[i]].push([])
+
+			for(var k=start;k<=end;k++) {
+				finalRepresentation[Ckeys[i]][j].push(info[Ckeys[i]][k])
+			}
+		}
+	}
+
+	if(numSlidesChanged) {
+		$(".sectionLevelCoverageInput").each(function (idx, elem) {
+			var sectionKey = $(elem).attr("sectionkey");
+
+			if (sectionKey in finalRepresentation)
+				$(elem)[0].value = finalRepresentation[sectionKey].length;
+			else
+				$(elem)[0].value = 0;
+		})
+
+		setConstraints("slideDeck", null);
+	}
+
+	return finalRepresentation;
+}
+
+async function createSlidesOnGoogleSlide(finalRepresentation) {
+	var requests = [];
+	var slideInfo = [];
+	var slideIndex = 1;
+	var updateInfo = [];
+
+	for(var s in finalRepresentation) {
+		for (var j = 0; j < finalRepresentation[s].length; j++) {
+			var h = [];
+
+			for (var k = 0; k < finalRepresentation[s][j].length; k++) {
+				var mappingKey = finalRepresentation[s][j][k].mappingKey;
+				var dic = finalRepresentation[s][j][k];
+
+				h.push(dic);
+			}
+
+			/*
+			var elem = {
+				slideID: makeid(10),
+				objIDs: [makeid(10), makeid(10)],
+				highlightInfo: h
+			};
+
+			for (var k = 0; k < finalRepresentation[s][j].length; k++) {
+				updateInfo.push({
+					slideID: elem.slideID,
+					objID: elem.objIDs[1],
+					paragraphIndex: k,
+					mappingID: elem.highlightInfo[k].mappingKey
+				});
+			}
+			*/
+
+			// requests = requests.concat(genRequest(elem.slideID, slideIndex, "TITLE_AND_BODY", elem.objIDs, [structureHighlightDB[s].text].concat(getListOnKey(elem.highlightInfo, "text"))));
+
+			// slideIndex++;
+		}
+
+	}
+/*
+	for (var sectionKey in info) {
+		var keys = Object.keys(info[sectionKey]);
+
+		// var numSlides = parseInt((keys.length % MAX_NUMBER_OF_BULLETS == 0) ? keys.length / MAX_NUMBER_OF_BULLETS : (keys.length / MAX_NUMBER_OF_BULLETS) + 1);
+		var numSlides = parseInt($(".coverageTableCell.selected[sectionKey='" + sectionKey + "']").length);
+		var numHighlightsPerSlide = parseInt((Object.keys(info[sectionKey]).length) / numSlides);
+
+		var borderline = ((Object.keys(info[sectionKey]).length) % numSlides == 0 ? 0 : (Object.keys(info[sectionKey]).length) - numHighlightsPerSlide * numSlides);
+		var cursor = 0;
+
+		for (var j = 0; j < numSlides; j++) {
+			var numBullets = numHighlightsPerSlide;
+			var highlightInfo = [];
+
+			if (j < borderline) numBullets++;
+
+			for (var k = 0; k < numBullets; k++) {
+				highlightInfo.push(info[sectionKey][keys[cursor]]);
+				cursor++;
+			}
+
+			var elem = {
+				slideID: makeid(10),
+				objIDs: [makeid(10), makeid(10)],
+				highlightInfo: highlightInfo
+			};
+
+			for (var k = 0; k < numBullets; k++) {
+				updateInfo.push({
+					slideID: elem.slideID,
+					objID: elem.objIDs[1],
+					paragraphIndex: k,
+					mappingID: elem.highlightInfo[k].mappingKey
+				});
+			}
+
+			slideInfo.push(elem);
+
+			requests = requests.concat(genRequest(elem.slideID, slideIndex, "TITLE_AND_BODY", elem.objIDs, [structureHighlightDB[sectionKey].text].concat(getListOnKey(elem.highlightInfo, "text"))));
+
+			slideIndex++;
+		}
+	}
+	*/
+
+	initializeSlide().then(async () => {
+			// console.log(highlightDB.slideInfo);
+
+		var myRequest = await getRequestForBulkGeneration(highlightDB.slideInfo, finalRepresentation)
+
+		var slideDeckConstraints = getConstraints("slideDeck");
+		var singleSlideConstraints = {};
+
+		console.log(slideDeckConstraints);
+
+		for (var i = 0; i < myRequest.updateInfo.length; i++) {
+			singleSlideConstraints[myRequest.updateInfo[i].slideID] = {
+				descAbst: slideDeckConstraints.descAbst,
+				textLength: slideDeckConstraints.textLength
+			}
+		}
+
+		setConstraints("singleSlide", singleSlideConstraints, "all", true)
+
+		console.log(JSON.parse(JSON.stringify(myRequest)));
+
+		writeSlideMappingInfoBulk(myRequest.updateInfo).then(() => {
+			 gapi.client.slides.presentations.batchUpdate({
+				 presentationId: PRESENTATION_ID,
+				 requests: myRequest.requests
+			 }).then((createSlideResponse) => {
+				 //console.log(createSlideResponse);
+			 });
+		 });
+	});
+}
+
+async function getRequestForBulkGeneration(slideInfo, finalRepresentation) {
+	var updateInfo = [];
+	var requests = [];
+
+	for(var s in finalRepresentation) {
+		for(var i=0;i<finalRepresentation[s].length;i++) {
+			var objects = finalRepresentation[s][i];
+			var slideID = makeid(10);
+
+			await loadRecommendationByResources(objects, slideID);
+
+			console.log(slideID);
+			console.log(JSON.parse(JSON.stringify(recommendationLoadingHistory[slideID].renderResult)));
+
+			requests.push({
+				createSlide: {
+					objectId: slideID,
+					slideLayoutReference: {
+						predefinedLayout: "BLANK" 
+					},
+				}
+			});
+
+			var renderInfo = renderSlideOnGoogle(recommendationLoadingHistory[slideID].renderResult[0], slideID, false);
+
+			updateInfo = updateInfo.concat(renderInfo.updateInfo);
+			requests = requests.concat(renderInfo.requests);
+		}
+	}
+
+	return {
+		updateInfo: updateInfo,
+		requests: requests
+	}
+}
+
+function getNumSlides() {
+	var time = parseInt($("#slideDeck_presentationTimeInputBox")[0].value);
+
+	return time;
+}
+
+function computeTC(info) {
+	if(Object.keys(info) <= 0) {
+		return {
+			T: [],
+			C: {}
+		}
+	}
+
+	function getDist(d, start, end) {
+		var keys = Object.keys(d);
+
+		var temp_page_penalty = 2000;
+		var res = 0;
+
+		for (var i = start; i <= end; i++) {
+			for (var j = i + 1; j <= end; j++) {
+				if (d[keys[j]].pageNumber != d[keys[i]].pageNumber) res += temp_page_penalty;
+				else res += d[keys[j]].startWordIndex - d[keys[i]].startWordIndex;
+			}
+		}
+
+		return res;
+	}
+
 	var slideInfo = {};
 	var heavySwitch = '';
-	
-	info = organizeHighlightOnSections();
-	
+	var mappingList = [];
+
+	for (var m in info) {
+		for (var mm in info[m]) {
+			mappingList.push(info[m][mm])
+		}
+	}
+
+	console.log(mappingList);
+
+	console.log(info);
+
+	var T = [];
+	var C = {};
+	var totalNumHighlight = 0;
+
+	var maxElementsPerSlide = MAX_ELEMENTS_PER_SLIDE;
+
+	for (var m in info) {
+		C[m] = [];
+
+		var numElements = info[m].length;
+
+		totalNumHighlight += numElements;
+
+		for (var i = 0; i <= numElements; i++) {
+			C[m].push([]);
+
+			for (var j = 0; j < numElements; j++) {
+				C[m][i].push({
+					v: 987987987,
+					l: -1
+				});
+			}
+		}
+
+		for (var j = 0; j < Math.min(numElements, maxElementsPerSlide); j++) C[m][1][j].v = getDist(info[m], 0, j);
+
+		for (var i = 2; i <= numElements; i++) {
+			for (var j = i - 1; j < numElements; j++) {
+				for (var k = j - 1; k >= i - 2; k--) {
+					if (j - k > maxElementsPerSlide) break;
+
+					var dist = getDist(info[m], k + 1, j);
+
+					if (C[m][i][j].v > C[m][i - 1][k].v + dist) {
+						C[m][i][j].v = C[m][i - 1][k].v + dist;
+						C[m][i][j].l = k;
+					}
+				}
+			}
+		}
+	}
+
+	var numSections = Object.keys(info).length;
+	var sectionKeys = Object.keys(info);
+
+	for (var i = 0; i < numSections; i++) {
+		T.push([]);
+
+		for (var j = 0; j <= totalNumHighlight; j++) {
+			T[i].push({
+				v: 987987987,
+				l: -1
+			});
+		}
+	}
+
+	for (var i = 0; i < info[sectionKeys[0]].length; i++) {
+		var value = C[sectionKeys[0]][i + 1][info[sectionKeys[0]].length - 1].v;
+
+		if(value >= 987987987) {
+			T[0][i + 1].v = 987987987;
+			T[0][i + 1].l = -1 ;
+		}
+		else {
+			T[0][i + 1].v = C[sectionKeys[0]][i + 1][info[sectionKeys[0]].length - 1].v;
+			T[0][i + 1].l = i + 1;
+		}
+	}
+
+	for (var i = 1; i < numSections; i++) {
+		for (var j = 1; j <= totalNumHighlight; j++) {
+			var numElements = info[sectionKeys[i]].length;
+
+			for (var k = 1; k <= numElements; k++) {
+				if (j - k <= 0) continue;
+				if (T[i - 1][j - k].v >= 987987987) continue;
+
+				if (T[i][j].v > T[i - 1][j - k].v + C[sectionKeys[i]][k][numElements - 1].v) {
+					T[i][j].v = T[i - 1][j - k].v + C[sectionKeys[i]][k][numElements - 1].v;
+					T[i][j].l = k;
+				}
+			}
+		}
+	}
+
+	return {
+		T: T,
+		C: C
+	}
+}
+
+function automaticallyUpdateSlides() {
+	var info = organizeHighlightOnSections();
+	var numSlides = getNumSlides();
+	var coverage = [];
+
+	console.log(info);
+
+	for(var k in info) {
+		var value = $(".sectionLevelCoverageInput[sectionKey='" + k + "']")[0].value;
+
+		coverage.push(parseInt(value));
+	}
+
+	var finalRepresentation = printLink(info, T, C, numSlides, coverage);
+
+	if(finalRepresentation == -1) return;
+
+	console.log(JSON.parse(JSON.stringify(finalRepresentation)));
+
+	createSlidesOnGoogleSlide(finalRepresentation);
+
+	/*
 	for(var key in structureHighlightDB) {
 		var obj = $(".sectionLevelCoverageInput[sectionKey=" + key + "]");
 		var count = $(".coverageTableCell.selected[sectionKey='" + key + "']").length;
@@ -1384,11 +2082,15 @@ function automaticallyUpdateSlides() {
 		if(count != '') 
 			slideInfo[key] = chooseElements(info, key, parseInt(count)*MAX_NUMBER_OF_BULLETS);
 	}
+	*/
+
+	/*
 
 	if($("#textHeavyBtn").prop("checked")) heavySwitch = 'text';
 	else heavySwitch = 'image';
 	
 	createSlidesBasedOnSelection(slideInfo, heavySwitch);
+	*/
 }
 
 function getListOnKey(li, key) {
@@ -1641,8 +2343,1446 @@ function genRequest(slideID, slideIndex, slideType, objIDs, texts) {
 	return requests;
 }
 
+function getLeafBoxes(nodeSet, height, width) {
+	return getLeafBoxesInternal(nodeSet, 0, 0, 0, height, width, 0);
+}
+
+function getLeafBoxesInternal(nodeSet, curNode, curLeft, curTop, curHeight, curWidth, level) {
+	var ret = [];
+
+	if (nodeSet[curNode].splitDir == -1) {
+		return [{
+			curLeft: curLeft,
+			curTop: curTop,
+			curHeight: curHeight,
+			curWidth: curWidth,
+			level: level,
+			type: nodeSet[curNode].type
+		}]
+	}
+	else {
+		if (nodeSet[curNode].splitDir == 1) {
+			var numChild = nodeSet[curNode].childIndexes.length;
+
+			for (var j = 0; j < numChild; j++)
+				ret = ret.concat(getLeafBoxesInternal(nodeSet, nodeSet[curNode].childIndexes[j], curLeft + curWidth / numChild * j, curTop, curHeight, curWidth / numChild, level + 1));
+		}
+		else {
+			var numChild = nodeSet[curNode].childIndexes.length;
+
+			for (var j = 0; j < numChild; j++)
+				ret = ret.concat(getLeafBoxesInternal(nodeSet, nodeSet[curNode].childIndexes[j], curLeft, curTop + curHeight / numChild * j, curHeight / numChild, curWidth, level + 1));
+		}
+	}
+
+	return ret;
+}
+
+async function loadRecommendationByResources(resource, slideID) {
+	var text = [];
+
+	console.log(resource);
+
+	for(var i=0;i<resource.length;i++) {
+		var mappingID = resource[i].mappingKey;
+
+		if (mappingID == "null") continue;
+
+		var t = {
+			text: resource[i].text,
+			mappingID: mappingID
+		}
+
+		text.push(t);
+	}
+
+	recommendationLoadingHistory[slideID] = {
+		loading: true,
+		result: {}
+	}
+
+	for (var i = 0; i < text.length; i++) {
+		text[i] = {
+			type: "text",
+			contents: text[i].text,
+			mappingID: text[i].mappingID
+		}
+	}
+
+	const requestOptions = {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(
+			{
+				resources: text,
+				slideNumber: 0
+			}
+		),
+	};
+
+	var data = await fetch('http://server.hyungyu.com:1333/getSlides', requestOptions)
+						  .then(response => response.json())
+
+	recommendationLoadingHistory[slideID].loading = false;
+	recommendationLoadingHistory[slideID].text = text;
+	recommendationLoadingHistory[slideID].result = data;
+
+	var constraints = getConstraints("slideDeck");
+
+	recommendationRender(data, constraints, slideID, false);
+}
+
+function getResourcesInternal(r) {
+	var retValue = [];
+
+	for(var i=0;i<r.length;i++) {
+		var flag = false;
+		var k = r[i].mappingKey;
+
+		for(j in highlightDB.mapping) {
+			if(k in highlightDB.mapping[j]) {
+				retValue.push(highlightDB.mapping[j][k].text)
+				flag = true;
+				break;
+			}
+		}
+		if(!flag) retValue.push('');
+	}
+
+	return retValue;
+}
+
+function getResources(pageID) {
+	if(!(pageID in highlightDB.slideInfo)) return [];
+
+	console.log(pageID);
+	console.log(docSlideStructure);
+
+	for(var i=0;i<docSlideStructure.length;i++) {
+		if(docSlideStructure[i] != null && "slide" in docSlideStructure[i] && docSlideStructure[i].slide.id == pageID) {
+			var r = getResourcesInternal(docSlideStructure[i].resources);
+
+			return r;
+		}
+	}
+
+	return [];
+
+	/*
+	var curHighlight = highlightDB.slideInfo[pageID];
+	var resources = [];
+
+	var resourceDictionary = {};
+
+	for (var obj in curHighlight) {
+		for (var k in curHighlight[obj]) {
+			var mappingID = curHighlight[obj][k].mappingID;
+
+			if (mappingID == "null") continue;
+
+			var pgNumber = mappingPageNumberIndex[mappingID];
+
+			resourceDictionary[mappingID] = highlightDB.mapping[pgNumber][mappingID].text
+		}
+	}
+
+	for (var s in resourceDictionary) {
+		resources.push( {
+			text: resourceDictionary[s],
+			mappingID: s
+		})
+	}
+
+	resources = sortMappings(resources);
+
+	return resources;
+	*/
+}
+
+function getLocation(mappingID) {
+	for(var pageNumber in highlightDB.mapping) {
+		if(mappingID in highlightDB.mapping[pageNumber]) {
+			return parseInt(pageNumber) * 1000000 + highlightDB.mapping[pageNumber][mappingID].startWordIndex;
+		}
+	}
+
+	return -1;
+}
+
+function sortMappings(resources) {
+	var r = JSON.parse(JSON.stringify(resources));
+
+	for(var i=0;i<r.length;i++) {
+		r[i].location = getLocation(r[i].mappingID);
+		r[i].index = i;
+	}
+
+	r.sort(function(first, second) {
+		if(first.location > second.location) return 1;
+		else if(first.location == second.location) return 0;
+		else return -1;
+	});
+	
+	for(var i=0;i<r.length;i++) {
+		delete r[i].location;
+		delete r[i].index;
+	}
+
+	return r;
+}
+
+function loadRecommendation(pageID) {
+	if(pageID in recommendationLoadingHistory) {
+		if(recommendationLoadingHistory[pageID].loading){
+			//console.log("NOW LOADING");
+		}
+		else{
+			//console.log(recommendationLoadingHistory[pageID]);
+			var constraints = currentSingleSlideConstraints[pageID];
+
+			recommendationRender(recommendationLoadingHistory[pageID].result, constraints, pageID, true);
+		}
+		return;
+	}
+
+	var resources = getResources(pageID);
+
+	if(resources.length <= 0) return;
+
+	recommendationLoadingHistory[pageID] = {
+		loading: true,
+		result: {}
+	}
+
+	for (var i = 0; i < resources.length; i++) {
+		resources[i] = {
+			type: "text",
+			contents: resources[i].text,
+			mappingID: resources[i].mappingID
+		}
+	}
+
+	const requestOptions = {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(
+			{
+				resources: resources,
+				slideNumber: 0
+			}
+		),
+	};
+
+	console.log(JSON.parse(JSON.stringify(resources)));
+
+	fetch('http://server.hyungyu.com:1333/getSlides', requestOptions)
+		.then(response => response.json())
+		.then(data => {
+			recommendationLoadingHistory[pageID].loading = false;
+			recommendationLoadingHistory[pageID].text = resources;
+			recommendationLoadingHistory[pageID].result = data;
+
+			var constraints = currentSingleSlideConstraints[pageID];
+
+			recommendationRender(data, constraints, pageID, true);
+		});
+}
+
+function getConstraints(type) {
+	if (type == "slideDeck") {
+		var time = parseInt($("#slideDeck_presentationTimeInputBox")[0].value);
+
+		var sparseDense = parseInt($("#slideDeck_sparseDenseSlider")[0].value);
+		var descAbst = parseInt($("#slideDeck_slideLayoutSlider")[0].value);
+		var textLength = parseInt($("#slideDeck_textLengthSlider")[0].value);
+		var imageType =  $("input[name='slideDeck_imgTypeRadioName']:checked").val();
+		var sectionLevelCoverage = {};
+
+		$(".sectionLevelCoverageInput").each( function(idx, elem) {
+			var sectionKey = $(elem).attr("sectionkey");
+			var value = $(elem)[0].value;
+
+			sectionLevelCoverage[sectionKey] = value;
+		})
+
+		return {
+			time: time,
+			sparseDense: sparseDense,
+			descAbst: descAbst,
+			textLength: textLength,
+			imageType: imageType,
+			sectionLevelCoverage: sectionLevelCoverage
+		}
+	}
+	else if(type == "singleSlide") {
+		var descAbst = parseInt($("#singleSlide_slideLayoutSlider")[0].value);
+		var textLength = parseInt($("#singleSlide_textLengthSlider")[0].value);
+
+		return {
+			descAbst: descAbst,
+			textLength: textLength
+		}
+	}
+	else {
+		var textLength = parseInt($("#object_textLengthSlider")[0].value);
+
+		return {
+			textLength: textLength
+		}
+	}
+}
+
+function checkMappingSpan(elem, cnt) {
+	var mappingSet = {};
+
+	for (var i = 0; i < elem.length; i++) {
+		for (var j = 0; j < elem[i].contents.length; j++) {
+			mappingSet[elem[i].contents[j].mappingID] = 1;
+		}
+	}
+
+	if(Object.keys(mappingSet).length >= cnt) return true;
+	else return false;
+
+}
+function recommendationRender(data, constraints, pageID, renderFlag) {
+	// console.log(constraints);
+
+	var __renderResult = [];
+	console.log(data);
+
+	var height = RENDER_SLIDE_HEIGHT;
+	var width = RENDER_SLIDE_WIDTH;
+
+	var padding = 10;
+
+	var tmpSkeletons = [];
+	var dictForLevel = [];
+
+	var treeInfo = data.layout;
+
+	for (var i = 0; i < treeInfo.length; i++) {
+		dictForLevel = [];
+
+		var renderResultInstance = getLeafBoxes(treeInfo[i].layoutTree, height, width);
+
+		for (var j = 0; j < renderResultInstance.length; j++) {
+			var flag = false;
+
+			for (var k = 0; k < dictForLevel.length; k++) {
+				if (dictForLevel[k][0] == renderResultInstance[j].curHeight && dictForLevel[k][1] == renderResultInstance[j].curWidth) {
+					flag = true;
+					break;
+				}
+			}
+
+			if (!flag) dictForLevel.push([renderResultInstance[j].curHeight, renderResultInstance[j].curWidth]);
+		}
+
+		// if (dictForLevel.length > 1) continue;
+
+		var minHeight = dictForLevel[0][0], maxHeight = dictForLevel[0][0], minWidth = dictForLevel[0][1], maxWidth = dictForLevel[0][1];
+
+		for (var j = 0; j < dictForLevel.length; j++) {
+			minHeight = Math.min(minHeight, dictForLevel[j][0]);
+			maxHeight = Math.max(maxHeight, dictForLevel[j][0]);
+			minWidth = Math.min(minWidth, dictForLevel[j][1]);
+			maxWidth = Math.max(maxWidth, dictForLevel[j][1]);
+		}
+
+		if (maxHeight / minHeight >= 1.5 || maxWidth / minWidth >= 1.5) continue;
+
+		var curSkeletonIndex = __renderResult.length;
+		var slideIdx = 0;
+
+		var tmp = [];
+		var prefix = 0;
+		var cnt = 0, cnt2 = 0;
+
+		if(constraints == null) 
+			constriants = getConstraints("slideDeck", pageID);
+	
+		tmp = populateSlideElements(data, prefix, curSkeletonIndex, padding, renderResultInstance, constraints);
+
+		for (var j = 0; j < tmp.length; j++) {
+			if (tmp[j].length > 0 && checkMappingSpan(tmp[j], data.contents.length)) {
+				__renderResult.push({
+					className: "parentDiv slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + " slideIndex_" + slideIdx + ' recSlide',
+					height: height,
+					width: width,
+					padding: padding,
+					innerBoxes: tmp[j],
+				})
+			}
+		}
+	}
+
+	console.log(__renderResult);
+	console.log(pageID);
+
+	recommendationLoadingHistory[pageID].renderResult = __renderResult;
+
+//	console.log(recommendationLoadingHistory[pageID].renderResult);
+
+	finalRendering(recommendationLoadingHistory[pageID], data, constraints, renderFlag);
+}
+
+function dataClustering(contentsCnt, num) {
+	var ret = [];
+
+	for(var i=0;i<num;i++) ret.push([]);
+
+	for(var j=0;j<contentsCnt;j++) {
+		ret[j % num].push(j);
+	}
+
+	return ret;
+}
+
+function populateSlideElements(data, prefix, curSkeletonIndex, padding, renderResultInstance, constraints) {
+	var tmp = [];
+
+	var clusteredResult = dataClustering(data.contents.length, renderResultInstance.length);
+
+	/*
+	console.log(JSON.stringify(data));
+	console.log(JSON.parse(JSON.stringify(data.contents)));
+	console.log(data.contents[0]);
+	console.log(clusteredResult);
+	*/
+
+	var descriptiveValue = constraints.descAbst;
+	var maxValue = $("#singleSlide_slideLayoutSlider")[0].max;
+	var ratio = descriptiveValue / maxValue;
+	
+	for (var k = 0; k < 4; k++) {
+		tmp.push([]);
+
+		for (var j = 0; j < renderResultInstance.length; j++) {
+			var elem = renderResultInstance[j];
+			var c = '';
+
+			if(k == 0) {
+				if (ratio == 0) {
+					var t = [];
+
+					for (var i = 0; i < clusteredResult[j].length; i++) {
+						t.push({
+							text: data.contents[clusteredResult[j][i]].contents,
+							contentIndex: clusteredResult[j][i],
+							mappingID: data.contents[clusteredResult[j][i]].mappingID
+						})
+					}
+
+					tmp[k].push({
+						className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
+						height: elem.curHeight - 1 * padding,
+						width: elem.curWidth - 1 * padding,
+						top: elem.curTop + padding,
+						left: elem.curLeft + padding,
+						type: "text",
+						contents: t
+					})
+				}
+			}
+			else if(k == 1) {
+				if (ratio > 0) {
+					var t = [];
+
+					var idx = clusteredResult[j][0]; // heuristic: just pick the first one
+					var w = (elem.curWidth) * ratio;
+					var h = (elem.curHeight) * ratio;
+					var top = (elem.curHeight * (1 - ratio) ) / 2 + elem.curTop;
+					var left = (elem.curWidth * (1 - ratio) ) / 2 + elem.curLeft;
+
+					tmp[k].push({
+						className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
+						height: h,
+						width: w,
+						top: top,
+						left: left,
+						type: "image",
+						contents: data.imageURL.length > 0 ? {
+							imgResult: getImgList(data.imageURL[idx].imgResult[0].linkList),
+							contentIndex: idx,
+							mappingID: data.contents[idx].mappingID
+						}
+							: {
+								imgResult: [],
+								contentIndex: idx,
+								mappingID: data.contents[idx].mappingID
+							}
+					})
+				}
+			}
+			else if(k == 2) {
+				if (ratio > 0) {
+					var t = [];
+					var idx = clusteredResult[j][0]; // heuristic: just pick the first one
+
+					for (var i = 0; i < clusteredResult[j].length; i++) {
+						t.push({
+							text: data.contents[clusteredResult[j][i]].contents,
+							contentIndex: clusteredResult[j][i],
+							mappingID: data.contents[clusteredResult[j][i]].mappingID
+						})
+					}
+
+					var w1, h1, t1, l1;
+					var w2, h2, t2, l2;
+
+					if (elem.curHeight > elem.curWidth) {
+						w1 = elem.curWidth;
+						h1 = elem.curHeight * (1 - ratio);
+						t1 = elem.curTop + elem.curHeight * ratio;
+						l1 = elem.curLeft;
+
+						w2 = elem.curWidth;
+						h2 = elem.curHeight * (ratio);
+						t2 = elem.curTop;
+						l2 = elem.curLeft;
+					}
+					else {
+						w1 = elem.curWidth * (1 - ratio);
+						h1 = elem.curHeight;
+						t1 = elem.curTop;
+						l1 = elem.curLeft + elem.curWidth * (ratio);
+
+						w2 = elem.curWidth * (ratio);
+						h2 = elem.curHeight;
+						t2 = elem.curTop;
+						l2 = elem.curLeft;
+					}
+
+					tmp[k].push({
+						className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
+						height: h1,
+						width: w1,
+						top: t1,
+						left: l1,
+						type: "text",
+						contents: t
+					})
+
+					tmp[k].push({
+						className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + "captionImage",
+						height: h2,
+						width: w2,
+						top: t2,
+						left: l2,
+						type: "image",
+						contents: data.imageURL.length > 0 ? {
+							imgResult: getImgList(data.imageURL[idx].imgResult[0].linkList),
+							contentIndex: idx,
+							mappingID: data.contents[idx].mappingID
+						}
+							: {
+								imgResult: [],
+								contentIndex: idx,
+								mappingID: data.contents[idx].mappingID
+							}
+					})
+				}
+			}
+			else if(k == 3) {
+				if (ratio > 0) {
+					var idx = clusteredResult[j][0]; // heuristic: just pick the first one
+
+					var w = (elem.curWidth) * ratio;
+					var h = (elem.curHeight) * ratio;
+					var top = (elem.curHeight * (1 - ratio)) / 2 + elem.curTop;
+					var left = (elem.curWidth * (1 - ratio)) / 2 + elem.curLeft;
+
+					tmp[k].push({
+						className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + "captionText",
+						height: 20,
+						width: w,
+						top: top + h - 20,
+						left: left,
+						type: "textCaption",
+						contents: [
+							{
+								text: data.imageURL[idx].imgResult[0].entity,
+								contentIndex: idx,
+								mappingID: data.contents[idx].mappingID
+							}]
+					})
+
+					tmp[k].push({
+						className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j + "_" + k,
+						height: h - 20,
+						width: w,
+						top: top,
+						left: left,
+						type: "image",
+						contents: data.imageURL.length > 0 ? {
+							imgResult: getImgList(data.imageURL[idx].imgResult[0].linkList),
+							contentIndex: idx,
+							mappingID: data.contents[idx].mappingID
+						}
+							: {
+								imgResult: [],
+								contentIndex: idx,
+								mappingID: data.contents[idx].mappingID
+							}
+					})
+				}
+			}
+
+			/*
+			else if(k == 1) {
+				tmp[k].push({
+					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j,
+					height: elem.curHeight,
+					width: elem.curWidth,
+					top: elem.curTop + padding,
+					left: elem.curLeft + padding,
+					type: "image",
+					contents: makeImage(data, clusteredResult[j]) // data.imageURL[j].imageResult[0].linkList[0]
+				})
+			}
+
+			if (elem.type == "text") {
+				c = data.contents[cnt].contents;
+				cnt = cnt + 1;
+
+				tmp[k].push({
+					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j,
+					height: elem.curHeight,
+					width: elem.curWidth,
+					top: elem.curTop + padding,
+					left: elem.curLeft + padding,
+					type: "text",
+					contents: c
+				})
+			}
+			else {
+				tmp[k].push({
+					className: "slideObj_" + prefix + "_" + curSkeletonIndex + "_" + j,
+					height: elem.curHeight,
+					width: elem.curWidth,
+					top: elem.curTop + padding,
+					left: elem.curLeft + padding,
+					type: "image",
+					contents: "https://images.theconversation.com/files/93616/original/image-20150902-6700-t2axrz.jpg?ixlib=rb-1.1.0&q=30&auto=format&w=600&h=600&fit=crop&dpr=2"
+				})
+			}
+			*/
+		}
+	}
+	
+	return tmp;
+}
+
+function renderText(t) {
+	if(t.length == 1) return t[0].text;
+	else {
+		var ret = '';
+
+		for(var i=0;i<t.length;i++) {
+			ret = ret + '<li class="slideBullet">' + t[i].text + '</li>';
+		}
+
+		return '<ul class="slideBulletUl">' + ret + '</ul>';
+	}
+}
+
+function sortSlides(constraints, slideInfo, numResources) {
+	var slideList = [];
+
+	// console.log(constraints);
+	// console.log(numResources);
+
+	var targetNumText = numResources - parseInt(numResources * constraints.descAbst / 4)
+	var targetNumFigure = numResources - targetNumText;
+
+	// console.log(slideInfo);
+
+	for(var i=0;i<slideInfo.length;i++) {
+		slideList.push({
+			numObj: slideInfo[i].numObj,
+			numText: slideInfo[i].numText,
+			numFigure: slideInfo[i].numFigure,
+			idx: i
+		});
+
+		// console.log(slideInfo[i].numObj, slideInfo[i].numText, slideInfo[i].numFigure);
+	}
+
+	for(var i=0;i<slideList.length;i++) {
+		var dist = /* Math.abs(value.numObj - slideList[i].numObj) + */
+				   Math.abs(targetNumText - slideList[i].numText) + 
+				   Math.abs(targetNumFigure - slideList[i].numFigure);
+
+		slideList[i].dist = dist;
+	}
+
+	slideList.sort(function(first, second) {
+		if(first.dist > second.dist) return 1;
+		else if(first.dist == second.dist) return 0;
+		else return -1;
+    });
+
+	console.log(slideList);
+	
+	var result = '';
+
+	var newSlideInfo = [];
+
+	for(var i=0;i<slideList.length;i++) {
+		newSlideInfo.push(slideInfo[slideList[i].idx]);
+	}
+
+	return newSlideInfo;
+}
+
+function finalRendering(h, data, constraints, renderFlag) {
+	var r = h.renderResult;
+
+	var result = "";
+	var maxNumObj = 0, maxNumText = 0, maxNumFigure = 0;
+
+	for (var i = 0; i < r.length; i++) {
+		var numText = 0, numObj = 0, numFigure = 0;
+
+		for (var j = 0; j < r[i].innerBoxes.length; j++) {
+			var ib = r[i].innerBoxes[j];
+
+			numText = numText + (ib.type == "text" ? 1 /*ib.contents.length*/ : 0);
+			numFigure = numFigure + (ib.type == "image" ? 1 : 0);
+			numObj = numObj + (ib.type == "text" ? ib.contents.length : 0) + (ib.type == "image" ? 1 : 0);
+
+			maxNumText = Math.max(maxNumText, numText);
+			maxNumFigure = Math.max(maxNumFigure, numFigure);
+			maxNumObj = Math.max(maxNumObj, numObj);
+		}
+
+		r[i].numText = numText;
+		r[i].numFigure = numFigure;
+		r[i].numObj = numObj;
+	}
+
+	// var res = sortSlides( constraints, r, data.contents.length );
+
+	// h.renderResult = res;
+	// r = res;
+
+	/*
+	"<table>" + 
+		"<tr> " + 
+			"<td> # obj </td>" + 
+			"<td> # text </td>" + 
+			"<td> # image </td>" + 
+		"</tr>" + 
+		"<tr>" + 
+			"<td>" + 
+				'<div id="objController" class="slideSlider">' + 
+					'<input type="range" min="0" max="100" value="50" class="slideSlider" id="slideObjSlider" disabled>' + 
+					'<div class="slideValueDiv" id="slideObjValueDiv"> 0 </div>' + 
+				'</div>' + 
+			"</td>" + 
+			"<td>" + 
+				'<div id="textController" class="slideSlider">' + 
+					'<input type="range" min="0" max="100" value="50" class="slideSlider" id="slideTextSlider">' + 
+					'<div class="slideValueDiv" id="slideTextValueDiv"> 0 </div>' + 
+				'</div>' + 
+			"</td>" + 
+			"<td>" + 
+				'<div id="imageController" class="slideSlider">' +  
+					'<input type="range" min="0" max="100" value="50" class="slideSlider" id="slideImageSlider">' + 
+					'<div class="slideValueDiv" id="slideFigureValueDiv"> 0 </div>' + 
+				'</div>' + 
+			"</td>" + 
+		"</tr>" + 
+	"</table>";*/
+				
+	var slideList = [];
+
+	for (var i = 0; i < r.length; i++) {
+		var innerBody = '';
+		var numText = 0, numObj = 0, numFigure = 0;
+
+		for (var j = 0; j < r[i].innerBoxes.length; j++) {
+			var ib = r[i].innerBoxes[j];
+
+			// console.log(ib);
+			// console.log(ib.contents);
+
+			innerBody = innerBody +
+				"<div style='" +
+				"position: absolute; " +
+				"height: " + ib.height + "px;" +
+				"width: " + ib.width + "px;" +
+				"top: " + ib.top + "px;" +
+				"left: " + ib.left + "px;" +
+				"word-wrap: break-word;" +
+				"display: table;" +
+				"'> " +
+				"<div class='" + ib.className + "' style='" +
+				"display: table-cell; " +
+				"vertical-align: middle; " +
+				(ib.contents.length > 1 ? "" : "text-align: center; ") +
+				"border: hide;" +
+				"overflow: none; " +
+				"text-align: middle; " +
+				"height: " + ib.height + "px; " +
+				"width: " + ib.width + "px; " +
+				"'> " +
+				(ib.type == "text" || ib.type == "textCaption" ?
+					"<div class='" + ib.className + '_body' + "'> " +
+					renderText(ib.contents) +
+					"</div>"
+					:
+					"<div class='" + ib.className + '_img' + "'> " +
+					"<img class='imageInSlide' src='" + ib.contents.imgResult + "' style=' " +
+					"height: " + ib.height + "px;" +
+					"width: " + ib.width + "px;" +
+					"' />" +
+					"</div>"
+				) +
+				"</div>" +
+				"</div>";
+
+			numText = numText + (ib.type == "text" ? 1 /*ib.contents.length*/ : 0);
+			numFigure = numFigure + (ib.type == "image" ? 1 : 0);
+			numObj = numObj + (ib.type == "text" ? ib.contents.length : 0) + (ib.type == "image" ? 1 : 0);
+
+			maxNumText = Math.max(maxNumText, numText);
+			maxNumFigure = Math.max(maxNumFigure, numFigure);
+			maxNumObj = Math.max(maxNumObj, numObj);
+		}
+
+		slideList.push({
+			html:
+				'<div class="' + r[i].className + '" style="' +
+				"display: inline-block; " +
+				"white-space: normal; " +
+				"padding: " + r[i].padding + "px; " +
+				"height: " + r[i].height + "px; " +
+				"width: " + r[i].width + "px; " +
+				"border: 1px solid black;" +
+				"position: relative;" +
+				"margin: 10px;" +
+				"box-sizing: border-box;" +
+				'"' + " numText='" + numText + "'" + 
+				" numFigure='" + numFigure + "'" + 
+				" numObj='" + numObj + "'" +  
+				">" +
+				innerBody +
+				"<div class='slideStat'>" + 
+				numObj + '\t' + numText + '\t' + numFigure + 
+				"</div>" + 
+				"</div>",
+		})
+	}
+
+	if (renderFlag) {
+		result = result + "<div id='recommendedSlideList'>";
+
+		for (var i = 0; i < slideList.length; i++) result = result + slideList[i].html;
+
+		result = result + "</div>";
+
+		$("#SlideRecommendation").html(result);
+	}
+/*
+	$("#slideObjSlider")[0].max = maxNumObj;
+	$("#slideTextSlider")[0].max = maxNumText;
+	$("#slideImageSlider")[0].max = maxNumFigure;
+
+	$("#slideObjSlider")[0].value = 0; 
+	$("#slideTextSlider")[0].value = 0;
+	$("#slideImageSlider")[0].value = 0;
+	*/
+
+	for (var i = 0; i < r.length; i++) {
+		var innerBody = '';
+		var objList = document.getElementsByClassName(r[i].className.split(' ')[1]);
+
+	/*	$("#noteSpaceExperiment").html(
+			$("." + r[i].className.split(' ')[1]).html()
+		);*/
+
+		for (var j = 0; j < r[i].innerBoxes.length; j++) {
+			var textResult = [];
+
+			if (r[i].innerBoxes[j].type != "text") continue;
+
+			var objID = r[i].innerBoxes[j].className;
+
+			for (var l = 0; l < r[i].innerBoxes[j].contents.length; l++) {
+				var contentIndex = r[i].innerBoxes[j].contents[l].contentIndex;
+				var text_to_render = '';
+
+				for(var k=0;k<data.textShortening[contentIndex].result.result.length;k++) {
+					var text = data.textShortening[contentIndex].result.result[k].text;
+
+					if(text.length < constraints.textLength) {
+						text_to_render = text;
+						break;
+					}
+				}
+
+				textResult.push({text: text_to_render});
+				r[i].innerBoxes[j].contents[l].text = text_to_render;
+
+				/*
+				var shorten_result = data.textShortening[r[i].innerBoxes[j].contents[l].contentIndex];
+				var objID = r[i].innerBoxes[j].className;
+
+				var objs = document.getElementsByClassName(objID + "_body");
+
+				var thisObj = objs[0];
+
+				thisObj.innerHTML = 'a';
+
+				var parentHeight = thisObj.parentElement.offsetHeight;
+				var minHeightValue = 987987987, minText = '';
+
+				for (var k = 0; k < shorten_result.result.result.length; k++) {
+					thisObj.innerHTML = shorten_result.result.result[k].text;
+
+					for (var k = 0; k < shorten_result.result.result.length; k++) {
+						thisObj.innerHTML =
+							r[i].innerBoxes[j].contents.length > 1 ?
+								"<ul class='slideBulletUl'> <li class='slideBullet'>" + shorten_result.result.result[k].text + "</li> </ul>"
+								:
+								shorten_result.result.result[k].text;
+
+						var heightValue = Math.abs(thisObj.offsetHeight / parentHeight * 100 -
+							(40 / r[i].innerBoxes[j].contents.length));
+
+						if (heightValue < minHeightValue) {
+							minHeightValue = heightValue;
+							minText = shorten_result.result.result[k].text;
+						}
+					}
+
+					textResult.push({ text: minText });
+					// document.getElementsByClassName(objID + "_body")[1].innerHTML = minText;
+				}
+
+				for(var k=0;k<textResult.length;k++) 
+					r[i].innerBoxes[j].contents[k].text = textResult[k].text;
+				*/ 
+
+			}
+
+			if(renderFlag)
+				document.getElementsByClassName(objID + "_body")[0].innerHTML = renderText(textResult);
+		}
+	}
+}
+
+function setConstraints(name, value, slideID, writeFlag) {
+	if (value == null) {
+		if (name == "slideDeck") {
+			currentSlideDeckConstraints = getConstraints("slideDeck");
+		}
+		else if (name == "singleSlide") {
+			currentSingleSlideConstraints[slideID] = getConstraints("singleSlide", slideID);
+		}
+	}
+	else {
+		if(name == "slideDeck") currentSlideDeckConstraints = value;
+		else if(name == "singleSlide") {
+			if(slideID == "all") currentSingleSlideConstraints = value;
+			else {
+				if(value == "deck") currentSingleSlideConstraints[slideID] = {
+					descAbst: currentSlideDeckConstraints.descAbst,
+					textLength: currentSlideDeckConstraints.textLength
+				}
+				else currentSingleSlideConstraints[slideID] = value;
+			}
+		}
+	}
+
+	if(name == "slideDeck") displayConstraints("slideDeck");
+	else if(name == 'singleSlide') {
+		if(slideID != "all")
+			displayConstraints("singleSlide", slideID);
+	}
+
+	if (writeFlag) {
+		var updates = {};
+
+		if (name == "slideDeck") {
+			updates['/users/' + userName + '/slideDeckConstraints/'] = currentSlideDeckConstraints;
+		}
+		else if (name == "singleSlide") {
+			if(slideID == "all") {
+				updates['/users/' + userName + '/singleSlideConstraints/'] = currentSingleSlideConstraints;
+			}
+			else {
+				updates['/users/' + userName + '/singleSlideConstraints/' + slideID + '/'] = currentSingleSlideConstraints[slideID]
+
+			}
+		}
+		firebase.database().ref().update(updates);
+	}
+}
+
+function displayConstraints(name, slideID) {
+	if(name == "slideDeck") {
+		$("#slideDeck_presentationTimeInputBox")[0].value = currentSlideDeckConstraints.time;
+		$("#slideDeck_sparseDenseSlider")[0].value = currentSlideDeckConstraints.sparseDense;
+		$("#slideDeck_slideLayoutSlider")[0].value = currentSlideDeckConstraints.descAbst;
+		$("#slideDeck_textLengthSlider")[0].value = currentSlideDeckConstraints.textLength;
+
+		// var imageType =  $("input[name='slideDeck_imgTypeRadioName']:checked").val();
+		var sectionLevelCoverage = {};
+
+		$(".sectionLevelCoverageInput").each( function(idx, elem) {
+			var sectionKey = $(elem).attr("sectionkey");
+			var value = $(elem)[0].value;
+
+			$(elem).text(currentSlideDeckConstraints.sectionLevelCoverage[sectionKey]);
+		})
+
+		$("#slideDeckLevelConstraints").show();
+	}
+	else if(name == "singleSlide") {
+		if(slideID in currentSingleSlideConstraints) {
+			$("#singleSlide_slideLayoutSlider")[0].value = currentSingleSlideConstraints[slideID].descAbst;
+			$("#singleSlide_textLengthSlider")[0].value = currentSingleSlideConstraints[slideID].textLength;
+		}
+		// Image
+	}
+	else {
+
+	}
+}
+
+function getSlideBody(presentationID, slideInfo) {
+	console.log(slideInfo);
+
+	return "<div class='slideDeckItem'>" + 
+				"<div class='slideImageDiv' slideIndex='0' presentationId='" + presentationID + "'> " + 
+					"<img class='slideDeckThumbnailImage' src='" + slideInfo[0].thumbnailURL + "'> </img>" + 
+					"<button class='slideImageLeftBtn'> L </button>" + 
+					"<button class='slideImageRightBtn'> R </button>" + 
+				"</div>" + 
+				"<div class='slideImageDivBottom'> " + 
+					"<span class='curSlideNumber'> 1 </span>" + "/" +
+					"<span class='totalSlideNumber'> " + slideInfo.length + "</span>" + 
+				"</div>" + 
+			"</div>"
+}
+
+function initializeSlideDeck() {
+	readData('/referenceSlides').then(result => {
+		console.log(result);
+
+		for(var s in result) {
+			slideDeckInfo[s] = result[s].slides;
+
+			$("#slideDeckListDiv").append(getSlideBody(s, result[s].slides));
+		}
+	});
+}
+
+function makeSlideTransition(presentationID, curSlideIndex, dir) {
+	var slideObj = $(".slideImageDiv[presentationId='" + presentationID + "']")[0];
+	var numSlides = slideDeckInfo[presentationID].length;
+
+	if(0 <= curSlideIndex + dir && curSlideIndex + dir < numSlides) {
+		$($(slideObj).find("img")[0]).attr("src", slideDeckInfo[presentationID][curSlideIndex+dir].thumbnailURL)
+
+		$(slideObj).attr("slideIndex", curSlideIndex+dir);
+		$($($($(slideObj).parent()).find(".slideImageDivBottom")[0]).find(".curSlideNumber")[0]).html((curSlideIndex + dir + 1) + " ");
+	}
+}
+
+function getSlideThumbnail(slide) {
+	return "<div class='slideThumbnailDiv'>" + 
+				"<img class='slideThumbnailImage' src='" + slide.thumbnailURL + "'> </img>" +
+			"</div>"
+}
+
+function slideDeckAdaptationDivAppear(presentationID) {
+	if (presentationID in slideDeckInfo) {
+		$("#slideDeckCompareDivOriginalSlidesList").html('');
+
+		var bodyHTML = '';
+
+		for(var i=0;i<slideDeckInfo[presentationID].length;i++) {
+			bodyHTML = bodyHTML + getSlideThumbnail(slideDeckInfo[presentationID][i]);
+		}
+
+		$("#slideDeckCompareDivOriginalSlidesList").html(bodyHTML);
+		$("#slideDeckCompareDiv").show();
+	}
+}
+
+function showIndividualSlidesOfAll() {
+	var slideListDivHTML = '';
+
+	for (var presentationID in slideDeckInfo) {
+		for (var i = 0; i < slideDeckInfo[presentationID].length; i++) {
+			slideListDivHTML = slideListDivHTML +
+				"<div class='slideItem'>" +
+				"<img class='slideItemThumbnail' src='" + slideDeckInfo[presentationID][i].thumbnailURL + "'> </img>" +
+				"</div>";
+		}
+	}
+
+	$("#slideListDiv").html(slideListDivHTML);
+}
+
+function showIndividualSlides(presentationID) {
+	var slideListDivHTML = '';
+
+	for(var i=0;i<slideDeckInfo[presentationID].length;i++) {
+		slideListDivHTML = slideListDivHTML + 
+							"<div class='slideItem'>" + 
+								"<img class='slideItemThumbnail' src='" + slideDeckInfo[presentationID][i].thumbnailURL + "'> </img>" + 
+							"</div>";
+	}
+
+	$("#slideListDiv").html(slideListDivHTML);
+}
+
+function showTextShorteningView(slideIndex, resourceIndex) {
+	var originalText = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
+	var currentText = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents;
+
+	$("#textShorteningViewOriginalText").html(originalText)
+	$("#textShorteningViewCurrentText").html(currentText)
+	$("#textShorteningView").show();
+}
+
+function closeTextShorteningView() {
+	$("#textShorteningView").hide();
+}
+
+function showLoadingAdaptationRow(slideIndex, resourceIndex) {
+	var rowObj = $(".adaptationTableRow[slideindex='" + slideIndex + "'][resourceindex='" + resourceIndex + "']");
+
+	$(rowObj).addClass("onLoading");
+}
+
+function getImage(slideIndex, resourceIndex) {
+	var queryString = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
+
+	console.log(queryString);
+
+	const requestOptions = {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(
+			{
+				text: queryString,
+			}
+		),
+	};
+
+	fetch('http://server.hyungyu.com:5712/findQueries/', requestOptions)
+		.then(response => response.json())
+		.then(data => {
+			console.log(data);
+		});
+
+}
+
 $(document).ready(function() {
+	$(document).on("change", ".adaptationTableTypeSelector", function(e) {
+		console.log(e.target);
+
+		var parent = $(e.target).parent().parent();
+
+		var slideIndex = $(parent).attr("slideIndex");
+		var resourceIndex = $(parent).attr("resourceIndex");
+		var selectedIndex = $(e.target)[0].selectedIndex; // 0: text, 1: image
+
+		showLoadingAdaptationRow(slideIndex, resourceIndex);
+
+		if(selectedIndex == 0) { // changed to text
+
+		}
+		else { // changed to image
+			var img = getImage(slideIndex, resourceIndex);
+		}
+	})
+
+	$(document).on("click", ".adaptationTableResourceBody", function(e) {
+		console.log(e.target);
+
+		var curRowObj = $(e.target);
+
+		for(var i=0;i<100;i++) {
+			if($(curRowObj).hasClass("adaptationTableRow")) break;
+
+			curRowObj = $(curRowObj).parent();
+		}
+
+		console.log(curRowObj);
+
+		var slideIndex = parseInt($(curRowObj).attr("slideIndex"));
+		var resourceIndex = parseInt($(curRowObj).attr("resourceIndex"));
+
+		console.log(docSlideStructure[slideIndex].resources[resourceIndex])
+
+		if(docSlideStructure[slideIndex].resources[resourceIndex].originalContent.type == "text") {
+			console.log("TEXT");
+
+			showTextShorteningView(slideIndex, resourceIndex);
+		}
+		else {
+			console.log("IMAGE");
+		}
+	})
+
+	$(document).on("click", "#textShorteningViewCloseBtn", function(e) {
+		closeTextShorteningView();
+	});
+
+	$(document).on("click", "#adaptationViewHideBtn", function(e) {
+		adaptivePlaneStatus = 1;
+
+		$("#slideIframe").css("height", "calc(100% - 30px)")
+	});
+
+	$(document).on("click", "#adaptationViewEnlargeBtn", function(e) {
+		var px = $("#adaptationView").height();
+
+		$(".adaptationViewDiv").height(px);
+
+		if(adaptivePlaneStatus == 0){
+			$("#slidePlaneCanvas").hide();
+
+			$("#slideIframe").css("height", "0");
+			showDocSlideView(-1); // show all
+
+			adaptivePlaneStatus = 2;
+		}
+		else {
+			$("#slidePlaneCanvas").show();
+			$("#slideIframe").css("height", "70%");
+
+			$(".adaptationViewDiv").css("height", "100%");
+
+			var idx = parseInt($(".adaptationViewDiv[slideID='" + curSlidePage + "']").attr("index"));
+
+			showDocSlideView(idx);
+
+			adaptivePlaneStatus = 0;
+		}
+	});
+
+	$(document).on("click", ".slideRepresentationSlider", function(e) {
+		console.log("hello");
+
+		var checkboxObj = $($(".slideRepresentationSlider").parent()).find("input");
+		var flag = $(checkboxObj).prop("checked");
+
+		if(flag) { // slide Deck
+			$("#slideListDiv").hide();
+			$("#slideDeckListDiv").show();
+		}
+		else {
+			$("#slideDeckListDiv").hide();
+			$("#slideListDiv").show();
+		}
+	});
+
+	$(document).on("click", "#slideDeckCompareApplyBtn", function(e) {
+		var slideDeckObj = $(".checkedSlideDeck");
+
+		$(".selectedSlideDeck").removeClass("selectedSlideDeck");
+		$(".checkedSlideDeck").removeClass("checkedSlideDeck");
+
+		var presentationID = $($(slideDeckObj).find(".slideImageDiv")).attr("presentationid");
+
+		console.log(presentationID);
+
+		$(slideDeckObj).addClass("selectedSlideDeck");
+
+		showIndividualSlides(presentationID);
+
+		$("#slideDeckCompareDiv").hide();
+	})
+
+	$(document).on("click", "#slideDeckCompareCancelBtn", function(e) {
+		$("#slideDeckCompareDiv").hide();
+	})
+
+	$(document).on("click", "#slideDeckCompareDivTopBarCloseBtn", function(e) {
+		$("#slideDeckCompareDiv").hide();
+	})
+
+	$(document).on("click", ".slideImageLeftBtn", function(e) {
+		var slideObj = $(e.target).parents();
+		
+		var curSlideIndex = parseInt($(slideObj).attr("slideIndex"));
+		var presentationID = $(slideObj).attr("presentationId");
+
+		makeSlideTransition(presentationID, curSlideIndex, -1);
+	});
+
+	$(document).on("click", ".slideImageRightBtn", function(e) {
+		var slideObj = $(e.target).parent();
+
+		var curSlideIndex = parseInt($(slideObj).attr("slideIndex"));
+		var presentationID = $(slideObj).attr("presentationId");
+
+		makeSlideTransition(presentationID, curSlideIndex, 1);
+	});
+
+	$(document).on("click", ".slideDeckThumbnailImage", function(e) {
+		console.log(e.target);
+
+		var slideDeckObj = $($(e.target).parent()).parent();
+		var presentationID = $($(e.target).parent()).attr("presentationID");
+
+		$(".selectedSlideDeck").removeClass("checkedSlideDeck");
+		slideDeckObj.addClass("checkedSlideDeck");
+
+		slideDeckAdaptationDivAppear(presentationID);
+	});
+
+	$(document).on("mouseenter", ".slideImageDiv", function(e) {
+		var cur = e.target;
+
+		for(var i=0;i<100;i++) {
+			if($(cur).hasClass("slideImageDiv")) break;
+
+			cur = $(cur).parent();
+		}
+
+		$($(cur).find(".slideImageLeftBtn")[0]).show();
+		$($(cur).find(".slideImageRightBtn")[0]).show();
+	});
+
+	$(document).on("mouseleave", ".slideImageDiv", function(e) {
+		$(".slideImageLeftBtn").hide();
+		$(".slideImageRightBtn").hide();
+	});
+
+	$( function() {
+		$( "#sourceTabs" ).tabs();
+
+		initializeSlideDeck();
+	  } );
+
         // $("#slideIframe").attr("src", "https://docs.google.com/presentation/d/1-ZGwchPm3T31PghHF5N0sSUU_Jd9BTwntcFf1ypb8ZY/edit");
+
+/*
+		$(document).on("input", ".slideSlider", function(e) {
+			console.log("YAY");
+
+			var numObj = $("#slideObjSlider")[0].value;
+			var numText = $("#slideTextSlider")[0].value;
+			var numFigure = $("#slideImageSlider")[0].value;
+
+			$("#slideObjValueDiv").html(numObj);
+			$("#slideTextValueDiv").html(numText);
+			$("#slideFigureValueDiv").html(numFigure);
+
+			sortSlides({
+				numObj: numObj,
+				numText: numText,
+				numFigure: numFigure
+			});
+		})
+		*/
+
+		function enableBtn(name) {
+			$(".levelBtn").removeClass("btnSelected");
+
+			if(name == "slideDeck")
+				$("#entireSlideDeckBtn").addClass("btnSelected");
+			else if(name == "singleSlide")
+				$("#singleSlideBtn").addClass("btnSelected");
+			else
+				$("#objectBtn").addClass("btnSelected");
+		}
+
+		$(document).on("click", ".levelBtn", function(e) {
+			var obj = $(e.target);
+
+			$(".levelBtn").removeClass("btnSelected");
+
+			$(obj).addClass("btnSelected");
+
+			if($(obj)[0].id == 'singleSlideBtn') {
+				displayConstraints("singleSlide", curSlidePage);
+			}
+
+			appearConstraints($(obj)[0].id);
+		});
+
+		function appearConstraints(name) {
+			$(".presentationObjectiveBody").hide();
+			$("#constraints_emptyScreen").hide();
+			$("#constraints_noHighlightFound").hide();
+
+			if(name == "entireSlideDeckBtn" || name == "slideDeck") {
+				var info = organizeHighlightOnSections();
+
+				if(Object.keys(info) <= 0) {
+					$("#constraints_emptyScreen").show();
+				}
+				else {
+					$("#slideDeckLevelConstraints").show();
+					enableBtn("slideDeck");
+				}
+			}
+			else if(name == "singleSlideBtn" || name == "singleSlide") {
+				if (curSlidePage in currentSingleSlideConstraints) {
+					$("#singleSlideLevelConstraints").show();
+					enableBtn("singleSlide");
+				}
+				else {
+					$("#constraints_noHighlightFound").show();
+				}
+			}
+			else {
+				$("#objectLevelConstraints").show();
+				enableBtn("object");
+			}
+		}
+
+		$(document).on("click", ".recSlide", function(e) {
+			var t = e.target;
+			
+			while(1) {
+				if(t == null) break;
+
+				if($(t).hasClass("recSlide")) break;
+
+				t = $(t).parent();
+			}
+
+			var slideInfo = getSlideInfoOnRecommendation($(t)[0].className, recommendationLoadingHistory[curSlidePage].renderResult );
+
+			if(slideInfo != -1) {
+				setConstraints("singleSlide", getConstraints("singleSlide"), curSlidePage, true);
+				renderSlideOnGoogle(slideInfo, curSlidePage, true);
+			}
+		});
+
+		$(document).on("click", ".tablinks", function(event) {
+			var cityName = $(this).html();
+
+			// Declare all variables
+			var i, tabcontent, tablinks;
+
+			// Get all elements with class="tabcontent" and hide them
+			tabcontent = document.getElementsByClassName("tabcontent");
+			for (i = 0; i < tabcontent.length; i++) {
+				tabcontent[i].style.display = "none";
+			}
+
+			// Get all elements with class="tablinks" and remove the class "active"
+			tablinks = document.getElementsByClassName("tablinks");
+			for (i = 0; i < tablinks.length; i++) {
+				tablinks[i].className = tablinks[i].className.replace(" active", "");
+			}
+
+			// Show the current tab, and add an "active" class to the button that opened the tab
+			document.getElementById(cityName.replace(' ', '')).style.display = "block";
+			event.currentTarget.className += " active";
+		});
 
 		appendDocumentStructureRow();
 
@@ -1728,41 +3868,137 @@ $(document).ready(function() {
 			}
 		});
 
-		$(document).on("extension_pageUpdated", function(e) {
-			var tempCnt = 1;
+		$(document).on("extension_mouseup", function(e) {
 			var p = e.detail;
 
-			curSlideObjects = p;
+			if(p.clickedElement > 0){
+				clickedElements = true;
+				appearConstraints("object");
+			} 
+			else {
+				if(clickedElements) {
+					appearConstraints("singleSlide");
+					displayConstraints("singleSlide", curSlidePage);
+				}
 
-			var pageID = p.pageID;
+				else if(p.clickedSlide > 0) {
+					appearConstraints("singleSlide");
+					displayConstraints("singleSlide", curSlidePage);
+				}
 
-			for(var i=0;i<p.objects.length;i++) {
-				var objID = p.objects[i].objectID.substr(7);
+				clickedElements = false;
+			}
+		});
+/*
+		$(document).on("extension_objClicked", function(e) {
+			clickedElements = true;
 
-				if(slideDB == null) slideDB = {};
-				if(!(pageID in slideDB)) slideDB[pageID] = {}
-				if(!(objID in slideDB[pageID])) slideDB[pageID][objID] = {};
+			appearConstraints("object");
+		});
 
-				if("paragraph" in p.objects[i]) { // if text box
-					if(Object.keys(p.objects[i].paragraph).length != Object.keys(slideDB[pageID][objID]).length) {
-						if(Object.keys(p.objects[i].paragraph).length < Object.keys(slideDB[pageID][objID]).length) {
-							var start = parseInt(p.objects[i].paragraph.length)+1;
-							var end = Object.keys(slideDB[pageID][objID]).length;
-									
-							for(var j=start;j<=end;j++) removeSlideMappingInfo(pageID, objID, j);
-						}
-						else {
-							writeSlideMappingInfo(pageID, objID, Object.keys(p.objects[i].paragraph).length-1, "null");
+		$(document).on("extension_objNotClicked", function(e) {
+			if(clickedElements) appearConstraints("singleSlide");
+
+			clickedElements = false;
+		});
+		*/
+
+	$(document).on("extension_hideLoading", function (e) {
+		hideLoadingSlidePlane();
+	})
+
+		$(document).on("extension_pageUpdated", function(e) {
+			if (adaptivePlaneStatus != 2) {
+				console.log(docSlideStructure);
+
+				var tempCnt = 1;
+				var p = e.detail;
+
+				console.log(p);
+
+				curSlideObjects = p;
+
+				var pageID = p.pageID;
+
+				curSlidePage = p.pageID;
+
+				var idx = parseInt($(".adaptationViewDiv[slideID='" + pageID + "']").attr("index"));
+
+				showDocSlideView(idx);
+
+				visualizeSlideObjects();
+				hideLoadingSlidePlane();
+
+			}
+			return;
+/*
+			var resourceDictionary = {};
+
+			for(var obj in curHighlight) {
+				for(var k in curHighlight[obj]) {
+					var mappingID = curHighlight[obj][k].mappingID;
+
+					if(mappingID == "null") continue;
+
+					var pgNumber = mappingPageNumberIndex[mappingID];
+
+					resourceDictionary[mappingID] = highlightDB.mapping[pgNumber][mappingID].text
+				}
+			}
+			*/
+
+			for(var i=0;i<resources.length;i++) {
+				$("#resourceTable").append(
+					'<tr>' +
+					'<td> <input type="checkbox" id="checkbox_' + resources[i].mappingID + '"> </td>' +
+					'<td> <div class="resourceItem" mappingID="' + resources[i].mappingID + '"> ' +
+					resources[i].text +
+					'</div> </td>' +
+					'</tr>'
+				);
+			}
+
+			/* Loading recommendations */
+
+			if (pageID in highlightDB.slideInfo) {
+				if (curSlidePage != p.pageID) {
+					// $("#SlideRecommendation").html("Loading ...");
+					// loadRecommendation(pageID);
+				}
+
+				for (var i = 0; i < p.objects.length; i++) {
+					var objID = p.objects[i].objectID.substr(7);
+
+					if (slideDB == null) slideDB = {};
+					if (!(pageID in slideDB)) slideDB[pageID] = {}
+					if (!(objID in slideDB[pageID])) slideDB[pageID][objID] = {};
+
+					if ("paragraph" in p.objects[i]) { // if text box
+						if (Object.keys(p.objects[i].paragraph).length != Object.keys(slideDB[pageID][objID]).length) {
+							if (Object.keys(p.objects[i].paragraph).length < Object.keys(slideDB[pageID][objID]).length) {
+								var start = parseInt(p.objects[i].paragraph.length) + 1;
+								var end = Object.keys(slideDB[pageID][objID]).length;
+
+								for (var j = start; j <= end; j++) removeSlideMappingInfo(pageID, objID, j);
+							}
+							else {
+								writeSlideMappingInfo(pageID, objID, Object.keys(p.objects[i].paragraph).length - 1, "null");
+							}
 						}
 					}
 				}
 			}
+			else {
+				$("#SlideRecommendation").html("No recommendation");
+			}
 
+			visualizeSlideObjects();
+
+					/*
 			if(curSlidePage == p.pageID) {
 			}
 			else {
 				if(curSlideState == "WAIT")
-					visualizeSlideObjects();
 				else if(curSlideState == "EDIT") {
 					editFocus( {
 						parent: $("#workspaceRect")[0].getBoundingClientRect(),
@@ -1770,8 +4006,10 @@ $(document).ready(function() {
 					});
 				}
 			}
-
+			*/
 			hideLoadingSlidePlane();
+
+			curSlidePage = p.pageID;
 		});
 
 		$(document).on("click", ".mappingIndicator.mapped", function(e) {
@@ -1909,6 +4147,9 @@ $(document).ready(function() {
 				var dst = $(".slideObjectSecondSelected")[0];
 
 				if(src === dst) {
+					/* 
+					// Single item has been clicked 
+
 					appearPopoverOnSlideObject(src);
 					issueEvent("root_getOriginalText", {
 						mappingID: $("#mappingIndicator" + $(src).attr("id").substr(15)).attr("mappingID")
@@ -1918,9 +4159,12 @@ $(document).ready(function() {
 								appearResourceBox();
 							}
 						});
+						*/
 
 				}
 				else if($(src).attr("objID") == $(dst).attr("objID")) {
+					// Item has been dragged
+					/*
 					var srcParagraphIndex = parseInt($(src).attr("paragraphIndex"));
 					var dstParagraphIndex = parseInt($(dst).attr("paragraphIndex"));
 
@@ -1994,6 +4238,7 @@ $(document).ready(function() {
 							}
 						}
 					}
+					*/
 				}
 			}
 		});
@@ -2011,30 +4256,63 @@ $(document).ready(function() {
 
         $(document).on("pdfjs_renderFinished", function(e) {
                 $("#loadingPlane").hide();
+				issueEvent("root_attachMonitor", null);
+
               //  closeNav();
                 });
 
-		$(document).on("pdfjs_pageRendered", function(e) {
-				var p = e.detail;
+	$(document).on("pdfjs_pageRendered", function (e) {
+		var p = e.detail;
 
-				highlightPage(p.pageNumber);
+		highlightPage(p.pageNumber);
+	});
+
+		$(document).on("pdfjs_getDocumentStructure", function(e) {
+			console.log("I got it");
+
+			var info = organizeHighlightOnSections();
+
+			console.log(info);
+
+			issueEvent("root_getDocumentStructure", {
+				sectionStructure: structureHighlightDB,
+				info: info
+			});
 		});
 
 		$(document).on("pdfjs_highlighted", function(e) {
-				var p = e.detail;
+			var p = e.detail;
+//			var info = organizeHighlightOnSections();
 
-				registerHighlight(p).then( mapping => {
-					showLoadingSlidePlane();
+			registerHighlight(p).then(mapping => {
+				showLoadingSlidePlane();
 
-					return automaticallyPutContents(p, mapping).then( () => {
-						issueEvent("root_sendMappingIdentifier", {
-							mappingID: mapping.key,
-							pageNumber: p.pageNumber,
-							startWordIndex: p.startWordIndex,
-							endWordIndex: p.endWordIndex
-						});
-					})
-				});
+				return automaticallyPutContents(p, mapping).then(() => {
+					issueEvent("root_sendMappingIdentifier", {
+						mappingID: mapping.key,
+						pageNumber: p.pageNumber,
+						startWordIndex: p.startWordIndex,
+						endWordIndex: p.endWordIndex
+					});
+				})
+			});
+
+			/*
+			var before_finalRepresentation = printLink(info, T, C, numSlides, null, false);
+
+			registerHighlight(p).then(mapping => {
+				showLoadingSlidePlane();
+
+				return automaticallyPutContents(p, mapping, before_finalRepresentation).then(() => {
+					issueEvent("root_sendMappingIdentifier", {
+						mappingID: mapping.key,
+						pageNumber: p.pageNumber,
+						startWordIndex: p.startWordIndex,
+						endWordIndex: p.endWordIndex
+					});
+				})
+			});
+			*/
 		});
 
 
@@ -2080,12 +4358,52 @@ $(document).ready(function() {
 				appearDocumentStructureBtn();
 		});
 
-		$(document).on("click", "#presentationObjectiveConfirmBtn", function(e) {
+		$(document).on("click", "#slideDeck_presentationObjectiveConfirmBtn", function(e) {
+				setConstraints("slideDeck", getConstraints("slideDeck"), null, true)
+				checkConstraintsDifference("slideDeck");
+
 				automaticallyUpdateSlides();
 		});
 
 		$(document).on("click", "#presentationObjectiveDisappearBtn", function(e) {
 				disappearPresentationObjective();
+		});
+
+		$(document).on("input", "#singleSlide_slideLayoutSlider", function(e) {
+			var constraints = getConstraints("singleSlide");
+
+			currentSingleSlideConstraints[curSlidePage] = constraints;
+
+			recommendationRender(recommendationLoadingHistory[curSlidePage].result, constraints, curSlidePage, true);
+		});
+
+		$(document).on("input", "#singleSlide_textLengthSlider", function(e) {
+			var constraints = getConstraints("singleSlide");
+
+			currentSingleSlideConstraints[curSlidePage] = constraints;
+
+			recommendationRender(recommendationLoadingHistory[curSlidePage].result, constraints, curSlidePage, true);
+		});
+
+		$(document).on("input", "#slideDeck_sparseDenseSlider", function(e) {
+			var value = $("#slideDeck_sparseDenseSlider")[0].value;
+
+			var minPageNum = $("#slideDeck_sparseDenseSlider")[0].min;
+			var maxPageNum = $("#slideDeck_sparseDenseSlider")[0].max;
+
+			$("#slideDeck_presentationTimeInputBox")[0].value = maxPageNum - (value - minPageNum);
+
+			updateSectionLevelCoverageValue();
+			checkConstraintsDifference("slideDeck");
+		});
+
+		$(document).on("input", "#slideDeck_presentationTimeInputBox", function(e) {
+			var value = parseInt($("#slideDeck_presentationTimeInputBox")[0].value)
+
+			console.log(T);
+			console.log(value);
+
+			setTimeConstraint(value);
 		});
 
 		$(document).on("click", "#presentationObjectiveBtn", function(e) {
@@ -2110,7 +4428,7 @@ $(document).ready(function() {
 			var mappingID = p.mappingID;
 			var pageNumber = parseInt(p.pageNumber);
 
-			removeMappingOnPdfjs(pageNumber, mappingID, true).then(result => {
+			removeMappingOnPdfjs(pageNumber, mappingID, false).then(result => {
 				issueEvent("root_mappingRemoved", {
 					mappingID: result 
 				});
@@ -2189,6 +4507,93 @@ $(document).ready(function() {
 				selectCells($(e.target));
 			}
 		});
+
+		$(document).on("click", ".sectionLevelCoveragePlusBtn", function(e) {
+			var sectionKey = $(e.target).attr("sectionKey");
+			var value = parseInt($(".sectionLevelCoverageInput[sectionKey='" + sectionKey + "']").val());
+
+			sectionLevelCoverageValueUpdate(e.target, value+1);
+		});
+
+		$(document).on("click", ".sectionLevelCoverageMinusBtn", function(e) {
+			var sectionKey = $(e.target).attr("sectionKey");
+			var value = parseInt($(".sectionLevelCoverageInput[sectionKey='" + sectionKey + "']").val());
+
+			sectionLevelCoverageValueUpdate(e.target, value-1);
+		});
+
+		function sectionLevelCoverageValueUpdate(target, value) {
+			console.log($(target));
+
+			var timeDOM = $("#slideDeck_presentationTimeInputBox");
+			var sectionKey = $(target).attr("sectionKey");
+			var inputDOM = $(".sectionLevelCoverageInput[sectionKey='" + sectionKey + "']");
+
+			var numHighlights = parseInt($(".sectionLevelCoverageRowHighlight[sectionKey='" + sectionKey + "']").text());
+
+			if(Math.ceil(numHighlights / MAX_ELEMENTS_PER_SLIDE) <= value && value <= numHighlights) {
+				$(inputDOM).val(value);
+
+				console.log(value);
+
+				var sum = 0;
+
+				$(".sectionLevelCoverageInput").each(function (idx, elem) {
+					sum = sum + parseInt($(elem).val())
+				});
+
+				$(timeDOM).val(sum);
+
+				var minPageNum = parseInt($("#slideDeck_sparseDenseSlider")[0].min);
+				var maxPageNum = parseInt($("#slideDeck_sparseDenseSlider")[0].max);
+
+				$("#slideDeck_sparseDenseSlider")[0].value = minPageNum + (maxPageNum-sum);
+			}
+
+			checkConstraintsDifference("slideDeck");
+		}
+
+		function checkConstraintsDifference(name) {
+			if(name == "slideDeck") {
+				var c = getConstraints("slideDeck");
+
+				var timeDOM = $("#slideDeck_presentationTimeInputBox");
+
+				if(c.time != currentSlideDeckConstraints.time) {
+					$(timeDOM).addClass("slideDeck_timeDifferent")
+				}
+				else {
+					$(timeDOM).removeClass("slideDeck_timeDifferent")
+				}
+
+				if(c.sparseDense != currentSlideDeckConstraints.sparseDense) {
+
+				}
+
+				if(c.descAbst != currentSlideDeckConstraints.descAbst) {
+
+				}
+
+				if(c.textLength != currentSlideDeckConstraints.textLength) {
+
+				}
+
+				if(c.imageType != currentSlideDeckConstraints.imageType) {
+
+				}
+
+				for(var s in c.sectionLevelCoverage) {
+					var inputDOM = $(".sectionLevelCoverageInput[sectionKey='" + s + "']");
+
+					if(c.sectionLevelCoverage[s] != currentSlideDeckConstraints.sectionLevelCoverage[s]) {
+						$(inputDOM).addClass("sectionLevelCoverageInputValueDifferent");
+					}
+					else {
+						$(inputDOM).removeClass("sectionLevelCoverageInputValueDifferent");
+					}
+				}
+			}
+		}
 
 		$(document).on("extension_focusObject", function(e) {
 
@@ -2671,7 +5076,664 @@ function makeid(length) {
    return result;
 }
 
+function putTextOnSection(textInfo, sectionKey, before_finalRepresentation) {
+	var numSlides = getNumSlides();
+	var info = organizeHighlightOnSections();
+
+	// var before_finalRepresentation = printLink(info, T, C, numSlides, null, false);
+	
+	console.log(JSON.parse(JSON.stringify(before_finalRepresentation)));
+
+	initializeConstraintsPlane();
+
+	console.log(info);
+	console.log(numSlides);
+
+	var after_finalRepresentation = printLink(info, T, C, numSlides, null, true);
+	console.log(JSON.parse(JSON.stringify(after_finalRepresentation)));
+
+	var before_removal_index = [];
+	var after_addition_index = [];
+
+	if (sectionKey in before_finalRepresentation && sectionKey in after_finalRepresentation) {
+		for (var i = 0; i < before_finalRepresentation[sectionKey].length; i++) {
+			var flag = false;
+
+			for (var j = 0; j < after_finalRepresentation[sectionKey].length; j++) {
+				if (JSON.stringify(before_finalRepresentation[sectionKey][i]) === JSON.stringify(after_finalRepresentation[sectionKey][j])) {
+					flag = true;
+					break;
+				}
+			}
+
+			if (!flag) {
+				before_removal_index.push(i);
+			}
+		}
+
+		for (var i = 0; i < after_finalRepresentation[sectionKey].length; i++) {
+			var flag = false;
+
+			for (var j = 0; j < before_finalRepresentation[sectionKey].length; j++) {
+				if (JSON.stringify(after_finalRepresentation[sectionKey][i]) === JSON.stringify(before_finalRepresentation[sectionKey][j])) {
+					flag = true;
+					break;
+				}
+			}
+
+			if (!flag) {
+				after_addition_index.push(i);
+			}
+		}
+	}
+	else {
+		for(var i=0;i<after_finalRepresentation[sectionKey].length;i++) 
+			after_addition_index.push(i);
+	}
+
+	console.log(before_removal_index);
+	console.log(after_addition_index);
+
+	console.log(JSON.parse(JSON.stringify(before_finalRepresentation)));
+	console.log(JSON.parse(JSON.stringify(after_finalRepresentation)));
+
+	var requests = [];
+	var updateInfo = [];
+	var retValue;
+
+	retValue = slideUpdate_removeSlides(before_finalRepresentation, sectionKey, before_removal_index);
+
+	retValue = slideUpdate_makeBlankPages(before_removal_index);
+	requests = requests.concat(retValue);
+	console.log(JSON.parse(JSON.stringify(requests)));
+
+	slideUpdate_fillSlides(before_finalRepresentation, after_finalRepresentation, sectionKey, before_removal_index, after_addition_index).then( res => {
+		console.log(res);
+
+		requests = requests.concat(JSON.parse(JSON.stringify(res.requests)));
+		updateInfo = updateInfo.concat(res.updateInfo);
+
+		var pages = [];
+
+		for(var i=0;i<res.sequence.length;i++) {
+			console.log(res.sequence[i]);
+
+			if(!res.sequence[i].flag) {
+				requests.unshift({
+					createSlide: {
+						objectId: res.sequence[i].slideID,
+						insertionIndex: res.sequence[i].pos + 1,
+						slideLayoutReference: {
+							predefinedLayout: "BLANK"
+						},
+					}
+				});
+
+				setConstraints("singleSlide", "deck", res.sequence[i].slideID, true)
+			}
+			else pages.push(res.sequence[i].slideID);
+		}
+
+		console.log(requests);
+		console.log(updateInfo);
+
+		removeSlideMappingInPages(pages).then(() => {
+			writeSlideMappingInfoBulk(updateInfo).then(() => {
+				gapi.client.slides.presentations.batchUpdate({
+					presentationId: PRESENTATION_ID,
+					requests: requests
+				}).then((createSlideResponse) => {
+					//console.log(createSlideResponse);
+				});
+			});
+		})
+	});
+}
+
+function getLastPageOfPreviousSection(sectionKey, finalRepresentation) {
+	var keys = Object.keys(structureHighlightDB);
+
+	var idx = keys.indexOf(sectionKey);
+
+	console.log(keys);
+	console.log(sectionKey);
+	console.log(finalRepresentation);
+
+	for(var i=idx-1;i>=0;i--) {
+		if(keys[i] in finalRepresentation) {
+			if(finalRepresentation[keys[i]].length <= 0) return -1;
+
+			var l = finalRepresentation[keys[i]];
+
+			console.log(l);
+
+			return findCorrespondingSlide(l[l.length-1]);
+		}
+	}
+
+	return -1;
+}
+
+async function slideUpdate_fillSlides(before_finalRepresentation, after_finalRepresentation, sectionKey, removal_index, addition_index) {
+	var result = await issueEvent("root_getSlideIndex", null, "extension_getSlideIndex");
+	var Indexes = result.detail;
+	var res = [];
+
+	console.log(Indexes);
+	console.log(sectionKey);
+
+
+	if((!(sectionKey in before_finalRepresentation)) || before_finalRepresentation[sectionKey].length <= 0) {
+		var page = getLastPageOfPreviousSection(sectionKey, before_finalRepresentation);
+		var pageIndex = 0;
+
+		console.log(page);
+
+		if(page != -1) 
+			pageIndex = Indexes[page]-1;
+
+		for (var i = 0; i < after_finalRepresentation[sectionKey].length; i++) {
+			res.push({
+				slideID: makeid(10),
+				pos: pageIndex,
+				flag: false
+			})
+
+			pageIndex++;
+		}
+	}
+	else {
+
+		var currentSlideID = '';
+		var before_cursor = 0;
+		var before_slide = findCorrespondingSlide(before_finalRepresentation[sectionKey][0]);
+		var prev_pos = -1;
+
+		console.log(before_cursor, before_slide);
+
+
+		console.log(Indexes);
+		console.log(removal_index);
+		console.log(addition_index);
+
+		var before_position = Indexes[before_slide];
+
+		var i = 0;
+		var tmpPos = before_position - 1;
+
+		var flag = false;
+
+		for (var j = 0; j < removal_index.length; j++) {
+			if (removal_index[j].index == 0) {
+				flag = true;
+				break;
+			}
+		}
+
+		if (!flag) {
+			for (; i < after_finalRepresentation[sectionKey].length; i++) {
+				if (addition_index.indexOf(i) < 0) break;
+				else {
+					res.push({
+						slideID: makeid(10),
+						pos: tmpPos,
+						flag: false
+					})
+
+					tmpPos++;
+				}
+			}
+		}
+
+
+		for (; i < after_finalRepresentation[sectionKey].length; i++) {
+			if (addition_index.indexOf(i) >= 0) { // newly added
+				if (before_cursor < before_finalRepresentation[sectionKey].length) {
+					var flag = false;
+
+					for (var j = 0; j < removal_index.length; j++) {
+						if (removal_index[j].index == before_cursor) {
+							flag = true;
+							break;
+						}
+					}
+
+					if (flag) {
+						console.log(JSON.parse(JSON.stringify(before_finalRepresentation[sectionKey][before_cursor])));
+
+						res.push({
+							slideID: findCorrespondingSlide(before_finalRepresentation[sectionKey][before_cursor]),
+							pos: -1,
+							flag: true
+						})
+
+						console.log(res[res.length - 1]);
+
+						prev_pos = before_position;
+
+						before_cursor = before_cursor + 1;
+
+						if (before_cursor < before_finalRepresentation[sectionKey].length) {
+							before_slide = findCorrespondingSlide(before_finalRepresentation[sectionKey][before_cursor]);
+							before_position = Indexes[before_slide];
+						}
+						else before_cursor = 987987987;
+					}
+					else {
+						res.push({
+							slideID: makeid(10),
+							pos: prev_pos - 1,
+							flag: false
+						})
+
+						prev_pos = prev_pos + 1;
+					}
+				}
+				else {
+					res.push({
+						slideID: makeid(10),
+						pos: prev_pos - 1,
+						flag: false
+					})
+
+					prev_pos++;
+				}
+			}
+			else {
+				prev_pos = before_position;
+
+				before_cursor = before_cursor + 1;
+
+				if (before_cursor < before_finalRepresentation[sectionKey].length) {
+					before_slide = findCorrespondingSlide(before_finalRepresentation[sectionKey][before_cursor]);
+					before_position = Indexes[before_slide];
+				}
+
+				console.log(before_cursor, before_slide);
+			}
+		}
+	}
+
+	console.log(JSON.parse(JSON.stringify(res)));
+
+	var updateInfo = [];
+	var requests = [];
+
+	console.log(addition_index);
+	console.log(after_finalRepresentation[sectionKey]);
+
+	for (var i = 0; i < after_finalRepresentation[sectionKey].length; i++) {
+		console.log(i);
+
+		if(addition_index.indexOf(i) >= 0) {
+			var idx = addition_index.indexOf(i);
+
+			console.log(idx);
+
+			await loadRecommendationByResources(after_finalRepresentation[sectionKey][i], res[idx].slideID);
+
+			var renderInfo = renderSlideOnGoogle(recommendationLoadingHistory[res[idx].slideID].renderResult[0], res[idx].slideID, false);
+
+			console.log(JSON.parse(JSON.stringify(renderInfo)));
+
+			updateInfo = updateInfo.concat(renderInfo.updateInfo);
+			requests = requests.concat(renderInfo.requests);
+		}
+	}
+
+	console.log(JSON.parse(JSON.stringify(updateInfo)));
+	console.log(JSON.parse(JSON.stringify(requests)));
+
+	return {
+		updateInfo: updateInfo,
+		requests: requests,
+		sequence: res
+	}
+}
+
+function findCorrespondingSlide(elem) {
+	var mappingSet = {};
+
+	for (var j = 0; j < elem.length; j++) {
+		var mappingID = elem[j].mappingKey;
+
+		mappingSet[mappingID] = 1;
+	}
+
+	return getSlideIDWithMappingSet(mappingSet);
+}
+
+function slideUpdate_removeSlides(finalRepresentation, sectionKey, removal_index) {
+	if(!(sectionKey in finalRepresentation)) return [];
+
+	var requests = [];
+
+	console.log("what?");
+
+	console.log(removal_index);
+
+	for(var i=0;i<finalRepresentation[sectionKey].length;i++) {
+		if (removal_index.indexOf(i) >= 0) {
+			console.log(finalRepresentation[sectionKey][i]);
+
+			var slideID = findCorrespondingSlide(finalRepresentation[sectionKey][i]);
+
+			console.log(slideID);
+			console.log(i);
+
+			for(var j=0;j<removal_index.length;j++) {
+				if(i == removal_index[j]) {
+					console.log("got it");
+					removal_index[j] = {
+						slideID: slideID,
+						index: i
+					}
+					console.log(removal_index[j]);
+				}
+			}
+		}
+	}
+
+	return requests;
+}
+
+function slideUpdate_makeBlankPages(removal_index) {
+	var requests = [];
+
+	for(var i=0;i<removal_index.length;i++) {
+		var slideID = removal_index[i].slideID;
+
+		for (var key in slideDB[slideID]) {
+			requests.push({
+				"deleteObject": {
+					"objectId": key,
+				},
+			});
+		}
+	}
+
+	return requests;
+}
+
+function getSlideIDWithMappingSet(mappingSet) {
+	for(var s in highlightDB.slideInfo) {
+		var mappingSet2 = {};
+
+		for(var obj in highlightDB.slideInfo[s]) {
+			for(var i=0;i<highlightDB.slideInfo[s][obj].length;i++) {
+				var mappingID = highlightDB.slideInfo[s][obj][i].mappingID;
+
+				mappingSet2[mappingID] = 1;
+			}
+		}
+
+		if(JSON.stringify(mappingSet) === JSON.stringify(mappingSet2)) 
+			return s;
+	}
+
+	return -1;
+}
+
+function getDocSlideStructureView(index) {
+	var tableBody = '';
+
+	console.log(docSlideStructure[index]);
+
+	if (docSlideStructure[index] != null && "slide" in docSlideStructure[index]) {
+		var pageID = docSlideStructure[index].slide.id;
+
+		var resources = getResources(pageID);
+		var __tableBody = '';
+
+		for (var j = 0; j < resources.length; j++) {
+			__tableBody = __tableBody +
+				"<tr class='adaptationTableRow' slideIndex='" + index + "' resourceIndex='" + j + "'>" +
+					"<td class='adaptationTableIndex'>" + (j + 1) + 
+
+					'<select class="adaptationTableTypeSelector" name="adaptationTableTypeSelector">' + 
+  						'<option value="text">Text</option>' + 
+  						'<option value="image">Image</option>' + 
+					'</select>' + 
+
+					"</td>" +
+					"<td class='adaptationTableResourceBody'>" + resources[j] + "</td>" +
+				"<tr>"
+		}
+
+		tableBody = tableBody +
+			"<div class='adaptationViewDiv' index='" + index + "' slideID='" + docSlideStructure[index].slide.id + "'>" +
+			"<div class='adaptationViewDocument'>" +
+			"<table class='adaptationViewDocumentTable'>" +
+			__tableBody +
+			"</table>" +
+			"</div>" +
+			"<div class='adaptationViewSlide'>" +
+			"</div>" +
+			"</div>";
+	}
+	else {
+		tableBody = tableBody +
+			"<div class='adaptationViewDiv' index='" + index + "'>" +
+			"<div class='adaptationViewDocument'>" +
+			"<table class='adaptationViewDocumentTable'>" +
+			"</table>" +
+			"</div>" +
+			"<div class='adaptationViewSlide'>" +
+			"</div>" +
+			"</div>";
+	}
+
+	return tableBody;
+}
+
+function isPossibleToAdd(dsStructure) {
+	if(dsStructure.resources.length <= 2) return true;
+	else return false;
+}
+
 async function automaticallyPutContents(textInfo, mapping) {
+	console.log(textInfo);
+	console.log(mapping);
+
+	var sectionKey = getSectionKey(textInfo.pageNumber, textInfo.startWordIndex, textInfo.endWordIndex);
+
+	console.log(sectionKey);
+	
+	var flag = false;
+	var index = -1;
+
+	console.log(docSlideStructure);
+
+	for(i=docSlideStructure.length-1;i>=1;i--) {
+		if(docSlideStructure[i].sectionKey == sectionKey) {
+			index = i;
+			
+			if(isPossibleToAdd(docSlideStructure[i])) flag = true;
+
+			break;
+		}
+	}
+
+	/*
+		.resources = []
+		.sectionKey 
+		.template 
+	*/
+
+	if(flag) { // add to the current slide
+		if(docSlideStructure[index].template.id == "DEFAULT") {
+			var slideID = docSlideStructure[index].slide.id;
+			var bodyObjID = docSlideStructure[index].template.structure.body[0];
+
+			docSlideStructure[index].resources.push({
+				"mappingKey": mapping.key,
+				originalContent: {
+					type: "text",
+					contents: mapping.text
+				},
+				currentContent:  {
+					type: "text",
+					contents: mapping.text
+				}
+			});
+
+			docSlideStructure[index].mapping.push({
+				source: mapping.key,
+				destination: bodyObjID,
+			});
+
+			var v = getDocSlideStructureView(index);
+
+			$(".adaptationViewDiv[index='" + index + "']")[0].outerHTML = v;
+
+			appendText(slideID, bodyObjID, textInfo.text, mapping.key);
+		}
+		else {
+			// don't know yet
+		}
+	}
+	else {
+		if(index == -1) { // create the section
+			index = 0;
+
+			for(var i=docSlideStructure.length-1;i>=1;i--) {
+				var sectionIdx = parseInt(docSlideStructure[i].sectionKey.substring(20));
+				var myIdx = parseInt(sectionKey.substring(20));
+
+				if(sectionIdx < myIdx) {
+					index = i;
+					break;
+				}
+			}
+		}
+
+		// add a new slide to (index+1)
+
+		var titleID = makeid(10);
+		var bodyID = makeid(10);
+		var slideID = makeid(10);
+
+		for(var i=docSlideStructure.length-1;i>=(index+1);i--) {
+			$(".adaptionViewDiv[index='" + i + "']").attr("index", i+1);
+		}
+
+		docSlideStructure.splice(index+1, 0, {
+			resources: [{
+				mappingKey: mapping.key,
+				originalContent: {
+					type: "text",
+					contents: mapping.text
+				},
+				currentContent:  {
+					type: "text",
+					contents: mapping.text
+				}
+			}],
+			sectionKey: sectionKey,
+			template: {
+				id: "DEFAULT",
+				structure: {
+					title: titleID,
+					body: [bodyID]
+				}
+			},
+			slide: {
+				id: slideID
+			},
+			mapping: [
+				{
+					source: mapping.key,
+					destination: bodyID
+				}
+			]
+		});
+
+		var requests = [];
+
+		requests.push({
+			createSlide: {
+				objectId: slideID,
+				insertionIndex: index+1,
+				slideLayoutReference: {
+					predefinedLayout: 'TITLE_AND_BODY'
+				},
+				placeholderIdMappings: [{
+					objectId: titleID,
+					layoutPlaceholder: {
+						type: "TITLE",
+						index: 0
+					}
+				}, {
+					objectId: bodyID,
+					layoutPlaceholder: {
+						type: "BODY",
+						index: 0
+					}
+				}
+				]
+			}
+		});
+
+		requests.push({
+			insertText: {
+				objectId: titleID,
+				text: structureHighlightDB[sectionKey].text,
+				insertionIndex: 0
+			}
+		});
+		requests.push({
+			insertText: {
+				objectId: bodyID,
+				text: textInfo.text,
+				insertionIndex: 0
+			}
+		});
+
+		var updates = {};
+
+		// updates['/users/' + userName + '/structureHighlightInfo/' + sectionKey] = structureHighlightDB[sectionKey];
+
+		firebase.database().ref().update(updates);
+
+		gapi.client.slides.presentations.batchUpdate({
+			presentationId: PRESENTATION_ID,
+			requests: requests
+		}).then((createSlideResponse) => {
+			// successfully pasted the text
+
+			writeSlideMappingInfo(slideID, bodyID, 0, mapping.key).then( () => {
+				var v = getDocSlideStructureView(index + 1);
+				console.log(v);
+
+				function insertAfter(newNode, referenceNode) {
+					referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+				}
+
+				function htmlToElement(html) {
+					var template = document.createElement('template');
+					html = html.trim(); // Never return a text node of whitespace as the result
+					template.innerHTML = html;
+					return template.content.firstChild;
+				}
+
+				console.log(index);
+				console.log($(".adaptationViewDiv[index='" + index + "']")[0]);
+
+				insertAfter(htmlToElement(v), $(".adaptationViewDiv[index='" + index + "']")[0]);
+			});
+
+			return true;
+		});
+
+	}
+
+	firebase.database().ref("/users/" + userName + '/docSlideStructure').set(docSlideStructure);
+
+	console.log(docSlideStructure);
+
+	// putTextOnSection(textInfo, sectionKey, before_finalRepresentation);
+
+	/*
 	var heavy = $("#textHeavyBtn").prop("checked");
 
 	console.log(heavy);
@@ -2682,6 +5744,7 @@ async function automaticallyPutContents(textInfo, mapping) {
 	else {
 		return automaticallyPutFigure(textInfo, mapping.key, mapping.imageURL);
 	}
+	*/
 }
 
 async function automaticallyPutFigure(textInfo, mappingID, imageURL) {
@@ -2759,6 +5822,7 @@ predefinedLayout: 'TITLE_ONLY'
 		return addFigure(slideID, imageURL, mappingID);
 	}
 }
+
 async function automaticallyPutText(textInfo, mappingID) {
 	/*
 	   textInfo.startWordIndex
@@ -3027,3 +6091,247 @@ function doBFS(myGraph, r) {
 	return result;
 }
 
+function updateSectionLevelCoverageValue() {
+	var info = organizeHighlightOnSections();
+	var numSlides = getNumSlides();
+	var finalRepresentation = printLink(info, T, C, numSlides, null, false);
+
+	$(".sectionLevelCoverageInput").each(function (idx, elem) {
+		var sectionKey = $(elem).attr("sectionkey");
+
+		if(sectionKey in finalRepresentation)
+			$(elem)[0].value = finalRepresentation[sectionKey].length;
+		else 
+			$(elem)[0].value = 0;
+	})
+}
+
+function getSlideInfoOnRecommendation(className, recommendedSlides) {
+	console.log(className);
+	console.log(recommendedSlides);
+
+	for(var i=0;i<recommendedSlides.length;i++) {
+		if(recommendedSlides[i].className == className)
+		return recommendedSlides[i];
+	}
+
+	return -1;
+}
+
+function renderSlideOnGoogle(slideInfo, curSlidePage, applyFlag) {
+	var requests = [];
+
+	if(applyFlag) {
+		for (var key in slideDB[curSlidePage]) {
+			requests.push({
+				"deleteObject": {
+					"objectId": key,
+				},
+			});
+		}
+	}
+
+	var updateInfo = [];
+
+	console.log(slideInfo);
+//	console.log(JSON.parse(JSON.stringify(slideInfo)));
+
+	for(var i=0;i<slideInfo.innerBoxes.length;i++) {
+		if (slideInfo.innerBoxes[i].type == 'text' || slideInfo.innerBoxes[i].type == 'textCaption') {
+			var objID = makeid(10);
+
+			var resText = '';
+			var curStartIndex = 0;
+			var curEndIndex = 0;
+			var listID = makeid(10);
+
+			var isBullet = false;
+
+			if (slideInfo.innerBoxes[i].contents.length > 1) isBullet = true;
+
+			for (var j = 0; j < slideInfo.innerBoxes[i].contents.length; j++) {
+				updateInfo.push({
+					slideID: curSlidePage,
+					objID: objID,
+					paragraphIndex: j,
+					mappingID: slideInfo.innerBoxes[i].contents[j].mappingID
+				});
+
+				resText = resText + (resText == '' ? '' : '\n') + slideInfo.innerBoxes[i].contents[j].text;
+			}
+
+			requests.push({
+				"createShape": {
+					objectId: objID,
+					elementProperties: {
+						pageObjectId: curSlidePage,
+						size: {
+							width: {
+								magnitude: getSlideWidth(slideInfo.innerBoxes[i].width) * 0.75292857248934,
+								unit: "pt"
+							},
+							height: {
+								magnitude: getSlideHeight(slideInfo.innerBoxes[i].height) * 0.75292857248934,
+								unit: "pt"
+							},
+						},
+						transform: {
+							scaleX: 1,
+							scaleY: 1,
+							translateX: getSlideWidth(slideInfo.innerBoxes[i].left) * 0.75292857248934,
+							translateY: getSlideHeight(slideInfo.innerBoxes[i].top) * 0.75292857248934,
+							unit: "pt"
+						}
+					},
+					shapeType: "TEXT_BOX"
+				}
+			});
+
+			requests.push({
+				"updateShapeProperties": {
+					objectId: objID,
+					shapeProperties: {
+						/*
+						outline: {
+							outlineFill: {
+								solidFill: {
+									color: {
+										rgbColor: {
+											red: 0,
+											green: 0,
+											blue: 0
+										}
+									}
+								}
+							},
+							weight: {
+								magnitude: 1,
+								unit: "pt"
+							},
+							dashStyle: "SOLID",
+						},
+						*/
+						contentAlignment: "MIDDLE"
+					},
+					fields: "outline.outlineFill.solidFill.color, contentAlignment"
+				}
+			});
+
+			requests.push({
+				"insertText": {
+					"objectId": objID,
+					"text": resText,
+				}
+			});
+
+			requests.push({
+				"updateTextStyle": {
+					objectId: objID,
+					style: {
+						fontSize: {
+							"magnitude": 25.5,
+							"unit": "pt"
+						},
+					},
+					fields: "fontSize"
+				}
+			});
+
+			if (isBullet) {
+
+				requests.push({
+					createParagraphBullets: {
+						objectId: objID,
+						textRange: {
+							type: "ALL"
+						},
+						bulletPreset: "BULLET_DISC_CIRCLE_SQUARE"
+					}
+				});
+
+				requests.push({
+					"updateParagraphStyle": {
+						objectId: objID,
+						style: {
+							lineSpacing: 110,
+						},
+						textRange: {
+							type: "ALL"
+						},
+						fields: "lineSpacing"
+					}
+				});
+			}
+			else {
+				requests.push({
+					"updateParagraphStyle": {
+						objectId: objID,
+						style: {
+							alignment: "CENTER"
+						},
+						fields: "alignment"
+					}
+				});
+			}
+		}
+		else {
+			var objID = makeid(10);
+			var imageURL = slideInfo.innerBoxes[i].contents.imgResult;
+
+			updateInfo.push({
+				slideID: curSlidePage,
+				objID: objID,
+				paragraphIndex: 0,
+				mappingID: slideInfo.innerBoxes[i].contents.mappingID
+			});
+
+			requests.push({
+				createImage: {
+					objectId: objID,
+					elementProperties: {
+						pageObjectId: curSlidePage,
+						size: {
+							width: {
+								magnitude: getSlideWidth(slideInfo.innerBoxes[i].width) * 0.75292857248934,
+								unit: "pt"
+							},
+							height: {
+								magnitude: getSlideHeight(slideInfo.innerBoxes[i].height) * 0.75292857248934,
+								unit: "pt"
+							},
+						},
+						transform: {
+							scaleX: 1,
+							scaleY: 1,
+							translateX: getSlideWidth(slideInfo.innerBoxes[i].left) * 0.75292857248934,
+							translateY: getSlideHeight(slideInfo.innerBoxes[i].top) * 0.75292857248934,
+							unit: "pt"
+						}
+					},
+					url: imageURL
+				}
+			});
+		}
+	}
+
+	// requests = requests.concat(genRequest(elem.slideID, slideIndex, "TITLE_AND_BODY", elem.objIDs, [structureHighlightDB[s].text].concat(getListOnKey(elem.highlightInfo, "text"))));
+
+	if (applyFlag) {
+		removeSlideMappingInPage(curSlidePage).then(() => {
+			console.log(JSON.parse(JSON.stringify(slideDB)));
+
+			writeSlideMappingInfoBulk(updateInfo).then(() => {
+				gapi.client.slides.presentations.batchUpdate({
+					presentationId: PRESENTATION_ID,
+					requests: requests
+				}).then((createSlideResponse) => {
+					//console.log(createSlideResponse);
+				});
+			});
+		})
+	}
+	else return {
+		updateInfo: updateInfo,
+		requests: requests
+	}
+}
