@@ -355,6 +355,7 @@ async function writeHighlight(pageNumber, startWordIndex, endWordIndex, text) {
 
 	return {
 		key: newKey,
+		text: text
 	    // imageURL: rURL
 	}
 }
@@ -2436,16 +2437,10 @@ function getResourcesInternal(r) {
 
 	for(var i=0;i<r.length;i++) {
 		var flag = false;
-		var k = r[i];
-
-		console.log(k);
+		var k = r[i].mappingKey;
 
 		for(j in highlightDB.mapping) {
-			console.log(highlightDB.mapping[j]);
 			if(k in highlightDB.mapping[j]) {
-				console.log(k);
-				console.log(highlightDB.mapping[j][k].text);
-
 				retValue.push(highlightDB.mapping[j][k].text)
 				flag = true;
 				break;
@@ -3447,7 +3442,100 @@ function showIndividualSlides(presentationID) {
 	$("#slideListDiv").html(slideListDivHTML);
 }
 
+function showTextShorteningView(slideIndex, resourceIndex) {
+	var originalText = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
+	var currentText = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents;
+
+	$("#textShorteningViewOriginalText").html(originalText)
+	$("#textShorteningViewCurrentText").html(currentText)
+	$("#textShorteningView").show();
+}
+
+function closeTextShorteningView() {
+	$("#textShorteningView").hide();
+}
+
+function showLoadingAdaptationRow(slideIndex, resourceIndex) {
+	var rowObj = $(".adaptationTableRow[slideindex='" + slideIndex + "'][resourceindex='" + resourceIndex + "']");
+
+	$(rowObj).addClass("onLoading");
+}
+
+function getImage(slideIndex, resourceIndex) {
+	var queryString = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
+
+	console.log(queryString);
+
+	const requestOptions = {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(
+			{
+				text: queryString,
+			}
+		),
+	};
+
+	fetch('http://server.hyungyu.com:5712/findQueries/', requestOptions)
+		.then(response => response.json())
+		.then(data => {
+			console.log(data);
+		});
+
+}
+
 $(document).ready(function() {
+	$(document).on("change", ".adaptationTableTypeSelector", function(e) {
+		console.log(e.target);
+
+		var parent = $(e.target).parent().parent();
+
+		var slideIndex = $(parent).attr("slideIndex");
+		var resourceIndex = $(parent).attr("resourceIndex");
+		var selectedIndex = $(e.target)[0].selectedIndex; // 0: text, 1: image
+
+		showLoadingAdaptationRow(slideIndex, resourceIndex);
+
+		if(selectedIndex == 0) { // changed to text
+
+		}
+		else { // changed to image
+			var img = getImage(slideIndex, resourceIndex);
+		}
+	})
+
+	$(document).on("click", ".adaptationTableResourceBody", function(e) {
+		console.log(e.target);
+
+		var curRowObj = $(e.target);
+
+		for(var i=0;i<100;i++) {
+			if($(curRowObj).hasClass("adaptationTableRow")) break;
+
+			curRowObj = $(curRowObj).parent();
+		}
+
+		console.log(curRowObj);
+
+		var slideIndex = parseInt($(curRowObj).attr("slideIndex"));
+		var resourceIndex = parseInt($(curRowObj).attr("resourceIndex"));
+
+		console.log(docSlideStructure[slideIndex].resources[resourceIndex])
+
+		if(docSlideStructure[slideIndex].resources[resourceIndex].originalContent.type == "text") {
+			console.log("TEXT");
+
+			showTextShorteningView(slideIndex, resourceIndex);
+		}
+		else {
+			console.log("IMAGE");
+		}
+	})
+
+	$(document).on("click", "#textShorteningViewCloseBtn", function(e) {
+		closeTextShorteningView();
+	});
+
 	$(document).on("click", "#adaptationViewHideBtn", function(e) {
 		adaptivePlaneStatus = 1;
 
@@ -5399,9 +5487,16 @@ function getDocSlideStructureView(index) {
 
 		for (var j = 0; j < resources.length; j++) {
 			__tableBody = __tableBody +
-				"<tr>" +
-				"<td>" + (j + 1) + "</td>" +
-				"<td>" + resources[j] + "</td>" +
+				"<tr class='adaptationTableRow' slideIndex='" + index + "' resourceIndex='" + j + "'>" +
+					"<td class='adaptationTableIndex'>" + (j + 1) + 
+
+					'<select class="adaptationTableTypeSelector" name="adaptationTableTypeSelector">' + 
+  						'<option value="text">Text</option>' + 
+  						'<option value="image">Image</option>' + 
+					'</select>' + 
+
+					"</td>" +
+					"<td class='adaptationTableResourceBody'>" + resources[j] + "</td>" +
 				"<tr>"
 		}
 
@@ -5470,7 +5565,18 @@ async function automaticallyPutContents(textInfo, mapping) {
 			var slideID = docSlideStructure[index].slide.id;
 			var bodyObjID = docSlideStructure[index].template.structure.body[0];
 
-			docSlideStructure[index].resources.push(mapping.key);
+			docSlideStructure[index].resources.push({
+				"mappingKey": mapping.key,
+				originalContent: {
+					type: "text",
+					contents: mapping.text
+				},
+				currentContent:  {
+					type: "text",
+					contents: mapping.text
+				}
+			});
+
 			docSlideStructure[index].mapping.push({
 				source: mapping.key,
 				destination: bodyObjID,
@@ -5512,7 +5618,17 @@ async function automaticallyPutContents(textInfo, mapping) {
 		}
 
 		docSlideStructure.splice(index+1, 0, {
-			resources: [mapping.key],
+			resources: [{
+				mappingKey: mapping.key,
+				originalContent: {
+					type: "text",
+					contents: mapping.text
+				},
+				currentContent:  {
+					type: "text",
+					contents: mapping.text
+				}
+			}],
 			sectionKey: sectionKey,
 			template: {
 				id: "DEFAULT",
