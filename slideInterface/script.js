@@ -875,6 +875,12 @@ function visualizeSlideObjects() {
 				var rectInfo = curSlideObjects.objects[i].paragraph[k];
 				var mappedFlag = false;
 
+				console.log(curSlideObjects.pageID, objectID, paragraphID);
+				if(curSlideObjects.pageID in slideDB && 
+				   objectID in slideDB[curSlideObjects.pageID] && 
+				   paragraphID in slideDB[curSlideObjects.pageID][objectID])
+				   console.log(slideDB[curSlideObjects.pageID][objectID][paragraphID])
+
 				if(curSlideObjects.pageID in slideDB && 
 				   objectID in slideDB[curSlideObjects.pageID] && 
 				   paragraphID in slideDB[curSlideObjects.pageID][objectID] && 
@@ -985,6 +991,227 @@ async function removeSlideMappingInfo(pageID, objID, paragraphIndex) {
 
 	await firebase.database().ref().update(updates);
 }
+
+async function findImages(queries) {
+	var queryStatement = queries.join(" OR ");
+
+	console.log(queryStatement);
+
+	const requestOptions = {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(
+			{
+				type: "all",
+				query: queryStatement
+			}
+		),
+	};
+
+	var result = await fetch('http://localhost:8010/proxy/getImages', requestOptions)
+		.then(response => response.json())
+		.then(data => {
+			return data;
+		});
+
+	return result;
+}
+
+function getParagraphIndexOfDocSlideStructure(s, r) {
+	var slideID = docSlideStructure[s].slide.id;
+	var mappingKey = docSlideStructure[s].resources[r].mappingKey;
+	var slideObjID = docSlideStructure[s].resources[r].currentContent.objID;
+
+	if(slideID in slideDB && slideObjID in slideDB[slideID]) {
+		for(var i=0;i<slideDB[slideID][slideObjID].length;i++) {
+			if(slideDB[slideID][slideObjID][i].mappingID == mappingKey) {
+				return i;
+			}
+		}
+
+		console.log("***** NOT FOUND *****");
+		return -1;
+	}
+	else{
+		console.log("***** NOT FOUND *****");
+		return -1;
+	}
+}
+
+function getImageToShow(imgList) {
+	for(var i=0;i<imgList.length;i++) {
+		if(!imgList[i].url.includes("fbsbx"))
+			return imgList[i];
+	}
+
+	console.log("***** NOT FOUND *****");
+	return -1;
+}
+
+async function substituteTextToFigure(s, r, d) {
+	var slidePageID = docSlideStructure[s].slide.id;
+	var objectID = docSlideStructure[s].resources[r].currentContent.objID;
+	var paragraphIndex = getParagraphIndexOfDocSlideStructure(s, r);
+
+	var originalText = docSlideStructure[s].resources[r].originalContent.contents;
+
+	var imgList = await findImages(d.surfaceWords);
+	var finalImage = getImageToShow(imgList);
+
+	var imgObjID = makeid(10);
+
+    return await gapi.client.slides.presentations.get({
+		presentationId: PRESENTATION_ID
+    }).then(function(response) {
+		var presentation = response.result;
+		var length = presentation.slides.length;
+	
+		// slideDB = {};
+	
+		for (i = 0; i < length; i++) {
+			var slide = presentation.slides[i];
+	
+			var slideID = slide.objectId;
+
+			if(slideID == slidePageID) {
+				for(var j=0;j<slide.pageElements.length;j++) {
+					var slideItem = slide.pageElements[j];
+
+					if(slideItem.objectId == objectID) {
+						var textInfo = slideItem.shape.text.textElements;
+						var __paragraphIndex = -1;
+						var startIndex = -1, endIndex = -1;
+
+						for(var k=0;k<textInfo.length;k++) {
+							if(endIndex != textInfo[k].endIndex) {
+								startIndex = ("startIndex" in textInfo[k]) ? textInfo[k].startIndex : 0;
+								endIndex = textInfo[k].endIndex;
+								__paragraphIndex++;
+							}
+
+							if(__paragraphIndex == paragraphIndex) {
+								var mappingKey = null;
+								var lastParagraphFlag = false;
+
+								var requests = [];
+								var objDeletionFlag = false;
+
+								if(slidePageID in slideDB &&
+									objectID in slideDB[slidePageID] &&
+									slideDB[slidePageID][objectID] && 
+									paragraphIndex in slideDB[slidePageID][objectID]) {
+
+									mappingKey = slideDB[slidePageID][objectID][paragraphIndex].mappingID;
+
+									var numParagraphs = Object.keys(slideDB[slidePageID][objectID]).length;
+									var updates = {};
+
+									console.log(JSON.parse(JSON.stringify(slideDB[slidePageID][objectID])))
+									console.log(numParagraphs);
+
+									if(numParagraphs-1 == paragraphIndex) lastParagraphFlag = true;
+
+									for(var l=paragraphIndex;l<numParagraphs-1;l++) {
+										updates['/users/' + userName + '/slideInfo/' + slidePageID + '/' + objectID+ '/' + l] = slideDB[slidePageID][objectID][l+1];
+
+										slideDB[slidePageID][objectID][l] = slideDB[slidePageID][objectID][l+1];
+									}
+
+									if(numParagraphs > 1)  {
+										updates['/users/' + userName + '/slideInfo/' + slidePageID + '/' + objectID + '/' + (numParagraphs - 1)] = {
+											mappingID: null
+										}
+
+										console.log(JSON.parse(JSON.stringify(slideDB[slidePageID][objectID])))
+										slideDB[slidePageID][objectID].pop();
+
+										console.log(JSON.parse(JSON.stringify(slideDB[slidePageID][objectID])))
+									}
+									else {
+										objDeletionFlag = true;
+
+										requests.push({
+											"deleteObject": {
+												"objectId": objectID,
+											},
+										});
+
+										updates['/users/' + userName + '/slideInfo/' + slidePageID + '/' + objectID] = null;
+										delete slideDB[slidePageID][objectID];
+									}
+
+									slideDB[slidePageID][imgObjID] = [];
+									slideDB[slidePageID][imgObjID].push({
+										mappingID: mappingKey
+									})
+
+									updates['/users/' + userName + '/slideInfo/' + slidePageID+ '/' + imgObjID + '/0'] = {
+										mappingID: mappingKey
+									}
+
+									docSlideStructure[s].resources[r].currentContent.objID = imgObjID;
+									docSlideStructure[s].resources[r].currentContent.type = "image";
+									docSlideStructure[s].resources[r].currentContent.contents = finalImage;
+
+									updates['/users/' + userName + '/docSlideStructure/' + s + '/resources/' + r + '/currentContent/'] = docSlideStructure[s].resources[r].currentContent;
+
+									firebase.database().ref().update(updates);
+								}
+
+								requests.push({
+									createImage: {
+										objectId: imgObjID,
+										elementProperties: {
+											pageObjectId: slidePageID,
+											size: {
+												width: {
+													magnitude: 220,
+													unit: "pt"
+												},
+												height: {
+													magnitude: 220,
+													unit: "pt"
+												},
+											},
+										},
+										url: finalImage.url
+									}
+								});
+
+								console.log(lastParagraphFlag);
+
+								if(objDeletionFlag) {
+									return gapi.client.slides.presentations.batchUpdate({
+										presentationId: PRESENTATION_ID,
+										requests: requests
+									}).then((createSlideResponse) => {
+										return true;
+									});
+								}
+								else {
+									return removeRangeInObjWithRequest(slidePageID, objectID, {
+										startIndex: (lastParagraphFlag ? (startIndex == 0 ? 0 : startIndex - 1) : startIndex),
+										endIndex: endIndex + (lastParagraphFlag ? -1 : 0)
+									}, requests)
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+    }, function(response) {
+		console.log(response);
+		//appendPre('Error: ' + response.result.error.message);
+   	}).catch(function(er) {
+		console.log("WHAT?");
+		console.log(er);
+	});
+}
+
+
+
+
 
 async function removeParagraph(slidePageID, objectID, paragraphIndex) {
     return await gapi.client.slides.presentations.get({
@@ -1104,6 +1331,44 @@ async function removeParagraph(slidePageID, objectID, paragraphIndex) {
     });
 }
 
+function getRemoveRangeInObjRequest(slidePageID, objectID, range) {
+   var requests = [ 
+   {
+     "deleteText": {
+       "objectId": objectID,
+       "textRange": {
+		   "startIndex": range.startIndex,
+		   "endIndex": range.endIndex,
+		   "type": "FIXED_RANGE"
+	   }
+     }
+   } ];
+
+   return requests;
+}
+
+async function removeRangeInObjWithRequest(slidePageID, objectID, range, request) {
+   var requests = [ 
+   {
+     "deleteText": {
+       "objectId": objectID,
+       "textRange": {
+		   "startIndex": range.startIndex,
+		   "endIndex": range.endIndex,
+		   "type": "FIXED_RANGE"
+	   }
+     }
+   } ];
+
+   requests = requests.concat(request);
+
+   return await gapi.client.slides.presentations.batchUpdate({
+     presentationId: PRESENTATION_ID,
+     requests: requests
+   }).then((createSlideResponse) => {
+	   return true;
+   });
+}
 async function removeRangeInObj(slidePageID, objectID, range) {
    var requests = [ 
    {
@@ -3485,7 +3750,7 @@ function getObj(key) {
 
 }
 
-function getImage(slideIndex, resourceIndex) {
+function handleChangeImage(slideIndex, resourceIndex) {
 	var queryString = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
 
 	console.log(queryString);
@@ -3507,14 +3772,8 @@ function getImage(slideIndex, resourceIndex) {
 
 			console.log(rowObj);
 
-			var slidePageID = docSlideStructure[s].slide.id;
-			var objID = docSlideStructure[s].resources[r].currentContent.objID;
-			var paragraphIndex = r;
-
-			console.log(slidePageID, objID, paragraphIndex);
-
-			removeParagraph(slidePageID, objID, paragraphIndex).then(res => {
-				removeSingleRowOnDocSlideStructure(s, r);
+			substituteTextToFigure(s, r, d).then(res => {
+			//	removeSingleRowOnDocSlideStructure(s, r);
 
 				$(rowObj).removeClass("onLoading");
 			})
@@ -3548,6 +3807,264 @@ function removeSingleRowOnDocSlideStructure(s, r) {
 	$(".adaptationViewDiv[index='" + s + "']")[0].outerHTML = v;
 }
 
+async function handleChangeText(slideIndex, resourceIndex) {
+	var slideID = docSlideStructure[slideIndex].slide.id;
+	var objectID = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID;
+	var mappingKey = docSlideStructure[slideIndex].resources[resourceIndex].mappingKey;
+
+	console.log(slideID, objectID);
+	console.log(resourceIndex);
+	console.log(JSON.parse(JSON.stringify(docSlideStructure[slideIndex].resources)));
+
+
+	if((resourceIndex > 0 && docSlideStructure[slideIndex].resources[resourceIndex-1].currentContent.type == "text") || 
+	   (resourceIndex < (docSlideStructure[slideIndex].resources.length-1) && docSlideStructure[slideIndex].resources[resourceIndex+1].currentContent.type == "text")) {
+		   var objToPut = -1;
+
+		if(resourceIndex > 0 && docSlideStructure[slideIndex].resources[resourceIndex-1].currentContent.type == "text")  {
+			// append to the back
+			objToPut = docSlideStructure[slideIndex].resources[resourceIndex - 1].currentContent.objID;
+
+			var requests = [];
+			var updates = {};
+			var curObjID = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID;
+
+			requests.push({
+				"deleteObject": {
+					"objectId": curObjID,
+				},
+			});
+
+			updates['/users/' + userName + '/slideInfo/' + slideID + '/' + objectID + '/'] = null;
+			delete slideDB[slideID][objectID]
+
+			var ret = await getAppendTextRequest(slideID, objToPut,
+				docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents);
+
+			requests = requests.concat(ret.request);
+
+			var paragraphIndex = ret.paragraphIndex + 1;
+
+			console.log(paragraphIndex);
+			if (!(objToPut in slideDB[slideID])) slideDB[slideID][objToPut] = [];
+
+			for (var i = 0; i <= paragraphIndex; i++) {
+				if (slideDB[slideID][objToPut].length <= i) {
+					slideDB[slideID][objToPut].push({
+						mappingID: "null"
+					})
+					updates['/users/' + userName + '/slideInfo/' + slideID + '/' + objToPut + '/' + i] = {
+						mappingID: "null"
+					};
+				}
+			}
+
+			slideDB[slideID][objToPut][paragraphIndex] = {
+				mappingID: mappingKey
+			};
+
+			updates['/users/' + userName + '/slideInfo/' + slideID + '/' + objToPut + '/' + paragraphIndex] = {
+				mappingID: mappingKey
+			};
+
+			docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID = objToPut;
+			docSlideStructure[slideIndex].resources[resourceIndex].currentContent.type = "text";
+			docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
+
+			updates['/users/' + userName + '/docSlideStructure/' + slideIndex + '/resources/' + resourceIndex + '/currentContent'] = docSlideStructure[slideIndex].resources[resourceIndex].currentContent;
+
+			firebase.database().ref().update(updates);
+
+			gapi.client.slides.presentations.batchUpdate({
+				presentationId: PRESENTATION_ID,
+				requests: requests
+			}).then((createSlideResponse) => {
+				console.log(createSlideResponse);
+			});
+		}
+		else  {
+			// append to the front
+			objToPut = docSlideStructure[slideIndex].resources[resourceIndex+1].currentContent.objID;
+
+			var requests = [];
+			var updates = {};
+			var curObjID = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID;
+
+			requests.push({
+				"deleteObject": {
+					"objectId": curObjID,
+				},
+			});
+
+			updates['/users/' + userName + '/slideInfo/' + slideID + '/' + objectID + '/'] = null;
+			delete slideDB[slideID][objectID]
+
+			requests.push({
+				"insertText": {
+					objectId: objToPut,
+					text: docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents + '\n',
+					insertionIndex: 0
+				}
+			});
+
+			if (!(objToPut in slideDB[slideID])) slideDB[slideID][objToPut] = [];
+
+			slideDB[slideID][objToPut].push(null); // temporary
+
+			console.log(JSON.parse(JSON.stringify(slideDB[slideID][objToPut])))
+
+			for(var i=slideDB[slideID][objToPut].length-2;i>=0;i--) {
+				slideDB[slideID][objToPut][i+1] = slideDB[slideID][objToPut][i];
+			}
+
+			slideDB[slideID][objToPut][0] = {
+				mappingID: mappingKey
+			};
+
+			updates['/users/' + userName + '/slideInfo/' + slideID + '/' + objToPut] = slideDB[slideID][objToPut];
+
+			docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID = objToPut;
+			docSlideStructure[slideIndex].resources[resourceIndex].currentContent.type = "text";
+			docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
+
+			updates['/users/' + userName + '/docSlideStructure/' + slideIndex + '/resources/' + resourceIndex + '/currentContent'] = docSlideStructure[slideIndex].resources[resourceIndex].currentContent;
+
+			firebase.database().ref().update(updates);
+
+			gapi.client.slides.presentations.batchUpdate({
+				presentationId: PRESENTATION_ID,
+				requests: requests
+			}).then((createSlideResponse) => {
+				console.log(createSlideResponse);
+			});
+		}
+   }
+	else  {
+		// create a new textbox or start from a new existing box
+		var updates = {};
+
+		if(slideID in slideDB) {
+			var curObjID = -1, newObjID = makeid(10);
+
+			if(objectID in slideDB[slideID]) {
+				curObjID = objectID;
+			}
+			else console.log("*** DOES NOT MAKE SENSE ***")
+
+			var flag = false;
+
+			for(var k in slideDB[slideID]) {
+				if(slideDB[slideID][k][0].mappingID == "null") {
+					// found an empty text box
+					newObjID = k;
+					flag = true;
+				}
+			}
+
+			console.log(curObjID, newObjID);
+
+			var requests = [];
+
+			requests.push({
+				"deleteObject": {
+					"objectId": curObjID,
+				},
+			});
+
+			updates['/users/' + userName + '/slideInfo/' + slideID + '/' + objectID + '/'] = null;
+			delete slideDB[slideID][objectID]
+
+			if (flag) { // put to existing blank text
+				var ret = await getAppendTextRequest(slideID, newObjID,
+					docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents);
+
+				requests = requests.concat(ret.request);
+				paragraphIndex = ret.paragraphIndex + 1;
+
+				if (!(newObjID in slideDB[slideID])) slideDB[slideID][newObjID] = [];
+
+				for (var i = 0; i <= paragraphIndex; i++) {
+					if (slideDB[slideID][newObjID].length <= i) {
+						slideDB[slideID][newObjID].push({
+							mappingID: "null"
+						})
+						updates['/users/' + userName + '/slideInfo/' + slideID + '/' + newObjID + '/' + i] = {
+							mappingID: "null"
+						};
+					}
+				}
+
+				slideDB[slideID][newObjID][paragraphIndex] = {
+					mappingID: mappingKey
+				};
+				updates['/users/' + userName + '/slideInfo/' + slideID + '/' + newObjID + '/' + paragraphIndex] = {
+					mappingID: mappingKey
+				};
+
+				docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID = newObjID;
+				docSlideStructure[slideIndex].resources[resourceIndex].currentContent.type = "text";
+				docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
+
+				updates['/users/' + userName + '/docSlideStructure/' + slideIndex + '/resources/' + resourceIndex + '/currentContent'] = docSlideStructure[slideIndex].resources[resourceIndex].currentContent;
+			}
+			else {
+				requests.push({
+					"createShape": {
+						objectId: newObjID,
+						elementProperties: {
+							pageObjectId: slideID,
+							size: {
+								width: {
+									magnitude: 300,
+									unit: "pt"
+								},
+								height: {
+									magnitude: 100,
+									unit: "pt"
+								},
+							},
+						},
+						shapeType: "TEXT_BOX"
+					}
+				});
+
+				requests.push({
+					"insertText": {
+						objectId: newObjID,
+						text: docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents,
+						insertionIndex: 0
+					}
+				});
+
+				slideDB[slideID][newObjID] = [];
+				slideDB[slideID][newObjID].push({
+					mappingID: mappingKey
+				});
+
+				updates['/users/' + userName + '/slideInfo/' + slideID + '/' + newObjID + '/' + 0] = {
+					mappingID: mappingKey
+				};
+
+				docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID = newObjID;
+				docSlideStructure[slideIndex].resources[resourceIndex].currentContent.type = "text";
+				docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
+
+				updates['/users/' + userName + '/docSlideStructure/' + slideIndex + '/resources/' + resourceIndex + '/currentContent'] = docSlideStructure[slideIndex].resources[resourceIndex].currentContent;
+			}
+
+			firebase.database().ref().update(updates);
+
+			gapi.client.slides.presentations.batchUpdate({
+				presentationId: PRESENTATION_ID,
+				requests: requests
+			}).then((createSlideResponse) => {
+				console.log(createSlideResponse);
+			});
+		}
+		else console.log("*** DOES NOT MAKE SENSE ***")
+	}
+}
+
 $(document).ready(function() {
 	$(document).on("change", ".adaptationTableTypeSelector", function(e) {
 		console.log(e.target);
@@ -3555,16 +4072,17 @@ $(document).ready(function() {
 		var parent = $(e.target).parent().parent();
 
 		var slideIndex = $(parent).attr("slideIndex");
-		var resourceIndex = $(parent).attr("resourceIndex");
+		var resourceIndex = parseInt($(parent).attr("resourceIndex"));
 		var selectedIndex = $(e.target)[0].selectedIndex; // 0: text, 1: image
 
 		showLoadingAdaptationRow(slideIndex, resourceIndex);
+		showLoadingSlidePlane();
 
 		if(selectedIndex == 0) { // changed to text
-
+			handleChangeText(slideIndex, resourceIndex);
 		}
 		else { // changed to image
-			var img = getImage(slideIndex, resourceIndex);
+			handleChangeImage(slideIndex, resourceIndex);
 		}
 	})
 
@@ -6001,6 +6519,80 @@ function addFigure(pageID, imageURL, mappingID) {
 
 	    writeSlideMappingInfo(pageID, figureObjID, 0, mappingID);
 	    return true;
+    });
+}
+
+async function getAppendTextRequest(pageID, objId, myText) {
+    return await gapi.client.slides.presentations.get({
+		presentationId: PRESENTATION_ID
+    }).then(function(response) {
+		console.log(response);
+
+		var presentation = response.result;
+		var length = presentation.slides.length;
+	
+		// slideDB = {};
+	
+		var startIndex = -1, endIndex = -1;
+		var curParagraphIndex = -1;
+
+		for (i = 0; i < length; i++) {
+			if(endIndex != -1) break;
+
+		    var slide = presentation.slides[i];
+	
+		    var slideID = slide.objectId;
+		    var slideObjId = {};
+	
+			if(slideID == pageID) {
+				for(var j=0;j<slide.pageElements.length;j++) {
+					var slideItem = slide.pageElements[j];
+
+					if(slideItem.objectId == objId) {
+						var srcText = null, dstText = null;
+
+						if("text" in slideItem.shape) {
+							for(var k=0;k<slideItem.shape.text.textElements.length;k++) {
+								var textElem = slideItem.shape.text.textElements[k];
+
+								if(textElem.endIndex != endIndex){
+									curParagraphIndex++;
+
+									if("startIndex" in textElem) startIndex = textElem.startIndex;
+									else startIndex = 0;
+
+									endIndex = textElem.endIndex;
+								}
+							}
+						}
+						else{
+							endIndex = 0;
+						} 
+
+						break;
+					}
+				}
+			}
+		}
+
+        var requests = [ {
+          "insertText": {
+            objectId: objId,
+            text: (endIndex == 0 ? myText : '\n' + myText),
+            insertionIndex: (endIndex  == 0 ? 0 : endIndex-1)
+          },
+		} ];
+		
+		return {
+			request: requests,
+			paragraphIndex: curParagraphIndex
+		};
+    }, function(response) {
+		console.log(response);
+		//appendPre('Error: ' + response.result.error.message);
+   	}).catch(function(er) {
+		console.log("WHAT?");
+		console.log(er);
     });
 }
 
