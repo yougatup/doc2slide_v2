@@ -1558,3 +1558,69 @@ width: 100%;
   .adaptationTableRow.onLoading {
 	  background-color: gray !important;
   }
+
+    #imageView {
+        box-sizing: border-box;
+    }
+
+    #imageViewQueryDiv {
+        height: 80px;
+        width: 100%;
+        box-sizing: border-box;
+		padding: 10px;
+    }
+
+    #imageViewResultDiv {
+        height: calc(100% - 80px);
+        width: 100%;
+        box-sizing: border-box;
+		padding: 10px;
+		overflow: auto;
+    }
+
+	#imageViewOriginalSentence {
+		display: inline-block;
+	}
+
+	#imageViewOriginalTextDiv {
+		padding: 5px;
+	}
+
+	#imageViewQueryStatementDiv{
+		padding: 5px;
+	}
+
+	#imageViewQueryKeywordDiv {
+		display: inline-block;
+	}
+
+	.imageViewQueryHighlight {
+		background-color: yellow;
+	}
+
+	.imageViewQueryKeywordItem{
+		border: 1px solid black;
+		padding: 2px;
+		margin-left: 2px;
+		font-size: 9px;
+		cursor: pointer;
+	}
+
+	#imageViewQuerySubmitBtn {
+		float: right;
+		margin: 5px;
+	}
+
+	.imageResultItem {
+		height: 150px;
+		width: 150px;
+		cursor: pointer;
+	}
+
+	.imageResultItem:hover {
+		border: 2px solid red;
+	}
+
+	.imageViewQueryKeywordItem.keywordSelected {
+		background-color: yellow;
+	}

@@ -993,7 +993,7 @@ async function removeSlideMappingInfo(pageID, objID, paragraphIndex) {
 }
 
 async function findImages(queries) {
-	var queryStatement = queries.join(" OR ");
+	var queryStatement = queries.join(" ");
 
 	console.log(queryStatement);
 
@@ -1152,6 +1152,15 @@ async function substituteTextToFigure(s, r, d) {
 									docSlideStructure[s].resources[r].currentContent.objID = imgObjID;
 									docSlideStructure[s].resources[r].currentContent.type = "image";
 									docSlideStructure[s].resources[r].currentContent.contents = finalImage;
+									docSlideStructure[s].resources[r].currentContent.contents.index = d.index;
+									docSlideStructure[s].resources[r].currentContent.contents.keywords = []
+
+									for (var j = 0; j < d.surfaceWords.length; j++) {
+										docSlideStructure[s].resources[r].currentContent.contents.keywords.push({
+											keyword: d.surfaceWords[j],
+											selected: true
+										})
+									}
 
 									updates['/users/' + userName + '/docSlideStructure/' + s + '/resources/' + r + '/currentContent/'] = docSlideStructure[s].resources[r].currentContent;
 
@@ -3807,7 +3816,7 @@ function removeSingleRowOnDocSlideStructure(s, r) {
 	$(".adaptationViewDiv[index='" + s + "']")[0].outerHTML = v;
 }
 
-async function handleChangeText(slideIndex, resourceIndex) {
+async function handleChangeText(slideIndex, resourceIndex, deletionFlag) {
 	var slideID = docSlideStructure[slideIndex].slide.id;
 	var objectID = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID;
 	var mappingKey = docSlideStructure[slideIndex].resources[resourceIndex].mappingKey;
@@ -3815,7 +3824,6 @@ async function handleChangeText(slideIndex, resourceIndex) {
 	console.log(slideID, objectID);
 	console.log(resourceIndex);
 	console.log(JSON.parse(JSON.stringify(docSlideStructure[slideIndex].resources)));
-
 
 	if((resourceIndex > 0 && docSlideStructure[slideIndex].resources[resourceIndex-1].currentContent.type == "text") || 
 	   (resourceIndex < (docSlideStructure[slideIndex].resources.length-1) && docSlideStructure[slideIndex].resources[resourceIndex+1].currentContent.type == "text")) {
@@ -3827,16 +3835,19 @@ async function handleChangeText(slideIndex, resourceIndex) {
 
 			var requests = [];
 			var updates = {};
-			var curObjID = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID;
 
-			requests.push({
-				"deleteObject": {
-					"objectId": curObjID,
-				},
-			});
+			if (deletionFlag) {
+				var curObjID = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID;
 
-			updates['/users/' + userName + '/slideInfo/' + slideID + '/' + objectID + '/'] = null;
-			delete slideDB[slideID][objectID]
+				requests.push({
+					"deleteObject": {
+						"objectId": curObjID,
+					},
+				});
+
+				updates['/users/' + userName + '/slideInfo/' + slideID + '/' + objectID + '/'] = null;
+				delete slideDB[slideID][objectID]
+			}
 
 			var ret = await getAppendTextRequest(slideID, objToPut,
 				docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents);
@@ -3888,16 +3899,19 @@ async function handleChangeText(slideIndex, resourceIndex) {
 
 			var requests = [];
 			var updates = {};
-			var curObjID = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID;
 
-			requests.push({
-				"deleteObject": {
-					"objectId": curObjID,
-				},
-			});
+			if (deletionFlag) {
+				var curObjID = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID;
 
-			updates['/users/' + userName + '/slideInfo/' + slideID + '/' + objectID + '/'] = null;
-			delete slideDB[slideID][objectID]
+				requests.push({
+					"deleteObject": {
+						"objectId": curObjID,
+					},
+				});
+
+				updates['/users/' + userName + '/slideInfo/' + slideID + '/' + objectID + '/'] = null;
+				delete slideDB[slideID][objectID]
+			}
 
 			requests.push({
 				"insertText": {
@@ -3965,14 +3979,16 @@ async function handleChangeText(slideIndex, resourceIndex) {
 
 			var requests = [];
 
-			requests.push({
-				"deleteObject": {
-					"objectId": curObjID,
-				},
-			});
+			if (deletionFlag) {
+				requests.push({
+					"deleteObject": {
+						"objectId": curObjID,
+					},
+				});
 
-			updates['/users/' + userName + '/slideInfo/' + slideID + '/' + objectID + '/'] = null;
-			delete slideDB[slideID][objectID]
+				updates['/users/' + userName + '/slideInfo/' + slideID + '/' + objectID + '/'] = null;
+				delete slideDB[slideID][objectID]
+			}
 
 			if (flag) { // put to existing blank text
 				var ret = await getAppendTextRequest(slideID, newObjID,
@@ -4065,7 +4081,155 @@ async function handleChangeText(slideIndex, resourceIndex) {
 	}
 }
 
+function getVisualHighlightForImage(slideIndex, resourceIndex) {
+	var indexes = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents.index;
+	var originalText = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
+
+	for(var i=indexes.length-1;i>=0;i--) {
+		var p = indexes[i];
+
+		originalText = originalText.substr(0, p[1]) + "</span>" + originalText.substr(p[1])
+		originalText = originalText.substr(0, p[0]) + "<span class='imageViewQueryHighlight'>" + originalText.substr(p[0])
+	}
+
+	return originalText;
+}
+
+function getQueryKeywordsForImage(slideIndex, resourceIndex) {
+	var keywords = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents.keywords;
+	var retValue = '';
+
+	for(var i=0;i<keywords.length;i++) {
+		retValue = retValue + '<span index="' + i + '" class="imageViewQueryKeywordItem ' + (keywords[i].selected ? "keywordSelected" : "") + '">' + keywords[i].keyword + '</span>';
+	}
+
+	return retValue;
+}
+
+function getSearchResult(slideIndex, resourceIndex) {
+	var keywords = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents.keywords;
+	var queryStatement = '';
+	var firstFlag = true;
+
+	for(var i=0;i<keywords.length;i++) {
+		if(keywords[i].selected) {
+			var k = keywords[i].keyword;
+
+			queryStatement = queryStatement + (firstFlag ? '' : ' ') + k;
+
+			firstFlag = false;
+		}
+	}
+
+	$("#imageViewResultDiv").addClass("onImageLoading");
+ 	$("#imageViewResultDiv").html("on loading...");
+
+	const requestOptions = {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(
+			{
+				type: "all",
+				query: queryStatement
+			}
+		),
+	};
+
+	fetch('http://localhost:8010/proxy/getImages', requestOptions)
+		.then(response => response.json())
+		.then(data => {
+			console.log(data);
+
+			var htmlString = '';
+
+			for (var i = 0; i < data.length; i++) {
+				htmlString = htmlString + "<img class='imageResultItem' src='" + data[i].url + "'> </img>"
+			}
+
+			$("#imageViewResultDiv").html(htmlString);
+		});
+}
+
+function showImageSelectionView(slideIndex, resourceIndex) {
+	$("#imageView").attr("slideindex", slideIndex);
+	$("#imageView").attr("resourceindex", resourceIndex);
+
+	$("#imageViewOriginalSentence").html('');
+	$("#imageViewQueryKeywordDiv").html("");
+	
+	var q = getVisualHighlightForImage(slideIndex, resourceIndex);
+	$("#imageViewOriginalSentence").html(q);
+
+	var k = getQueryKeywordsForImage(slideIndex, resourceIndex);
+	$("#imageViewQueryKeywordDiv").html(k);
+
+	getSearchResult(slideIndex, resourceIndex);
+
+	$("#imageView").show();
+}
+
+function closeImageSelectionView() {
+	$("#imageView").hide();
+}
+
 $(document).ready(function() {
+	$(document).on("click", ".imageResultItem", function(e) {
+		var slideIndex = $("#imageView").attr("slideindex");
+		var resourceIndex = $("#imageView").attr("resourceindex");
+		var imgSrc = $(e.target).attr("src");
+
+		var objID = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID;
+
+		requests = [{
+			replaceImage: {
+				"imageObjectId": objID,
+				"imageReplaceMethod": "CENTER_INSIDE",
+				"url": imgSrc
+			}
+		}]
+
+		gapi.client.slides.presentations.batchUpdate({
+			presentationId: PRESENTATION_ID,
+			requests: requests
+		}).then((createSlideResponse) => {
+			console.log(createSlideResponse);
+		});
+
+		console.log(slideIndex, resourceIndex, imgSrc);
+	})
+
+	$(document).on("click", ".imageViewQueryKeywordItem", function(e) {
+		var slideIndex = parseInt($("#imageView").attr("slideindex"));
+		var resourceIndex = parseInt($("#imageView").attr("resourceindex"));
+		var keywordIndex = parseInt($(e.target).attr("index"));
+
+		console.log(slideIndex, resourceIndex, keywordIndex);
+
+		var target = e.target;
+
+		if($(target).hasClass("keywordSelected")) {
+			docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents.keywords[keywordIndex].selected = false;
+			$(target).removeClass("keywordSelected");
+		}
+		else {
+			docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents.keywords[keywordIndex].selected = true;
+			$(target).addClass("keywordSelected");
+		}
+	});
+
+	$(document).on("click", "#imageViewQuerySubmitBtn", function(e) {
+		var slideIndex = parseInt($("#imageView").attr("slideindex"));
+		var resourceIndex = parseInt($("#imageView").attr("resourceindex"));
+
+		firebase.database().ref("/users/" + userName + '/docSlideStructure/' + slideIndex + "/resources/" + resourceIndex + "/currentContent/contents/keywords/").set(docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents.keywords);
+
+		getSearchResult(slideIndex, resourceIndex);
+	})
+
+	$(document).on("click", "#imageViewCloseBtn", function(e) {
+		closeImageSelectionView();
+	})
+
 	$(document).on("change", ".adaptationTableTypeSelector", function(e) {
 		console.log(e.target);
 
@@ -4075,11 +4239,11 @@ $(document).ready(function() {
 		var resourceIndex = parseInt($(parent).attr("resourceIndex"));
 		var selectedIndex = $(e.target)[0].selectedIndex; // 0: text, 1: image
 
-		showLoadingAdaptationRow(slideIndex, resourceIndex);
+		// showLoadingAdaptationRow(slideIndex, resourceIndex);
 		showLoadingSlidePlane();
 
 		if(selectedIndex == 0) { // changed to text
-			handleChangeText(slideIndex, resourceIndex);
+			handleChangeText(slideIndex, resourceIndex, true);
 		}
 		else { // changed to image
 			handleChangeImage(slideIndex, resourceIndex);
@@ -4104,13 +4268,15 @@ $(document).ready(function() {
 
 		console.log(docSlideStructure[slideIndex].resources[resourceIndex])
 
-		if(docSlideStructure[slideIndex].resources[resourceIndex].originalContent.type == "text") {
+		if(docSlideStructure[slideIndex].resources[resourceIndex].currentContent.type == "text") {
 			console.log("TEXT");
 
 			showTextShorteningView(slideIndex, resourceIndex);
 		}
 		else {
 			console.log("IMAGE");
+
+			showImageSelectionView(slideIndex, resourceIndex);
 		}
 	})
 
@@ -6073,8 +6239,8 @@ function getDocSlideStructureView(index) {
 					"<td class='adaptationTableIndex'>" + (j + 1) + 
 
 					'<select class="adaptationTableTypeSelector" name="adaptationTableTypeSelector">' + 
-  						'<option value="text">Text</option>' + 
-  						'<option value="image">Image</option>' + 
+  						'<option value="text" ' + (docSlideStructure[index].resources[j].currentContent.type == "text" ? "selected='selected'" : "") + '>Text</option>' + 
+  						'<option value="image" ' + (docSlideStructure[index].resources[j].currentContent.type == "image" ? "selected='selected'" : "") + '>Image</option>' + 
 					'</select>' + 
 
 					"</td>" +
@@ -6143,9 +6309,8 @@ async function automaticallyPutContents(textInfo, mapping) {
 	*/
 
 	if(flag) { // add to the current slide
-		if(docSlideStructure[index].template.id == "DEFAULT") {
+		if (docSlideStructure[index].template.id == "DEFAULT") {
 			var slideID = docSlideStructure[index].slide.id;
-			var bodyObjID = docSlideStructure[index].template.structure.body[0];
 
 			docSlideStructure[index].resources.push({
 				"mappingKey": mapping.key,
@@ -6153,27 +6318,27 @@ async function automaticallyPutContents(textInfo, mapping) {
 					type: "text",
 					contents: mapping.text
 				},
-				currentContent:  {
+				currentContent: {
 					type: "text",
 					contents: mapping.text,
-					objID: bodyObjID
+					objID: null
 				}
 			});
 
-			docSlideStructure[index].mapping.push({
-				source: mapping.key,
-				destination: bodyObjID,
-			});
+			var updates = {};
+			var len = docSlideStructure[index].resources.length;
+
+			updates['/users/' + userName + '/docSlideStructure/' + index + '/resources/' + (len-1)] = docSlideStructure[index].resources[len-1];
+
+			await firebase.database().ref().update(updates);
+
+			handleChangeText(index, len-1, false);
 
 			var v = getDocSlideStructureView(index);
 
 			$(".adaptationViewDiv[index='" + index + "']")[0].outerHTML = v;
-
-			appendText(slideID, bodyObjID, textInfo.text, mapping.key);
 		}
-		else {
-			// don't know yet
-		}
+		else console.log("*** DO NOT KNOW YET ***");
 	}
 	else {
 		if(index == -1) { // create the section
@@ -6231,6 +6396,10 @@ async function automaticallyPutContents(textInfo, mapping) {
 				}
 			]
 		});
+
+		firebase.database().ref("/users/" + userName + '/docSlideStructure').set(docSlideStructure);
+
+		console.log(docSlideStructure);
 
 		var requests = [];
 
@@ -6311,9 +6480,6 @@ async function automaticallyPutContents(textInfo, mapping) {
 
 	}
 
-	firebase.database().ref("/users/" + userName + '/docSlideStructure').set(docSlideStructure);
-
-	console.log(docSlideStructure);
 
 	// putTextOnSection(textInfo, sectionKey, before_finalRepresentation);
 
