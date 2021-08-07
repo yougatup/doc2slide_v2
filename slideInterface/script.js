@@ -482,6 +482,8 @@ function getSlideWidth(x) {
 }
 
 function initializeDB() {
+	// testGAPICall();
+
 	readData('/users/' + userName).then(result => {
 		console.log(result);
 		console.log(result.parameters.heavy);
@@ -1220,6 +1222,536 @@ async function substituteTextToFigure(s, r, d) {
 
 
 
+function testGAPICall() {
+	var requests = [
+		{
+			"createSlide": {
+				"objectId": "b86b616b-14b0-4aac-bbe1-0755a44fb649",
+				"insertionIndex": 0
+			}
+		},
+		{
+			"createShape": {
+				"objectId": "5143ff34-db51-4f4f-927c-717b8b11ac94",
+				"elementProperties": {
+					"pageObjectId": "b86b616b-14b0-4aac-bbe1-0755a44fb649",
+					"size": {
+						"width": {
+							"magnitude": 3000000,
+							"unit": "EMU"
+						},
+						"height": {
+							"magnitude": 3000000,
+							"unit": "EMU"
+						}
+					},
+					"transform": {
+						"scaleX": 2.8402,
+						"scaleY": 0.1909,
+						"translateX": 311700,
+						"translateY": 445025,
+						"unit": "EMU",
+						"shearX": 0,
+						"shearY": 0
+					}
+				},
+				"shapeType": "RECTANGLE"
+			}
+		},
+		{
+			"insertText": {
+				"objectId": "5143ff34-db51-4f4f-927c-717b8b11ac94",
+				"text": "TEXT_BOX",
+				"insertionIndex": 0
+			}
+		},
+		{
+			"deleteText": {
+				"objectId": "5143ff34-db51-4f4f-927c-717b8b11ac94",
+				"textRange": {
+					"type": "ALL"
+				}
+			}
+		},
+		{
+			"insertText": {
+				"objectId": "5143ff34-db51-4f4f-927c-717b8b11ac94",
+				"text": "TITLE"
+			}
+		},
+		{
+			"updateParagraphStyle": {
+				"objectId": "5143ff34-db51-4f4f-927c-717b8b11ac94",
+				"style": {
+					"lineSpacing": 100,
+					"alignment": "START",
+					"indentStart": {
+						"unit": "PT"
+					},
+					"indentEnd": {
+						"unit": "PT"
+					},
+					"spaceAbove": {
+						"unit": "PT"
+					},
+					"spaceBelow": {
+						"unit": "PT"
+					},
+					"indentFirstLine": {
+						"unit": "PT"
+					},
+					"direction": "LEFT_TO_RIGHT",
+					"spacingMode": "NEVER_COLLAPSE"
+				},
+				"textRange": {
+					"type": "ALL"
+				},
+				"fields": "lineSpacing,alignment,indentStart.unit,indentEnd.unit,spaceAbove.unit,spaceBelow.unit,indentFirstLine.unit,direction,spacingMode"
+			}
+		},
+		{
+			"updateTextStyle": {
+				"objectId": "5143ff34-db51-4f4f-927c-717b8b11ac94",
+				"style": {
+					"backgroundColor": {},
+					"foregroundColor": {
+						"opaqueColor": {
+							"themeColor": "DARK1"
+						}
+					},
+					"bold": false,
+					"italic": false,
+					"fontSize": {
+						"magnitude": 28,
+						"unit": "PT"
+					},
+					"baselineOffset": "NONE",
+					"smallCaps": false,
+					"strikethrough": false,
+					"underline": false,
+					"weightedFontFamily": {
+						"fontFamily": "Arial",
+						"weight": 400
+					}
+				},
+				"textRange": {
+					"type": "ALL"
+				},
+				"fields": "foregroundColor.opaqueColor.themeColor,bold,italic,fontSize.magnitude,fontSize.unit,baselineOffset,smallCaps,strikethrough,underline,weightedFontFamily.fontFamily,weightedFontFamily.weight"
+			}
+		},
+		{
+			"updateShapeProperties": {
+				"objectId": "5143ff34-db51-4f4f-927c-717b8b11ac94",
+				"shapeProperties": {
+					"shapeBackgroundFill": {
+						"propertyState": "NOT_RENDERED",
+						"solidFill": {
+							"color": {
+								"rgbColor": {
+									"red": 1,
+									"green": 1,
+									"blue": 1
+								}
+							},
+							"alpha": 1
+						}
+					},
+					"outline": {
+						"outlineFill": {
+							"solidFill": {
+								"color": {
+									"rgbColor": {}
+								},
+								"alpha": 1
+							}
+						},
+						"weight": {
+							"magnitude": 9525,
+							"unit": "EMU"
+						},
+						"dashStyle": "SOLID",
+						"propertyState": "NOT_RENDERED"
+					},
+					"contentAlignment": "TOP"
+				},
+				"fields": "shapeBackgroundFill.propertyState,shapeBackgroundFill.solidFill.color.rgbColor.red,shapeBackgroundFill.solidFill.color.rgbColor.green,shapeBackgroundFill.solidFill.color.rgbColor.blue,shapeBackgroundFill.solidFill.alpha,outline.outlineFill.solidFill.alpha,outline.weight.magnitude,outline.weight.unit,outline.dashStyle,outline.propertyState,contentAlignment"
+			}
+		},
+		{
+			"createShape": {
+				"objectId": "6cef77e7-f123-48d1-bf6d-b068d8309e7c",
+				"elementProperties": {
+					"pageObjectId": "b86b616b-14b0-4aac-bbe1-0755a44fb649",
+					"size": {
+						"width": {
+							"magnitude": 3000000,
+							"unit": "EMU"
+						},
+						"height": {
+							"magnitude": 3000000,
+							"unit": "EMU"
+						}
+					},
+					"transform": {
+						"scaleX": 2.8402,
+						"scaleY": 1.1388,
+						"translateX": 311700,
+						"translateY": 1152475,
+						"unit": "EMU",
+						"shearX": 0,
+						"shearY": 0
+					}
+				},
+				"shapeType": "RECTANGLE"
+			}
+		},
+		{
+			"insertText": {
+				"objectId": "6cef77e7-f123-48d1-bf6d-b068d8309e7c",
+				"text": "TEXT_BOX",
+				"insertionIndex": 0
+			}
+		},
+		{
+			"deleteText": {
+				"objectId": "6cef77e7-f123-48d1-bf6d-b068d8309e7c",
+				"textRange": {
+					"type": "ALL"
+				}
+			}
+		},
+		{
+			"insertText": {
+				"objectId": "6cef77e7-f123-48d1-bf6d-b068d8309e7c",
+				"text": "BODY"
+			}
+		},
+		{
+			"updateParagraphStyle": {
+				"objectId": "6cef77e7-f123-48d1-bf6d-b068d8309e7c",
+				"style": {
+					"lineSpacing": 115,
+					"alignment": "START",
+					"indentStart": {
+						"unit": "PT",
+						"magnitude": 36
+					},
+					"indentEnd": {
+						"unit": "PT"
+					},
+					"spaceAbove": {
+						"unit": "PT"
+					},
+					"spaceBelow": {
+						"magnitude": 16,
+						"unit": "PT"
+					},
+					"indentFirstLine": {
+						"unit": "PT",
+						"magnitude": 18
+					},
+					"direction": "LEFT_TO_RIGHT",
+					"spacingMode": "COLLAPSE_LISTS"
+				},
+				"textRange": {
+					"type": "ALL"
+				},
+				"fields": "lineSpacing,alignment,indentStart.unit,indentStart.magnitude,indentEnd.unit,spaceAbove.unit,spaceBelow.magnitude,spaceBelow.unit,indentFirstLine.unit,indentFirstLine.magnitude,direction,spacingMode"
+			}
+		},
+		{
+			"updateTextStyle": {
+				"objectId": "6cef77e7-f123-48d1-bf6d-b068d8309e7c",
+				"style": {
+					"backgroundColor": {},
+					"foregroundColor": {
+						"opaqueColor": {
+							"themeColor": "DARK2"
+						}
+					},
+					"bold": false,
+					"italic": false,
+					"fontSize": {
+						"magnitude": 18,
+						"unit": "PT"
+					},
+					"baselineOffset": "NONE",
+					"smallCaps": false,
+					"strikethrough": false,
+					"underline": false,
+					"weightedFontFamily": {
+						"fontFamily": "Arial",
+						"weight": 400
+					}
+				},
+				"textRange": {
+					"type": "ALL"
+				},
+				"fields": "foregroundColor.opaqueColor.themeColor,bold,italic,fontSize.magnitude,fontSize.unit,baselineOffset,smallCaps,strikethrough,underline,weightedFontFamily.fontFamily,weightedFontFamily.weight"
+			}
+		},
+		{
+			"updateShapeProperties": {
+				"objectId": "6cef77e7-f123-48d1-bf6d-b068d8309e7c",
+				"shapeProperties": {
+					"shapeBackgroundFill": {
+						"propertyState": "NOT_RENDERED",
+						"solidFill": {
+							"color": {
+								"rgbColor": {
+									"red": 1,
+									"green": 1,
+									"blue": 1
+								}
+							},
+							"alpha": 1
+						}
+					},
+					"outline": {
+						"outlineFill": {
+							"solidFill": {
+								"color": {
+									"rgbColor": {}
+								},
+								"alpha": 1
+							}
+						},
+						"weight": {
+							"magnitude": 9525,
+							"unit": "EMU"
+						},
+						"dashStyle": "SOLID",
+						"propertyState": "NOT_RENDERED"
+					},
+					"contentAlignment": "TOP"
+				},
+				"fields": "shapeBackgroundFill.propertyState,shapeBackgroundFill.solidFill.color.rgbColor.red,shapeBackgroundFill.solidFill.color.rgbColor.green,shapeBackgroundFill.solidFill.color.rgbColor.blue,shapeBackgroundFill.solidFill.alpha,outline.outlineFill.solidFill.alpha,outline.weight.magnitude,outline.weight.unit,outline.dashStyle,outline.propertyState,contentAlignment"
+			}
+		},
+		{
+			"createShape": {
+				"objectId": "3b7dfe47-934f-43c3-ba36-90e496d6e9de",
+				"elementProperties": {
+					"pageObjectId": "b86b616b-14b0-4aac-bbe1-0755a44fb649",
+					"size": {
+						"width": {
+							"magnitude": 500,
+							"unit": "PT"
+						},
+						"height": {
+							"magnitude": 40,
+							"unit": "PT"
+						}
+					}
+				},
+				"shapeType": "TEXT_BOX"
+			}
+		},
+		{
+			"insertText": {
+				"objectId": "3b7dfe47-934f-43c3-ba36-90e496d6e9de",
+				"text": "Page: 2"
+			}
+		},
+		{
+			"insertText": {
+				"objectId": "5143ff34-db51-4f4f-927c-717b8b11ac94",
+				"text": "TEXT_BOX",
+				"insertionIndex": 0
+			}
+		},
+		{
+			"deleteText": {
+				"objectId": "5143ff34-db51-4f4f-927c-717b8b11ac94",
+				"textRange": {
+					"type": "ALL"
+				}
+			}
+		},
+		{
+			"insertText": {
+				"objectId": "5143ff34-db51-4f4f-927c-717b8b11ac94",
+				"text": "Introduction"
+			}
+		},
+		{
+			"updateParagraphStyle": {
+				"objectId": "5143ff34-db51-4f4f-927c-717b8b11ac94",
+				"style": {
+					"lineSpacing": 100,
+					"alignment": "START",
+					"indentStart": {
+						"unit": "PT"
+					},
+					"indentEnd": {
+						"unit": "PT"
+					},
+					"spaceAbove": {
+						"unit": "PT"
+					},
+					"spaceBelow": {
+						"unit": "PT"
+					},
+					"indentFirstLine": {
+						"unit": "PT"
+					},
+					"direction": "LEFT_TO_RIGHT",
+					"spacingMode": "NEVER_COLLAPSE"
+				},
+				"textRange": {
+					"startIndex": 0,
+					"endIndex": 12,
+					"type": "FIXED_RANGE"
+				},
+				"fields": "lineSpacing,alignment,indentStart.unit,indentEnd.unit,spaceAbove.unit,spaceBelow.unit,indentFirstLine.unit,direction,spacingMode"
+			}
+		},
+		{
+			"updateTextStyle": {
+				"objectId": "5143ff34-db51-4f4f-927c-717b8b11ac94",
+				"style": {
+					"backgroundColor": {},
+					"foregroundColor": {
+						"opaqueColor": {
+							"themeColor": "DARK1"
+						}
+					},
+					"bold": false,
+					"italic": false,
+					"fontSize": {
+						"magnitude": 28,
+						"unit": "PT"
+					},
+					"baselineOffset": "NONE",
+					"smallCaps": false,
+					"strikethrough": false,
+					"underline": false,
+					"weightedFontFamily": {
+						"fontFamily": "Arial",
+						"weight": 400
+					}
+				},
+				"textRange": {
+					"startIndex": 0,
+					"endIndex": 12,
+					"type": "FIXED_RANGE"
+				},
+				"fields": "foregroundColor.opaqueColor.themeColor,bold,italic,fontSize.magnitude,fontSize.unit,baselineOffset,smallCaps,strikethrough,underline,weightedFontFamily.fontFamily,weightedFontFamily.weight"
+			}
+		},
+		{
+			"insertText": {
+				"objectId": "6cef77e7-f123-48d1-bf6d-b068d8309e7c",
+				"text": "TEXT_BOX",
+				"insertionIndex": 0
+			}
+		},
+		{
+			"deleteText": {
+				"objectId": "6cef77e7-f123-48d1-bf6d-b068d8309e7c",
+				"textRange": {
+					"type": "ALL"
+				}
+			}
+		},
+		{
+			"insertText": {
+				"objectId": "6cef77e7-f123-48d1-bf6d-b068d8309e7c",
+				"text": "Communication takes place over time."
+			}
+		},
+		{
+			"updateParagraphStyle": {
+				"objectId": "6cef77e7-f123-48d1-bf6d-b068d8309e7c",
+				"style": {
+					"lineSpacing": 115,
+					"alignment": "START",
+					"indentStart": {
+						"unit": "PT",
+						"magnitude": 36
+					},
+					"indentEnd": {
+						"unit": "PT"
+					},
+					"spaceAbove": {
+						"unit": "PT"
+					},
+					"spaceBelow": {
+						"magnitude": 16,
+						"unit": "PT"
+					},
+					"indentFirstLine": {
+						"unit": "PT",
+						"magnitude": 18
+					},
+					"direction": "LEFT_TO_RIGHT",
+					"spacingMode": "COLLAPSE_LISTS"
+				},
+				"textRange": {
+					"startIndex": 0,
+					"endIndex": 36,
+					"type": "FIXED_RANGE"
+				},
+				"fields": "lineSpacing,alignment,indentStart.unit,indentStart.magnitude,indentEnd.unit,spaceAbove.unit,spaceBelow.magnitude,spaceBelow.unit,indentFirstLine.unit,indentFirstLine.magnitude,direction,spacingMode"
+			}
+		},
+		{
+			"updateTextStyle": {
+				"objectId": "6cef77e7-f123-48d1-bf6d-b068d8309e7c",
+				"style": {
+					"underline": false,
+					"backgroundColor": {},
+					"foregroundColor": {
+						"opaqueColor": {
+							"themeColor": "DARK2"
+						}
+					},
+					"bold": false,
+					"italic": false,
+					"fontSize": {
+						"magnitude": 18,
+						"unit": "PT"
+					},
+					"baselineOffset": "NONE",
+					"smallCaps": false,
+					"strikethrough": false,
+					"weightedFontFamily": {
+						"fontFamily": "Arial",
+						"weight": 400
+					}
+				},
+				"textRange": {
+					"startIndex": 0,
+					"endIndex": 36,
+					"type": "FIXED_RANGE"
+				},
+				"fields": "underline,foregroundColor.opaqueColor.themeColor,bold,italic,fontSize.magnitude,fontSize.unit,baselineOffset,smallCaps,strikethrough,weightedFontFamily.fontFamily,weightedFontFamily.weight"
+			}
+		},
+		{
+			"deleteText": {
+				"objectId": "3b7dfe47-934f-43c3-ba36-90e496d6e9de",
+				"textRange": {
+					"type": "ALL"
+				}
+			}
+		},
+		{
+			"insertText": {
+				"objectId": "3b7dfe47-934f-43c3-ba36-90e496d6e9de",
+				"text": "Page 2 readability: 72.23, engagement: 0, grammatical: 100, semantic: 100, importantWords: 100, similarity: 22.67, "
+			}
+		}
+	];
+
+	return gapi.client.slides.presentations.batchUpdate({
+		presentationId: "1H1yHtJcQ5lzkfFkPpc85qvb97d2OIKmPS60ZhbFP4mE",
+		requests: requests
+	}).then((createSlideResponse) => {
+		return true;
+	});
+}
 
 
 async function removeParagraph(slidePageID, objectID, paragraphIndex) {
@@ -6279,6 +6811,30 @@ function isPossibleToAdd(dsStructure) {
 	else return false;
 }
 
+function getShorteningOnDocSlideStructure(s, r) {
+	var obj = docSlideStructure[s].resources[r];
+	var text = obj.originalContent.contents;
+
+	const requestOptions = {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(
+			{
+				"content": {
+					"text": text
+				}
+			}
+		),
+	};
+
+	fetch('http://localhost:8010/proxy/get_shortenings_abstract', requestOptions)
+		.then(response => response.json())
+		.then(data => {
+			return data;
+		});
+	
+}
+
 async function automaticallyPutContents(textInfo, mapping) {
 	console.log(textInfo);
 	console.log(mapping);
@@ -6308,6 +6864,8 @@ async function automaticallyPutContents(textInfo, mapping) {
 		.template 
 	*/
 
+	var resourceIndex = -1;
+
 	if(flag) { // add to the current slide
 		if (docSlideStructure[index].template.id == "DEFAULT") {
 			var slideID = docSlideStructure[index].slide.id;
@@ -6325,6 +6883,8 @@ async function automaticallyPutContents(textInfo, mapping) {
 				}
 			});
 
+			resourceIndex = docSlideStructure[index].resources.length-1;
+
 			var updates = {};
 			var len = docSlideStructure[index].resources.length;
 
@@ -6333,6 +6893,7 @@ async function automaticallyPutContents(textInfo, mapping) {
 			await firebase.database().ref().update(updates);
 
 			handleChangeText(index, len-1, false);
+			getShorteningOnDocSlideStructure(index, resourceIndex);
 
 			var v = getDocSlideStructureView(index);
 
@@ -6397,6 +6958,8 @@ async function automaticallyPutContents(textInfo, mapping) {
 			]
 		});
 
+		resourceIndex = 0;
+
 		firebase.database().ref("/users/" + userName + '/docSlideStructure').set(docSlideStructure);
 
 		console.log(docSlideStructure);
@@ -6453,6 +7016,7 @@ async function automaticallyPutContents(textInfo, mapping) {
 			requests: requests
 		}).then((createSlideResponse) => {
 			// successfully pasted the text
+			getShorteningOnDocSlideStructure(index+1, resourceIndex);
 
 			writeSlideMappingInfo(slideID, bodyID, 0, mapping.key).then( () => {
 				var v = getDocSlideStructureView(index + 1);
