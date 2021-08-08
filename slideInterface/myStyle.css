@@ -1322,6 +1322,7 @@ width: 100%;
   }
 
   #slideDeckCompareDivOriginalSlides {
+	  float: left;
 	  height: 90%;
 	  width: 40%;
 	  top: 5%;
@@ -1333,6 +1334,12 @@ width: 100%;
   }
 
   #slideDeckCompareDivOriginalSlidesTitle {
+	  font-size: 20px;
+	  font-weight: bold;
+	  margin: 20px;
+  }
+
+  #slideDeckCompareDivResultSlidesTitle {
 	  font-size: 20px;
 	  font-weight: bold;
 	  margin: 20px;
@@ -1622,5 +1629,31 @@ width: 100%;
 	}
 
 	.imageViewQueryKeywordItem.keywordSelected {
+		background-color: yellow;
+	}
+
+	#slideDeckCompareDivResultSlides {
+		float: right;
+    height: 90%;
+    width: 40%;
+    top: 5%;
+    right: 5%;
+    position: relative;
+    box-sizing: border-box;
+    border: 1px solid black;
+    overflow: auto;
+	}
+
+	.adaptationViewSlideThumbnail {
+		width: 100%;
+		height: 100%;
+		box-sizing: border-box;
+		border-radius: 20px;
+		object-fit: contain;
+	}
+
+	.adaptationViewSlideHighlight {
+		display: relative;
+		z-index: 987987987 !important;
 		background-color: yellow;
 	}

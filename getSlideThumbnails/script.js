@@ -1,10 +1,4 @@
-var SLIDE_ID = [//'1Mq57f3Hqi67Nu3fKdUNSwB02nTtlX39i2LEnqAg1Q-Y',
-// '1k3R3mRDwvQFk6GyigP3gdIBfEq1tYfFNDi3CByF6sXo',
-// '1Ht4gApdoNs802gEpFX4ynl6-nnmnhO0KRP6SBN1KDew',
-// '150baW1RkP6MChIuzY1GHZ6DRWBFWtGfE-NYVG0m6_EE',
-'1v45gBikHSZcBB_6oNZH0p_NZiWEwFWNuZKEwQmp3ipQ',
-//'1ZtUhGdNzvvWb3RoHdxLmq0VRBml27lsL7LHwDbu-Hfw',
-]
+var SLIDE_ID = ['1QFQCqsTdadjN0TAfUiyRAmrEQ2u2WEoj7VQsXgnplGA']
 
 function initializeGAPI(callback) {
     // Client ID and API key from the Developer Console
