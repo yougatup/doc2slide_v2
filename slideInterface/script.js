@@ -5008,8 +5008,8 @@ function constructRequestForSingleSlideAdaptation(presentationID, slideID, curSl
 		b.push(obj);
 	}
 
-	retValue.header = h;
-	retValue.body = b;
+	retValue.resources.header = h;
+	retValue.resources.body = b;
 
 	return retValue;
 }
@@ -5127,9 +5127,12 @@ $(document).ready(function() {
 		var req = constructRequestForSingleSlideAdaptation(presentationID, slideID, curSlideIndex, curSlidePage);
 
 		console.log(req);
+		console.log(JSON.stringify(req));
+
 		var result = await getSingleSlideAdaptationRequest(req);
 
 		console.log(result);
+		console.log(JSON.stringify(result));
 
 		var requests = result.requests; 
 
@@ -5160,7 +5163,15 @@ $(document).ready(function() {
 		var slideIndex = $(t).attr("slideindex");
 		var resourceIndex = $(t).attr("resourceindex");
 
-		var rect = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.rect;
+		var objID = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID;
+		var paragraphIndex = getParagraphIndexOfDocSlideStructure(slideIndex, resourceIndex);
+
+		var objectIndicator = $(".objectIndicator[objid='" + objID + "'][paragraphindex='" + paragraphIndex + "']");
+
+		console.log(objID, paragraphIndex);
+		console.log(objectIndicator);
+
+		$(objectIndicator).addClass("highlighted");
 
 		// console.log(rect);
 
@@ -5182,6 +5193,8 @@ $(document).ready(function() {
 
 	$(document).on("mouseleave", ".adaptationTableResourceBody", function(e) {
 		console.log("MOUSE LEAVE");
+
+		$(".objectIndicator.highlighted").removeClass("highlighted");
 	})
 
 	$(document).on("click", ".adaptationTableResourceBody", function(e) {

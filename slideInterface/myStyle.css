@@ -1547,6 +1547,9 @@ width: 100%;
 	  margin: 5px;
   }
 
+  .objectIndicator.highlighted {
+	  background-color: rgba(233, 212, 96, 0.5)
+  }
   #imageViewBody {
 	  height: calc(100% - 30px); 
 	  width: 100%;
