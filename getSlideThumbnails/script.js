@@ -1,4 +1,4 @@
-var SLIDE_ID = ['1QFQCqsTdadjN0TAfUiyRAmrEQ2u2WEoj7VQsXgnplGA']
+var SLIDE_ID = ['Default']
 
 function initializeGAPI(callback) {
     // Client ID and API key from the Developer Console
@@ -166,6 +166,72 @@ async function readData(path) {
     return value;
 }
 
+function initializeLayoutAndStyle() {
+    var updates = {};
+
+    updates["referenceLayout"] = {};
+    updates["referenceStyle"] = {};
+
+    var l = [];
+    var s = [];
+
+    l.push({
+        width: 160,
+        height: 90,
+        boxes: [
+            {
+                top: 20,
+                left: 3,
+                width: 150,
+                height: 30,
+                type: "title",
+            },
+            {
+                left: 3,
+                top: 51,
+                width: 150,
+                height: 15,
+                type: "body",
+            },
+        ]
+    });
+    l.push({
+        width: 160,
+        height: 90,
+        boxes: [
+            {
+                left: 3,
+                top: 1,
+                width: 150,
+                height: 20,
+                type: "title",
+            },
+            {
+                left: 3,
+                top: 32,
+                width: 150,
+                height: 55,
+                type: "body",
+            },
+        ]
+    });
+
+    s.push({
+        title: {
+            "font-size": "20px",
+            "color": "red"
+        },
+        body: {
+            "font-size": "15px",
+        }
+    });
+
+    updates["referenceLayout"][SLIDE_ID[0]] = l;
+    updates["referenceStyle"][SLIDE_ID[0]] = s;
+
+    firebase.database().ref().update(updates);
+}
+
 function loadThumbnail() {
     var tableHTML = '<tr>' + 
                     '<th> Slide number </th>' + 
@@ -283,5 +349,5 @@ function loadThumbnail() {
 $(document).ready(function() {
     console.log("good");
 
-    initializeGAPI(loadThumbnail);
+    initializeGAPI(initializeLayoutAndStyle);
 });

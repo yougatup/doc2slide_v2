@@ -28,7 +28,10 @@ var eventList = {
 	"extension_getSlideIndex": ["extension", "root"],
 	"pdfjs_getDocumentStructure": ["pdfjs", "root"],
 	"root_getDocumentStructure": ["root", "pdfjs"],
-	"extension_hideLoading": ["extension", "root"]
+	"extension_hideLoading": ["extension", "root"],
+	"root_updateSlideThumbnail": ["root", "extension"],
+	"extension_reviewSelected": ["extension", "root"],
+	"extension_thumbnailSelected": ["extension", "root"]
 }
 
 var curSlideState = "WAIT";
@@ -71,7 +74,7 @@ function filmstripUpdated(mutationsList) {
 		if(mutationsList[i].addedNodes.length > 0 && ((
 			mutationsList[i].addedNodes[0].id != null && 
 			mutationsList[i].addedNodes[0].id.startsWith("filmstrip-slide-")) || (
-				mutationsList[i].addedNodes[0].classList.contains("punch-filmstrip-thumbnail")
+				mutationsList[i].addedNodes[0].classList != null && mutationsList[i].addedNodes[0].classList.contains("punch-filmstrip-thumbnail")
 			))
 			) {
 				console.log(mutationsList[i].addedNodes[0]);
@@ -81,7 +84,7 @@ function filmstripUpdated(mutationsList) {
 		if(mutationsList[i].removedNodes.length > 0 && ((
 			mutationsList[i].removedNodes[0].id!= null && 
 			mutationsList[i].removedNodes[0].id.startsWith("filmstrip-slide-")) || (
-				mutationsList[i].removedNodes[0].classList.contains("punch-filmstrip-thumbnail")
+				mutationsList[i].removedNodes[0].classList != null && mutationsList[i].removedNodes[0].classList.contains("punch-filmstrip-thumbnail")
 			))
 			) {
 				console.log(mutationsList[i].removedNodes[0]);
@@ -90,11 +93,19 @@ function filmstripUpdated(mutationsList) {
 
 		if(flag) {
 			issueEvent("extension_hideLoading", null);
+			// pageUpdated();
+			return;
 		}
 	}
 }
 
 function pageUpdated(mutationsList) {
+
+	console.log($("g[id^='filmstrip-slide-']").length);
+
+	$("g[id^='filmstrip-slide-']").each(function (e) {
+		console.log($(this).attr("id"));
+	})
 
 	// console.log($("g[pointer-events='visiblePainted']").children())
 	// console.log($("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8'], path[fill='#1a73e8']"))	
@@ -190,6 +201,8 @@ function pageUpdated(mutationsList) {
 		});
 
 		$("[id^='filmstrip-slide-'][id$='-bg']").each(function() {
+			console.log($(this).attr("id"));
+
 			filmstripInfo.push({
 				filmstripID: $(this).attr("id"),
 				rect: document.getElementById($(this).attr("id")).getBoundingClientRect(),
@@ -247,6 +260,8 @@ function setObserver() {
 	console.log(document.getElementById("pages"));
 	console.log(document.getElementById("filmstrip"));
 
+	pageUpdated();
+
 	if(document.getElementById("pages") != null) {
 		pageUpdateObserver = new MutationObserver(pageUpdated);
 
@@ -264,7 +279,30 @@ function setObserver() {
 
 function chromeExtensionBody() {
 	setObserver();
-	
+
+	$(document).on("click", "#filmstrip", function(e) {
+
+		if($(e.target).hasClass("testtest")) {
+			$(".testtest.selected").removeClass("selected");
+
+			$(e.target).addClass("selected");
+
+			var dsIndex = parseInt($(e.target).attr("dsindex"));
+
+			issueEvent("extension_reviewSelected", {
+				index: dsIndex,
+				pageRect: $("#pages").find("svg")[0].getBoundingClientRect()
+			});
+		}
+		else {
+			console.log($(".testtest"));
+			console.log($(".testtest.selected"));
+
+			$(".testtest.selected").removeClass("selected");
+			issueEvent("extension_thumbnailSelected", null);
+		}
+	})
+
 	$(document).on("mouseup", function(e) {
 		var clickedElement = $("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8']").length;
 		var clickedSlide = $(".punch-filmstrip-thumbnail").children("rect[style='stroke: rgb(242, 153, 0); stroke-width: 3px;']").length;
@@ -320,6 +358,58 @@ function chromeExtensionBody() {
 
 		issueEvent("extension_getSlideIndex", retValue2);
 	})
+
+	$(document).on("root_updateSlideThumbnail", function(e) {
+		var p = e.detail;
+
+		var reviewThumbnail = $(".reviewThumbnail");
+
+		if(reviewThumbnail.length <= 0) {
+			var thumbnail = $(".punch-filmstrip-scroll");
+
+			$(thumbnail).append("<div class='reviewThumbnail'> </div>")
+		}
+
+		$(reviewThumbnail).html('');
+		var thumbnailObj = $(".punch-filmstrip-thumbnail");
+
+		var l = [];
+
+		for(var i=0;i<thumbnailObj.length;i++) {
+			var obj = $(thumbnailObj)[i];
+
+			l.push({
+				obj: obj,
+				y: parseInt($(obj).attr("transform").split(' ')[1].split(')')[0])
+			})
+		}
+
+		l.sort(function (first, second) {
+			return first.y - second.y;
+		});
+
+		var cur = 0;
+		var y_value = 2;
+
+		for(var i=0;i<p.length;i++) {
+			if(p[i].type == "visible") {
+				$(l[cur].obj).attr("transform", "translate(0 " + y_value + ")");
+				cur = cur + 1;
+
+				y_value += 102;
+			}
+			else {
+				$(".reviewThumbnail").append("<div class='testtest' " + 
+											"style='top: " + y_value + "px' " + 
+											"dsindex='" + i + "'>" + 
+						  " </div>")
+
+				y_value += 10;
+			}
+		}
+
+		$(window).trigger("resize");
+	});
 
 	$(document).on("root_getLastObject", function(e) {
 		var p = e.detail;
