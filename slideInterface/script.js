@@ -414,6 +414,8 @@ function updateDocSlideStructure(index) {
 
 	var v = getDocSlideStructureView(index);
 
+	console.log(v);
+
 	$(".adaptationViewDiv[index='" + index + "']")[0].outerHTML = v;
 }
 
@@ -4771,7 +4773,10 @@ function constructRequestForSlideDeckAdaptation(presentationId) {
 	console.log(info);
 
 	retValue.presentationId = presentationId;
+	retValue.fast = true;
+	retValue.method= 'greedy';
 	retValue.resources = {};
+	
 	retValue.resources.title = {
 		"shortenings": [],
 		"singleWord": {
@@ -4793,7 +4798,7 @@ function constructRequestForSlideDeckAdaptation(presentationId) {
 				}
 			}
 		],
-		"id": "temp"
+		// "id": "temp"
 	};
 	retValue.resources.sections = [];
 
@@ -4819,7 +4824,8 @@ function constructRequestForSlideDeckAdaptation(presentationId) {
 					"importantWords": 1
 				}
 			},
-			"phrases": []
+			"phrases": [],
+			// "id": "temp"
 		};
 
 		sectionItem.body = [];
@@ -4974,6 +4980,8 @@ function getIndexOfSlide(slideID) {
 function updateSlide(slideID) {
 	var slideIndex = getIndexOfSlide(slideID);
 
+	console.log(slideIndex);
+
 	updateDocSlideStructure(slideIndex);
 
 	var refPresentationID = referenceSlideID;
@@ -5001,6 +5009,7 @@ function showAdaptedSlidesOnCompareDivResult() {
 
 function constructRequestForSingleSlideAdaptation(presentationID, slideID, targetSlideID) {
 	var retValue = {};
+	var curSlideIndex = getIndexOfSlide(targetSlideID);
 
 	retValue.presentationId = presentationID;
 	retValue.sourcePageId = slideID;
@@ -5135,6 +5144,8 @@ async function adaptSingleSlide(curSlidePage, presentationID, slideID) {
 	var slideIndex = getIndexOfSlide(curSlidePage);
 	var req = constructRequestForSingleSlideAdaptation(presentationID, slideID, curSlidePage);
 
+	console.log(JSON.parse(JSON.stringify(docSlideStructure)));
+
 	console.log(req);
 
 	var result = await getSingleSlideAdaptationRequest(req);
@@ -5144,11 +5155,11 @@ async function adaptSingleSlide(curSlidePage, presentationID, slideID) {
 	if(curSlidePage in slideDB) {
 		for(var obj in slideDB[curSlidePage]) {
 			requests = requests.concat(
-				[{
-					"deleteObject": {
-						"objectId": obj,
-					},
-				}])
+			[{
+				"deleteObject": {
+					"objectId": obj,
+				},
+			}])
 		}
 	}
 
@@ -5167,7 +5178,7 @@ async function adaptSingleSlide(curSlidePage, presentationID, slideID) {
 	firebase.database().ref("/users/" + userName + '/docSlideStructure/' + slideIndex).set(docSlideStructure[slideIndex]);
 	firebase.database().ref("/users/" + userName + '/slideInfo/' + newSlideID).set(slideDB[newSlideID]);
 
-	updateDocSlideStructure(getIndexOfSlide(curSlidePage));
+	updateDocSlideStructure(slideIndex);
 
 	gapi.client.slides.presentations.batchUpdate({
 		presentationId: PRESENTATION_ID,
@@ -5191,7 +5202,6 @@ async function getSingleSlideAdaptationRequest(input) {
 		});
 
 	return res;
-
 }
 
 function getOriginalText(key) {
@@ -5422,10 +5432,18 @@ $(document).ready(function() {
 			else {
 				var source = JSON.parse(JSON.stringify(docSlideStructure[selectedSlideIndex].resources[selectedResourceIndex]));
 
+				console.log(JSON.parse(JSON.stringify(docSlideStructure)));
+
 				docSlideStructure[slideIndex].resources.splice(resourceIndexToInsert, 0, source);
+				docSlideStructure[selectedSlideIndex].resources.splice(selectedResourceIndex, 1);
+
+				console.log(JSON.parse(JSON.stringify(docSlideStructure)));
 
 				firebase.database().ref("/users/" + userName + '/docSlideStructure/' + slideIndex + '/resources/').set(docSlideStructure[slideIndex].resources);
-				firebase.database().ref("/users/" + userName + '/docSlideStructure/' + slideIndex + '/resources/').set(docSlideStructure[selectedSlideIndex].resources);
+				firebase.database().ref("/users/" + userName + '/docSlideStructure/' + selectedSlideIndex + '/resources/').set(docSlideStructure[selectedSlideIndex].resources);
+
+				console.log(docSlideStructure[selectedSlideIndex].slide.id)
+				console.log(docSlideStructure[slideIndex].slide.id)
 
 				updateSlide(docSlideStructure[slideIndex].slide.id);
 				updateSlide(docSlideStructure[selectedSlideIndex].slide.id);
