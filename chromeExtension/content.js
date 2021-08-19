@@ -31,7 +31,8 @@ var eventList = {
 	"extension_hideLoading": ["extension", "root"],
 	"root_updateSlideThumbnail": ["root", "extension"],
 	"extension_reviewSelected": ["extension", "root"],
-	"extension_thumbnailSelected": ["extension", "root"]
+	"extension_thumbnailSelected": ["extension", "root"],
+	"root_locateSlide": ["root", "extension"]
 }
 
 var curSlideState = "WAIT";
@@ -315,6 +316,14 @@ function chromeExtensionBody() {
 			clickedElement: clickedElement,
 			clickedSlide: clickedSlide
 		});
+	})
+
+	$(document).on("root_locateSlide", function(e) {
+		var p = e.detail;
+
+		console.log(p);
+
+		window.location.hash = "slide=id." + p;
 	})
 
 	$(document).on("root_getSlideIndex", function(e) {

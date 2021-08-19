@@ -5,6 +5,7 @@ var rowSelected = false;
 var selectedSlideIndex = -1;
 var selectedResourceIndex = -1;
 
+var curDocSlideStructureIndex = -1;
 var referenceLayout = {};
 var referenceStyle = {};
 
@@ -5234,12 +5235,30 @@ function getOriginalText(key) {
 	}
 }
 
-function showReviewSlide(index) {
+function getInsertPosition(dsIndex) {
+	var cur = 0;
+
+	for(var i=0;i<dsIndex;i++) {
+		var obj = docSlideStructure[i];
+
+		if(obj.type == "visible")
+			cur++;
+	}
+
+	return cur;
+}
+
+function hideReviewSlide() {
+	$("#reviewFinishBtn").hide();
+	$("#reviewSlide").hide();
+
+}
+function showReviewSlide() {
+	$("#reviewFinishBtn").show();
+	$("#reviewSlide").show();
 }
 
 function constructReviewSlide(index) {
-	console.log(docSlideStructure[index]);
-
 	$("#reviewSlide").html('');
 
 	var layoutObj = referenceLayout[referenceSlideID][docSlideStructure[index].layout.index];
@@ -5259,11 +5278,16 @@ function constructReviewSlide(index) {
 		var height = boxObj.height/ layoutObj.height * reviewSlideHeight;
 		var width = boxObj.width / layoutObj.width * reviewSlideWidth;
 
+		var thisStyle = (boxObj.type in styleObj ? styleObj[boxObj.type] : {});
+
 		$("#reviewSlide").append("<div class='reviewSlideObj' index='" + i + "'" + 
 										"style='top: " + top + "; " +
 											   "left: " + left + "; " +
 											   "height: " + height + "; " +
-											   "width: " + width + ";' >" +
+											   "width: " + width + "; " + 
+											   (() => {var s=''; for(var k in thisStyle) s += (k + ':' + thisStyle[k] + ';'); return s;})() +
+											   
+											   "'>" +
 											   "</div>");
 	}
 
@@ -5281,6 +5305,10 @@ function constructReviewSlide(index) {
 	}
 }
 
+function locateSlide(slideID) {
+	issueEvent("root_locateSlide", slideID);
+}
+
 function appendTextToBox(contents, boxIndex) {
 	var boxObj = $(".reviewSlideObj[index='" + boxIndex + "']");
 
@@ -5289,8 +5317,7 @@ function appendTextToBox(contents, boxIndex) {
 
 $(document).ready(function() {
 	$(document).on("extension_thumbnailSelected", function(e) {
-		$("#reviewSlide").hide();
-		$("#reviewFinishBtn").hide();
+		hideReviewSlide();
 
 		var slideIndex = getIndexOfSlide(curSlidePage);
 
@@ -5302,13 +5329,8 @@ $(document).ready(function() {
 		var index = e.detail.index;
 		var rect = e.detail.pageRect;
 
+		curDocSlideStructureIndex = index;
 		constructReviewSlide(index);
-
-		$("#reviewFinishBtn").show();
-		$("#reviewSlide").show();
-
-		console.log(index);
-		console.log(rect);
 
 		$(".objectIndicator").remove();
 		$(".filmstripIndicator").remove();
@@ -5503,7 +5525,124 @@ $(document).ready(function() {
 	});
 
 	$(document).on("click", "#reviewFinishBtn", function(e) {
-		console.log(e.target);
+		showLoadingSlidePlane();
+
+		var insertPosition = getInsertPosition(curDocSlideStructureIndex);
+		var layoutIndex = docSlideStructure[curDocSlideStructureIndex].layout.index;
+		var requests = [];
+		var mappingInfo = [];
+
+		if(referenceSlideID == "Default") {
+			if(layoutIndex == 0) {
+
+			}
+			else if (layoutIndex == 1) {
+				var slideID = makeid(10);
+				var titleObjectID = makeid(10);
+				var bodyObjectID = makeid(10);
+
+				requests.push({
+					createSlide: {
+						objectId: slideID,
+						insertionIndex: insertPosition,
+						slideLayoutReference: {
+							predefinedLayout: 'TITLE_AND_BODY'
+						},
+						placeholderIdMappings: [{
+							objectId: titleObjectID,
+							layoutPlaceholder: {
+								type: "TITLE",
+								index: 0
+							}
+						}, {
+							objectId: bodyObjectID,
+							layoutPlaceholder: {
+								type: "BODY",
+								index: 0
+							}
+						}
+						]
+					}
+				});
+
+				var concat = {};
+
+				for (var i = 0; i < docSlideStructure[curDocSlideStructureIndex].contents.list.length; i++) {
+					var c = docSlideStructure[curDocSlideStructureIndex].contents.list[i].currentContent;
+
+					if (!(c.boxIndex in concat)) {
+						concat[c.boxIndex] = {
+							str: '',
+							cnt: 0
+						};
+					}
+
+					if (c.boxIndex == 0) c.objID = titleObjectID;
+					else {
+						c.objID = bodyObjectID;
+
+						mappingInfo.push({
+							pageID: slideID,
+							objID: bodyObjectID,
+							paragraphIndex: concat[c.boxIndex].cnt,
+							mappingID: docSlideStructure[curDocSlideStructureIndex].contents.list[i].mappingKey
+						})
+					}
+
+					concat[c.boxIndex].str += (concat[c.boxIndex].cnt == 0 ? '' : '\n') + c.contents;
+					concat[c.boxIndex].cnt++;
+				}
+
+				for (var k in concat) {
+					if (k == 0) {
+						requests.push({
+							insertText: {
+								objectId: titleObjectID,
+								text: concat[0].str,
+								insertionIndex: 0
+							}
+						});
+					}
+					else if (k == 1) {
+						requests.push({
+							insertText: {
+								objectId: bodyObjectID,
+								text: concat[1].str,
+								insertionIndex: 0
+							}
+						});
+					}
+				}
+
+				console.log(requests);
+				var updates = {};
+
+				firebase.database().ref().update(updates);
+				docSlideStructure[curDocSlideStructureIndex].type = "visible";
+				docSlideStructure[curDocSlideStructureIndex].slideID = slideID;
+
+				setDocSlideStructure(docSlideStructure);
+
+				gapi.client.slides.presentations.batchUpdate({
+					presentationId: PRESENTATION_ID,
+					requests: requests
+				}).then((createSlideResponse) => {
+					// successfully pasted the text
+
+					writeSlideMappingInfoBulk(mappingInfo).then(() => {
+						console.log(JSON.parse(JSON.stringify(docSlideStructure)));
+
+						showDocSlideView(curDocSlideStructureIndex);
+						updateSlideThumbnail();
+						locateSlide(slideID);
+
+						hideReviewSlide();
+					});
+
+					return true;
+				});
+			}
+		}
 	});
 
 	$(document).on("mouseup", function(e) {
@@ -6046,7 +6185,7 @@ $(document).ready(function() {
 
 		$(document).on("extension_pageUpdated", function(e) {
 			if (adaptivePlaneStatus != 2) {
-				console.log(docSlideStructure);
+				console.log(JSON.parse(JSON.stringify(docSlideStructure)));
 
 				var tempCnt = 1;
 				var p = e.detail;
@@ -6119,6 +6258,7 @@ $(document).ready(function() {
 				curSlidePage = p.pageID;
 				curSlideIndex = idx;
 
+				curDocSlideStructureIndex = idx;
 				showDocSlideView(idx);
 
 				visualizeSlideObjects();
@@ -7078,18 +7218,18 @@ async function writeSlideMappingInfoBulk(elems) {
 	for(var e=0;e<elems.length;e++) {
 		var elem = elems[e];
 
-		updates['/users/' + userName + '/slideInfo/' + elem.slideID + '/' + elem.objID + '/' + elem.paragraphIndex] = {
+		updates['/users/' + userName + '/slideInfo/' + elem.pageID + '/' + elem.objID + '/' + elem.paragraphIndex] = {
 			mappingID: elem.mappingID
 		}
 
 		if(slideDB == null) slideDB = {};
-		if(!(elem.slideID in slideDB)) slideDB[elem.slideID] = {};
-		if(!(elem.objID in slideDB[elem.slideID])) slideDB[elem.slideID][elem.objID] = [];
+		if(!(elem.pageID in slideDB)) slideDB[elem.pageID] = {};
+		if(!(elem.objID in slideDB[elem.pageID])) slideDB[elem.pageID][elem.objID] = [];
 
-		updates['/users/' + userName + '/slideInfo/' + elem.sldieID+ '/' + elem.objID + '/' + elem.paragraphIndex] = {
+		updates['/users/' + userName + '/slideInfo/' + elem.pageID + '/' + elem.objID + '/' + elem.paragraphIndex] = {
 			mappingID: elem.mappingID 
 		}
-		slideDB[elem.slideID][elem.objID][elem.paragraphIndex] = {
+		slideDB[elem.pageID][elem.objID][elem.paragraphIndex] = {
 			mappingID: elem.mappingID
 		}
 	}
@@ -7789,7 +7929,7 @@ function getDocSlideStructureView(index) {
 
 	console.log(docSlideStructure[index]);
 
-	return "<div class='adaptationViewDiv' index='" + index + "'>" +
+	return "<div class='adaptationViewDiv' index='" + index + "' " + ("slideID" in docSlideStructure[index] ? ("slideid='" + docSlideStructure[index].slideID) + "'": '') + ">" +
 		"<div class='adaptationViewDocument'>" +
 		"<table class='adaptationViewDocumentTable'>" +
 			getAdaptationViewBodyContents(index) + 
@@ -7924,9 +8064,6 @@ function updateSlideThumbnail() {
 }
 
 async function automaticallyPutContents(textInfo, mapping) {
-	console.log(textInfo);
-	console.log(mapping);
-
 	var sectionKey = getSectionKey(textInfo.pageNumber, textInfo.startWordIndex, textInfo.endWordIndex);
 
 	console.log(sectionKey);
@@ -7940,17 +8077,11 @@ async function automaticallyPutContents(textInfo, mapping) {
 		if(docSlideStructure[i].contents.sectionKey == sectionKey) {
 			index = i;
 			
-			if(isPossibleToAdd(docSlideStructure[i])) flag = true;
+			if(docSlideStructure[i].type != "visible" && isPossibleToAdd(docSlideStructure[i])) flag = true;
 
 			break;
 		}
 	}
-
-	/*
-		.resources = []
-		.sectionKey 
-		.template 
-	*/
 
 	var resourceIndex = -1;
 
@@ -7971,7 +8102,9 @@ async function automaticallyPutContents(textInfo, mapping) {
 			});
 
 			updateSlideThumbnail();
+
 			setDocSlideStructure(docSlideStructure);
+			showDocSlideView(curDocSlideStructureIndex);
 
 			/*
 			var shorteningResult = findShortening(mapping.key);
@@ -8091,6 +8224,7 @@ async function automaticallyPutContents(textInfo, mapping) {
 
 		updateSlideThumbnail();
 		setDocSlideStructure(docSlideStructure);
+		showDocSlideView(curDocSlideStructureIndex);
 
 /*
 		resourceIndex = 0;
