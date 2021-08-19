@@ -288,10 +288,14 @@ function chromeExtensionBody() {
 
 			$(e.target).addClass("selected");
 
-			var dsIndex = parseInt($(e.target).attr("dsindex"));
+			console.log($(e.target));
+
+			var slideID = $(e.target).attr("slideid");
+
+			console.log(slideID);
 
 			issueEvent("extension_reviewSelected", {
-				index: dsIndex,
+				slideID: slideID,
 				pageRect: $("#pages").find("svg")[0].getBoundingClientRect()
 			});
 		}
@@ -323,7 +327,12 @@ function chromeExtensionBody() {
 
 		console.log(p);
 
-		window.location.hash = "slide=id." + p;
+		if(p.reviewFlag) {
+			$(".testtest[slideid='" + p.slideID + "']").addClass("selected");
+		}
+		else {
+			window.location.hash = "slide=id." + p.slideID;
+		}
 	})
 
 	$(document).on("root_getSlideIndex", function(e) {
@@ -410,7 +419,7 @@ function chromeExtensionBody() {
 			else {
 				$(".reviewThumbnail").append("<div class='testtest' " + 
 											"style='top: " + y_value + "px' " + 
-											"dsindex='" + i + "'>" + 
+											"dsindex='" + i + "' slideid='" + p[i].slideID + "'>" + 
 						  " </div>")
 
 				y_value += 10;
