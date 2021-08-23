@@ -32,12 +32,17 @@ var eventList = {
 	"root_updateSlideThumbnail": ["root", "extension"],
 	"extension_reviewSelected": ["extension", "root"],
 	"extension_thumbnailSelected": ["extension", "root"],
-	"root_locateSlide": ["root", "extension"]
+	"root_locateSlide": ["root", "extension"],
+	"root_updateDocSlideStructure": ["root", "extension"]
 }
+
+var locateSlideID = '';
+var locateFlag = false;
 
 var curSlideState = "WAIT";
 var curMonitoringParagraph = null;
 var removedBorderList = [];
+var docSlideStructure = [];
 
 function issueEvent(eventName, data) {
     var myEvent = new CustomEvent(eventName, {detail: data} );
@@ -69,6 +74,7 @@ function focusObject(objID) {
 
 function filmstripUpdated(mutationsList) {
 	console.log(mutationsList);
+
 	var flag = false;
 
 	for(var i=0;i<mutationsList.length;i++) {
@@ -93,9 +99,56 @@ function filmstripUpdated(mutationsList) {
 			}
 
 		if(flag) {
+			updateFilmstripFromDocSlideStructure();
+			locateSlideIfExist();
 			issueEvent("extension_hideLoading", null);
 			// pageUpdated();
 			return;
+		}
+	}
+}
+
+function locateSlideIfExist() {
+	if(locateFlag) {
+		for(var i=0;i<docSlideStructure.length;i++) {
+			if(docSlideStructure[i].slide.id == locateSlideID) {
+				window.location.hash = "slide=id." + locateSlideID;
+				break;
+			}
+		}
+	}
+}
+
+function updateFilmstripFromDocSlideStructure() {
+	var retValue = [];
+	$(".punch-filmstrip-thumbnail").each(function () {
+		var y_coordinate = $(this).attr("transform").split(' ')[1];
+		y_coordinate = y_coordinate.substr(0, y_coordinate.length - 1);
+
+		retValue.push({
+			outerObj: $(this).find(".punch-filmstrip-thumbnail-background")[0],
+			innerObj: $(this).find(".punch-filmstrip-thumbnail-border-inner")[0],
+			y_coordinate: parseInt(y_coordinate)
+		})
+	});
+
+	retValue.sort(function (first, second) {
+		if (first.y_coordinate > second.y_coordinate) return 1;
+		else if (first.y_coordinate == second.y_coordinate) return 0;
+		else return -1;
+	});
+
+	console.log(retValue);
+	console.log(docSlideStructure);
+
+	for(var i=0;i<docSlideStructure.length;i++) {
+		if(docSlideStructure[i].type == "hidden") {
+			$(retValue[i].outerObj).addClass("hidden");
+			$(retValue[i].innerObj).addClass("hidden");
+		}
+		else {
+			$(retValue[i].innerObj).removeClass("hidden");
+			$(retValue[i].outerObj).removeClass("hidden");
 		}
 	}
 }
@@ -300,11 +353,13 @@ function chromeExtensionBody() {
 			});
 		}
 		else {
+			/*
 			console.log($(".testtest"));
 			console.log($(".testtest.selected"));
 
 			$(".testtest.selected").removeClass("selected");
 			issueEvent("extension_thumbnailSelected", null);
+			*/
 		}
 	})
 
@@ -322,17 +377,17 @@ function chromeExtensionBody() {
 		});
 	})
 
+	$(document).on("root_updateDocSlideStructure", function(e) {
+		docSlideStructure = e.detail;
+
+		console.log(docSlideStructure);
+	});
+
 	$(document).on("root_locateSlide", function(e) {
 		var p = e.detail;
 
-		console.log(p);
-
-		if(p.reviewFlag) {
-			$(".testtest[slideid='" + p.slideID + "']").addClass("selected");
-		}
-		else {
-			window.location.hash = "slide=id." + p.slideID;
-		}
+		locateFlag = true;
+		locateSlideID = p.slideID;
 	})
 
 	$(document).on("root_getSlideIndex", function(e) {
@@ -380,51 +435,9 @@ function chromeExtensionBody() {
 	$(document).on("root_updateSlideThumbnail", function(e) {
 		var p = e.detail;
 
-		var reviewThumbnail = $(".reviewThumbnail");
+		docSlideStructure = p;
 
-		if(reviewThumbnail.length <= 0) {
-			var thumbnail = $(".punch-filmstrip-scroll");
-
-			$(thumbnail).append("<div class='reviewThumbnail'> </div>")
-		}
-
-		$(reviewThumbnail).html('');
-		var thumbnailObj = $(".punch-filmstrip-thumbnail");
-
-		var l = [];
-
-		for(var i=0;i<thumbnailObj.length;i++) {
-			var obj = $(thumbnailObj)[i];
-
-			l.push({
-				obj: obj,
-				y: parseInt($(obj).attr("transform").split(' ')[1].split(')')[0])
-			})
-		}
-
-		l.sort(function (first, second) {
-			return first.y - second.y;
-		});
-
-		var cur = 0;
-		var y_value = 2;
-
-		for(var i=0;i<p.length;i++) {
-			if(p[i].type == "visible") {
-				$(l[cur].obj).attr("transform", "translate(0 " + y_value + ")");
-				cur = cur + 1;
-
-				y_value += 102;
-			}
-			else {
-				$(".reviewThumbnail").append("<div class='testtest' " + 
-											"style='top: " + y_value + "px' " + 
-											"dsindex='" + i + "' slideid='" + p[i].slideID + "'>" + 
-						  " </div>")
-
-				y_value += 10;
-			}
-		}
+		updateFilmstripFromDocSlideStructure();
 
 		$(window).trigger("resize");
 	});
