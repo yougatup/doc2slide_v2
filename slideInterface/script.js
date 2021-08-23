@@ -5579,6 +5579,28 @@ $(document).ready(function() {
 	});
 
 	$(document).on("click", "#reviewCancelBtn", function(e) {
+		showLoadingSlidePlane();
+
+		var requests = [];
+
+		requests.push({
+			"deleteObject": {
+				"objectId": docSlideStructure[curDocSlideStructureIndex].slide.id,
+			},
+		});
+
+		docSlideStructure.splice(curDocSlideStructureIndex, 1);
+
+		updateDocSlideToExtension();
+		setDocSlideStructure(docSlideStructure);
+
+		gapi.client.slides.presentations.batchUpdate({
+			presentationId: PRESENTATION_ID,
+			requests: requests
+		}).then((createSlideResponse) => {
+			console.log(createSlideResponse);
+		});
+		/*
 		if (("list" in docSlideStructure[curDocSlideStructureIndex].contents)) {
 			for (var i = 0; i < docSlideStructure[curDocSlideStructureIndex].contents.list.length; i++) {
 				var item = docSlideStructure[curDocSlideStructureIndex].contents.list[i];
@@ -5613,6 +5635,7 @@ $(document).ready(function() {
 
 		updateSlideThumbnail();
 		hideReviewSlide();
+		*/
 	});
 
 	$(document).on("click", "#reviewFinishBtn", function(e) {
@@ -6355,10 +6378,6 @@ $(document).ready(function() {
 
 				if(updateFlag) setDocSlideStructure(docSlideStructure);
 
-				if($("#reviewSlide").css("display") == "block") {
-
-				}
-				else {
 					curSlideObjects = p;
 
 					var pageID = p.pageID;
@@ -6374,9 +6393,9 @@ $(document).ready(function() {
 				visualizeSlideObjects();
 
 				if(docSlideStructure[idx].type == "hidden") showReviewSlide();
+				else hideReviewSlide();
 
 				hideLoadingSlidePlane();
-			}
 			return;
 /*
 			var resourceDictionary = {};
@@ -6457,6 +6476,7 @@ $(document).ready(function() {
 			hideLoadingSlidePlane();
 
 			curSlidePage = p.pageID;
+			}
 		});
 
 		$(document).on("click", ".mappingIndicator.mapped", function(e) {
