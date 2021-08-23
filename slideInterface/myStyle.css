@@ -1788,3 +1788,10 @@ width: 100%;
 	pointer-events: auto !important;
 	display: none;
 }
+
+.stylePopOver {
+	top: -10px;
+	height: 20px;
+	width: 20px;
+	border: 1px solid black;
+}

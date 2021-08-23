@@ -412,6 +412,15 @@ function showDocSlideView(i) {
 	}
 }
 
+function updateDocSlide() {
+	setDocSlideStructure(docSlideStructure);
+	updateDocSlideToExtension(docSlideStructure);
+
+	var idx = getIndexOfSlide(curSlidePage);
+
+	showDocSlideView(idx);
+}
+
 function updateDocSlideStructure(index) {
 	console.log(index);
 	console.log(docSlideStructure);
@@ -5453,6 +5462,16 @@ $(document).ready(function() {
 		adaptSingleSlide(curSlidePage, presentationID, slideID);
 	});
 
+	$(document).on("mouseover", ".styleRow", function(e) {
+		console.log("nice");
+		console.log(e.target);
+	})
+
+	$(document).on("mouseleave", ".styleRow", function(e) {
+		console.log("nice");
+		console.log(e.target);
+	})
+
 	$(document).on("mouseover", ".adaptationTableResourceBody", function(e) {
 		var root = e.target;
 
@@ -6303,20 +6322,25 @@ $(document).ready(function() {
 
 				if(updateFlag) setDocSlideStructure(docSlideStructure);
 
-				curSlideObjects = p;
+				if($("#reviewSlide").css("display") == "block") {
 
-				var pageID = p.pageID;
+				}
+				else {
+					curSlideObjects = p;
 
-				var idx = parseInt($(".adaptationViewDiv[slideID='" + pageID + "']").attr("index"));
+					var pageID = p.pageID;
 
-				curSlidePage = p.pageID;
-				curSlideIndex = idx;
+					var idx = parseInt($(".adaptationViewDiv[slideID='" + pageID + "']").attr("index"));
 
-				curDocSlideStructureIndex = idx;
-				showDocSlideView(idx);
+					curSlidePage = p.pageID;
+					curSlideIndex = idx;
 
-				visualizeSlideObjects();
-				hideLoadingSlidePlane();
+					curDocSlideStructureIndex = idx;
+					showDocSlideView(idx);
+
+					visualizeSlideObjects();
+					hideLoadingSlidePlane();
+				}
 			}
 			return;
 /*
@@ -8117,6 +8141,38 @@ function updateSlideThumbnail() {
 	issueEvent("root_updateSlideThumbnail", docSlideStructure);
 }
 
+function putSingleContent(index, content) {
+	showLoadingSlidePlane();
+
+	docSlideStructure[index].contents.list.push({
+		"mappingKey": mapping.key,
+		originalContent: content,
+		currentContent: {
+			objID: null,
+			boxIndex: 1,
+			...content
+		}
+	});
+
+	var requests = genRequestOfDocSlide(index);
+	
+	executeRequests(requests);
+}
+
+function genRequestOfDocSlide(index) {
+
+}
+
+function executeRequests(r) {
+	gapi.client.slides.presentations.batchUpdate({
+		presentationId: PRESENTATION_ID,
+		requests: r
+	}).then((createSlideResponse) => {
+		// successfully pasted the text
+		return true;
+	});
+}
+
 async function automaticallyPutContents(textInfo, mapping) {
 	var sectionKey = getSectionKey(textInfo.pageNumber, textInfo.startWordIndex, textInfo.endWordIndex);
 
@@ -8141,6 +8197,11 @@ async function automaticallyPutContents(textInfo, mapping) {
 
 	if(flag) { // add to the current slide
 		if (referenceSlideID == "Default") {
+			putSingleContent(index, {
+					type: "text",
+					contents: mapping.text,
+			});
+/*
 			docSlideStructure[index].contents.list.push({
 				"mappingKey": mapping.key,
 				originalContent: {
@@ -8155,7 +8216,6 @@ async function automaticallyPutContents(textInfo, mapping) {
 				}
 			});
 
-
 			updateSlideThumbnail();
 
 			curDocSlideStructureIndex = index;
@@ -8165,7 +8225,7 @@ async function automaticallyPutContents(textInfo, mapping) {
 
 			showReviewSlide(index);
 			locateSlide(docSlideStructure[index].slideID, true)
-
+*/
 			/*
 			var shorteningResult = findShortening(mapping.key);
 
