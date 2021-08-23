@@ -2398,6 +2398,10 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
 	background-color: yellow;
 }
 
+.textSegment {
+    cursor: pointer;
+}
+
 .textSegment[mappingid] {
 	background-color: red;
 }

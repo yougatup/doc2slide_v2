@@ -138,8 +138,8 @@ function updateFilmstripFromDocSlideStructure() {
 		else return -1;
 	});
 
-	console.log(retValue);
-	console.log(docSlideStructure);
+	// console.log(retValue);
+	// console.log(docSlideStructure);
 
 	for(var i=0;i<docSlideStructure.length;i++) {
 		if(docSlideStructure[i].type == "hidden") {

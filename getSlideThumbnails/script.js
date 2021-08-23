@@ -1,4 +1,6 @@
 var SLIDE_ID = ['Default']
+var source_presentation_id = "1HbS5f9IcAJJwWJqjLPEac03OCNu6Oz_iHfPGsbhYYO4";
+var TEMP_PRESENTATION_ID = '1SV3S92pjwtGGwKvjJDJ7d6cxUvS2CCfeQ3yh2Tdz8pQ';
 
 function initializeGAPI(callback) {
     // Client ID and API key from the Developer Console
@@ -164,6 +166,114 @@ async function readData(path) {
     const value = snapshot.val();
 
     return value;
+}
+
+async function postRequest(url, body) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(body),
+	};
+
+	var res = await fetch(url, requestOptions)
+		.then(response => response.json())
+		.then(data => {
+			return data;
+		});
+
+	return res;
+}
+
+async function loadLayoutAndStyle() {
+    var r = await postRequest(
+        "http://localhost:8010/proxy/get_data_single_presentation", {
+        "presentationId": source_presentation_id
+    });
+
+    console.log(r);
+
+    var requests = [];
+
+    for(var i=0;i<r.layouts.length;i++) {
+        var l = r.layouts[i];
+        var rr = l.requests;
+
+        l.slideID = rr[0].createSlide.objectId;
+
+        requests = requests.concat(rr);
+    }
+
+    console.log(requests);
+
+	gapi.client.slides.presentations.batchUpdate({
+		presentationId: TEMP_PRESENTATION_ID,
+		requests: requests
+	}).then((createSlideResponse) => {
+		console.log(createSlideResponse);
+
+        for (var i = 11; i < r.layouts.length; i++) {
+            var mySlideID = r.layouts[i].slideID;
+
+            gapi.client.slides.presentations.pages.getThumbnail({
+                presentationId: TEMP_PRESENTATION_ID,
+                pageObjectId: mySlideID
+            }).then((function (my_index, my_s_id) {
+                return function (response) {
+                    console.log(my_s_id);
+                    console.log(my_index);
+                    console.log(response);
+
+                    var updates = {};
+
+                    fetch(response.result.contentUrl)
+                        .then(res => res.blob()) // Gets the response and returns it as a blob
+                        .then(blob => {
+                            // Here's where you get access to the blob
+                            // And you can use it for whatever you want
+                            // Like calling ref().put(blob)
+
+                            // Here, I use it to make an image appear on the page
+                            console.log(blob);
+
+                            const ref = firebase.storage().ref("/preprocessing/" + source_presentation_id);
+
+                            ref.child(my_index + "___" + my_s_id + ".png").put(blob).then(function (obj) {
+                                obj.ref.getDownloadURL().then(u => {
+                                    console.log(u);
+/*
+                                    $("#" + my_s_id + "_img").html(
+                                        "<img src=" + u + " class='slideThumbnail'> </img>");
+                                    $("#" + my_s_id + "_url").html(u);
+*/
+                                    updates['/referenceLayout/' + source_presentation_id + '/' + r.layouts[my_index].pageId] = {
+                                        slideID: my_s_id,
+                                        thumbnailURL: u,
+                                        boxes: r.layouts[my_index].boxes,
+                                        pageSize: r.layouts[my_index].pageSize,
+                                    }
+
+                                    firebase.database().ref().update(updates);
+                                })
+                            });
+                        });
+
+
+                }
+            })(i, mySlideID)
+            );
+
+
+
+        }
+
+        var uu = {};
+
+        for(var i=11;i<r.styles.length;i++) {
+            uu['/referenceStyle/' + source_presentation_id + '/' + r.styles[i].pageId] = r.styles[i]
+        }
+
+        firebase.database().ref().update(uu);
+    });
 }
 
 function initializeLayoutAndStyle() {
@@ -349,5 +459,5 @@ function loadThumbnail() {
 $(document).ready(function() {
     console.log("good");
 
-    initializeGAPI(initializeLayoutAndStyle);
+    initializeGAPI(loadLayoutAndStyle);
 });

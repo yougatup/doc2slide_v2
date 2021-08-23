@@ -9,7 +9,8 @@ var curDocSlideStructureIndex = -1;
 var referenceLayout = {};
 var referenceStyle = {};
 
-var referenceSlideID = "Default";
+var referenceSlideID = "1HbS5f9IcAJJwWJqjLPEac03OCNu6Oz_iHfPGsbhYYO4";
+var DEFAULT_SLIDE_ID = "1HbS5f9IcAJJwWJqjLPEac03OCNu6Oz_iHfPGsbhYYO4";
 var slide_deck_adaptation_req;
 var num_slides_in_total = 0;
 var global_count = 0;
@@ -477,12 +478,14 @@ async function writeInitializeSlides() {
 	await firebase.database().ref().update(updates);
 }
 async function initializeSlide() {
+	console.log("HUH?");
+
 	writeInitializeSlides().then(() => {
 		console.log(slideDB);
 
 		gapi.client.slides.presentations.get({
 			presentationId: PRESENTATION_ID
-		}).then(function (response) {
+		}).then(async function (response) {
 			var slides = response.result.slides;
 
 			initialSlideCnt = slides.length;
@@ -500,6 +503,37 @@ async function initializeSlide() {
 				});
 			}
 
+			var resultingSlideID = "THIS_IS_FIRST_SLIDE";
+
+			requests.push({
+				createSlide: {
+					objectId: resultingSlideID,
+					slideLayoutReference: {
+						predefinedLayout: 'BLANK'
+					}
+				}
+			});
+
+			var res = await createSlide(referenceSlideID, {
+				header: {
+					currentContent: {
+						contents: "Sketching Informal Presentations"
+					}
+				},
+				body: [{
+					currentContent: {
+						contents: "Sketching Informal Presentations"
+					}
+				}]
+			}, "p", "p", resultingSlideID)
+
+			console.log(res);
+
+			requests = requests.concat(res.requests);
+
+			console.log(requests);
+
+			/*
 			requests.push({
 				createSlide: {
 					objectId: "THIS_IS_INITIAL_SLIDE",
@@ -509,6 +543,7 @@ async function initializeSlide() {
 					}
 				}
 			});
+			*/
 			/*
 				  requests.push({
 					 createSlide: {
@@ -540,6 +575,69 @@ function getSlideWidth(x) {
 	return x / RENDER_SLIDE_WIDTH * GOOGLE_SLIDE_WIDTH;
 }
 
+async function createSlide(presentationIDToAdapt, contents, layoutSlideID, styleSlideID, slideID) {
+	var r = {};
+	var resultSlideID = slideID;
+
+	r.presentationId = presentationIDToAdapt;
+	r.targetPageId = resultSlideID;
+	r.layoutPageId = layoutSlideID;
+	r.stylesPageId = styleSlideID;
+	r.pageNum = 1;
+
+	r.settings = {
+		fast: true,
+		contentControl: false
+	};
+	r.resources = {};
+
+	r.header = {
+		shortenings: [
+			{
+				text: contents.header.currentContent.contents,
+				score: {
+					grammatical: 1,
+					semantic: 1
+				}
+			}
+		],
+		singleWord: {},
+		phrases: [],
+	};
+
+	r.body = [];
+
+	for(var i=0;i<contents.body.length;i++) {
+		r.body.push({
+			paragraph: {
+				shortenings: [
+					{
+						text: contents.body[i].currentContent.contents,
+						score: {
+							grammatical: 1,
+							semantic: 1,
+							importantWords: 1
+						}
+					}
+				],
+				singleWord: {},
+				phrases: [],
+				id: contents.body[i].mappingKey == "null" ? null : contents.body[i].mappingKey
+			}
+		});
+	}
+
+	console.log(JSON.stringify(r));
+
+	var res = await postRequest(
+		"http://localhost:8010/proxy/generate_slide_requests", r
+	);
+
+	console.log(res);
+
+	return res;
+}
+
 function initializeDB() {
 	// testGAPICall();
 
@@ -562,7 +660,7 @@ function initializeDB() {
 				structureHighlightDB = {};
 
 			clearDB().then( () => {
-				initializeSlide().then( () => {
+				initializeSlide().then( async () => {
 					issueEvent("root_openPDF", null);
 
 					currentSlideDeckConstraints.sparseDense = 0;
@@ -578,24 +676,27 @@ function initializeDB() {
 						"type": "visible",
 						"contents": {},
 						"layout": {
-							"index": 0
+							"slideId": "p"
 						},
 						"style": {
-							"index": 0
+							"slideId": "p"
 						},
 						"slide": {
-							id: "THIS_IS_INITIAL_SLIDE",
+							id: "THIS_IS_FIRST_SLIDE",
 							objs: []
 						}
 					}];
-					referenceSlideID = "Default";
+
+					referenceSlideID = DEFAULT_SLIDE_ID;
 
 					setDocSlideStructure(docSlideStructure);
 					showDocSlideView(0);
 
+					/*
 					for (var key in structureHighlightDB) {
 						currentSlideDeckConstraints.sectionLevelCoverage[key] = 0;
 					}
+					*/
 
 					// initializeConstraintsPlane();
 
@@ -955,11 +1056,11 @@ function visualizeSlideObjects() {
 				var rectInfo = curSlideObjects.objects[i].paragraph[k];
 				var mappedFlag = false;
 
-				console.log(curSlideObjects.pageID, objectID, paragraphID);
+				// console.log(curSlideObjects.pageID, objectID, paragraphID);
 				if(curSlideObjects.pageID in slideDB && 
 				   objectID in slideDB[curSlideObjects.pageID] && 
 				   paragraphID in slideDB[curSlideObjects.pageID][objectID])
-				   console.log(slideDB[curSlideObjects.pageID][objectID][paragraphID])
+				   // console.log(slideDB[curSlideObjects.pageID][objectID][paragraphID])
 
 				if(curSlideObjects.pageID in slideDB && 
 				   objectID in slideDB[curSlideObjects.pageID] && 
@@ -1099,8 +1200,8 @@ async function findImages(queries) {
 
 function getParagraphIndexOfDocSlideStructure(s, r) {
 	var slideID = docSlideStructure[s].slide.id;
-	var mappingKey = docSlideStructure[s].resources[r].mappingKey;
-	var slideObjID = docSlideStructure[s].resources[r].currentContent.objID;
+	var mappingKey = docSlideStructure[s].contents.list[r].mappingKey;
+	var slideObjID = docSlideStructure[s].contents.list[r].currentContent.objID;
 
 	if(slideID in slideDB && slideObjID in slideDB[slideID]) {
 		for(var i=0;i<slideDB[slideID][slideObjID].length;i++) {
@@ -2393,7 +2494,7 @@ function organizeHighlightOnSections() {
 
 		if(!(sectionKey in info)) info[sectionKey] = [];
 
-		info[sectionKey] = info[sectionKey].concat(docSlideStructure[i].contents.list)
+		info[sectionKey] = info[sectionKey].concat(docSlideStructure[i].contents.list.slice(1))
 	}
 
 	return info;
@@ -4363,8 +4464,8 @@ function showIndividualSlides(presentationID) {
 }
 
 function showTextShorteningView(slideIndex, resourceIndex) {
-	var originalText = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
-	var currentText = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents;
+	var originalText = docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents;
+	var currentText = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents;
 
 	$("#textShorteningViewOriginalText").html(originalText)
 	$("#textShorteningViewCurrentText").html(currentText)
@@ -4893,8 +4994,8 @@ function constructRequestForSlideDeckAdaptation(presentationId) {
 								"importantWords": 1
 							}
 						}
-
 					],
+					'id': (info[sectionKey][i].mappingKey == "null" ? null : info[sectionKey][i].mappingKey)
 				}
 			})
 		}
@@ -4960,6 +5061,22 @@ function genSlideThumbnail(presentationID) {
 			}).then((function (my_index, my_s_id) {
 				return function (response) {
 					console.log(response);
+					console.log(response.result.contentUrl);
+
+					/*
+					adaptedSlideURLs[my_index] = {
+						slideID: my_s_id,
+						thumbnailURL: response.result.contentUrl
+					}
+
+					global_count++;
+
+					if (global_count >= num_slides_in_total) {
+						showAdaptedSlidesOnCompareDivResult();
+					}
+					*/
+					// setTimeout(() => {  fetch(response.result.contentUrl).then(res => res.blob()).then(blob => { console.log(blob); }) }, 10000);
+
 					fetch(response.result.contentUrl)
 						.then(res => res.blob()) // Gets the response and returns it as a blob
 						.then(blob => {
@@ -5212,7 +5329,7 @@ function updateMappingInternal(slideID, m_body, pushFlag) {
 					currentContent: {
 						type: "text",
 						objID: objID,
-						contents: getOriginalText(textKey),
+						contents: m_body.pageElements[objID].contents[j].text,
 						rect: m_body.pageElements[objID].rectangle
 					},
 					mappingKey: textKey,
@@ -5231,13 +5348,13 @@ function updateMappingInternal(slideID, m_body, pushFlag) {
 					currentContent: {
 						type: "text",
 						objID: objID,
-						contents: '',
+						contents: m_body.pageElements[objID].contents[j].text,
 						rect: m_body.pageElements[objID].rectangle
 					},
 					mappingKey: "null",
 					originalContent: {
 						type: "text",
-						contents: ''
+						contents: m_body.pageElements[objID].contents[j].text,
 					}
 				})
 			}
@@ -5615,8 +5732,8 @@ $(document).ready(function() {
 
 		var objectIndicator = $(".objectIndicator[objid='" + objID + "'][paragraphindex='" + paragraphIndex + "']");
 
-		console.log(objID, paragraphIndex);
-		console.log(objectIndicator);
+		// console.log(objID, paragraphIndex);
+		// console.log(objectIndicator);
 
 		$(objectIndicator).addClass("highlighted");
 
@@ -5639,7 +5756,7 @@ $(document).ready(function() {
 	})
 
 	$(document).on("mouseleave", ".adaptationTableResourceBody", function(e) {
-		console.log("MOUSE LEAVE");
+		// console.log("MOUSE LEAVE");
 
 		$(".objectIndicator.highlighted").removeClass("highlighted");
 	})
@@ -5893,28 +6010,28 @@ $(document).ready(function() {
 			else resourceIndexToInsert = resourceIndex;
 
 			if(slideIndex == selectedSlideIndex) {
-				var source = JSON.parse(JSON.stringify(docSlideStructure[selectedSlideIndex].resources[selectedResourceIndex]));
-				docSlideStructure[selectedSlideIndex].resources.splice(selectedResourceIndex, 1);
+				var source = JSON.parse(JSON.stringify(docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex]));
+				docSlideStructure[selectedSlideIndex].contents.list.splice(selectedResourceIndex, 1);
 
-				if(resourceIndex < resourceIndexToInsert) docSlideStructure[selectedSlideIndex].resources.splice(resourceIndexToInsert-1, 0, source);
-				else docSlideStructure[selectedSlideIndex].resources.splice(resourceIndexToInsert, 0, source);
+				if(resourceIndex < resourceIndexToInsert) docSlideStructure[selectedSlideIndex].contents.list.splice(resourceIndexToInsert-1, 0, source);
+				else docSlideStructure[selectedSlideIndex].contents.list.splice(resourceIndexToInsert, 0, source);
 
 				updateSlide(docSlideStructure[slideIndex].slide.id);
 
-				firebase.database().ref("/users/" + userName + '/docSlideStructure/' + slideIndex + '/resources/').set(docSlideStructure[selectedSlideIndex].resources);
+				firebase.database().ref("/users/" + userName + '/docSlideStructure/' + slideIndex + '/resources/').set(docSlideStructure[selectedSlideIndex].contents.list);
 			}
 			else {
-				var source = JSON.parse(JSON.stringify(docSlideStructure[selectedSlideIndex].resources[selectedResourceIndex]));
+				var source = JSON.parse(JSON.stringify(docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex]));
 
 				console.log(JSON.parse(JSON.stringify(docSlideStructure)));
 
-				docSlideStructure[slideIndex].resources.splice(resourceIndexToInsert, 0, source);
-				docSlideStructure[selectedSlideIndex].resources.splice(selectedResourceIndex, 1);
+				docSlideStructure[slideIndex].contents.list.splice(resourceIndexToInsert, 0, source);
+				docSlideStructure[selectedSlideIndex].contents.list.splice(selectedResourceIndex, 1);
 
 				console.log(JSON.parse(JSON.stringify(docSlideStructure)));
 
-				firebase.database().ref("/users/" + userName + '/docSlideStructure/' + slideIndex + '/resources/').set(docSlideStructure[slideIndex].resources);
-				firebase.database().ref("/users/" + userName + '/docSlideStructure/' + selectedSlideIndex + '/resources/').set(docSlideStructure[selectedSlideIndex].resources);
+				firebase.database().ref("/users/" + userName + '/docSlideStructure/' + slideIndex + '/resources/').set(docSlideStructure[slideIndex].contents.list);
+				firebase.database().ref("/users/" + userName + '/docSlideStructure/' + selectedSlideIndex + '/resources/').set(docSlideStructure[selectedSlideIndex].contents.list);
 
 				console.log(docSlideStructure[selectedSlideIndex].slide.id)
 				console.log(docSlideStructure[slideIndex].slide.id)
@@ -5945,9 +6062,9 @@ $(document).ready(function() {
 		var slideIndex = parseInt($(curRowObj).attr("slideIndex"));
 		var resourceIndex = parseInt($(curRowObj).attr("resourceIndex"));
 
-		console.log(docSlideStructure[slideIndex].resources[resourceIndex])
+		console.log(docSlideStructure[slideIndex].contents.list[resourceIndex])
 
-		if(docSlideStructure[slideIndex].resources[resourceIndex].currentContent.type == "text") {
+		if(docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.type == "text") {
 			console.log("TEXT");
 
 			showTextShorteningView(slideIndex, resourceIndex);
@@ -6013,6 +6130,8 @@ $(document).ready(function() {
 	});
 
 	$(document).on("click", "#slideDeckCompareApplyBtn", async function(e) {
+		showLoadingSlidePlane();
+
 		var slideDeckObj = $(".checkedSlideDeck");
 
 		console.log(slideDeckObj);
@@ -6032,6 +6151,7 @@ $(document).ready(function() {
 		$("#slideDeckCompareDiv").hide();
 
 		updateMapping(slide_deck_matching);
+		updateDocSlideToExtension();
 
 		var req = await getRequestsForRemovingAllSlidesOnGoogleSlide(PRESENTATION_ID);
 		req = req.concat(slide_deck_adaptation_req);
@@ -6082,10 +6202,12 @@ $(document).ready(function() {
 
 		console.log(JSON.stringify(req));
 
-		var r = await postRequest({
-			"presentationId": "1k3R3mRDwvQFk6GyigP3gdIBfEq1tYfFNDi3CByF6sXo"
-		},
-		"http://localhost:8010/proxy/get_data_single_presentation");
+		var r = await postRequest(
+			"http://localhost:8010/proxy/get_data_single_presentation", {
+				"presentationId": presentationID
+			});
+
+		console.log(r);
 
 		const requestOptions = {
 			method: 'POST',
@@ -6447,10 +6569,10 @@ $(document).ready(function() {
 							type: "visible",
 							contents: {},
 							layout: {
-								index: 1,
+								slideId: "ge93a171212_0_5"
 							},
 							style: {
-								index: 0,
+								slideId: "ge93a171212_0_5"
 							},
 							slide: {
 								id: pageID,
@@ -8080,47 +8202,77 @@ function getAdaptationViewBodyLayout(idx) {
 	var retString = '';
 
 	console.log(referenceSlideID);
+	console.log(idx);
+	console.log(JSON.parse(JSON.stringify(docSlideStructure)));
 
-	if(referenceSlideID != null && referenceSlideID in referenceLayout) {
-		for(var i=0;i<referenceLayout[referenceSlideID].length;i++) {
-			var width = referenceLayout[referenceSlideID][i].width;
-			var height = referenceLayout[referenceSlideID][i].height;
+	var layoutSlideID = docSlideStructure[idx].layout.slideId;
+	var ratio = 0.6;
 
-			var innerString = '';
+	if (referenceSlideID != null && referenceSlideID in referenceLayout) {
+		var width = referenceLayout[referenceSlideID][layoutSlideID].pageSize.width;
+		var height = referenceLayout[referenceSlideID][layoutSlideID].pageSize.height;
+		var url = referenceLayout[referenceSlideID][layoutSlideID].thumbnailURL;
 
-			for(var j=0;j<referenceLayout[referenceSlideID][i].boxes.length;j++) {
-				var box = referenceLayout[referenceSlideID][i].boxes[j];
+		var innerString = '';
 
-				innerString += '<div class="layoutInnerBox"' + 
-									 ' style="top: ' + box.top + 'px; ' + 
-											'left: ' + box.left + 'px; ' +
-											'width: ' + box.width + 'px; ' +
-											'height: ' + box.height + 'px;"> ' +
-									 '</div> '
-			}
+		for (var j = 0; j < referenceLayout[referenceSlideID][layoutSlideID].boxes.length; j++) {
+			var box = referenceLayout[referenceSlideID][layoutSlideID].boxes[j];
 
-			retString = retString + 
-						'<div class="layoutSlide ' + (i == idx ? 'selected"' : '"') + 
-							'style="width: ' + width + 'px; ' +
-							'height: ' + height + 'px;"> ' +
-
-							innerString + 
-						'</div>'
+			innerString += '<div class="layoutInnerBox"' +
+				' style="top: ' + box.top * ratio + 'px; ' +
+				'left: ' + box.left * ratio + 'px; ' +
+				'width: ' + box.width * ratio + 'px; ' +
+				'height: ' + box.height * ratio + 'px;" type="' + box.type + '"> ' +
+				box.type + 
+				'</div> '
 		}
 
-		return retString;
+		retString = retString +
+			'<div class="layoutSlide" ' +
+			'style="width: ' + width * ratio + 'px; ' +
+			'height: ' + height * ratio + 'px; ' + 
+			'background-image: url(' + url + '); ' + 
+			'background-size: contain; ' + 
+			'background-repeat: no-repeat; ' + 
+			'top: calc(50% - ' + (height * ratio / 2) + 'px); ' + 
+			'left: calc(50% - ' + (width * ratio / 2) + 'px); ' + 
+			'"> ' +
+
+			innerString +
+			'</div>'
 	}
-	else return '';
+
+	return retString;
 }
 function getAdaptationViewBodyStyle(idx)  {
 	var resultString = '';
+	var styleSlideID = docSlideStructure[idx].style.slideId;
 
 	if(referenceSlideID != null && referenceSlideID in referenceStyle) {
-		for(var i=0;i<referenceStyle[referenceSlideID].length;i++) {
-			resultString += '<div class="styleRow ' + (i == idx ? 'selected"' : '"') + '> ' + i + '</div>'
+		var obj = referenceStyle[referenceSlideID][styleSlideID].styles;
+		var retString = '';
+
+		for(var i=0;i<obj.length;i++) {
+			var type = obj[i].type;
+
+			retString = retString + (i == 0 ? '' : '<br>') + type + " { "
+			for(var k in obj[i]) {
+				if(k != "type" && k != "recommendedLength") {
+					if(k == "foregroundColor") {
+						retString = retString + '<br> &emsp;' + k + ': ' + '<div class="fontForegroundColorDiv" style="background-color: rgb(' + obj[i][k].rgbColor.red + ", " + obj[i][k].rgbColor.green + ", " + obj[i][k].rgbColor.blue + ');")> </div>'
+					}
+					else if(k == "fontSize") {
+						retString = retString + '<br> &emsp;' + k + ': ' + obj[i][k].toFixed(2);
+					}
+					else {
+						retString = retString + '<br> &emsp;' + k + ': ' + obj[i][k];
+					}
+				}
+			}
+			retString = retString + "<br> }"
 		}
 
-		return resultString;
+		return retString;
 	}
 	else return '';
 }
@@ -8158,6 +8310,7 @@ function getAdaptationViewBodyContents(index) {
 function getDocSlideStructureView(index) {
 	var tableBody = '';
 
+	console.log(index);
 	console.log(docSlideStructure[index]);
 
 	return "<div class='adaptationViewDiv' index='" + index + "' " + ("slide" in docSlideStructure[index] && "id" in docSlideStructure[index].slide ? ("slideid='" + docSlideStructure[index].slide.id) + "'": '') + ">" +
@@ -8168,10 +8321,10 @@ function getDocSlideStructureView(index) {
 		"</div>" +
 
 		"<div class='adaptationViewBodyLayout'> " +
-		getAdaptationViewBodyLayout(parseInt(docSlideStructure[index].layout.index)) +
+		getAdaptationViewBodyLayout(index) +
 		"</div>" +
 		"<div class='adaptationViewBodyStyle'> " +
-		getAdaptationViewBodyStyle(parseInt(docSlideStructure[index].style.index)) +
+		getAdaptationViewBodyStyle(index) +
 		"</div>" +
 
 		// "<div class='adaptationViewSlide'>" +
@@ -8317,7 +8470,7 @@ function putContentsToDocSlide(index, c) {
 	setDocSlideStructure(docSlideStructure);
 	showDocSlideView(index);
 
-	if(referenceSlideID == "Default" && docSlideStructure[index].layout.index == 1) {
+	if(referenceSlideID == DEFAULT_SLIDE_ID && docSlideStructure[index].layout.slideId == "p4") {
 		var slideID = docSlideStructure[index].slide.id;
 		var objID = docSlideStructure[index].slide.objs[1].id;
 		var text = c.contents;
@@ -8359,7 +8512,7 @@ async function automaticallyPutContents(textInfo, mapping) {
 	var resourceIndex = -1;
 
 	if(flag) { // add to the current slide
-		if (referenceSlideID == "Default") {
+		if (referenceSlideID == DEFAULT_SLIDE_ID) {
 			putContentsToDocSlide(index, {
 				type: "text",
 				contents: mapping.text,
@@ -8432,6 +8585,7 @@ async function automaticallyPutContents(textInfo, mapping) {
 		if(index == -1) { // create the section
 			index = 0;
 
+			console.log(docSlideStructure);
 			for(var i=docSlideStructure.length-1;i>=1;i--) {
 				var sectionIdx = parseInt(docSlideStructure[i].contents.sectionKey.substring(20));
 				var myIdx = parseInt(sectionKey.substring(20));
@@ -8489,10 +8643,10 @@ async function automaticallyPutContents(textInfo, mapping) {
 				}]
 			},
 			layout: {
-				index: 1,
+				slideId: "p4"
 			},
 			style: {
-				index: 0,
+				slideId: "p4"
 			},
 			slide: {
 				id: slideID,
