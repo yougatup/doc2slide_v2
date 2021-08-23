@@ -2386,13 +2386,14 @@ function organizeHighlightOnSections() {
 	var info = {};
 
 	console.log(JSON.parse(JSON.stringify(highlightDB)));
+	console.log(JSON.parse(JSON.stringify(docSlideStructure)));
 
 	for(var i=1;i<docSlideStructure.length;i++) {
-		var sectionKey = docSlideStructure[i].sectionKey;
+		var sectionKey = docSlideStructure[i].contents.sectionKey;
 
 		if(!(sectionKey in info)) info[sectionKey] = [];
 
-		info[sectionKey] = info[sectionKey].concat(docSlideStructure[i].resources)
+		info[sectionKey] = info[sectionKey].concat(docSlideStructure[i].contents.list)
 	}
 
 	return info;
@@ -4804,24 +4805,18 @@ function constructRequestForSlideDeckAdaptation(presentationId) {
 	console.log(info);
 
 	retValue.presentationId = presentationId;
-	retValue.fast = true;
-	retValue.method= 'greedy';
-	retValue.resources = {};
+	retValue.settings = {
+		fast: true,
+		contentControl: false,
+		method: "greedy"
+	}
 	
+	retValue.resources = {};
+
 	retValue.resources.title = {
-		"shortenings": [],
-		"singleWord": {
-			"text": "Presentation",
-			"score": {
-				"grammatical": 1,
-				"semantic": 0,
-				"importantWords": 0.6736995668318398
-			}
-		},
-		"phrases": [
+		"shortenings": [
 			{
 				"text": "Dynamic Presentation",
-				"len": 20,
 				"score": {
 					"grammatical": 1,
 					"semantic": 0,
@@ -4848,14 +4843,23 @@ function constructRequestForSlideDeckAdaptation(presentationId) {
 				}
 			],
 			"singleWord": {
-				"text": structureHighlightDB[sectionKey].text,
-				"score": {
-					"grammatical": 1,
-					"semantic": 0,
-					"importantWords": 1
-				}
-			},
-			"phrases": [],
+					"text": structureHighlightDB[sectionKey].text,
+					"score": {
+						"grammatical": 1,
+						"semantic": 1,
+						"importantWords": 1
+					}
+				},
+			"phrases": [
+				{
+					"text": structureHighlightDB[sectionKey].text,
+					"score": {
+						"grammatical": 1,
+						"semantic": 1,
+						"importantWords": 1
+					}
+				},
+			],
 			// "id": "temp"
 		};
 
@@ -4863,9 +4867,36 @@ function constructRequestForSlideDeckAdaptation(presentationId) {
 
 		for(var i=0;i<info[sectionKey].length;i++) {
 			sectionItem.body.push({
-				paragraph: findShortening(info[sectionKey][i].mappingKey).result
+				paragraph: {
+					shortenings: [{
+						text: info[sectionKey][i].originalContent.contents,
+						score: {
+							"grammatical": 1,
+							"semantic": 1,
+							"importantWords": 1
+						}
+					}],
+					"singleWord": {
+						text: info[sectionKey][i].originalContent.contents,
+						score: {
+							"grammatical": 1,
+							"semantic": 1,
+							"importantWords": 1
+						}
+					},
+					"phrases": [
+						{
+							text: info[sectionKey][i].originalContent.contents,
+							score: {
+								"grammatical": 1,
+								"semantic": 1,
+								"importantWords": 1
+							}
+						}
+
+					],
+				}
 			})
-			sectionItem.body[sectionItem.body.length-1].paragraph.id = info[sectionKey][i].mappingKey
 		}
 		
 		retValue.resources.sections.push(sectionItem);
@@ -5101,15 +5132,68 @@ function updateMappingInternal(slideID, m_body, pushFlag) {
 	slideDB[slideID] = {};
 
 	var obj = {
-		resources: [],
-		slide: {
-			id: slideID
+		type: "visible",
+		contents: {
+			sectionKey: '',
+			list: []
 		},
-		template: {
-			id: m_body.originalId
-		}
+		layout: {},
+		style: {},
+		slide: {
+			id: slideID,
+			objs: []
+		},
 	};
-
+	/*
+{
+			type: "hidden",
+			contents: {
+				sectionKey: sectionKey,
+				list: [{
+					mappingKey: "null",
+					originalContent: {
+						type: "text",
+						contents: structureHighlightDB[sectionKey].text,
+					},
+					currentContent: {
+						type: "text",
+						contents: structureHighlightDB[sectionKey].text,
+						objID: titleID,
+						boxIndex: 0,
+					},
+				},
+				{
+					mappingKey: mapping.key,
+					originalContent: {
+						type: "text",
+						contents: mapping.text,
+					},
+					currentContent: {
+						type: "text",
+						contents: mapping.text,
+						objID: bodyID,
+						boxIndex: 1,
+					},
+				}]
+			},
+			layout: {
+				index: 1,
+			},
+			style: {
+				index: 0,
+			},
+			slide: {
+				id: slideID,
+				objs: [{
+					id: titleID
+					},
+					{
+						id: bodyID
+					}
+				]
+			}
+		}
+		*/
 	for (var objID in m_body.pageElements) {
 		slideDB[slideID][objID] = [];
 
@@ -5124,7 +5208,7 @@ function updateMappingInternal(slideID, m_body, pushFlag) {
 					mappingID: textKey
 				})
 
-				obj.resources.push({
+				obj.contents.list.push({
 					currentContent: {
 						type: "text",
 						objID: objID,
@@ -5143,7 +5227,7 @@ function updateMappingInternal(slideID, m_body, pushFlag) {
 					mappingID: "null"
 				})
 
-				obj.resources.push({
+				obj.contents.list.push({
 					currentContent: {
 						type: "text",
 						objID: objID,
@@ -5169,6 +5253,22 @@ function updateMappingInternal(slideID, m_body, pushFlag) {
 
 	// DB Sync
 
+}
+
+async function postRequest(url, body) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(body),
+	};
+
+	var res = await fetch(url, requestOptions)
+		.then(response => response.json())
+		.then(data => {
+			return data;
+		});
+
+	return res;
 }
 
 async function adaptSingleSlide(curSlidePage, presentationID, slideID) {
@@ -5915,10 +6015,12 @@ $(document).ready(function() {
 	$(document).on("click", "#slideDeckCompareApplyBtn", async function(e) {
 		var slideDeckObj = $(".checkedSlideDeck");
 
+		console.log(slideDeckObj);
+
 		$(".selectedSlideDeck").removeClass("selectedSlideDeck");
 		$(".checkedSlideDeck").removeClass("checkedSlideDeck");
 
-		var presentationID = $($(slideDeckObj).find(".slideImageDiv")).attr("presentationid");
+		var presentationID = $(slideDeckObj).attr("presentationid");
 
 		referenceSlideID = presentationID;
 		firebase.database().ref("/users/" + userName + '/referenceSlideID/').set(referenceSlideID);
@@ -5968,18 +6070,10 @@ $(document).ready(function() {
 		makeSlideTransition(presentationID, curSlideIndex, 1);
 	});
 
-	$(document).on("click", ".slideDeckThumbnailImage", function(e) {
-		var slideDeckObj = $($(e.target).parent()).parent();
-		var presentationID = $($(e.target).parent()).attr("presentationID");
+	$(document).on("click", ".slideDeckThumbnailImage", async function(e) {
+		var presentationID = $(e.target).parent().attr("presentationid");
+		$(e.target).parent().addClass("checkedSlideDeck");
 
-		$(".selectedSlideDeck").removeClass("checkedSlideDeck");
-		slideDeckObj.addClass("checkedSlideDeck");
-
-		referenceSlideID = presentationID;
-
-		selectSlideDeck(presentationID);
-
-		/*
 		var req = constructRequestForSlideDeckAdaptation(presentationID);
 
 		showLoadingScreenOnCompareDivResult();
@@ -5987,6 +6081,11 @@ $(document).ready(function() {
 		slideDeckAdaptationDivAppear(presentationID);
 
 		console.log(JSON.stringify(req));
+
+		var r = await postRequest({
+			"presentationId": "1k3R3mRDwvQFk6GyigP3gdIBfEq1tYfFNDi3CByF6sXo"
+		},
+		"http://localhost:8010/proxy/get_data_single_presentation");
 
 		const requestOptions = {
 			method: 'POST',
@@ -6008,16 +6107,15 @@ $(document).ready(function() {
 
 				gapi.client.slides.presentations.batchUpdate({
 					presentationId: TEMP_PRESENTATION_ID,
-					requests: req 
+					requests: req
 				}).then((createSlideResponse) => {
 					console.log(createSlideResponse);
 
 					genSlideThumbnail(TEMP_PRESENTATION_ID);
 				});
-				
+
 				return data;
 			});
-			*/
 	});
 
 	function updateMapping(m) {
@@ -8862,6 +8960,7 @@ function appendText(pageID, objId, myText, mappingID) {
         }).then((createSlideResponse) => {
             // successfully pasted the text
 
+			console.log(createSlideResponse);
 		    if(endIndex == 0) 
 		        writeSlideMappingInfo(pageID, objId, 0, mappingID);
 		    else 

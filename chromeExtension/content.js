@@ -155,12 +155,6 @@ function updateFilmstripFromDocSlideStructure() {
 
 function pageUpdated(mutationsList) {
 
-	console.log($("g[id^='filmstrip-slide-']").length);
-
-	$("g[id^='filmstrip-slide-']").each(function (e) {
-		console.log($(this).attr("id"));
-	})
-
 	// console.log($("g[pointer-events='visiblePainted']").children())
 	// console.log($("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8'], path[fill='#1a73e8']"))	
 
