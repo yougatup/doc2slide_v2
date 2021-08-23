@@ -21,3 +21,12 @@ width: 80% !important;
 .testtest.selected {
     border: 2px solid red;
 }
+
+.punch-filmstrip-thumbnail-background.hidden {
+    fill: rgba(0, 0, 0, 0.3) !important;
+}
+
+.punch-filmstrip-thumbnail-border-inner.hidden {
+    fill: rgba(0, 0, 0, 0.3) !important;
+    stroke-width: 0 !important;
+}
