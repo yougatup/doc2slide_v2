@@ -205,13 +205,20 @@ async function loadLayoutAndStyle() {
 
     console.log(requests);
 
+    var _u = {};
+
+    _u['/referenceLayout/' + source_presentation_id + '/'] = {}
+    _u['/referenceStyle/' + source_presentation_id + '/'] = {}
+
+    firebase.database().ref().update(_u);
+
 	gapi.client.slides.presentations.batchUpdate({
 		presentationId: TEMP_PRESENTATION_ID,
 		requests: requests
 	}).then((createSlideResponse) => {
 		console.log(createSlideResponse);
 
-        for (var i = 11; i < r.layouts.length; i++) {
+        for (var i = 0; i < r.layouts.length; i++) {
             var mySlideID = r.layouts[i].slideID;
 
             gapi.client.slides.presentations.pages.getThumbnail({
@@ -268,7 +275,7 @@ async function loadLayoutAndStyle() {
 
         var uu = {};
 
-        for(var i=11;i<r.styles.length;i++) {
+        for(var i=0;i<r.styles.length;i++) {
             uu['/referenceStyle/' + source_presentation_id + '/' + r.styles[i].pageId] = r.styles[i]
         }
 

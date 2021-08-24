@@ -1729,7 +1729,7 @@ width: 100%;
 
 .layoutInnerBox {
 	position: absolute;
-	border: 1px solid black;
+	border: 1px solid black; 
 	box-sizing: border-box;
 	text-align: center;
 	font-weight: bold;

@@ -591,7 +591,7 @@ async function createSlide(presentationIDToAdapt, contents, layoutSlideID, style
 	};
 	r.resources = {};
 
-	r.header = {
+	r.resources.header = {
 		shortenings: [
 			{
 				text: contents.header.currentContent.contents,
@@ -605,10 +605,10 @@ async function createSlide(presentationIDToAdapt, contents, layoutSlideID, style
 		phrases: [],
 	};
 
-	r.body = [];
+	r.resources.body = [];
 
 	for(var i=0;i<contents.body.length;i++) {
-		r.body.push({
+		r.resources.body.push({
 			paragraph: {
 				shortenings: [
 					{
@@ -5254,8 +5254,12 @@ function updateMappingInternal(slideID, m_body, pushFlag) {
 			sectionKey: '',
 			list: []
 		},
-		layout: {},
-		style: {},
+		layout: {
+			slideId: m_body.layoutPageId 
+		},
+		style: {
+			slideId: m_body.stylesPageId
+		},
 		slide: {
 			id: slideID,
 			objs: []
@@ -8208,6 +8212,8 @@ function getAdaptationViewBodyLayout(idx) {
 	var layoutSlideID = docSlideStructure[idx].layout.slideId;
 	var ratio = 0.6;
 
+	console.log(layoutSlideID);
+
 	if (referenceSlideID != null && referenceSlideID in referenceLayout) {
 		var width = referenceLayout[referenceSlideID][layoutSlideID].pageSize.width;
 		var height = referenceLayout[referenceSlideID][layoutSlideID].pageSize.height;
@@ -8231,9 +8237,9 @@ function getAdaptationViewBodyLayout(idx) {
 			'<div class="layoutSlide" ' +
 			'style="width: ' + width * ratio + 'px; ' +
 			'height: ' + height * ratio + 'px; ' + 
-			'background-image: url(' + url + '); ' + 
-			'background-size: contain; ' + 
-			'background-repeat: no-repeat; ' + 
+			// 'background-image: url(' + url + '); ' + 
+			// 'background-size: contain; ' + 
+			// 'background-repeat: no-repeat; ' + 
 			'top: calc(50% - ' + (height * ratio / 2) + 'px); ' + 
 			'left: calc(50% - ' + (width * ratio / 2) + 'px); ' + 
 			'"> ' +
@@ -8252,20 +8258,19 @@ function getAdaptationViewBodyStyle(idx)  {
 		var obj = referenceStyle[referenceSlideID][styleSlideID].styles;
 		var retString = '';
 
-		for(var i=0;i<obj.length;i++) {
-			var type = obj[i].type;
+		for(var type in obj) {
+			retString = retString + (retString == '' ? '' : '<br>') + type + " { ";
 
-			retString = retString + (i == 0 ? '' : '<br>') + type + " { "
-			for(var k in obj[i]) {
+			for(var k in obj[type]) {
 				if(k != "type" && k != "recommendedLength") {
 					if(k == "foregroundColor") {
-						retString = retString + '<br> &emsp;' + k + ': ' + '<div class="fontForegroundColorDiv" style="background-color: rgb(' + obj[i][k].rgbColor.red + ", " + obj[i][k].rgbColor.green + ", " + obj[i][k].rgbColor.blue + ');")> </div>'
+						retString = retString + '<br> &emsp;' + k + ': ' + '<div class="fontForegroundColorDiv" style="background-color: rgb(' + obj[type][k].rgbColor.red + ", " + obj[type][k].rgbColor.green + ", " + obj[type][k].rgbColor.blue + ');")> </div>'
 					}
 					else if(k == "fontSize") {
-						retString = retString + '<br> &emsp;' + k + ': ' + obj[i][k].toFixed(2);
+						retString = retString + '<br> &emsp;' + k + ': ' + obj[type][k].toFixed(2);
 					}
 					else {
-						retString = retString + '<br> &emsp;' + k + ': ' + obj[i][k];
+						retString = retString + '<br> &emsp;' + k + ': ' + obj[type][k];
 					}
 				}
 			}
@@ -8470,7 +8475,7 @@ function putContentsToDocSlide(index, c) {
 	setDocSlideStructure(docSlideStructure);
 	showDocSlideView(index);
 
-	if(referenceSlideID == DEFAULT_SLIDE_ID && docSlideStructure[index].layout.slideId == "p4") {
+	if(referenceSlideID == DEFAULT_SLIDE_ID && docSlideStructure[index].layout.slideId == "ge93a171212_0_5") {
 		var slideID = docSlideStructure[index].slide.id;
 		var objID = docSlideStructure[index].slide.objs[1].id;
 		var text = c.contents;
@@ -8643,10 +8648,10 @@ async function automaticallyPutContents(textInfo, mapping) {
 				}]
 			},
 			layout: {
-				slideId: "p4"
+				slideId: "ge93a171212_0_5"
 			},
 			style: {
-				slideId: "p4"
+				slideId: "ge93a171212_0_5"
 			},
 			slide: {
 				id: slideID,
