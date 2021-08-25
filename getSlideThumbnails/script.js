@@ -1,5 +1,4 @@
-var SLIDE_ID = ['Default']
-var source_presentation_id = "1QFQCqsTdadjN0TAfUiyRAmrEQ2u2WEoj7VQsXgnplGA";
+var source_presentation_id = "1Ht4gApdoNs802gEpFX4ynl6-nnmnhO0KRP6SBN1KDew";
 var TEMP_PRESENTATION_ID = '1SV3S92pjwtGGwKvjJDJ7d6cxUvS2CCfeQ3yh2Tdz8pQ';
 
 function initializeGAPI(callback) {
@@ -343,8 +342,8 @@ function initializeLayoutAndStyle() {
         }
     });
 
-    updates["referenceLayout"][SLIDE_ID[0]] = l;
-    updates["referenceStyle"][SLIDE_ID[0]] = s;
+    updates["referenceLayout"][source_presentation_id] = l;
+    updates["referenceStyle"][source_presentation_id] = s;
 
     firebase.database().ref().update(updates);
 }
@@ -357,85 +356,83 @@ function loadThumbnail() {
                     '<th> URL </th>' + 
                     '</tr>';
 
-    for(var i=0;i<SLIDE_ID.length;i++) {
-        var slide = SLIDE_ID[i];
+    var slide = source_presentation_id;
 
-        gapi.client.slides.presentations.get({
-            presentationId: slide,
-        }).then(function (response) {
-            console.log(response);
+    gapi.client.slides.presentations.get({
+        presentationId: slide,
+    }).then(function (response) {
+        console.log(response);
 
-            var s = response.result.slides;
+        var s = response.result.slides;
 
-            for(var j=0;j<s.length;j++) {
-                var s_id = s[j].objectId;
+        for (var j = 0; j < s.length; j++) {
+            var s_id = s[j].objectId;
 
-                tableHTML = tableHTML + 
-                    '<tr>' + 
-                    '<td>' + (i+1) + "</td>" + 
-                    '<td>' + s_id + "</td>" + 
-                    '<td id="' + s_id + '_img"></td>' + 
-                    '<td id="' + s_id + '_url"></td>' + 
-                    '</tr>';
-            }
+            tableHTML = tableHTML +
+                '<tr>' +
+                '<td>' + (j+1) + "</td>" +
+                '<td>' + s_id + "</td>" +
+                '<td id="' + s_id + '_img"></td>' +
+                '<td id="' + s_id + '_url"></td>' +
+                '</tr>';
+        }
 
-            $("#resourceTable").html(tableHTML);
+        $("#resourceTable").html(tableHTML);
 
-            for(var j=0;j<s.length;j++) {
-                var s_id = s[j].objectId;
+        for (var j = 0; j < s.length; j++) {
+            var s_id = s[j].objectId;
 
-                console.log(s_id);
+            console.log(s_id);
 
-                gapi.client.slides.presentations.pages.getThumbnail({
-                    presentationId: slide,
-                    pageObjectId: s_id
-                }).then( (function(my_index, my_s_id) {
-                    return function (response) {
-                        console.log(my_s_id);
-                        console.log(my_index);
-                        console.log(response);
-
-
-                        var updates = {};
+            gapi.client.slides.presentations.pages.getThumbnail({
+                presentationId: slide,
+                pageObjectId: s_id
+            }).then((function (my_index, my_s_id) {
+                return function (response) {
+                    console.log(my_s_id);
+                    console.log(my_index);
+                    console.log(response);
 
 
-                        fetch(response.result.contentUrl)
-                            .then(res => res.blob()) // Gets the response and returns it as a blob
-                            .then(blob => {
-                                // Here's where you get access to the blob
-                                // And you can use it for whatever you want
-                                // Like calling ref().put(blob)
+                    var updates = {};
 
-                                // Here, I use it to make an image appear on the page
-                                console.log(blob);
 
-                                const ref = firebase.storage().ref("/" + slide);
+                    fetch(response.result.contentUrl)
+                        .then(res => res.blob()) // Gets the response and returns it as a blob
+                        .then(blob => {
+                            // Here's where you get access to the blob
+                            // And you can use it for whatever you want
+                            // Like calling ref().put(blob)
 
-                                ref.child(my_index + "___" + my_s_id + ".png").put(blob).then(function(obj) {
-                                    obj.ref.getDownloadURL().then(u => {
-                                        console.log(u);
+                            // Here, I use it to make an image appear on the page
+                            console.log(blob);
 
-                                        $("#" + my_s_id + "_img").html(
-                                            "<img src=" + u + " class='slideThumbnail'> </img>");
-                                        $("#" + my_s_id + "_url").html(u);
+                            const ref = firebase.storage().ref("/" + slide);
 
-                                        updates['/referenceSlides/' + slide + '/slides/' + my_index] = {
-                                            slideID: my_s_id,
-                                            thumbnailURL: u 
-                                        }
+                            ref.child(my_index + "___" + my_s_id + ".png").put(blob).then(function (obj) {
+                                obj.ref.getDownloadURL().then(u => {
+                                    console.log(u);
 
-                                        firebase.database().ref().update(updates);
-                                    })
-                                });
+                                    $("#" + my_s_id + "_img").html(
+                                        "<img src=" + u + " class='slideThumbnail'> </img>");
+                                    $("#" + my_s_id + "_url").html(u);
+
+                                    updates['/referenceSlides/' + slide + '/slides/' + my_index] = {
+                                        slideID: my_s_id,
+                                        thumbnailURL: u
+                                    }
+
+                                    firebase.database().ref().update(updates);
+                                })
                             });
+                        });
 
 
                 }
-                })(j, s_id)
-                );
-            }
-        });
-    }
+            })(j, s_id)
+            );
+        }
+    });
 
 /*
     for(var i=0;i<SLIDE_ID.length;i++) {
@@ -466,5 +463,5 @@ function loadThumbnail() {
 $(document).ready(function() {
     console.log("good");
 
-    initializeGAPI(loadLayoutAndStyle);
+    initializeGAPI(loadThumbnail);
 });

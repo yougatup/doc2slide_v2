@@ -5443,16 +5443,21 @@ function showAlternative(index, subject) {
 
 	var h = '';
 
-	for(var i=0;i<docSlideStructure[index][subject].result.length;i++) {
-		var flag = false;
+	if (docSlideStructure[index][subject].result.length > 0) {
+		for (var i = 0; i < docSlideStructure[index][subject].result.length; i++) {
+			var flag = false;
 
-		for(var k in docSlideStructure[index][subject].result[i].mapping) {
-			if(docSlideStructure[index][subject].result[i].mapping[k].wasMatched == false) {
-				flag = true;
-				break;
+			for (var k in docSlideStructure[index][subject].result[i].mapping) {
+				if (docSlideStructure[index][subject].result[i].mapping[k].wasMatched == false) {
+					flag = true;
+					break;
+				}
 			}
+			h = h + "<img class='" + subject + " alternativeThumbnail " + (flag ? "disabled" : "") + "' docslideindex='" + index + "' subject='" + subject + "' index='" + i + "' src='" + docSlideStructure[index][subject].result[i].url + "'></img>"
 		}
-		h = h + "<img class='" + subject + " alternativeThumbnail " + (flag ? "disabled" : "") + "' docslideindex='" + index + "' subject='" + subject + "' index='" + i + "' src='" + docSlideStructure[index][subject].result[i].url + "'></img>"
+	}
+	else {
+		h = "...Now Loading";
 	}
 
 	$(obj).html(h);
@@ -5669,7 +5674,7 @@ function updateMappingInternal(slideID, m_body, pushFlag) {
 			console.log(textKey);
 			console.log(getOriginalText(textKey));
 
-			if (textKey != null) {
+			if (textKey != null && !m_body.pageElements[objID].contents[j].isOriginalContent) {
 				slideDB[slideID][objID].push({
 					mappingID: textKey
 				})
