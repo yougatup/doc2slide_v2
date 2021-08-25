@@ -1894,3 +1894,20 @@ width: 100%;
   .slideListDivBodyLayout {
 	  padding: 10px;
   }
+
+  .slideListDivBodyStyle {
+	  padding: 10px;
+	  display: none;
+  }
+
+  .alternativeThumbnail {
+	  cursor: pointer;
+  }
+
+  .alternativeThumbnail:hover {
+	  border: 2px solid red;
+  }
+
+  .alternativeThumbnail.disabled {
+	  filter: brightness(0.6);
+  }
