@@ -4447,7 +4447,7 @@ function showIndividualSlidesOfAll() {
 		}
 	}
 
-	$("#slideListDiv").html(slideListDivHTML);
+	$("#slideListDivBody").html(slideListDivHTML);
 }
 
 function showIndividualSlides(presentationID) {
@@ -5059,9 +5059,25 @@ function genSlideThumbnail(presentationID) {
 				presentationId: slide,
 				pageObjectId: s_id
 			}).then((function (my_index, my_s_id) {
-				return function (response) {
+				return async function (response) {
 					console.log(response);
 					console.log(response.result.contentUrl);
+
+					const requestOptions = {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({
+							url: response.result.contentUrl
+						}),
+					};
+
+					var blob = await fetch("http://localhost:8010/proxy/get_image_file", requestOptions)
+						.then(response => response.blob())
+						.then(data => {
+							return data;
+						});
+
+					// console.log(blob);
 
 					/*
 					adaptedSlideURLs[my_index] = {
@@ -5077,45 +5093,41 @@ function genSlideThumbnail(presentationID) {
 					*/
 					// setTimeout(() => {  fetch(response.result.contentUrl).then(res => res.blob()).then(blob => { console.log(blob); }) }, 10000);
 
-					fetch(response.result.contentUrl)
-						.then(res => res.blob()) // Gets the response and returns it as a blob
-						.then(blob => {
-							// Here's where you get access to the blob
-							// And you can use it for whatever you want
-							// Like calling ref().put(blob)
+					// Here's where you get access to the blob
+					// And you can use it for whatever you want
+					// Like calling ref().put(blob)
 
-							// Here, I use it to make an image appear on the page
-							console.log(blob);
+					// Here, I use it to make an image appear on the page
+					console.log(blob);
 
-							const ref = firebase.storage().ref("/adapted/" + slide);
+					const ref = firebase.storage().ref("/adapted/" + slide);
 
-							ref.child(my_index + "___" + my_s_id + ".png").put(blob).then(function (obj) {
-								obj.ref.getDownloadURL().then(u => {
-									console.log(u);
+					ref.child(my_index + "___" + my_s_id + ".png").put(blob).then(function (obj) {
+						obj.ref.getDownloadURL().then(u => {
+							console.log(u);
 
-									var updates = {};
+							var updates = {};
 
-									updates['/adaptedSlides/' + slide + '/slides/' + my_index] = {
-										slideID: my_s_id,
-										thumbnailURL: u
-									}
+							updates['/adaptedSlides/' + slide + '/slides/' + my_index] = {
+								slideID: my_s_id,
+								thumbnailURL: u
+							}
 
-									global_count++;
-									adaptedSlideURLs[my_index] = {
-										slideID: my_s_id,
-										thumbnailURL: u
-									}
+							global_count++;
+							adaptedSlideURLs[my_index] = {
+								slideID: my_s_id,
+								thumbnailURL: u
+							}
 
-									firebase.database().ref().update(updates);
+							firebase.database().ref().update(updates);
 
-									console.log(global_count, num_slides_in_total);
+							console.log(global_count, num_slides_in_total);
 
-									if(global_count >= num_slides_in_total) {
-										showAdaptedSlidesOnCompareDivResult();
-									}
-								})
-							});
-						});
+							if (global_count >= num_slides_in_total) {
+								showAdaptedSlidesOnCompareDivResult();
+							}
+						})
+					});
 				}
 			})(j, s_id)
 			);
@@ -5146,6 +5158,117 @@ function genSlideThumbnail(presentationID) {
 			});
 		}*/
 
+}
+
+function genAlternativeThumbnail(presentationID, docSlideIndex, subject) {
+	var slide = presentationID;
+
+	gapi.client.slides.presentations.get({
+		presentationId: slide,
+	}).then(function (response) {
+		console.log(response);
+
+		var s = response.result.slides;
+
+		global_count = 0;
+		num_slides_in_total = s.length;
+		adaptedSlideURLs = {};
+
+		console.log(num_slides_in_total);
+
+		for (var j = 0; j < s.length; j++) {
+			var s_id = s[j].objectId;
+
+			console.log(s_id);
+
+			gapi.client.slides.presentations.pages.getThumbnail({
+				presentationId: slide,
+				pageObjectId: s_id
+			}).then((function (my_index, my_s_id) {
+				return async function (response) {
+					console.log(response);
+					console.log(response.result.contentUrl);
+
+					const requestOptions = {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({
+							url: response.result.contentUrl
+						}),
+					};
+
+					var blob = await fetch("http://localhost:8010/proxy/get_image_file", requestOptions)
+						.then(response => response.blob())
+						.then(data => {
+							return data;
+						});
+
+					// console.log(blob);
+
+					const ref = firebase.storage().ref("/alternatives/" + docSlideIndex);
+
+					ref.child(my_index + "___" + my_s_id + ".png").put(blob).then(function (obj) {
+						obj.ref.getDownloadURL().then(u => {
+							console.log(u);
+
+							docSlideStructure[docSlideIndex][subject].push({
+								url: u
+							});
+
+							if (docSlideStructure[docSlideIndex][subject].length >= num_slides_in_total) {
+								console.log(docSlideIndex);
+								console.log(curDocSlideStructureIndex);
+
+								console.log(docSlideStructure[docSlideIndex][subject]);
+
+								if(docSlideIndex == curDocSlideStructureIndex) {
+									showLayoutAlternative(docSlideIndex);
+								}
+							}
+						})
+					});
+				}
+			})(j, s_id)
+			);
+		}
+	});
+
+	/*
+		for(var i=0;i<SLIDE_ID.length;i++) {
+			var slide = SLIDE_ID[i];
+	
+			gapi.client.slides.presentations.get({
+				presentationId: slide,
+			}).then(function (response) {
+				console.log(response);
+	
+				var s = response.result.slides;
+	
+				for(var j=0;j<s.length;j++) {
+					var s_id = s[j].objectId;
+	
+					gapi.client.slides.presentations.pages.getThumbnail({
+						presentationId: slide,
+						pageObjectId: s_id
+					}).then(function (response) {
+						console.log(response);
+					});
+				}
+			});
+		}*/
+}
+
+function showLayoutAlternative(index) {
+	console.log(index);
+	console.log(docSlideStructure[index]);
+
+	var h = '';
+
+	for(var i=0;i<docSlideStructure[index].layoutAlternative.length;i++) {
+		h = h + "<img class='layoutAlternative alternativeThumbnail' src='" + docSlideStructure[index].layoutAlternative[i].url + "'></img>"
+	}
+
+	$("#slideListDivBodyLayout").html(h);
 }
 
 function getIndexOfSlide(slideID) {
@@ -5319,6 +5442,8 @@ function updateMappingInternal(slideID, m_body, pushFlag) {
 		slideDB[slideID][objID] = [];
 
 		for (var j = 0; j < m_body.pageElements[objID].contents.length; j++) {
+			if(m_body.pageElements[objID].contents[j].styles.type == "PICTURE") continue;
+
 			var textKey = m_body.pageElements[objID].contents[j].contentId;
 
 			console.log(textKey);
@@ -5334,7 +5459,7 @@ function updateMappingInternal(slideID, m_body, pushFlag) {
 						type: "text",
 						objID: objID,
 						contents: m_body.pageElements[objID].contents[j].text,
-						rect: m_body.pageElements[objID].rectangle
+						rect: m_body.pageElements[objID].box
 					},
 					mappingKey: textKey,
 					originalContent: {
@@ -5353,7 +5478,7 @@ function updateMappingInternal(slideID, m_body, pushFlag) {
 						type: "text",
 						objID: objID,
 						contents: m_body.pageElements[objID].contents[j].text,
-						rect: m_body.pageElements[objID].rectangle
+						rect: m_body.pageElements[objID].box
 					},
 					mappingKey: "null",
 					originalContent: {
@@ -5397,7 +5522,6 @@ async function adaptSingleSlide(curSlidePage, presentationID, slideID) {
 	var req = constructRequestForSingleSlideAdaptation(presentationID, slideID, curSlidePage);
 
 	console.log(JSON.parse(JSON.stringify(docSlideStructure)));
-
 	console.log(req);
 
 	var result = await getSingleSlideAdaptationRequest(req);
@@ -5574,6 +5698,238 @@ function appendTextToBox(contents, boxIndex) {
 	var boxObj = $(".reviewSlideObj[index='" + boxIndex + "']");
 
 	$(boxObj).append("<div>" + contents + "</div>");
+}
+
+function constructRequestForStyleAlternatives(index) {
+	var r = {};
+
+	r.presentationId = referenceSlideID;
+	r.sort = true;
+	r.maxCnt = 10;
+	r.layoutPageId = docSlideStructure[index].layout.slideId;
+	r.stylesPageId = null;
+
+	r.settings = {
+		putOriginalContent: false,
+		fast: true,
+		contentControl: false,
+		debug: false
+	};
+
+	r.resources = {};
+
+	r.resources.header = {
+		"shortenings": [
+			{
+				"text": docSlideStructure[index].contents.list[0].currentContent.contents,
+				"score": {
+					"grammatical": 1,
+					"semantic": 1,
+					"importantWords": 1
+				}
+			}
+		],
+		"singleWord": {
+			"text": docSlideStructure[index].contents.list[0].currentContent.contents,
+			"score": {
+				"grammatical": 1,
+				"semantic": 1,
+				"importantWords": 1
+			}
+		},
+		"phrases": [],
+		"images": [],
+		"type": "TEXT"
+	};
+
+	r.resources.body = []
+
+	for(var i=1;i<docSlideStructure[index].contents.list.length;i++) {
+		console.log(docSlideStructure[index].contents.list[i].currentContent.contents)
+		r.resources.body.push(
+			{
+                "paragraph": {
+                    "shortenings": [
+                        {
+                            "text": docSlideStructure[index].contents.list[i].currentContent.contents,
+                            "score": {
+                                "grammatical": 1,
+                                "semantic": 1,
+                                "importantWords": 1
+                            }
+                        },
+                        {
+                            "text": docSlideStructure[index].contents.list[i].currentContent.contents,
+                            "score": {
+                                "grammatical": 1,
+                                "semantic": 1,
+                                "importantWords": 1
+                            }
+                        }
+                    ],
+                    "singleWord": {
+						"text": docSlideStructure[index].contents.list[i].currentContent.contents,
+						"score": {
+							"grammatical": 1,
+							"semantic": 1,
+							"importantWords": 1
+						}
+					},
+                    "phrases": [],
+                    "id": (docSlideStructure[index].contents.list[i].mappingKey == "null" ? null : docSlideStructure[index].contents.list[i].mappingKey)
+                }
+            },	
+		)
+	}
+
+	return r;
+}
+
+function constructRequestForLayoutAlternatives(index) {
+	var r = {};
+
+	r.presentationId = referenceSlideID;
+	r.sort = true;
+	r.maxCnt = 10;
+	r.layoutPageId = null;
+	r.stylesPageId = docSlideStructure[index].style.slideId;
+
+	r.settings = {
+		putOriginalContent: false,
+		fast: true,
+		contentControl: false,
+		debug: false
+	};
+
+	r.resources = {};
+
+	r.resources.header = {
+		"shortenings": [
+			{
+				"text": docSlideStructure[index].contents.list[0].currentContent.contents,
+				"score": {
+					"grammatical": 1,
+					"semantic": 1,
+					"importantWords": 1
+				}
+			}
+		],
+		"singleWord": {
+			"text": docSlideStructure[index].contents.list[0].currentContent.contents,
+			"score": {
+				"grammatical": 1,
+				"semantic": 1,
+				"importantWords": 1
+			}
+		},
+		"phrases": [],
+		"images": [],
+		"type": "TEXT"
+	};
+
+	r.resources.body = []
+
+	for(var i=1;i<docSlideStructure[index].contents.list.length;i++) {
+		console.log(docSlideStructure[index].contents.list[i].currentContent.contents)
+		r.resources.body.push(
+			{
+                "paragraph": {
+                    "shortenings": [
+                        {
+                            "text": docSlideStructure[index].contents.list[i].currentContent.contents,
+                            "score": {
+                                "grammatical": 1,
+                                "semantic": 1,
+                                "importantWords": 1
+                            }
+                        },
+                        {
+                            "text": docSlideStructure[index].contents.list[i].currentContent.contents,
+                            "score": {
+                                "grammatical": 1,
+                                "semantic": 1,
+                                "importantWords": 1
+                            }
+                        }
+                    ],
+                    "singleWord": {
+						"text": docSlideStructure[index].contents.list[i].currentContent.contents,
+						"score": {
+							"grammatical": 1,
+							"semantic": 1,
+							"importantWords": 1
+						}
+					},
+                    "phrases": [],
+                    "id": (docSlideStructure[index].contents.list[i].mappingKey == "null" ? null : docSlideStructure[index].contents.list[i].mappingKey)
+                }
+            },	
+		)
+	}
+
+	return r;
+}
+
+async function getAlternativeSlides(index) {
+	console.log(docSlideStructure);
+	console.log(index);
+
+	if(!("layoutAlternatives" in docSlideStructure[index])) {
+		$("#slideListDivBodyLayout").html("... Now Loading ");
+
+		docSlideStructure[index].layoutAlternative = [];
+
+		var r = constructRequestForLayoutAlternatives(index);
+
+		console.log(r);
+
+		var res = await postRequest(
+			"http://localhost:8010/proxy/generate_alternatives_requests", r);
+
+		console.log(res);
+
+		var req = await getRequestsForRemovingAllSlidesOnGoogleSlide(TEMP_PRESENTATION_ID);
+
+		req = req.concat(res.requests);
+
+		gapi.client.slides.presentations.batchUpdate({
+			presentationId: TEMP_PRESENTATION_ID,
+			requests: req
+		}).then((createSlideResponse) => {
+			console.log(createSlideResponse);
+
+			genAlternativeThumbnail(TEMP_PRESENTATION_ID, index, "layoutAlternative");
+		});
+	}
+/*
+	if(!("styleAlternatives" in docSlideStructure[index])) {
+		$("#slideListDivBodyLayout").html("... Now Loading ");
+
+		docSlideStructure[index].styleAlternative = [];
+
+		var r = constructRequestForStyleAlternatives(index);
+
+		console.log(r);
+
+		var res = await postRequest(
+			"http://localhost:8010/proxy/generate_alternatives_requests", r);
+
+		console.log(res);
+
+		var req = await getRequestsForRemovingAllSlidesOnGoogleSlide(TEMP_PRESENTATION_ID);
+
+		req = req.concat(res.requests);
+
+		gapi.client.slides.presentations.batchUpdate({
+			presentationId: TEMP_PRESENTATION_ID,
+			requests: req
+		}).then((createSlideResponse) => {
+			console.log(createSlideResponse);
+
+			genAlternativeThumbnail(TEMP_PRESENTATION_ID, index, "styleAlternative");
+		});
+	}
+	*/
 }
 
 $(document).ready(function() {
@@ -6130,6 +6486,8 @@ $(document).ready(function() {
 		else {
 			$("#slideDeckListDiv").hide();
 			$("#slideListDiv").show();
+
+			getAlternativeSlides(curDocSlideStructureIndex);
 		}
 	});
 
@@ -6150,7 +6508,7 @@ $(document).ready(function() {
 
 		$(slideDeckObj).addClass("selectedSlideDeck");
 
-		showIndividualSlides(presentationID);
+		// showIndividualSlides(presentationID);
 
 		$("#slideDeckCompareDiv").hide();
 
@@ -6229,8 +6587,9 @@ $(document).ready(function() {
 				req = req.concat(data.requests);
 
 				slide_deck_adaptation_req = data.requests;
-				slide_deck_matching = data.matching;
+				slide_deck_matching = data.matchings;
 
+				console.log(slide_deck_matching);
 				gapi.client.slides.presentations.batchUpdate({
 					presentationId: TEMP_PRESENTATION_ID,
 					requests: req
@@ -8258,13 +8617,17 @@ function getAdaptationViewBodyStyle(idx)  {
 		var obj = referenceStyle[referenceSlideID][styleSlideID].styles;
 		var retString = '';
 
+		console.log(obj);
+
 		for(var type in obj) {
+			console.log(type);
+
 			retString = retString + (retString == '' ? '' : '<br>') + type + " { ";
 
 			for(var k in obj[type]) {
 				if(k != "type" && k != "recommendedLength") {
 					if(k == "foregroundColor") {
-						retString = retString + '<br> &emsp;' + k + ': ' + '<div class="fontForegroundColorDiv" style="background-color: rgb(' + obj[type][k].rgbColor.red + ", " + obj[type][k].rgbColor.green + ", " + obj[type][k].rgbColor.blue + ');")> </div>'
+						retString = retString + '<br> &emsp;' + k + ': ' + '<div class="fontForegroundColorDiv" style="background-color: rgb(' + obj[type][k].rgbColor.red*255 + ", " + obj[type][k].rgbColor.green*255 + ", " + obj[type][k].rgbColor.blue*255 + ');")> </div>'
 					}
 					else if(k == "fontSize") {
 						retString = retString + '<br> &emsp;' + k + ': ' + obj[type][k].toFixed(2);
@@ -8467,7 +8830,7 @@ function putContentsToDocSlide(index, c) {
 			objID: null,
 			boxIndex: 1,
 			type: c.type,
-			contnets: c.contents
+			contents: c.contents
 		}
 	});
 
