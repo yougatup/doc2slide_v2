@@ -1250,6 +1250,9 @@ function getParagraphIndexOfDocSlideStructure(s, r) {
 	var mappingKey = docSlideStructure[s].contents.list[r].mappingKey;
 	var slideObjID = docSlideStructure[s].contents.list[r].currentContent.objID;
 
+	console.log(slideID, mappingKey, slideObjID);
+	console.log(slideDB);
+
 	if(slideID in slideDB && slideObjID in slideDB[slideID]) {
 		for(var i=0;i<slideDB[slideID][slideObjID].length;i++) {
 			if(slideDB[slideID][slideObjID][i].mappingID == mappingKey) {
@@ -1278,11 +1281,13 @@ function getImageToShow(imgList) {
 
 async function substituteTextToFigure(s, r, d) {
 	var slidePageID = docSlideStructure[s].slide.id;
-	var objectID = docSlideStructure[s].resources[r].currentContent.objID;
+	var objectID = docSlideStructure[s].contents.list[r].currentContent.objID;
 	var paragraphIndex = getParagraphIndexOfDocSlideStructure(s, r);
 
 	var imgList = await findImages(d.surfaceWords);
 	var finalImage = getImageToShow(imgList);
+
+	console.log(imgList);
 
 	var imgObjID = makeid(10);
 
@@ -1375,20 +1380,20 @@ async function substituteTextToFigure(s, r, d) {
 										mappingID: mappingKey
 									}
 
-									docSlideStructure[s].resources[r].currentContent.objID = imgObjID;
-									docSlideStructure[s].resources[r].currentContent.type = "image";
-									docSlideStructure[s].resources[r].currentContent.contents = finalImage;
-									docSlideStructure[s].resources[r].currentContent.contents.index = d.index;
-									docSlideStructure[s].resources[r].currentContent.contents.keywords = []
+									docSlideStructure[s].contents.list[r].currentContent.objID = imgObjID;
+									docSlideStructure[s].contents.list[r].currentContent.type = "image";
+									docSlideStructure[s].contents.list[r].currentContent.contents = finalImage;
+									docSlideStructure[s].contents.list[r].currentContent.contents.index = d.index;
+									docSlideStructure[s].contents.list[r].currentContent.contents.keywords = []
 
 									for (var j = 0; j < d.surfaceWords.length; j++) {
-										docSlideStructure[s].resources[r].currentContent.contents.keywords.push({
+										docSlideStructure[s].contents.list[r].currentContent.contents.keywords.push({
 											keyword: d.surfaceWords[j],
 											selected: true
 										})
 									}
 
-									updates['/users/' + userName + '/docSlideStructure/' + s + '/resources/' + r + '/currentContent/'] = docSlideStructure[s].resources[r].currentContent;
+									updates['/users/' + userName + '/docSlideStructure/' + s + '/resources/' + r + '/currentContent/'] = docSlideStructure[s].contents.list[r].currentContent;
 
 									firebase.database().ref().update(updates);
 								}
@@ -4534,7 +4539,7 @@ function getObj(key) {
 }
 
 function handleChangeImage(slideIndex, resourceIndex) {
-	var queryString = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
+	var queryString = docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents;
 
 	console.log(queryString);
 
@@ -4551,6 +4556,10 @@ function handleChangeImage(slideIndex, resourceIndex) {
 	fetch('http://localhost:8010/proxy/findQueriess', requestOptions)
 		.then(response => response.json())
 		.then(data => function(s, r, d) {
+			console.log(s);
+			console.log(r);
+			console.log(d);
+
 			var rowObj = $(".adaptationTableRow[slideindex='" + s + "'][resourceindex='" + r + "']")
 
 			console.log(rowObj);
@@ -4560,6 +4569,7 @@ function handleChangeImage(slideIndex, resourceIndex) {
 
 				$(rowObj).removeClass("onLoading");
 			})
+
 		}(slideIndex, resourceIndex, data)
 
 		);
@@ -4592,26 +4602,26 @@ function removeSingleRowOnDocSlideStructure(s, r) {
 
 async function handleChangeText(slideIndex, resourceIndex, deletionFlag) {
 	var slideID = docSlideStructure[slideIndex].slide.id;
-	var objectID = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID;
-	var mappingKey = docSlideStructure[slideIndex].resources[resourceIndex].mappingKey;
+	var objectID = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.objID;
+	var mappingKey = docSlideStructure[slideIndex].contents.list[resourceIndex].mappingKey;
 
 	console.log(slideID, objectID);
 	console.log(resourceIndex);
-	console.log(JSON.parse(JSON.stringify(docSlideStructure[slideIndex].resources)));
+	console.log(JSON.parse(JSON.stringify(docSlideStructure[slideIndex].contents.list)));
 
-	if((resourceIndex > 0 && docSlideStructure[slideIndex].resources[resourceIndex-1].currentContent.type == "text") || 
-	   (resourceIndex < (docSlideStructure[slideIndex].resources.length-1) && docSlideStructure[slideIndex].resources[resourceIndex+1].currentContent.type == "text")) {
+	if((resourceIndex > 0 && docSlideStructure[slideIndex].contents.list[resourceIndex-1].currentContent.type == "text") || 
+	   (resourceIndex < (docSlideStructure[slideIndex].contents.list.length-1) && docSlideStructure[slideIndex].contents.list[resourceIndex+1].currentContent.type == "text")) {
 		   var objToPut = -1;
 
-		if(resourceIndex > 0 && docSlideStructure[slideIndex].resources[resourceIndex-1].currentContent.type == "text")  {
+		if(resourceIndex > 0 && docSlideStructure[slideIndex].contents.list[resourceIndex-1].currentContent.type == "text")  {
 			// append to the back
-			objToPut = docSlideStructure[slideIndex].resources[resourceIndex - 1].currentContent.objID;
+			objToPut = docSlideStructure[slideIndex].contents.list[resourceIndex - 1].currentContent.objID;
 
 			var requests = [];
 			var updates = {};
 
 			if (deletionFlag) {
-				var curObjID = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID;
+				var curObjID = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.objID;
 
 				requests.push({
 					"deleteObject": {
@@ -4624,7 +4634,7 @@ async function handleChangeText(slideIndex, resourceIndex, deletionFlag) {
 			}
 
 			var ret = await getAppendTextRequest(slideID, objToPut,
-				docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents);
+				docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents);
 
 			requests = requests.concat(ret.request);
 
@@ -4652,11 +4662,11 @@ async function handleChangeText(slideIndex, resourceIndex, deletionFlag) {
 				mappingID: mappingKey
 			};
 
-			docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID = objToPut;
-			docSlideStructure[slideIndex].resources[resourceIndex].currentContent.type = "text";
-			docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
+			docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.objID = objToPut;
+			docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.type = "text";
+			docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents = docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents;
 
-			updates['/users/' + userName + '/docSlideStructure/' + slideIndex + '/resources/' + resourceIndex + '/currentContent'] = docSlideStructure[slideIndex].resources[resourceIndex].currentContent;
+			updates['/users/' + userName + '/docSlideStructure/' + slideIndex + '/resources/' + resourceIndex + '/currentContent'] = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent;
 
 			firebase.database().ref().update(updates);
 
@@ -4669,13 +4679,13 @@ async function handleChangeText(slideIndex, resourceIndex, deletionFlag) {
 		}
 		else  {
 			// append to the front
-			objToPut = docSlideStructure[slideIndex].resources[resourceIndex+1].currentContent.objID;
+			objToPut = docSlideStructure[slideIndex].contents.list[resourceIndex+1].currentContent.objID;
 
 			var requests = [];
 			var updates = {};
 
 			if (deletionFlag) {
-				var curObjID = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID;
+				var curObjID = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.objID;
 
 				requests.push({
 					"deleteObject": {
@@ -4690,7 +4700,7 @@ async function handleChangeText(slideIndex, resourceIndex, deletionFlag) {
 			requests.push({
 				"insertText": {
 					objectId: objToPut,
-					text: docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents + '\n',
+					text: docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents + '\n',
 					insertionIndex: 0
 				}
 			});
@@ -4711,11 +4721,11 @@ async function handleChangeText(slideIndex, resourceIndex, deletionFlag) {
 
 			updates['/users/' + userName + '/slideInfo/' + slideID + '/' + objToPut] = slideDB[slideID][objToPut];
 
-			docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID = objToPut;
-			docSlideStructure[slideIndex].resources[resourceIndex].currentContent.type = "text";
-			docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
+			docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.objID = objToPut;
+			docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.type = "text";
+			docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents = docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents;
 
-			updates['/users/' + userName + '/docSlideStructure/' + slideIndex + '/resources/' + resourceIndex + '/currentContent'] = docSlideStructure[slideIndex].resources[resourceIndex].currentContent;
+			updates['/users/' + userName + '/docSlideStructure/' + slideIndex + '/resources/' + resourceIndex + '/currentContent'] = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent;
 
 			firebase.database().ref().update(updates);
 
@@ -4766,7 +4776,7 @@ async function handleChangeText(slideIndex, resourceIndex, deletionFlag) {
 
 			if (flag) { // put to existing blank text
 				var ret = await getAppendTextRequest(slideID, newObjID,
-					docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents);
+					docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents);
 
 				requests = requests.concat(ret.request);
 				paragraphIndex = ret.paragraphIndex + 1;
@@ -4791,11 +4801,11 @@ async function handleChangeText(slideIndex, resourceIndex, deletionFlag) {
 					mappingID: mappingKey
 				};
 
-				docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID = newObjID;
-				docSlideStructure[slideIndex].resources[resourceIndex].currentContent.type = "text";
-				docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
+				docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.objID = newObjID;
+				docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.type = "text";
+				docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents = docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents;
 
-				updates['/users/' + userName + '/docSlideStructure/' + slideIndex + '/resources/' + resourceIndex + '/currentContent'] = docSlideStructure[slideIndex].resources[resourceIndex].currentContent;
+				updates['/users/' + userName + '/docSlideStructure/' + slideIndex + '/resources/' + resourceIndex + '/currentContent'] = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent;
 			}
 			else {
 				requests.push({
@@ -4821,7 +4831,7 @@ async function handleChangeText(slideIndex, resourceIndex, deletionFlag) {
 				requests.push({
 					"insertText": {
 						objectId: newObjID,
-						text: docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents,
+						text: docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents,
 						insertionIndex: 0
 					}
 				});
@@ -4835,11 +4845,11 @@ async function handleChangeText(slideIndex, resourceIndex, deletionFlag) {
 					mappingID: mappingKey
 				};
 
-				docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID = newObjID;
-				docSlideStructure[slideIndex].resources[resourceIndex].currentContent.type = "text";
-				docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
+				docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.objID = newObjID;
+				docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.type = "text";
+				docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents = docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents;
 
-				updates['/users/' + userName + '/docSlideStructure/' + slideIndex + '/resources/' + resourceIndex + '/currentContent'] = docSlideStructure[slideIndex].resources[resourceIndex].currentContent;
+				updates['/users/' + userName + '/docSlideStructure/' + slideIndex + '/resources/' + resourceIndex + '/currentContent'] = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent;
 			}
 
 			firebase.database().ref().update(updates);
@@ -4856,8 +4866,8 @@ async function handleChangeText(slideIndex, resourceIndex, deletionFlag) {
 }
 
 function getVisualHighlightForImage(slideIndex, resourceIndex) {
-	var indexes = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents.index;
-	var originalText = docSlideStructure[slideIndex].resources[resourceIndex].originalContent.contents;
+	var indexes = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents.index;
+	var originalText = docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents;
 
 	for(var i=indexes.length-1;i>=0;i--) {
 		var p = indexes[i];
@@ -4870,7 +4880,7 @@ function getVisualHighlightForImage(slideIndex, resourceIndex) {
 }
 
 function getQueryKeywordsForImage(slideIndex, resourceIndex) {
-	var keywords = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents.keywords;
+	var keywords = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents.keywords;
 	var retValue = '';
 
 	for(var i=0;i<keywords.length;i++) {
@@ -4881,7 +4891,7 @@ function getQueryKeywordsForImage(slideIndex, resourceIndex) {
 }
 
 function getSearchResult(slideIndex, resourceIndex) {
-	var keywords = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents.keywords;
+	var keywords = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents.keywords;
 	var queryStatement = '';
 	var firstFlag = true;
 
@@ -5536,7 +5546,7 @@ function constructRequestForSingleSlideAdaptation(presentationID, slideID, targe
 	};
 
 	var b = [];
-	var resources = docSlideStructure[curSlideIndex].resources;
+	var resources = docSlideStructure[curSlideIndex].contents.list;
 
 	for (var i = 0; i < resources.length; i++) {
 		if (resources[i].mappingKey != "null") {
@@ -6233,6 +6243,7 @@ $(document).ready(function() {
 		var req = [];
 		var requests = JSON.parse(JSON.stringify(obj.requests).replaceAll(slideid, docSlideStructure[docslideindex].slide.id));
 
+
 		updateMappingInternal(docSlideStructure[docslideindex].slide.id, obj.matching, false);
 		setDocSlideStructure(docSlideStructure);
 		showDocSlideView(docslideindex);
@@ -6261,6 +6272,8 @@ $(document).ready(function() {
 
 		console.log(req);
 
+		docSlideStructure[docslideindex].type = "hidden";
+
 		gapi.client.slides.presentations.batchUpdate({
 			presentationId: PRESENTATION_ID,
 			requests: req
@@ -6270,11 +6283,13 @@ $(document).ready(function() {
 	});
 
 	$(document).on("click", ".imageResultItem", function(e) {
+		showLoadingSlidePlane();
+
 		var slideIndex = $("#imageView").attr("slideindex");
 		var resourceIndex = $("#imageView").attr("resourceindex");
 		var imgSrc = $(e.target).attr("src");
 
-		var objID = docSlideStructure[slideIndex].resources[resourceIndex].currentContent.objID;
+		var objID = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.objID;
 
 		requests = [{
 			replaceImage: {
@@ -6304,11 +6319,11 @@ $(document).ready(function() {
 		var target = e.target;
 
 		if($(target).hasClass("keywordSelected")) {
-			docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents.keywords[keywordIndex].selected = false;
+			docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents.keywords[keywordIndex].selected = false;
 			$(target).removeClass("keywordSelected");
 		}
 		else {
-			docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents.keywords[keywordIndex].selected = true;
+			docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents.keywords[keywordIndex].selected = true;
 			$(target).addClass("keywordSelected");
 		}
 	});
@@ -6317,7 +6332,7 @@ $(document).ready(function() {
 		var slideIndex = parseInt($("#imageView").attr("slideindex"));
 		var resourceIndex = parseInt($("#imageView").attr("resourceindex"));
 
-		firebase.database().ref("/users/" + userName + '/docSlideStructure/' + slideIndex + "/resources/" + resourceIndex + "/currentContent/contents/keywords/").set(docSlideStructure[slideIndex].resources[resourceIndex].currentContent.contents.keywords);
+		firebase.database().ref("/users/" + userName + '/docSlideStructure/' + slideIndex + "/resources/" + resourceIndex + "/currentContent/contents/keywords/").set(docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents.keywords);
 
 		getSearchResult(slideIndex, resourceIndex);
 	})
@@ -6331,18 +6346,23 @@ $(document).ready(function() {
 
 		var parent = $(e.target).parent().parent();
 
-		var slideIndex = $(parent).attr("slideIndex");
+		var slideIndex = parseInt($(parent).attr("slideIndex"));
 		var resourceIndex = parseInt($(parent).attr("resourceIndex"));
 		var selectedIndex = $(e.target)[0].selectedIndex; // 0: text, 1: image
 
-		// showLoadingAdaptationRow(slideIndex, resourceIndex);
-		showLoadingSlidePlane();
+		if(docSlideStructure[slideIndex].type == "hidden") {
 
-		if(selectedIndex == 0) { // changed to text
-			handleChangeText(slideIndex, resourceIndex, true);
 		}
-		else { // changed to image
-			handleChangeImage(slideIndex, resourceIndex);
+		else {
+			// showLoadingAdaptationRow(slideIndex, resourceIndex);
+			showLoadingSlidePlane();
+
+			if (selectedIndex == 0) { // changed to text
+				handleChangeText(slideIndex, resourceIndex, true);
+			}
+			else { // changed to image
+				handleChangeImage(slideIndex, resourceIndex);
+			}
 		}
 	})
 
@@ -6440,7 +6460,9 @@ $(document).ready(function() {
 		return null;
 	}
 
-	$(document).on("mousedown", ".adaptationTableResourceBody", function(e) {
+	$(document).on("mousedown", ".adaptationTableIndexNumber", function(e) {
+		console.log($(e.target));
+
 		rowSelected = true;
 
 		var curRowObj = $(e.target);
@@ -6458,8 +6480,8 @@ $(document).ready(function() {
 		selectedResourceIndex = resourceIndex;
 
 		$(curRowObj).addClass("mousedown");
-
 		$(curRowObj).find(".temptemp").addClass("rowObjClicked");
+		$(".temptemp").addClass("activated");
 	});
 
 	$(document).on("click", "#reviewCancelBtn", function(e) {
@@ -6822,6 +6844,8 @@ $(document).ready(function() {
 		rowSelected = false;
 		selectedSlideIndex = -1;
 		selectedResourceIndex = -1;
+		$(".rowObjClicked").removeClass("rowObjClicked");
+		$(".temptemp.activated").removeClass("activated");
 	})
 
 	$(document).on("click", ".adaptationTableResourceBody", function(e) {
@@ -9089,7 +9113,10 @@ function getAdaptationViewBodyContents(index) {
 			var item = docSlideStructure[index].contents.list[i];
 
 			resultString += "<tr class='adaptationTableRow' slideIndex='" + index + "' resourceIndex='" + i + "'>" +
-								"<td class='adaptationTableIndex'>" + (i + 1) + 
+								"<td class='adaptationTableIndex'>" + 
+								"<div class='adaptationTableIndexNumber'>" + 
+								(i + 1) + 
+								"</div>" +
 
 									'<select class="adaptationTableTypeSelector" name="adaptationTableTypeSelector">' + 
   										'<option value="text" ' + (item.currentContent.type == "text" ? "selected='selected'" : "") + '>Text</option>' + 
@@ -9256,29 +9283,31 @@ function putContentsToDocSlide(index, c) {
 
 	console.log(docSlideStructure);
 
-	docSlideStructure[index].contents.list.push({
-		"mappingKey": c.mapping,
-		originalContent: {
-			type: c.type,
-			contents: c.contents
-		},
-		currentContent: {
-			objID: null,
-			boxIndex: 1,
-			type: c.type,
-			contents: c.contents
-		}
-	});
-
-	updateDocSlideToExtension();
-	setDocSlideStructure(docSlideStructure);
-	showDocSlideView(index);
 
 	if(referenceSlideID == DEFAULT_SLIDE_ID && docSlideStructure[index].layout.slideId == "ge93a171212_0_5") {
 		var slideID = docSlideStructure[index].slide.id;
 		var objID = docSlideStructure[index].slide.objs[1].id;
 		var text = c.contents;
 		var mappingID = c.mapping;
+
+		docSlideStructure[index].contents.list.push({
+			"mappingKey": c.mapping,
+			originalContent: {
+				type: c.type,
+				contents: c.contents
+			},
+			currentContent: {
+				objID: objID,
+				boxIndex: 1,
+				type: c.type,
+				contents: c.contents
+			}
+		});
+
+		updateDocSlideToExtension();
+		setDocSlideStructure(docSlideStructure);
+		showDocSlideView(index);
+
 
 		console.log(slideID, objID, text, mappingID);
 

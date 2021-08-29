@@ -1680,6 +1680,7 @@ width: 100%;
     height: 50%;
   	display: inline-block;
     position: absolute;
+	pointer-events: none !important;
 }
 
 .temptemp.rowObjClicked {
@@ -1700,6 +1701,10 @@ width: 100%;
 
 .temptemp.lower {
 	top: 50%;
+}
+
+.temptemp.activated {
+	pointer-events: auto !important;
 }
 
 .adaptationTableResourceBody {
@@ -1910,4 +1915,10 @@ width: 100%;
 
   .alternativeThumbnail.disabled {
 	  filter: brightness(0.6);
+  }
+
+  .adaptationTableIndexNumber {
+	  width: 20px;
+	  display: inline-block;
+	  text-align: center;
   }
