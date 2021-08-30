@@ -1263,7 +1263,15 @@ function getParagraphIndexOfDocSlideStructure(s, r) {
 	var label = docSlideStructure[s].contents.list[r].currentContent.label;
 
 	var slideObjID = docSlideStructure[s].layout.mapping[label];
+	var pIndex = 0;
 
+	for(var i=0;i<r;i++) {
+		if(label == docSlideStructure[s].contents.list[i].currentContent.label)
+			pIndex++;
+	}
+
+	return pIndex;
+	/*
 	console.log(slideID, mappingKey, slideObjID);
 	console.log(slideDB);
 
@@ -1281,6 +1289,7 @@ function getParagraphIndexOfDocSlideStructure(s, r) {
 		console.log("***** NOT FOUND *****");
 		return -1;
 	}
+	*/
 }
 
 function getImageToShow(imgList) {
@@ -2232,6 +2241,133 @@ async function getTextOnParagraph(slidePageID, objectID, paragraphIndex) {
 	
 			// slideDB[slideID] = slideObjId;
 		}
+    }, function(response) {
+		console.log(response);
+		//appendPre('Error: ' + response.result.error.message);
+   	}).catch(function(er) {
+		console.log("WHAT?");
+		console.log(er);
+    });
+}
+
+function moveParagraphBetweenObj(slidePageID, srcObjID, dstObjID, srcParagraphIndex, dstParagraphIndex) {
+	console.log(srcObjID, srcParagraphIndex);
+	console.log(dstObjID, dstParagraphIndex);
+
+    gapi.client.slides.presentations.get({
+	presentationId: PRESENTATION_ID
+    }).then(function(response) {
+		var presentation = response.result;
+		var length = presentation.slides.length;
+	
+		console.log(response);
+		// slideDB = {};
+
+		var srcText = null, dstText = null;
+		var srcStartIndex, srcEndIndex, dstStartIndex, dstEndIndex;
+		var srcEndFlag = false, dstEndFlag = false;
+	
+		for (i = 0; i < length; i++) {
+			var slide = presentation.slides[i];
+
+			var slideID = slide.objectId;
+
+			if (slideID == slidePageID) {
+				for (var j = 0; j < slide.pageElements.length; j++) {
+					var slideItem = slide.pageElements[j];
+
+					console.log(slideItem.objectId, srcObjID, dstObjID);
+
+					if (slideItem.objectId == srcObjID) {
+						var curParagraphIndex = -1, startIndex = -1, endIndex = -1;
+
+						for (var k = 0; k < slideItem.shape.text.textElements.length; k++) {
+							var textElem = slideItem.shape.text.textElements[k];
+
+							if (textElem.endIndex != endIndex) {
+								curParagraphIndex++;
+
+								if ("startIndex" in textElem) startIndex = textElem.startIndex;
+								else startIndex = 0;
+
+								endIndex = textElem.endIndex;
+							}
+
+							if ("textRun" in textElem && curParagraphIndex == srcParagraphIndex) {
+								srcText = textElem.textRun.content;
+								srcStartIndex = startIndex;
+								srcEndIndex = endIndex;
+							}
+						}
+
+						if (curParagraphIndex < srcParagraphIndex) {
+							srcStartIndex = endIndex - 1;
+							srcEndFlag = true;
+						}
+					}
+
+					if (slideItem.objectId == dstObjID) {
+						var curParagraphIndex = -1, startIndex = -1, endIndex = -1;
+
+						for (var k = 0; k < slideItem.shape.text.textElements.length; k++) {
+							var textElem = slideItem.shape.text.textElements[k];
+
+							if (textElem.endIndex != endIndex) {
+								curParagraphIndex++;
+
+								if ("startIndex" in textElem) startIndex = textElem.startIndex;
+								else startIndex = 0;
+
+								endIndex = textElem.endIndex;
+							}
+
+							if ("textRun" in textElem && curParagraphIndex == dstParagraphIndex) {
+								dstText = textElem.textRun.content;
+								dstStartIndex = startIndex;
+								dstEndIndex = endIndex;
+							}
+						}
+
+						if (curParagraphIndex < dstParagraphIndex) {
+							dstStartIndex = endIndex - 1;
+							dstEndFlag = true;
+						}
+					}
+				}
+
+				break;
+			}
+		}
+
+		console.log(srcText, srcStartIndex, srcEndIndex, srcEndFlag);
+		console.log(dstText, dstStartIndex, dstEndIndex, dstEndFlag);
+
+		var requests;
+
+		requests = [{
+			insertText: {
+				"objectId": dstObjID,
+				"text": (dstEndFlag ? '\n' + srcText.trim() : srcText),
+				"insertionIndex": dstStartIndex
+			}
+		}, {
+			deleteText: {
+				"objectId": srcObjID,
+				"textRange": {
+					"startIndex": (!srcEndFlag ? (srcStartIndex == 0 ? 0 : srcStartIndex - 1) : srcStartIndex),
+					"endIndex": (!srcEndFlag ? (srcStartIndex == 0 ? srcEndIndex : srcEndIndex - 1) : srcEndIndex),
+					"type": "FIXED_RANGE"
+				}
+			}
+		}];
+
+		gapi.client.slides.presentations.batchUpdate({
+			presentationId: PRESENTATION_ID,
+			requests: requests
+		}).then((createSlideResponse) => {
+			console.log(createSlideResponse);
+		});
+			// slideDB[slideID] = slideObjId;
     }, function(response) {
 		console.log(response);
 		//appendPre('Error: ' + response.result.error.message);
@@ -6238,12 +6374,7 @@ async function moveItemToIndex(slideIndex, resourceIndex, targetSlideIndex, targ
 	console.log(targetSlideIndex, targetResourceIndex);
 
 	var before_paragraphIndex = getParagraphIndexOfDocSlideStructure(slideIndex, resourceIndex);
-
-	if(before_paragraphIndex == -1) before_paragraphIndex = slideDB[referenceSlideID][sourceObjID].length;
-
 	var after_paragraphIndex = getParagraphIndexOfDocSlideStructure(targetSlideIndex, targetResourceIndex);
-
-	if(after_paragraphIndex == -1) after_paragraphIndex = slideDB[referenceSlideID][destObjID].length;
 
 	console.log(before_paragraphIndex, after_paragraphIndex);
 
@@ -6264,6 +6395,15 @@ async function moveItemToIndex(slideIndex, resourceIndex, targetSlideIndex, targ
 		}
 	}
 	else {
+		var source = slideDB[slideID][sourceObjID][before_paragraphIndex];
+		console.log(JSON.parse(JSON.stringify(slideDB)));
+
+		moveParagraphBetweenObj(slideID, sourceObjID, destObjID, before_paragraphIndex, after_paragraphIndex + (targetResourceIndex == beforeAfter ? 0 : 1));
+
+		slideDB[slideID][sourceObjID].splice(before_paragraphIndex, 1);
+		slideDB[slideID][destObjID].splice(after_paragraphIndex + (targetResourceIndex == beforeAfter ? 0 : 1), 0, source);
+
+		console.log(JSON.parse(JSON.stringify(slideDB)));
 	}
 
 	/*
@@ -7042,10 +7182,14 @@ $(document).ready(function() {
 				else resourceIndexToInsert = resourceIndex;
 
 				if (slideIndex == selectedSlideIndex) {
-					var targetLabel = docSlideStructure[slideIndex].contents.list[resourceIndex].label;
+					var targetLabel = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.label;
 					var targetIndex = resourceIndexToInsert;
 
+					console.log(targetLabel);
+
 					moveItemToIndex(selectedSlideIndex, selectedResourceIndex, slideIndex, resourceIndex, resourceIndexToInsert);
+
+					docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex].currentContent.label = targetLabel;
 
 					var source = JSON.parse(JSON.stringify(docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex]));
 					docSlideStructure[selectedSlideIndex].contents.list.splice(selectedResourceIndex, 1);
@@ -9874,6 +10018,11 @@ async function automaticallyPutContents(textInfo, mapping) {
 				insertionIndex: 0
 			}
 		});
+
+		if(!(slideID in slideDB)) slideDB[slideID] = {};
+
+		slideDB[slideID][titleID] = [];
+		slideDB[slideID][titleID].push({mappingID: "null"});
 
 		var updates = {};
 
