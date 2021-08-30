@@ -1455,13 +1455,13 @@ width: 100%;
   }
 
   .adaptationTableIndex {
-	  width: 80px;
+	  width: 60px;
   }
 
   .adaptationTableRow {
 	   position: relative;
   }
-  .adaptationTableRow:hover {
+  .adaptationTableResourceBody:hover {
 	  background-color: yellow;
 	  cursor: pointer;
   }
@@ -1560,6 +1560,24 @@ width: 100%;
 	  box-sizing: border-box;
 	  background-color: white;
   }
+
+  .adaptationTableLabelSelector{
+	  width: 50px;
+	  font-size: 10px;
+	  margin-left: 5px;
+	  display: inline-block;
+	  text-align-last: center;
+	  height: 15px;
+	  border-radius: 5px;
+	  cursor: pointer;
+  }
+
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+}
 
   .adaptationTableTypeSelector {
 	  width: 50px;
@@ -1713,6 +1731,8 @@ width: 100%;
 	   -khtml-user-select: none; /* Konqueror HTML */
 	   -moz-user-select: none; /* Firefox */
 	   -ms-user-select: none; /* Internet Explorer/Edge */
+
+	   position: relative;
 }
 
 .adaptationViewBodyLayout {
@@ -1921,4 +1941,25 @@ width: 100%;
 	  width: 20px;
 	  display: inline-block;
 	  text-align: center;
+  }
+
+  .adaptationViewDocumentLabelDiv {
+	  padding-top: 10px;
+	  margin-top: 15px;
+	  position: relative;
+	  border: 1px solid black;
+	  margin-left: 5px;
+	  margin-right: 5px;
+	  padding-right: 5px;
+	  padding-left: 5px;
+	  padding-bottom: 5px;
+  }
+
+  .adaptationViewDocumentLabelDivHeader {
+	  position: absolute;
+	  top: -10px;
+  }
+
+  .adaptationViewDocumentLabelDivHeaderSpan {
+	  background-color: white;
   }
