@@ -2241,7 +2241,7 @@ async function getTextOnParagraph(slidePageID, objectID, paragraphIndex) {
     });
 }
 
-function moveParagraph(slidePageID, objectID, srcParagraphIndex, dstParagraphIndex) {
+function moveParagraphWithinObj(slidePageID, objectID, srcParagraphIndex, dstParagraphIndex) {
     gapi.client.slides.presentations.get({
 	presentationId: PRESENTATION_ID
     }).then(function(response) {
@@ -6225,21 +6225,43 @@ async function getAlternativeSlides(index, subject) {
 	*/
 }
 
-async function moveItemToIndex(slideIndex, resourceIndex, targetSlideIndex, targetResourceIndex) {
+async function moveItemToIndex(slideIndex, resourceIndex, targetSlideIndex, targetResourceIndex, beforeAfter) {
 	var slideID = docSlideStructure[slideIndex].slide.id;
+
 	var label = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.label;
-	var objectID = docSlideStructure[slideIndex].layout.mapping[label];
+	var targetLabel = docSlideStructure[targetSlideIndex].contents.list[targetResourceIndex].currentContent.label;
+
+	var sourceObjID = docSlideStructure[slideIndex].layout.mapping[label];
+	var destObjID = docSlideStructure[targetSlideIndex].layout.mapping[targetLabel];
 
 	console.log(slideIndex, resourceIndex);
 	console.log(targetSlideIndex, targetResourceIndex);
 
 	var before_paragraphIndex = getParagraphIndexOfDocSlideStructure(slideIndex, resourceIndex);
+
+	if(before_paragraphIndex == -1) before_paragraphIndex = slideDB[referenceSlideID][sourceObjID].length;
+
 	var after_paragraphIndex = getParagraphIndexOfDocSlideStructure(targetSlideIndex, targetResourceIndex);
+
+	if(after_paragraphIndex == -1) after_paragraphIndex = slideDB[referenceSlideID][destObjID].length;
 
 	console.log(before_paragraphIndex, after_paragraphIndex);
 
-	if(slideIndex == targetSlideIndex) { // within the same type
-		moveParagraph(slideID, objectID, before_paragraphIndex, after_paragraphIndex);
+	if(sourceObjID == destObjID) { // within the same obj
+		moveParagraphWithinObj(slideID, sourceObjID, before_paragraphIndex, after_paragraphIndex + (targetResourceIndex == beforeAfter ? 0 : 1));
+
+		if(before_paragraphIndex < after_paragraphIndex) {
+			var source = slideDB[slideID][sourceObjID][before_paragraphIndex];
+
+			slideDB[slideID][sourceObjID].splice(before_paragraphIndex, 1);
+			slideDB[slideID][sourceObjID].splice(after_paragraphIndex + (targetResourceIndex == beforeAfter ? 0 : 1) - 1, 0, source);
+		}
+		else {
+			var source = slideDB[slideID][sourceObjID][before_paragraphIndex];
+
+			slideDB[slideID][sourceObjID].splice(before_paragraphIndex, 1);
+			slideDB[slideID][sourceObjID].splice(after_paragraphIndex + (targetResourceIndex == beforeAfter ? 0 : 1), 0, source);
+		}
 	}
 	else {
 	}
@@ -7010,7 +7032,6 @@ $(document).ready(function() {
 			var resourceIndex = parseInt($(p).attr("resourceindex"));
 
 			if (!(slideIndex == selectedSlideIndex && resourceIndex == selectedResourceIndex)) {
-
 				console.log(slideIndex, resourceIndex);
 
 				var mouseinObj = $(".mousein")[0];
@@ -7021,15 +7042,15 @@ $(document).ready(function() {
 				else resourceIndexToInsert = resourceIndex;
 
 				if (slideIndex == selectedSlideIndex) {
+					var targetLabel = docSlideStructure[slideIndex].contents.list[resourceIndex].label;
 					var targetIndex = resourceIndexToInsert;
 
-// 					updateSlide(docSlideStructure[slideIndex].slide.id);
-					moveItemToIndex(slideIndex, selectedResourceIndex, selectedSlideIndex, targetIndex);
+					moveItemToIndex(selectedSlideIndex, selectedResourceIndex, slideIndex, resourceIndex, resourceIndexToInsert);
 
 					var source = JSON.parse(JSON.stringify(docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex]));
 					docSlideStructure[selectedSlideIndex].contents.list.splice(selectedResourceIndex, 1);
 
-					if (resourceIndex < resourceIndexToInsert) 
+					if (selectedResourceIndex < resourceIndex) 
 						docSlideStructure[selectedSlideIndex].contents.list.splice(resourceIndexToInsert - 1, 0, source);
 					else 
 						docSlideStructure[selectedSlideIndex].contents.list.splice(resourceIndexToInsert, 0, source);
@@ -7064,6 +7085,7 @@ $(document).ready(function() {
 		rowSelected = false;
 		selectedSlideIndex = -1;
 		selectedResourceIndex = -1;
+
 		$(".rowObjClicked").removeClass("rowObjClicked");
 		$(".temptemp.activated").removeClass("activated");
 		$(".temptemp.mousein").removeClass("mousein");
