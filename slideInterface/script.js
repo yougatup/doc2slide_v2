@@ -6851,6 +6851,38 @@ $(document).ready(function() {
 		$(curRowObj).addClass("mousedown");
 		$(curRowObj).find(".temptemp").addClass("rowObjClicked");
 		$(".temptemp").addClass("activated");
+
+		issueEvent("root_getThumbnailPosition", null,
+				"extension_getThumbnailPosition").then(result => {
+					var data = result.detail.thumbnailInfo;
+					var rootRect = result.detail.rootRect;
+
+					$("#thumbnailDiv").css("top", rootRect.top + 38);
+					$("#thumbnailDiv").css("left", rootRect.left);
+					$("#thumbnailDiv").css("width", rootRect.width);
+					$("#thumbnailDiv").css("height", rootRect.height);
+
+					console.log(data);
+					console.log(rootRect);
+
+					$("#thumbnailDiv").html('');
+
+					for(var i=0;i<data.length;i++) {
+						$("#thumbnailDiv").append(
+							"<div class='thumbnailBox'" + 
+							' style="top: ' + (data[i].rect.top - rootRect.top) + 'px; ' +
+							'left: ' + (data[i].rect.left - rootRect.left) + 'px; ' +
+							'width: ' + data[i].rect.width + 'px; ' +
+							'height: ' + data[i].rect.height + 'px;" slideid="' + data[i].slideID + '"> ' + 
+								"<div class='thumbnailBoxTop'> </div>" + 
+								"<div class='thumbnailBoxMiddle'> </div>" + 
+								"<div class='thumbnailBoxBottom'> </div>" + 
+							"</div>"
+						)
+					}
+
+					$("#thumbnailTotalDiv").show();
+				});
 	});
 
 	$(document).on("click", "#reviewCancelBtn", function(e) {
@@ -7164,14 +7196,14 @@ $(document).ready(function() {
 		var p = getParents(e.target, "adaptationTableResourceBody");
 
 		if(rowSelected && p != null && $(".mousein").length > 0)  {
-			showLoadingSlidePlane();
-
 			console.log("GOT IT!");
 
 			var slideIndex = parseInt($(p).attr("slideindex"));
 			var resourceIndex = parseInt($(p).attr("resourceindex"));
 
 			if (!(slideIndex == selectedSlideIndex && resourceIndex == selectedResourceIndex)) {
+				showLoadingSlidePlane();
+
 				console.log(slideIndex, resourceIndex);
 
 				var mouseinObj = $(".mousein")[0];
@@ -7233,6 +7265,12 @@ $(document).ready(function() {
 		$(".rowObjClicked").removeClass("rowObjClicked");
 		$(".temptemp.activated").removeClass("activated");
 		$(".temptemp.mousein").removeClass("mousein");
+
+		$(".thumbnailBoxTop.mousein").removeClass("mousein");
+		$(".thumbnailBoxMiddle.mousein").removeClass("mousein");
+		$(".thumbnailBoxBottom.mousein").removeClass("mousein");
+
+		$("#thumbnailTotalDiv").hide();
 	})
 
 	$(document).on("click", ".adaptationTableResourceBody", function(e) {
@@ -8410,6 +8448,24 @@ $(document).ready(function() {
 			var value = parseInt($(".sectionLevelCoverageInput[sectionKey='" + sectionKey + "']").val());
 
 			sectionLevelCoverageValueUpdate(e.target, value+1);
+		});
+
+		$(document).on("mouseenter", ".thumbnailBoxTop, .thumbnailBoxMiddle, .thumbnailBoxBottom", function(e) {
+			if (rowSelected) {
+				var t = e.target;
+
+				console.log(t);
+
+				$(t).addClass("mousein");
+			}
+		});
+
+		$(document).on("mouseleave", ".thumbnailBoxTop, .thumbnailBoxMiddle, .thumbnailBoxBottom", function(e) {
+			if(rowSelected) {
+				console.log("leave");
+
+				$(".mousein").removeClass("mousein");
+			}
 		});
 
 		$(document).on("mouseenter", ".temptemp.upper", function(e) {

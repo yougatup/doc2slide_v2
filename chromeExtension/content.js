@@ -33,7 +33,9 @@ var eventList = {
 	"extension_reviewSelected": ["extension", "root"],
 	"extension_thumbnailSelected": ["extension", "root"],
 	"root_locateSlide": ["root", "extension"],
-	"root_updateDocSlideStructure": ["root", "extension"]
+	"root_updateDocSlideStructure": ["root", "extension"],
+	"root_getThumbnailPosition": ["root", "extension"],
+	"extension_getThumbnailPosition": ["extension", "root"],
 }
 
 var locateSlideID = '';
@@ -128,6 +130,7 @@ function updateFilmstripFromDocSlideStructure() {
 		retValue.push({
 			outerObj: $(this).find(".punch-filmstrip-thumbnail-background")[0],
 			innerObj: $(this).find(".punch-filmstrip-thumbnail-border-inner")[0],
+			// slideID: $($($($($(this).find("g")[0]).find("svg")[0]).find("g")[0]).find("g")[0]).attr("id").split("-")[3],
 			y_coordinate: parseInt(y_coordinate)
 		})
 	});
@@ -138,7 +141,7 @@ function updateFilmstripFromDocSlideStructure() {
 		else return -1;
 	});
 
-	// console.log(retValue);
+	console.log(retValue);
 	// console.log(docSlideStructure);
 
 	for(var i=0;i<docSlideStructure.length;i++) {
@@ -375,6 +378,37 @@ function chromeExtensionBody() {
 		docSlideStructure = e.detail;
 
 		console.log(docSlideStructure);
+	});
+
+	$(document).on("root_getThumbnailPosition", function(e) {
+		var retValue = [];
+
+		$(".punch-filmstrip-thumbnail").each(function () {
+			var y_coordinate = $(this).attr("transform").split(' ')[1];
+			y_coordinate = y_coordinate.substr(0, y_coordinate.length - 1);
+
+			retValue.push({
+				obj: $(this),
+				rect: $(this)[0].getBoundingClientRect(),
+				outerObj: $(this).find(".punch-filmstrip-thumbnail-background")[0],
+				innerObj: $(this).find(".punch-filmstrip-thumbnail-border-inner")[0],
+				slideID: $($($($($(this).find("g")[0]).find("svg")[0]).find("g")[0]).find("g")[0]).attr("id").split("-")[3],
+				y_coordinate: parseInt(y_coordinate)
+			})
+		});
+
+		retValue.sort(function (first, second) {
+			if (first.y_coordinate > second.y_coordinate) return 1;
+			else if (first.y_coordinate == second.y_coordinate) return 0;
+			else return -1;
+		});
+
+		console.log(retValue);
+
+		issueEvent("extension_getThumbnailPosition", {
+			thumbnailInfo: retValue,
+			rootRect: $("#filmstrip")[0].getBoundingClientRect()
+		});
 	});
 
 	$(document).on("root_locateSlide", function(e) {
