@@ -6962,7 +6962,7 @@ $(document).ready(function() {
 							' style="top: ' + (data[i].rect.top - rootRect.top) + 'px; ' +
 							'left: ' + (data[i].rect.left - rootRect.left) + 'px; ' +
 							'width: ' + data[i].rect.width + 'px; ' +
-							'height: ' + data[i].rect.height + 'px;" slideid="' + data[i].slideID + '" slideindex="' + i + '"> ' + 
+							'height: ' + (data[i].rect.height+5) + 'px;" slideid="' + data[i].slideID + '" slideindex="' + i + '"> ' + 
 								"<div class='thumbnailBoxTop thumbnailDest'> </div>" + 
 								"<div class='thumbnailBoxMiddle thumbnailDest'> </div>" + 
 								"<div class='thumbnailBoxBottom thumbnailDest'> </div>" + 
@@ -7360,6 +7360,13 @@ $(document).ready(function() {
 				showDocSlideView(selectedSlideIndex);
 			}
 			else {
+				var insertIndex = -1;
+
+				if(option == "top")  insertIndex = slideindex;
+				else insertIndex = slideindex + 1;
+
+				console.log(insertIndex);
+
 
 			}
 		}
@@ -9903,6 +9910,8 @@ function putContentsToDocSlide(index, c) {
 			}
 		});
 
+		locateSlide(slideID);
+
 		updateDocSlideToExtension();
 		setDocSlideStructure(docSlideStructure);
 		showDocSlideView(index);
@@ -9957,64 +9966,6 @@ async function automaticallyPutContents(textInfo, mapping) {
 				contents: mapping.text,
 				mapping: mapping.key
 			})
-			/*
-			docSlideStructure[index].contents.list.push({
-				"mappingKey": mapping.key,
-				originalContent: {
-				type: "text",
-				contents: mapping.text,
-				},
-				currentContent: {
-					type: "text",
-					contents: mapping.text,
-					objID: null,
-					boxIndex: 1,
-				}
-			});
-
-			updateSlideThumbnail();
-
-			curDocSlideStructureIndex = index;
-
-			setDocSlideStructure(docSlideStructure);
-			showDocSlideView(curDocSlideStructureIndex);
-
-			showReviewSlide(index);
-			locateSlide(docSlideStructure[index].slideID, true)
-			*/
-			/*
-			var shorteningResult = findShortening(mapping.key);
-
-			console.log(shorteningResult);
-
-			docSlideStructure[index].contents.list.push({
-				"mappingKey": mapping.key,
-				originalContent: {
-					type: "text",
-					contents: mapping.text,
-				},
-				currentContent: {
-					type: "text",
-					contents: mapping.text,
-					objID: null,
-				}
-			});
-
-			resourceIndex = docSlideStructure[index].resources.length-1;
-
-			var updates = {};
-			var len = docSlideStructure[index].resources.length;
-
-			updates['/users/' + userName + '/docSlideStructure/' + index + '/resources/' + (len-1)] = docSlideStructure[index].resources[len-1];
-
-			await firebase.database().ref().update(updates);
-
-			handleChangeText(index, len-1, false);
-
-			var v = getDocSlideStructureView(index);
-
-			$(".adaptationViewDiv[index='" + index + "']")[0].outerHTML = v;
-			*/
 		}
 		else console.log("*** DO NOT KNOW YET ***");
 	}

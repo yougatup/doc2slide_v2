@@ -1970,37 +1970,61 @@ width: 100%;
 	  width: 100%;
 	  pointer-events: auto !important;
 	  overflow: hidden;
+	  box-sizing: border-box;
   }
-
   .thumbnailBox {
-	  border: 3px dashed gray;
+	  /* border: 3px dashed gray; */
 	  position: absolute;
+	  box-sizing: border-box;
   }
 
   .thumbnailBoxTop {
 	  width: 100%;
-	  height: 10px;
+	  height: 20px;
 	  box-sizing: border-box;
-	  background-color: rgba(255, 0, 0, 0.5);
+	  /* background-color: rgba(255, 0, 0, 0.5); */
 	pointer-events: auto !important;
 	cursor: pointer;
+	border-top: 3px dotted gray;
+	border-left: 3px dotted gray;
+	border-right: 3px dotted gray;
+	position: relative;
   }
   .thumbnailBoxBottom {
 	  width: 100%;
-	  height: 10px;
+	  height: 20px;
 	  box-sizing: border-box;
-	  background-color: rgba(0, 255, 0, 0.5);
+	  /* background-color: rgba(0, 255, 0, 0.5); */
 	  pointer-events: auto !important;
 	cursor: pointer;
+
+	border-bottom: 3px dotted gray;
+	border-left: 3px dotted gray;
+	border-right: 3px dotted gray;
+	position: relative;
   }
 
   .thumbnailBoxMiddle {
 	  width: 100%;
-	  height: calc(100% - 20px);
+	  height: calc(100% - 40px);
 	  box-sizing: border-box;
-	  background-color: rgba(0, 0, 255, 0.5);
+	  /* background-color: rgba(0, 0, 255, 0.5); */
 	  pointer-events: auto !important;
 	cursor: pointer;
+
+	border-left: 3px dotted gray;
+	border-right: 3px dotted gray;
+	position: relative;
+  }
+  
+  .thumbnailBoxBottom:hover {
+	  border-bottom: 3px solid orange;
+	  z-index: 987987987 !important;
+  }
+
+  .thumbnailBoxTop:hover {
+	  border-top: 3px solid orange;
+	  z-index: 987987987 !important;
   }
 
   #thumbnailTotalDiv {
@@ -2009,3 +2033,4 @@ width: 100%;
 	  display: none;
 	  pointer-events: auto !important;
   }
+
