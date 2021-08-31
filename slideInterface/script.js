@@ -2052,10 +2052,6 @@ async function removeParagraph(slidePageID, objectID, paragraphIndex, removeHigh
 									var numParagraphs = Object.keys(slideDB[slidePageID][objectID]).length;
 									var updates = {};
 
-									console.log(slideDB[slidePageID][objectID][0]);
-									console.log(slideDB[slidePageID][objectID][1]);
-									console.log(slideDB[slidePageID][objectID][2]);
-
 									if(numParagraphs-1 == paragraphIndex) lastParagraphFlag = true;
 
 									console.log(paragraphIndex);
@@ -2063,22 +2059,14 @@ async function removeParagraph(slidePageID, objectID, paragraphIndex, removeHigh
 									for(var l=paragraphIndex;l<numParagraphs-1;l++) {
 										updates['/users/' + userName + '/slideInfo/' + slidePageID + '/' + objectID+ '/' + l] = slideDB[slidePageID][objectID][l+1];
 
-										console.log(l);
-										console.log(slideDB[slidePageID][objectID][l]);
-										console.log(slideDB[slidePageID][objectID][l+1]);
-
 										slideDB[slidePageID][objectID][l] = slideDB[slidePageID][objectID][l+1];
-
-										console.log(slideDB[slidePageID][objectID][l]);
-										console.log(slideDB[slidePageID][objectID][l+1]);
-
 									}
 
 									updates['/users/' + userName + '/slideInfo/' + slidePageID+ '/' + objectID+ '/' + (numParagraphs-1)] = {
 										mappingID: null
 									}
 
-									delete slideDB[slidePageID][objectID][numParagraphs-1];
+									slideDB[slidePageID][objectID].splice(numParagraphs-1, 1)
 
 									console.log(slideDB[slidePageID][objectID]);
 									console.log(updates);
@@ -2155,7 +2143,7 @@ async function removeRangeInObjWithRequest(slidePageID, objectID, range, request
      }
    } ];
 
-   requests = requests.concat(request);
+   console.log(requests);
 
    return await gapi.client.slides.presentations.batchUpdate({
      presentationId: PRESENTATION_ID,
@@ -2178,6 +2166,8 @@ async function removeRangeInObj(slidePageID, objectID, range, __requests) {
    } ];
 
    if(__requests != null) requests = requests.concat(__requests);
+
+   console.log(requests);
 
    return await gapi.client.slides.presentations.batchUpdate({
      presentationId: PRESENTATION_ID,
@@ -6361,6 +6351,105 @@ async function getAlternativeSlides(index, subject) {
 	*/
 }
 
+async function moveItemToDifferentSlide(slideIndex, resourceIndex, targetSlideID) {
+	var slideID = docSlideStructure[slideIndex].slide.id;
+
+	var targetSlideIndex = getIndexOfSlide(targetSlideID);
+
+	var sourceItem = docSlideStructure[slideIndex].contents.list[resourceIndex];
+
+	var label = sourceItem.currentContent.label;
+	var targetLabel = docSlideStructure[targetSlideIndex].contents.list[docSlideStructure[targetSlideIndex].contents.list.length-1].currentContent.label;
+
+	var sourceObjID = docSlideStructure[slideIndex].layout.mapping[label];
+	var destObjID = docSlideStructure[targetSlideIndex].layout.mapping[targetLabel];
+
+	console.log(slideIndex, resourceIndex);
+	console.log(label, targetLabel);
+	console.log(targetSlideIndex);
+	console.log(sourceObjID, destObjID);
+
+	var before_paragraphIndex = getParagraphIndexOfDocSlideStructure(slideIndex, resourceIndex);
+	var after_paragraphIndex = getParagraphIndexOfDocSlideStructure(targetSlideIndex, docSlideStructure[targetSlideIndex].contents.list.length-1) + 1;
+
+	console.log(before_paragraphIndex, after_paragraphIndex);
+	console.log(targetSlideID, destObjID);
+
+	/*
+	if (slideID in slideDB && sourceObjID in slideDB[slideID] && slideDB[slideID][sourceObjID].length > before_paragraphIndex) {
+		console.log(JSON.parse(JSON.stringify(slideDB)));
+
+		slideDB[slideID][sourceObjID].splice(before_paragraphIndex, 1);
+
+		console.log(JSON.parse(JSON.stringify(slideDB)));
+	}
+	*/
+
+	if (!(targetSlideID in slideDB)) slideDB[targetSlideID] = {};
+	if (!(destObjID in slideDB[targetSlideID])) slideDB[targetSlideID][destObjID] = [];
+
+	while(slideDB[targetSlideID][destObjID].length <= after_paragraphIndex) {
+		slideDB[targetSlideID][destObjID].push({mappingID: "null"});
+	}
+
+	slideDB[targetSlideID][destObjID][after_paragraphIndex].mappingID = sourceItem.mappingKey;
+
+	console.log(before_paragraphIndex);
+
+	var ret = await getAppendTextRequest(targetSlideID, destObjID, sourceItem.currentContent.contents);
+
+	removeParagraph(slideID, sourceObjID, before_paragraphIndex, false, ret.request);
+
+	/*
+	var mappingKey = docSlideStructure[slideIndex].contents.list[resourceIndex].mappingKey;
+
+	console.log(slideID, objectID);
+	console.log(resourceIndex);
+	console.log(JSON.parse(JSON.stringify(docSlideStructure[slideIndex].contents.list)));
+	console.log(mappingKey);
+
+	var destinationObjID = docSlideStructure[slideIndex].layout.mapping[targetLabel];
+	var objToPut = destinationObjID;
+
+	// append to the back
+	var requests = [];
+	var updates = {};
+
+	var ret = await getAppendTextRequest(slideID, objToPut,
+	docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents);
+
+	requests = requests.concat(ret.request);
+
+	var paragraphIndex = ret.paragraphIndex + 1;
+
+	if (!(objToPut in slideDB[slideID])) slideDB[slideID][objToPut] = [];
+
+	while(slideDB[slideID][objToPut].length <= paragraphIndex) {
+		slideDB[slideID][objToPut].push({mappingID: "null"});
+	}
+
+	slideDB[slideID][objToPut][paragraphIndex] = {
+		mappingID: mappingKey
+	};
+
+	updates['/users/' + userName + '/slideInfo/' + slideID + '/' + objToPut + '/' + paragraphIndex] = {
+		mappingID: mappingKey
+	};
+
+	console.log(slideDB[slideID][objToPut]);
+
+	docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.objID = objToPut;
+	docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.label = targetLabel;
+
+	await removeParagraph(slideID, objectID, before_paragraphIndex, false, requests);
+
+	updates['/users/' + userName + '/docSlideStructure/' + slideIndex + '/resources/' + resourceIndex + '/currentContent'] = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent;
+
+	firebase.database().ref().update(updates);
+
+	*/
+}
+
 async function moveItemToIndex(slideIndex, resourceIndex, targetSlideIndex, targetResourceIndex, beforeAfter) {
 	var slideID = docSlideStructure[slideIndex].slide.id;
 
@@ -6873,10 +6962,10 @@ $(document).ready(function() {
 							' style="top: ' + (data[i].rect.top - rootRect.top) + 'px; ' +
 							'left: ' + (data[i].rect.left - rootRect.left) + 'px; ' +
 							'width: ' + data[i].rect.width + 'px; ' +
-							'height: ' + data[i].rect.height + 'px;" slideid="' + data[i].slideID + '"> ' + 
-								"<div class='thumbnailBoxTop'> </div>" + 
-								"<div class='thumbnailBoxMiddle'> </div>" + 
-								"<div class='thumbnailBoxBottom'> </div>" + 
+							'height: ' + data[i].rect.height + 'px;" slideid="' + data[i].slideID + '" slideindex="' + i + '"> ' + 
+								"<div class='thumbnailBoxTop thumbnailDest'> </div>" + 
+								"<div class='thumbnailBoxMiddle thumbnailDest'> </div>" + 
+								"<div class='thumbnailBoxBottom thumbnailDest'> </div>" + 
 							"</div>"
 						)
 					}
@@ -7193,70 +7282,88 @@ $(document).ready(function() {
 		console.log($(e.target));
 		$(".adaptationTableResourceBody.mousedown").removeClass("mousedown");
 
-		var p = getParents(e.target, "adaptationTableResourceBody");
+		var p = null;
+		if ($(e.target).hasClass("temptemp")) {
+			p = getParents(e.target, "adaptationTableResourceBody");
 
-		if(rowSelected && p != null && $(".mousein").length > 0)  {
-			console.log("GOT IT!");
+			if (rowSelected && p != null && $(".mousein").length > 0) {
+				console.log("GOT IT!");
 
-			var slideIndex = parseInt($(p).attr("slideindex"));
-			var resourceIndex = parseInt($(p).attr("resourceindex"));
+				var slideIndex = parseInt($(p).attr("slideindex"));
+				var resourceIndex = parseInt($(p).attr("resourceindex"));
 
-			if (!(slideIndex == selectedSlideIndex && resourceIndex == selectedResourceIndex)) {
-				showLoadingSlidePlane();
+				if (!(slideIndex == selectedSlideIndex && resourceIndex == selectedResourceIndex)) {
+					showLoadingSlidePlane();
 
-				console.log(slideIndex, resourceIndex);
+					console.log(slideIndex, resourceIndex);
 
-				var mouseinObj = $(".mousein")[0];
+					var mouseinObj = $(".mousein")[0];
 
-				var resourceIndexToInsert = -1;
+					var resourceIndexToInsert = -1;
 
-				if ($(mouseinObj).hasClass("lower")) resourceIndexToInsert = resourceIndex + 1;
-				else resourceIndexToInsert = resourceIndex;
+					if ($(mouseinObj).hasClass("lower")) resourceIndexToInsert = resourceIndex + 1;
+					else resourceIndexToInsert = resourceIndex;
 
-				if (slideIndex == selectedSlideIndex) {
-					var targetLabel = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.label;
-					var targetIndex = resourceIndexToInsert;
+					if (slideIndex == selectedSlideIndex) {
+						var targetLabel = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.label;
+						var targetIndex = resourceIndexToInsert;
 
-					console.log(targetLabel);
+						console.log(targetLabel);
 
-					moveItemToIndex(selectedSlideIndex, selectedResourceIndex, slideIndex, resourceIndex, resourceIndexToInsert);
+						moveItemToIndex(selectedSlideIndex, selectedResourceIndex, slideIndex, resourceIndex, resourceIndexToInsert);
 
-					docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex].currentContent.label = targetLabel;
+						docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex].currentContent.label = targetLabel;
 
-					var source = JSON.parse(JSON.stringify(docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex]));
-					docSlideStructure[selectedSlideIndex].contents.list.splice(selectedResourceIndex, 1);
+						var source = JSON.parse(JSON.stringify(docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex]));
+						docSlideStructure[selectedSlideIndex].contents.list.splice(selectedResourceIndex, 1);
 
-					if (selectedResourceIndex < resourceIndex) 
-						docSlideStructure[selectedSlideIndex].contents.list.splice(resourceIndexToInsert - 1, 0, source);
-					else 
-						docSlideStructure[selectedSlideIndex].contents.list.splice(resourceIndexToInsert, 0, source);
+						if (selectedResourceIndex < resourceIndex)
+							docSlideStructure[selectedSlideIndex].contents.list.splice(resourceIndexToInsert - 1, 0, source);
+						else
+							docSlideStructure[selectedSlideIndex].contents.list.splice(resourceIndexToInsert, 0, source);
 
-					setDocSlideStructure(docSlideStructure);
-					showDocSlideView(slideIndex);
+						setDocSlideStructure(docSlideStructure);
+						showDocSlideView(slideIndex);
 
-					firebase.database().ref("/users/" + userName + '/docSlideStructure/' + slideIndex + '/resources/').set(docSlideStructure[selectedSlideIndex].contents.list);
-				}
-				else {
-					var source = JSON.parse(JSON.stringify(docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex]));
-
-					console.log(JSON.parse(JSON.stringify(docSlideStructure)));
-
-					docSlideStructure[slideIndex].contents.list.splice(resourceIndexToInsert, 0, source);
-					docSlideStructure[selectedSlideIndex].contents.list.splice(selectedResourceIndex, 1);
-
-					console.log(JSON.parse(JSON.stringify(docSlideStructure)));
-
-					firebase.database().ref("/users/" + userName + '/docSlideStructure/' + slideIndex + '/resources/').set(docSlideStructure[slideIndex].contents.list);
-					firebase.database().ref("/users/" + userName + '/docSlideStructure/' + selectedSlideIndex + '/resources/').set(docSlideStructure[selectedSlideIndex].contents.list);
-
-					console.log(docSlideStructure[selectedSlideIndex].slide.id)
-					console.log(docSlideStructure[slideIndex].slide.id)
-
-					updateSlide(docSlideStructure[slideIndex].slide.id);
-					updateSlide(docSlideStructure[selectedSlideIndex].slide.id);
+						firebase.database().ref("/users/" + userName + '/docSlideStructure/' + slideIndex + '/resources/').set(docSlideStructure[selectedSlideIndex].contents.list);
+					}
+					else console.log("*** SOMETHING WENT WRONG ***")
 				}
 			}
 		}
+		else if($(e.target).hasClass("thumbnailDest")) {
+			var targetSlideID = $($(e.target).parent()).attr("slideid");
+			var slideindex = $($(e.target).parent()).attr("slideindex");
+
+			console.log(targetSlideID, slideindex);
+
+			if($(e.target).hasClass("thumbnailBoxTop")) option = "top";
+			else if($(e.target).hasClass("thumbnailBoxMiddle")) option = "middle";
+			else option = "bottom";
+
+			if(option == "middle") {
+				showLoadingSlidePlane();
+
+				moveItemToDifferentSlide(selectedSlideIndex, selectedResourceIndex, targetSlideID);
+
+				var source = JSON.parse(JSON.stringify(docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex]));
+				var sourceSlideID = docSlideStructure[selectedSlideIndex].slide.id;
+
+				docSlideStructure[selectedSlideIndex].contents.list.splice(selectedResourceIndex, 1);
+
+				var idx = getIndexOfSlide(targetSlideID);
+
+				source.currentContent.label = docSlideStructure[idx].contents.list[docSlideStructure[idx].contents.list.length-1].currentContent.label;
+				docSlideStructure[idx].contents.list.push(source);
+
+				setDocSlideStructure(docSlideStructure);
+				showDocSlideView(selectedSlideIndex);
+			}
+			else {
+
+			}
+		}
+
 
 		rowSelected = false;
 		selectedSlideIndex = -1;
@@ -7266,9 +7373,7 @@ $(document).ready(function() {
 		$(".temptemp.activated").removeClass("activated");
 		$(".temptemp.mousein").removeClass("mousein");
 
-		$(".thumbnailBoxTop.mousein").removeClass("mousein");
-		$(".thumbnailBoxMiddle.mousein").removeClass("mousein");
-		$(".thumbnailBoxBottom.mousein").removeClass("mousein");
+		$(".thumbnailDest").removeClass("mousein");
 
 		$("#thumbnailTotalDiv").hide();
 	})
