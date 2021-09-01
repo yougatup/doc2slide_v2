@@ -36,6 +36,7 @@ var eventList = {
 	"root_updateDocSlideStructure": ["root", "extension"],
 	"root_getThumbnailPosition": ["root", "extension"],
 	"extension_getThumbnailPosition": ["extension", "root"],
+	"extension_slideAdded": ["extension", "root"],
 }
 
 var locateSlideID = '';
@@ -87,6 +88,7 @@ function filmstripUpdated(mutationsList) {
 			))
 			) {
 				console.log(mutationsList[i].addedNodes[0]);
+				console.log(mutationsList[i].addedNodes[0]);
 				flag = true;
 			}
 
@@ -108,6 +110,37 @@ function filmstripUpdated(mutationsList) {
 			return;
 		}
 	}
+
+	var filmstripStructure = getFilmstripStructure();
+	var addRequest = [];
+
+	console.log(docSlideStructure);
+	console.log(filmstripStructure);
+
+	var cursor = 0;
+
+	if(isDifferent(docSlideStructure, filmstripStructure)) {
+		for(var i=0;i<filmstripStructure.length;i++) {
+			console.log(cursor);
+
+			if(cursor >= docSlideStructure.length || docSlideStructure[cursor].slide.id != filmstripStructure[i].slideID) {
+				addRequest.push({
+					index: i,
+					slideID: filmstripStructure[i].slideID,
+					objs: filmstripStructure[i].objs
+				})
+			}
+			else cursor++;
+
+		}
+
+		issueEvent("extension_slideAdded", addRequest);
+	}
+}
+
+function isDifferent(ds, film) {
+	if(ds.length != film.length) return true;
+	else return false;
 }
 
 function locateSlideIfExist() {
@@ -118,7 +151,42 @@ function locateSlideIfExist() {
 				break;
 			}
 		}
+
+		locateFlag = false;
 	}
+}
+
+function getFilmstripStructure() {
+	var retValue = [];
+	$(".punch-filmstrip-thumbnail").each(function () {
+		var y_coordinate = $(this).attr("transform").split(' ')[1];
+		y_coordinate = y_coordinate.substr(0, y_coordinate.length - 1);
+
+		var slideObj = $($($($($(this).find("g")[0]).find("svg")[0]).find("g")[0]).find("g")[0]);
+		var boxList = [];
+
+		$(slideObj).children("g").each( function(e) {
+			var id = $(this).attr("id");
+
+			if(!id.endsWith("-bg")) boxList.push(id.split('-')[3])
+		})
+
+		retValue.push({
+			outerObj: $(this).find(".punch-filmstrip-thumbnail-background")[0],
+			innerObj: $(this).find(".punch-filmstrip-thumbnail-border-inner")[0],
+			slideID: $(slideObj).attr("id").split('-')[3],
+			objs: boxList,
+			y_coordinate: parseInt(y_coordinate)
+		})
+	});
+
+	retValue.sort(function (first, second) {
+		if (first.y_coordinate > second.y_coordinate) return 1;
+		else if (first.y_coordinate == second.y_coordinate) return 0;
+		else return -1;
+	});
+
+	return retValue;
 }
 
 function updateFilmstripFromDocSlideStructure() {
@@ -141,7 +209,7 @@ function updateFilmstripFromDocSlideStructure() {
 		else return -1;
 	});
 
-	console.log(retValue);
+	console.log(JSON.parse(JSON.stringify(retValue)));
 	// console.log(docSlideStructure);
 
 	for(var i=0;i<docSlideStructure.length;i++) {
