@@ -6177,10 +6177,10 @@ function constructRequestForStyleAlternatives(index) {
 	return r;
 }
 
-function constructRequestForLayoutStyleAlternatives(index, subject) {
+function constructRequestForLayoutStyleAlternatives(index, subject, defaultFlag) {
 	var r = {};
 
-	r.presentationId = referenceSlideID;
+	r.presentationId = (defaultFlag ? DEFAULT_SLIDE_ID : referenceSlideID);
 	r.sort = true;
 	r.maxCnt = 10;
 	r.layoutPageId = (subject == "layoutAlternative" ? null : docSlideStructure[index].layout.slideId);
@@ -6270,37 +6270,69 @@ async function getAlternativeSlides(index, subject) {
 		if (!docSlideStructure[index][subject].loaded && !docSlideStructure[index][subject].loadStarted) {
 			docSlideStructure[index][subject].loadStarted = true;
 
-			if(subject == "layoutAlternative")
+			if (subject == "layoutAlternative")
 				$("#slideListDivBodyLayout").html("... Now Loading ");
 			else
 				$("#slideListDivBodyStyle").html("... Now Loading ");
 
-			var r = constructRequestForLayoutStyleAlternatives(index, subject);
-
-			console.log(r);
-
-			var res = await postRequest(
-				"http://localhost:8010/proxy/generate_alternatives_requests", r);
-
 			var slideList = [];
-
-			console.log(res);
-
-			for(var i=0;i<res.requestsList.length;i++) slideList.push({
-				requestInstance: res.requestsList[i],
-				matchingInstance: res.matchings[i],
-				mappingInstance: res.mappings[i]
-			});
-
-			// var req = await getRequestsForRemovingAllSlidesOnGoogleSlide(LAYOUT_SLIDE_ID);
-
-			// if (req == null) req = [];
-
 			var req = [];
 
-			for (var i = 0; i < res.requestsList.length; i++) {
-				req = req.concat(res.requestsList[i].requests);
+			console.log(DEFAULT_SLIDE_ID, referenceSlideID);
+
+			// if (DEFAULT_SLIDE_ID == referenceSlideID) {
+				var r = constructRequestForLayoutStyleAlternatives(index, subject, false);
+				var res1 = await postRequest(
+					"http://localhost:8010/proxy/generate_alternatives_requests", r);
+
+				for (var i = 0; i < res1.requestsList.length; i++) slideList.push({
+					requestInstance: res1.requestsList[i],
+					matchingInstance: res1.matchings[i],
+					mappingInstance: res1.mappings[i]
+				});
+
+				for (var i = 0; i < res1.requestsList.length; i++) {
+					req = req.concat(res1.requestsList[i].requests);
+				}
+				/*
 			}
+			else {
+				var r1 = constructRequestForLayoutStyleAlternatives(index, subject, true);
+				console.log(r1);
+
+				var res1 = await postRequest(
+					"http://localhost:8010/proxy/generate_alternatives_requests", r1);
+
+				console.log(res1);
+
+				var r2 = constructRequestForLayoutStyleAlternatives(index, subject, false);
+				console.log(r2);
+
+				var res2 = await postRequest(
+					"http://localhost:8010/proxy/generate_alternatives_requests", r2);
+
+				console.log(res2);
+
+				for (var i = 0; i < res1.requestsList.length; i++) slideList.push({
+					requestInstance: res1.requestsList[i],
+					matchingInstance: res1.matchings[i],
+					mappingInstance: res1.mappings[i]
+				});
+
+				for (var i = 0; i < res2.requestsList.length; i++) slideList.push({
+					requestInstance: res2.requestsList[i],
+					matchingInstance: res2.matchings[i],
+					mappingInstance: res2.mappings[i]
+				});
+
+				for (var i = 0; i < res1.requestsList.length; i++) {
+					req = req.concat(res1.requestsList[i].requests);
+				}
+				for (var i = 0; i < res2.requestsList.length; i++) {
+					req = req.concat(res2.requestsList[i].requests);
+				}
+			}
+			*/
 
 			if (req != null && req.length > 0) {
 				gapi.client.slides.presentations.batchUpdate({
