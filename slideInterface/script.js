@@ -7861,6 +7861,57 @@ $(document).ready(function() {
 		});
 		*/
 
+		$(document).on("extension_slideAdded", function(e) {
+			var p = e.detail;
+
+			console.log(p);
+
+			for (var i = 0; i < p.length; i++) {
+				var index = p[i].index;
+
+				// newly created. update docSlideStructure
+				console.log(index);
+
+				docSlideStructure.splice(index, 0, {
+					type: "visible",
+					contents: {},
+					layout: {
+						mapping: {
+							HEADER: p[i].objs[0],
+							BODY: p[i].objs[1]
+						},
+						...getLayout(referenceSlideID, "ge93a171212_0_5")
+					},
+					style: {
+						slideId: "ge93a171212_0_5"
+					},
+					slide: {
+						id: p[i].slideID,
+						objs: []
+					},
+					layoutAlternative: {
+						loaded: false,
+						loadStarted: false,
+						result: []
+					},
+					styleAlternative: {
+						loaded: false,
+						loadStarted: false,
+						result: []
+					},
+				});
+			}
+
+			console.log(JSON.parse(JSON.stringify(docSlideStructure)));
+
+			updateDocSlideToExtension();
+
+			var idx = getIndexOfSlide(curSlidePage);
+
+			setDocSlideStructure(docSlideStructure);
+			showDocSlideView(idx);
+		})
+
 	$(document).on("extension_hideLoading", function (e) {
 		hideLoadingSlidePlane();
 	})
@@ -7875,6 +7926,7 @@ $(document).ready(function() {
 
 				console.log(p);
 
+/*
 				var updateFlag = false;
 				var prevSlideID = null;
 
@@ -7888,10 +7940,10 @@ $(document).ready(function() {
 							break;
 						}
 					}
-
 					if(!flag) {
 						// newly created. update docSlideStructure
 						updateFlag = true;
+						console.log("DETECTED");
 
 						var index = -1;
 
@@ -7901,11 +7953,13 @@ $(document).ready(function() {
 								break;
 							}
 						}
-						
+	
+						console.log(index);
+
 						docSlideStructure.splice(index + 1, 0, {
 							type: "visible",
 							contents: {},
-							layout: getLayout(refereceSlideID, "ge93a171212_0_5"),
+							layout: getLayout(referenceSlideID, "ge93a171212_0_5"),
 							style: {
 								slideId: "ge93a171212_0_5"
 							},
@@ -7923,18 +7977,6 @@ $(document).ready(function() {
 								loadStarted: false,
 								result: []
 							},
-							/*
-							template: {
-								id: "DEFAULT",
-								structure: {
-									title: titleID,
-									body: [bodyID]
-								}
-							},
-							slide: {
-								id: slideID
-							},
-							*/
 						});
 					}
 
@@ -7942,31 +7984,28 @@ $(document).ready(function() {
 				}
 
 				if(updateFlag) setDocSlideStructure(docSlideStructure);
+					*/
 
 				curSlideObjects = p;
 
 				var pageID = p.pageID;
 				curSlidePage = p.pageID;
 
-				var idx = parseInt($(".adaptationViewDiv[slideID='" + pageID + "']").attr("index"));
+				var idx = getIndexOfSlide(curSlidePage);
+				console.log(idx);
 
-				if (curDocSlideStructureIndex != idx && current_left_plane == "singleslide_layout") { // slide number changed
-					getAlternativeSlides(idx, "layoutAlternative");
+				if(idx == -1) {
+					// newly created
+					return;
 				}
-
-				if (curDocSlideStructureIndex != idx && current_left_plane == "singleslide_style") { // slide number changed
-					getAlternativeSlides(idx, "styleAlternative");
-				}
-
-				curDocSlideStructureIndex = idx;
 
 				for(var i=0;i<p.objects.length;i++) {
 					var objID = p.objects[i].objectID.split('-')[1];
 					console.log(objID);
 
-					for(var j=0;j<docSlideStructure[curDocSlideStructureIndex].layout.boxes.length;j++) {
-						var label = docSlideStructure[curDocSlideStructureIndex].layout.boxes[j].type
-						var objID2 = docSlideStructure[curDocSlideStructureIndex].layout.mapping[label];
+					for(var j=0;j<docSlideStructure[idx].layout.boxes.length;j++) {
+						var label = docSlideStructure[idx].layout.boxes[j].type
+						var objID2 = docSlideStructure[idx].layout.mapping[label];
 						console.log(objID2);
 
 						if(objID == objID2) {
@@ -7977,7 +8016,7 @@ $(document).ready(function() {
 							l = (p.objects[i].rect.left - p.workspace.left) / p.workspace.width;
 							t = (p.objects[i].rect.top - p.workspace.top) / p.workspace.height;
 
-							console.log(JSON.parse(JSON.stringify(docSlideStructure[curDocSlideStructureIndex].layout.boxes[j])))
+							console.log(JSON.parse(JSON.stringify(docSlideStructure[idx].layout.boxes[j])))
 							console.log(p.objects[i].rect);
 
 							var widthString = $(".layoutSlide").css("width");
@@ -7990,12 +8029,12 @@ $(document).ready(function() {
 
 							console.log(pageSize);
 
-							docSlideStructure[curDocSlideStructureIndex].layout.boxes[j].height = pageSize.height * h;
-							docSlideStructure[curDocSlideStructureIndex].layout.boxes[j].width = pageSize.width * w;
-							docSlideStructure[curDocSlideStructureIndex].layout.boxes[j].left = pageSize.width * l;
-							docSlideStructure[curDocSlideStructureIndex].layout.boxes[j].top = pageSize.height * t;
+							docSlideStructure[idx].layout.boxes[j].height = pageSize.height * h;
+							docSlideStructure[idx].layout.boxes[j].width = pageSize.width * w;
+							docSlideStructure[idx].layout.boxes[j].left = pageSize.width * l;
+							docSlideStructure[idx].layout.boxes[j].top = pageSize.height * t;
 
-							console.log(JSON.parse(JSON.stringify(docSlideStructure[curDocSlideStructureIndex].layout.boxes[j])))
+							console.log(JSON.parse(JSON.stringify(docSlideStructure[idx].layout.boxes[j])))
 
 							break;
 						}
@@ -8008,6 +8047,16 @@ $(document).ready(function() {
 				setDocSlideStructure(docSlideStructure);
 				showDocSlideView(idx);
 				visualizeSlideObjects();
+
+				if (curDocSlideStructureIndex != idx && current_left_plane == "singleslide_layout") { // slide number changed
+					getAlternativeSlides(idx, "layoutAlternative");
+				}
+
+				if (curDocSlideStructureIndex != idx && current_left_plane == "singleslide_style") { // slide number changed
+					getAlternativeSlides(idx, "styleAlternative");
+				}
+
+				curDocSlideStructureIndex = idx;
 
 				if(docSlideStructure[idx].type == "hidden") showReviewSlide();
 				else hideReviewSlide();
