@@ -445,7 +445,7 @@ function setDocSlideStructure(dsStructure) {
 		tableBody = tableBody + getDocSlideStructureView(i);
 	}
 
-	console.log(tableBody);
+	// console.log(tableBody);
 
 	$("#adaptationViewBody").html(tableBody);
 
@@ -746,7 +746,7 @@ async function initializeDB() {
 
 					referenceSlideID = DEFAULT_SLIDE_ID;
 
-					console.log(docSlideStructure);
+					console.log(JSON.parse(JSON.stringify(docSlideStructure)));
 
 					setDocSlideStructure(docSlideStructure);
 					showDocSlideView(0);
@@ -6635,6 +6635,10 @@ async function moveItem(slideIndex, resourceIndex, targetLabel) {
 }
 
 $(document).ready(function() {
+	$(document).on("extension_getDocSlideStructure", function(e) {
+		issueEvent("root_getDocSlideStructure", docSlideStructure);
+	});
+
 	$(document).on("extension_thumbnailSelected", function(e) {
 		/*
 		hideReviewSlide();
@@ -7893,6 +7897,53 @@ $(document).ready(function() {
 		});
 		*/
 
+		$(document).on("extension_slideRemoved", function(e) {
+			var p = e.detail;
+
+			console.log(p);
+			console.log(JSON.parse(JSON.stringify(docSlideStructure)))
+
+			for(var i=0;i<p.length;i++) {
+				var slideID = p[i].slideID;
+				var idx = p[i].index;
+
+				for(var obj in slideDB[slideID]) {
+					console.log(JSON.parse(JSON.stringify(slideDB[slideID][obj])));
+
+					for(var j=0;j<slideDB[slideID][obj].length;j++) {
+						if(slideDB[slideID][obj][j].mappingID != "null") {
+							var myPageNumber = null;
+							var mappingKey = slideDB[slideID][obj][j].mappingID;
+
+							console.log(mappingKey);
+
+							for (var pageNumber in highlightDB.mapping) {
+								if (mappingKey in highlightDB.mapping[pageNumber]) {
+									myPageNumber = pageNumber;
+									break;
+								}
+							}
+
+							if (myPageNumber != null) {
+								removeMappingOnPdfjs(pageNumber, mappingKey, false).then(result => {
+									issueEvent("root_mappingRemoved2", {
+										mappingID: result
+									});
+								});
+							}
+						}
+					}
+				}
+
+				delete slideDB[slideID];
+
+				docSlideStructure.splice(idx-i, 1);
+			}
+
+			updateDocSlideToExtension();
+			updateSlideThumbnail();
+		})
+
 		$(document).on("extension_slideAdded", function(e) {
 			var p = e.detail;
 
@@ -7937,11 +7988,16 @@ $(document).ready(function() {
 			console.log(JSON.parse(JSON.stringify(docSlideStructure)));
 
 			updateDocSlideToExtension();
+			updateSlideThumbnail();
 
 			var idx = getIndexOfSlide(curSlidePage);
 
 			setDocSlideStructure(docSlideStructure);
 			showDocSlideView(idx);
+			visualizeSlideObjects();
+
+			if (docSlideStructure[idx].type == "hidden") showReviewSlide();
+			else hideReviewSlide();
 		})
 
 	$(document).on("extension_hideLoading", function (e) {
@@ -9695,7 +9751,7 @@ function getThumbnailOfOriginalSlide(refSlideID, template_id) {
 }
 
 function getLayout(slideID, layoutSlideID) {
-	retValue = referenceLayout[slideID][layoutSlideID];
+	retValue = JSON.parse(JSON.stringify(referenceLayout[slideID][layoutSlideID]));
 
 	for(var i=0;i<retValue.boxes.length;i++) {
 		retValue.boxes[i].top = retValue.boxes[i].top * 0.6;
@@ -9704,7 +9760,7 @@ function getLayout(slideID, layoutSlideID) {
 		retValue.boxes[i].width = retValue.boxes[i].width* 0.6;
 	}
 
-	return referenceLayout[slideID][layoutSlideID];
+	return retValue;
 }
 
 function getAdaptationViewBodyLayout(idx) {
@@ -10101,13 +10157,16 @@ async function automaticallyPutContents(textInfo, mapping) {
 			index = 0;
 
 			console.log(docSlideStructure);
-			for(var i=docSlideStructure.length-1;i>=1;i--) {
-				var sectionIdx = parseInt(docSlideStructure[i].contents.sectionKey.substring(20));
-				var myIdx = parseInt(sectionKey.substring(20));
 
-				if(sectionIdx < myIdx) {
-					index = i;
-					break;
+			for(var i=docSlideStructure.length-1;i>=1;i--) {
+				if ("sectionKey" in docSlideStructure[i].contents) {
+					var sectionIdx = parseInt(docSlideStructure[i].contents.sectionKey.substring(20));
+					var myIdx = parseInt(sectionKey.substring(20));
+
+					if (sectionIdx < myIdx) {
+						index = i;
+						break;
+					}
 				}
 			}
 		}

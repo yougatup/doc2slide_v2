@@ -37,6 +37,9 @@ var eventList = {
 	"root_getThumbnailPosition": ["root", "extension"],
 	"extension_getThumbnailPosition": ["extension", "root"],
 	"extension_slideAdded": ["extension", "root"],
+	"extension_slideRemoved": ["extension", "root"],
+	"extension_getDocSlideStructure": ["extension", "root"],
+	"root_getDocSlideStructure": ["root", "extension"],
 }
 
 var locateSlideID = '';
@@ -53,6 +56,18 @@ function issueEvent(eventName, data) {
     // window.postMessage(eventName, "*");
 
     document.dispatchEvent(myEvent);
+}
+
+async function issueEvent(eventName, data, callbackString) {
+    var myEvent = new CustomEvent(eventName, {detail: data} );
+
+    document.dispatchEvent(myEvent);
+
+    return new Promise(function(resolve, reject) {
+        $(document).on(callbackString, function(e) {
+                resolve(e);
+            });
+        });
 }
 
 function chromeSendMessage(type, data) {
@@ -77,65 +92,91 @@ function focusObject(objID) {
 
 function filmstripUpdated(mutationsList) {
 	console.log(mutationsList);
+	if(docSlideStructure.length <= 0 || !checkFilmstripIDs()) return;
+	console.log(mutationsList);
 
 	var flag = false;
 
-	for(var i=0;i<mutationsList.length;i++) {
-		if(mutationsList[i].addedNodes.length > 0 && ((
-			mutationsList[i].addedNodes[0].id != null && 
+	for (var i = 0; i < mutationsList.length; i++) {
+		if (mutationsList[i].addedNodes.length > 0 && ((
+			mutationsList[i].addedNodes[0].id != null &&
 			mutationsList[i].addedNodes[0].id.startsWith("filmstrip-slide-")) || (
 				mutationsList[i].addedNodes[0].classList != null && mutationsList[i].addedNodes[0].classList.contains("punch-filmstrip-thumbnail")
 			))
-			) {
-				console.log(mutationsList[i].addedNodes[0]);
-				console.log(mutationsList[i].addedNodes[0]);
-				flag = true;
-			}
+		) {
+			console.log(mutationsList[i].addedNodes[0]);
+			console.log(mutationsList[i].addedNodes[0]);
+			flag = true;
 
-		if(mutationsList[i].removedNodes.length > 0 && ((
-			mutationsList[i].removedNodes[0].id!= null && 
+			break;
+		}
+
+		if (mutationsList[i].removedNodes.length > 0 && ((
+			mutationsList[i].removedNodes[0].id != null &&
 			mutationsList[i].removedNodes[0].id.startsWith("filmstrip-slide-")) || (
 				mutationsList[i].removedNodes[0].classList != null && mutationsList[i].removedNodes[0].classList.contains("punch-filmstrip-thumbnail")
 			))
-			) {
-				console.log(mutationsList[i].removedNodes[0]);
-				flag = true;
-			}
-
-		if(flag) {
-			updateFilmstripFromDocSlideStructure();
-			locateSlideIfExist();
-			issueEvent("extension_hideLoading", null);
-			// pageUpdated();
-			return;
+		) {
+			console.log(mutationsList[i].removedNodes[0]);
+			flag = true;
 		}
+
 	}
+
+	if(locateFlag) {
+		locateSlideIfExist();
+		issueEvent("extension_hideLoading", null);
+	}
+
 
 	var filmstripStructure = getFilmstripStructure();
 	var addRequest = [];
 
-	console.log(docSlideStructure);
+	console.log(JSON.parse(JSON.stringify(docSlideStructure)));
 	console.log(filmstripStructure);
 
 	var cursor = 0;
 
+
 	if(isDifferent(docSlideStructure, filmstripStructure)) {
-		for(var i=0;i<filmstripStructure.length;i++) {
-			console.log(cursor);
+		if (filmstripStructure.length > docSlideStructure.length) {
+			console.log("HERE");
+			for (var i = 0; i < filmstripStructure.length; i++) {
+				console.log(cursor);
 
-			if(cursor >= docSlideStructure.length || docSlideStructure[cursor].slide.id != filmstripStructure[i].slideID) {
-				addRequest.push({
-					index: i,
-					slideID: filmstripStructure[i].slideID,
-					objs: filmstripStructure[i].objs
-				})
+				if (cursor >= docSlideStructure.length || docSlideStructure[cursor].slide.id != filmstripStructure[i].slideID) {
+					addRequest.push({
+						index: i,
+						slideID: filmstripStructure[i].slideID,
+						objs: filmstripStructure[i].objs
+					})
+				}
+				else cursor++;
 			}
-			else cursor++;
 
+			issueEvent("extension_slideAdded", addRequest);
 		}
+		else {
+			console.log("HERE");
 
-		issueEvent("extension_slideAdded", addRequest);
+			console.log(JSON.parse(JSON.stringify(docSlideStructure)));
+
+			for (var i = 0; i < docSlideStructure.length; i++) {
+				console.log(cursor);
+
+				if (cursor >= filmstripStructure.length || filmstripStructure[cursor].slideID != docSlideStructure[i].slide.id) {
+					addRequest.push({
+						index: i,
+						slideID: docSlideStructure[i].slide.id,
+					})
+				}
+				else cursor++;
+			}
+
+			issueEvent("extension_slideRemoved", addRequest);
+		}
 	}
+	else updateFilmstripFromDocSlideStructure();
 }
 
 function isDifferent(ds, film) {
@@ -145,6 +186,7 @@ function isDifferent(ds, film) {
 
 function locateSlideIfExist() {
 	if(locateFlag) {
+		console.log("LOCATE");
 		for(var i=0;i<docSlideStructure.length;i++) {
 			if(docSlideStructure[i].slide.id == locateSlideID) {
 				window.location.hash = "slide=id." + locateSlideID;
@@ -156,11 +198,35 @@ function locateSlideIfExist() {
 	}
 }
 
+function checkFilmstripIDs() {
+	var flag = true;
+
+	$(".punch-filmstrip-thumbnail").each(function () {
+		var y_coordinate = $(this).attr("transform").split(' ')[1];
+		y_coordinate = y_coordinate.substr(0, y_coordinate.length - 1);
+
+		var slideObj = $($($($($(this).find("g")[0]).find("svg")[0]).find("g")[0]).find("g")[0]);
+
+		console.log($(slideObj));
+		console.log($(slideObj).length);
+
+		if($(slideObj).length <= 0){
+			flag = false;
+			return false;
+		}
+	});
+
+	return flag;
+
+}
+
 function getFilmstripStructure() {
 	var retValue = [];
 	$(".punch-filmstrip-thumbnail").each(function () {
 		var y_coordinate = $(this).attr("transform").split(' ')[1];
 		y_coordinate = y_coordinate.substr(0, y_coordinate.length - 1);
+
+		console.log($(this)[0].outerHTML);
 
 		var slideObj = $($($($($(this).find("g")[0]).find("svg")[0]).find("g")[0]).find("g")[0]);
 		var boxList = [];
@@ -171,10 +237,12 @@ function getFilmstripStructure() {
 			if(!id.endsWith("-bg")) boxList.push(id.split('-')[3])
 		})
 
+		console.log($(slideObj).attr("id"));
+
 		retValue.push({
 			outerObj: $(this).find(".punch-filmstrip-thumbnail-background")[0],
 			innerObj: $(this).find(".punch-filmstrip-thumbnail-border-inner")[0],
-			slideID: $(slideObj).attr("id").split('-')[3],
+			slideID: $(slideObj).length > 0 ? $(slideObj).attr("id").split('-')[3] : null,
 			objs: boxList,
 			y_coordinate: parseInt(y_coordinate)
 		})
@@ -213,13 +281,15 @@ function updateFilmstripFromDocSlideStructure() {
 	// console.log(docSlideStructure);
 
 	for(var i=0;i<docSlideStructure.length;i++) {
-		if(docSlideStructure[i].type == "hidden") {
-			$(retValue[i].outerObj).addClass("hidden");
-			$(retValue[i].innerObj).addClass("hidden");
-		}
-		else {
-			$(retValue[i].innerObj).removeClass("hidden");
-			$(retValue[i].outerObj).removeClass("hidden");
+		if (retValue[i].outerObj != null && retValue[i].innerObj != null && $(retValue[i].outerObj).length > 0 && $(retValue[i].innerObj).length > 0) {
+			if (docSlideStructure[i].type == "hidden") {
+				$(retValue[i].outerObj).addClass("hidden");
+				$(retValue[i].innerObj).addClass("hidden");
+			}
+			else {
+				$(retValue[i].innerObj).removeClass("hidden");
+				$(retValue[i].outerObj).removeClass("hidden");
+			}
 		}
 	}
 }
@@ -336,7 +406,6 @@ function pageUpdated(mutationsList) {
 			var paragraphInfo = {};
 
 			if($(res).length <= 0) {  // text
-
 				paragraphs.forEach(function(elem) {
 					paragraphInfo[elem] = document.getElementById(elem).getBoundingClientRect();
 				});
@@ -366,6 +435,7 @@ function pageUpdated(mutationsList) {
 			filmstrip: filmstripInfo,
 			workspace: document.getElementById("canvas-container").getBoundingClientRect(),
 			notespace: noteSpace,
+			filmstripStructure: getFilmstripStructure()
 		});
 	}
 	else if(curSlideState == "EDIT") {
@@ -379,21 +449,27 @@ function setObserver() {
 	console.log(document.getElementById("pages"));
 	console.log(document.getElementById("filmstrip"));
 
-	pageUpdated();
+	issueEvent("extension_getDocSlideStructure", null, "root_getDocSlideStructure").then( result => {
+		console.log(result);
 
-	if(document.getElementById("pages") != null) {
-		pageUpdateObserver = new MutationObserver(pageUpdated);
+		docSlideStructure = result.detail;
 
-		pageUpdateObserverConfig = { attributes: true, subtree: true };
-		pageUpdateObserver.observe(document.getElementById("pages"), pageUpdateObserverConfig);
-	}
+		pageUpdated();
 
-	if(document.getElementById("filmstrip") != null) {
-		filmstripObserver = new MutationObserver(filmstripUpdated);
+		if (document.getElementById("pages") != null) {
+			pageUpdateObserver = new MutationObserver(pageUpdated);
 
-		filmstripObserverConfig = { subtree: true, childList: true };
-		filmstripObserver.observe(document.getElementById("filmstrip"), filmstripObserverConfig);
-	}
+			pageUpdateObserverConfig = { attributes: true, subtree: true };
+			pageUpdateObserver.observe(document.getElementById("pages"), pageUpdateObserverConfig);
+		}
+
+		if (document.getElementById("filmstrip") != null) {
+			filmstripObserver = new MutationObserver(filmstripUpdated);
+
+			filmstripObserverConfig = { subtree: true, childList: true };
+			filmstripObserver.observe(document.getElementById("filmstrip"), filmstripObserverConfig);
+		}
+	})
 }
 
 function chromeExtensionBody() {
