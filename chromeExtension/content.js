@@ -394,7 +394,7 @@ function pageUpdated(mutationsList) {
 
 			filmstripInfo.push({
 				filmstripID: $(this).attr("id"),
-				rect: document.getElementById($(this).attr("id")).getBoundingClientRect(),
+				rect: $(document.getElementById($(this).attr("id"))).find('path')[0].getBoundingClientRect(),
 				pageNumber: $(this).attr("id").split('-')[2],
 				pageID: $(this).attr("id").split('-')[3]
 			});
@@ -412,7 +412,7 @@ function pageUpdated(mutationsList) {
 
 				retValue.push({
 					objectID: $(value).attr("id"),
-					rect: document.getElementById($(value).attr("id")).getBoundingClientRect(),
+					rect: $(document.getElementById($(value).attr("id"))).find('path')[0].getBoundingClientRect(),
 					paragraph: paragraphInfo
 					// rect: $(value).getBoundingClientRect()
 				});
@@ -422,7 +422,7 @@ function pageUpdated(mutationsList) {
 
 				retValue.push({
 					objectID: $(value).attr("id"),
-					rect: document.getElementById($(value).attr("id")).getBoundingClientRect(),
+					rect: $(document.getElementById($(value).attr("id"))).find('path')[0].getBoundingClientRect(),
 					paragraph: paragraphInfo
 					// rect: $(value).getBoundingClientRect()
 				});
