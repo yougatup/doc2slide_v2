@@ -226,8 +226,6 @@ function getFilmstripStructure() {
 		var y_coordinate = $(this).attr("transform").split(' ')[1];
 		y_coordinate = y_coordinate.substr(0, y_coordinate.length - 1);
 
-		console.log($(this)[0].outerHTML);
-
 		var slideObj = $($($($($(this).find("g")[0]).find("svg")[0]).find("g")[0]).find("g")[0]);
 		var boxList = [];
 
@@ -236,8 +234,6 @@ function getFilmstripStructure() {
 
 			if(!id.endsWith("-bg")) boxList.push(id.split('-')[3])
 		})
-
-		console.log($(slideObj).attr("id"));
 
 		retValue.push({
 			outerObj: $(this).find(".punch-filmstrip-thumbnail-background")[0],
@@ -390,8 +386,6 @@ function pageUpdated(mutationsList) {
 		});
 
 		$("[id^='filmstrip-slide-'][id$='-bg']").each(function() {
-			console.log($(this).attr("id"));
-
 			filmstripInfo.push({
 				filmstripID: $(this).attr("id"),
 				rect: $(document.getElementById($(this).attr("id"))).find('path')[0].getBoundingClientRect(),
@@ -521,7 +515,7 @@ function chromeExtensionBody() {
 	$(document).on("root_updateDocSlideStructure", function(e) {
 		docSlideStructure = e.detail;
 
-		console.log(docSlideStructure);
+		console.log(JSON.parse(JSON.stringify(docSlideStructure)));
 	});
 
 	$(document).on("root_getThumbnailPosition", function(e) {
