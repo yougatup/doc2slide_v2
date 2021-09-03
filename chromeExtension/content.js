@@ -290,6 +290,18 @@ function updateFilmstripFromDocSlideStructure() {
 	}
 }
 
+function getTextInParagraph(pObj) {
+	var result = '';
+
+	console.log($(pObj).find("text"));
+
+	$(pObj).find("text").each(function(t) {
+		result = result + (result == '' ? '' : ' ') + $(this).html()
+	})
+
+	return result;
+}
+
 function pageUpdated(mutationsList) {
 
 	// console.log($("g[pointer-events='visiblePainted']").children())
@@ -401,13 +413,18 @@ function pageUpdated(mutationsList) {
 
 			if($(res).length <= 0) {  // text
 				paragraphs.forEach(function(elem) {
-					paragraphInfo[elem] = document.getElementById(elem).getBoundingClientRect();
+					paragraphInfo[elem] = JSON.parse(JSON.stringify(document.getElementById(elem).getBoundingClientRect()));
+
+					var pObj = document.getElementById(elem);
+					var text = getTextInParagraph(pObj);
+
+					paragraphInfo[elem].text = text;
 				});
 
 				retValue.push({
 					objectID: $(value).attr("id"),
 					rect: $(document.getElementById($(value).attr("id"))).find('path')[0].getBoundingClientRect(),
-					paragraph: paragraphInfo
+					paragraph: paragraphInfo,
 					// rect: $(value).getBoundingClientRect()
 				});
 			} 
@@ -422,6 +439,8 @@ function pageUpdated(mutationsList) {
 				});
 			}
 		});
+
+		console.log(JSON.parse(JSON.stringify(retValue)));
 
 		issueEvent("extension_pageUpdated", {
 			pageID: getPageID(),

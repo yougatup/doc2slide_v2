@@ -652,6 +652,7 @@ async function createSlide(presentationIDToAdapt, contents, layoutSlideID, style
 		});
 	}
 
+	console.log(JSON.stringify(r));
 	var res = await postRequest(
 		"http://localhost:8010/proxy/generate_slide_requests", r
 	);
@@ -7198,6 +7199,10 @@ $(document).ready(function() {
 		}
 	}
 
+	function getContentsOnSlides(index) {
+		var contentsObj = docSlideStructure[index].contents.list;
+	}
+
 	$(document).on("click", ".slideRepresentationSwitch", function(e) {
 		if ($(e.target).prop("tagName") == "INPUT") {
 			if($(".slideRepresentationSwitch").find("input")[0].checked)  {
@@ -8016,65 +8021,7 @@ $(document).ready(function() {
 				var tempCnt = 1;
 				var p = e.detail;
 
-/*
-				var updateFlag = false;
-				var prevSlideID = null;
-
-				for(var i=0;i<p.filmstrip.length;i++) {
-					var pageID = p.filmstrip[i].pageID;
-					var flag = false;
-
-					for(var j=0;j<docSlideStructure.length;j++) {
-						if(pageID == docSlideStructure[j].slide.id) {
-							flag = true;
-							break;
-						}
-					}
-					if(!flag) {
-						// newly created. update docSlideStructure
-						updateFlag = true;
-						console.log("DETECTED");
-
-						var index = -1;
-
-						for (var j = 0; j < docSlideStructure.length; j++) {
-							if (prevSlideID == docSlideStructure[j].slide.id) {
-								index = j;
-								break;
-							}
-						}
-	
-						console.log(index);
-
-						docSlideStructure.splice(index + 1, 0, {
-							type: "visible",
-							contents: {},
-							layout: getLayout(referenceSlideID, "ge93a171212_0_5"),
-							style: {
-								slideId: "ge93a171212_0_5"
-							},
-							slide: {
-								id: pageID,
-								objs: []
-							},
-							layoutAlternative: {
-								loaded: false,
-								loadStarted: false,
-								result: []
-							},
-							styleAlternative: {
-								loaded: false,
-								loadStarted: false,
-								result: []
-							},
-						});
-					}
-
-					prevSlideID = pageID;
-				}
-
-				if(updateFlag) setDocSlideStructure(docSlideStructure);
-					*/
+				console.log(p);
 
 				curSlideObjects = p;
 
@@ -8082,12 +8029,13 @@ $(document).ready(function() {
 				curSlidePage = p.pageID;
 
 				var idx = getIndexOfSlide(curSlidePage);
-				console.log(idx);
 
 				if(idx == -1) {
 					// newly created
 					return;
 				}
+
+				// layout 
 
 				for(var i=0;i<p.objects.length;i++) {
 					var objID = p.objects[i].objectID.split('-')[1];
@@ -8121,6 +8069,92 @@ $(document).ready(function() {
 						}
 					}
 				}
+
+
+				// content
+
+				if(curDocSlideStructureIndex == idx) {
+					var contents = p.objects;
+
+					console.log(contents);
+
+					var numParagraphsOnSlides = 0;
+
+					for(var i=0;i<contents.length;i++) {
+						numParagraphsOnSlides += Object.keys(contents[i].paragraph).length;
+					}
+
+					if(numParagraphsOnSlides == docSlideStructure[idx].contents.list.length) {
+						var objID = '';
+
+						for(var i=0;i<contents.length;i++) {
+							var objID = contents[i].objectID.split('-')[1];
+							var cur = -1;
+
+							for(var k in docSlideStructure[idx].layout.mapping) {
+								if(docSlideStructure[idx].layout.mapping[k] == objID) {
+									for(var j=0;j<docSlideStructure[idx].contents.list.length;j++) {
+										if(docSlideStructure[idx].contents.list[j].currentContent.label == k) {
+											cur = j;
+											break;
+										}
+									}
+									break;
+								}
+							}
+
+							if(cur == -1) {
+								console.log("*** SOMETHING WENT WRONG ***");
+							}
+							else {
+								for(var k in contents[i].paragraph) {
+									docSlideStructure[idx].contents.list[cur].currentContent.contents = contents[i].paragraph[k].text;
+									cur++;
+								}
+
+								console.log(JSON.parse(JSON.stringify(docSlideStructure[idx].contents.list)))
+							}
+						}
+					}
+					else {
+						/*
+						var typeList = [];
+
+						for (var i = 0; i < docSlideStructure[idx].contents.list.length; i++) {
+							if (i == 0 || docSlideStructure[idx].contents.list[i].currentContent.label != docSlideStructure[idx].contents.list[i - 1].currentContent.label) {
+								typeList.push({
+									label: docSlideStructure[idx].contents.list[i].currentContent.label,
+									index: i
+								});
+							}
+						}
+
+						for (var i = 0; i < typeList.length; i++) {
+							var objID = docSlideStructure[idx].layout.mapping[typeList[i].label];
+							var labelIndex = typeList[i].index;
+
+							for (var j = 0; j < contents.length; j++) {
+								var objID2 = contents[j].objectID.split('-')[1];
+
+								if (objID == objID2) {
+									for (var k in contents[j].paragraph) {
+										var t = contents[j].paragraph[k].text;
+
+									}
+								}
+							}
+						}
+						*/
+
+						console.log("DIFF");
+
+						console.log(JSON.parse(JSON.stringify(contents)));
+						console.log(JSON.parse(JSON.stringify(docSlideStructure[idx])));
+					}
+				}
+
+
+				// style
 
 				setDocSlideStructure(docSlideStructure);
 				showDocSlideView(idx);
@@ -9891,7 +9925,7 @@ function getAdaptationViewBodyContents(index) {
 							"</tr>"
 							*/
 
-			resultString += "<div class='adaptationTableResourceBody' slideIndex='" + index + "' resourceIndex='" + i + "'>" + item.originalContent.contents + 
+			resultString += "<div class='adaptationTableResourceBody' slideIndex='" + index + "' resourceIndex='" + i + "'>" + item.currentContent.contents + 
 									"<div class='temptemp upper'> </div>" + 
 									"<div class='temptemp lower'> </div>" +
 								"</div>";
