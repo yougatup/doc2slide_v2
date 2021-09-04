@@ -8117,6 +8117,7 @@ $(document).ready(function() {
 						}
 					}
 					else {
+
 						/*
 						var typeList = [];
 
@@ -8150,6 +8151,111 @@ $(document).ready(function() {
 
 						console.log(JSON.parse(JSON.stringify(contents)));
 						console.log(JSON.parse(JSON.stringify(docSlideStructure[idx])));
+
+						var slideID = docSlideStructure[idx].slide.id;
+						var objID = '';
+
+						for(var i=0;i<contents.length;i++) {
+							var objID = contents[i].objectID.split('-')[1];
+							var pCnt = 0;
+							var firstIdx = -1, myLabel = -1;
+
+							for(var k in docSlideStructure[idx].layout.mapping) {
+								if(docSlideStructure[idx].layout.mapping[k] == objID) {
+									myLabel = k;
+
+									for(var j=0;j<docSlideStructure[idx].contents.list.length;j++) {
+										if(docSlideStructure[idx].contents.list[j].currentContent.label == k) {
+											pCnt++;
+											firstIdx = (firstIdx == -1 ? j : firstIdx);
+										}
+									}
+									break;
+								}
+							}
+
+							if(firstIdx == -1) {
+								console.log("*** SOMETHING WENT WRONG ***");
+							}
+							else {
+								if(pCnt != Object.keys(contents[i].paragraph).length) {
+									var cur = 0;
+									var keys = Object.keys(contents[i].paragraph);
+									var startIdx = -1, endIdx = keys.length;
+
+									cur = firstIdx;
+									
+									for(var j=0;j<keys.length;j++) {
+										if(cur < docSlideStructure[idx].contents.list.length && contents[i].paragraph[keys[j]].text == docSlideStructure[idx].contents.list[cur].currentContent.contents)
+											startIdx = j;
+										else break;
+
+										cur++;
+									}
+
+									cur = docSlideStructure[idx].contents.list.length-1;
+
+									for(var j=keys.length-1;j>=0;j--) {
+										if(cur >= 0 && contents[i].paragraph[keys[j]].text == docSlideStructure[idx].contents.list[cur].currentContent.contents)
+											endIdx = j;
+										else break;
+
+										cur--;
+									}
+
+									console.log(JSON.parse(JSON.stringify(docSlideStructure[idx].contents.list)));
+									console.log(JSON.parse(JSON.stringify(contents[i])));
+									console.log(JSON.parse(JSON.stringify(slideDB[slideID][objID])));
+									console.log(startIdx, endIdx);
+
+									// contents added
+
+									console.log(pCnt, startIdx + 1, keys.length - endIdx, docSlideStructure[idx].contents.list.length);
+
+									docSlideStructure[idx].contents.list.splice(firstIdx+(startIdx+1), pCnt-(startIdx+1)-(keys.length-endIdx));
+
+									for(var j=firstIdx+(startIdx+1);j<(firstIdx+(startIdx+1) + (pCnt-(startIdx+1)-(keys.length-endIdx)));j++) {
+										console.log(j-firstIdx);
+
+										if(j-firstIdx < slideDB[slideID][objID].length && slideDB[slideID][objID][j-firstIdx].mappingID != "null") {
+											console.log(slideDB[slideID][objID][j-firstIdx].mappingID);
+
+											issueEvent("root_mappingRemoved2", {
+												mappingID: slideDB[slideID][objID][j-firstIdx].mappingID
+											});
+										}
+									}
+
+									slideDB[slideID][objID].splice(startIdx+1, pCnt-(startIdx+1)-(keys.length-endIdx));
+
+									console.log(JSON.parse(JSON.stringify(docSlideStructure[idx].contents.list)));
+
+									for (var j = firstIdx + (startIdx + 1); j <= firstIdx + (endIdx - 1); j++) {
+										console.log(j);
+
+										docSlideStructure[idx].contents.list.splice(j, 0, {
+											"mappingKey": "null",
+											originalContent: {
+												type: "text",
+												contents: ""
+											},
+											currentContent: {
+												label: myLabel,
+												type: "text",
+												contents: contents[i].paragraph[keys[j - firstIdx]].text
+											}
+										})
+
+										slideDB[slideID][objID].splice(j - firstIdx, 0, {
+											mappingID: "null"
+										})
+									}
+
+									console.log(objID);
+									console.log(JSON.parse(JSON.stringify(docSlideStructure[idx].contents.list)));
+								}
+							}
+						}
 					}
 				}
 

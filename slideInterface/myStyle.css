@@ -1733,6 +1733,8 @@ width: 100%;
 	   -ms-user-select: none; /* Internet Explorer/Edge */
 
 	   position: relative;
+	   margin-top: 5px;
+	   min-height: 25px;
 }
 
 .adaptationViewBodyLayout {
