@@ -40,6 +40,7 @@ var eventList = {
 	"extension_slideRemoved": ["extension", "root"],
 	"extension_getDocSlideStructure": ["extension", "root"],
 	"root_getDocSlideStructure": ["root", "extension"],
+	"extension_deletionCheck": ["extension", "root"],
 }
 
 var locateSlideID = '';
@@ -91,8 +92,8 @@ function focusObject(objID) {
 }
 
 function filmstripUpdated(mutationsList) {
-	console.log(mutationsList);
 	if(docSlideStructure.length <= 0 || !checkFilmstripIDs()) return;
+
 	console.log(mutationsList);
 
 	var flag = false;
@@ -104,9 +105,8 @@ function filmstripUpdated(mutationsList) {
 				mutationsList[i].addedNodes[0].classList != null && mutationsList[i].addedNodes[0].classList.contains("punch-filmstrip-thumbnail")
 			))
 		) {
-			console.log(mutationsList[i].addedNodes[0]);
-			console.log(mutationsList[i].addedNodes[0]);
 			flag = true;
+			console.log("ADDED");
 
 			break;
 		}
@@ -117,8 +117,8 @@ function filmstripUpdated(mutationsList) {
 				mutationsList[i].removedNodes[0].classList != null && mutationsList[i].removedNodes[0].classList.contains("punch-filmstrip-thumbnail")
 			))
 		) {
-			console.log(mutationsList[i].removedNodes[0]);
 			flag = true;
+			console.log("REMOVED");
 		}
 
 	}
@@ -132,18 +132,12 @@ function filmstripUpdated(mutationsList) {
 	var filmstripStructure = getFilmstripStructure();
 	var addRequest = [];
 
-	console.log(JSON.parse(JSON.stringify(docSlideStructure)));
-	console.log(filmstripStructure);
-
 	var cursor = 0;
-
 
 	if(isDifferent(docSlideStructure, filmstripStructure)) {
 		if (filmstripStructure.length > docSlideStructure.length) {
 			console.log("HERE");
 			for (var i = 0; i < filmstripStructure.length; i++) {
-				console.log(cursor);
-
 				if (cursor >= docSlideStructure.length || docSlideStructure[cursor].slide.id != filmstripStructure[i].slideID) {
 					addRequest.push({
 						index: i,
@@ -157,10 +151,6 @@ function filmstripUpdated(mutationsList) {
 			issueEvent("extension_slideAdded", addRequest);
 		}
 		else {
-			console.log("HERE");
-
-			console.log(JSON.parse(JSON.stringify(docSlideStructure)));
-
 			for (var i = 0; i < docSlideStructure.length; i++) {
 				console.log(cursor);
 
@@ -177,6 +167,10 @@ function filmstripUpdated(mutationsList) {
 		}
 	}
 	else updateFilmstripFromDocSlideStructure();
+
+	var pageObj = pageUpdated(null, false);
+
+	issueEvent("extension_deletionCheck", pageObj);
 }
 
 function isDifferent(ds, film) {
@@ -293,8 +287,6 @@ function updateFilmstripFromDocSlideStructure() {
 function getTextInParagraph(pObj) {
 	var result = '';
 
-	console.log($(pObj).find("text"));
-
 	$(pObj).find("text").each(function(t) {
 		result = result + (result == '' ? '' : ' ') + $(this).html()
 	})
@@ -302,8 +294,7 @@ function getTextInParagraph(pObj) {
 	return result;
 }
 
-function pageUpdated(mutationsList) {
-
+function pageUpdated(mutationsList, eventFlag) {
 	// console.log($("g[pointer-events='visiblePainted']").children())
 	// console.log($("g[pointer-events='visiblePainted']").children("path[stroke='#1a73e8'], path[fill='#1a73e8']"))	
 
@@ -440,37 +431,35 @@ function pageUpdated(mutationsList) {
 			}
 		});
 
-		console.log(JSON.parse(JSON.stringify(retValue)));
-
-		issueEvent("extension_pageUpdated", {
-			pageID: getPageID(),
-			objects: retValue,
-			filmstrip: filmstripInfo,
-			workspace: document.getElementById("canvas-container").getBoundingClientRect(),
-			notespace: noteSpace,
-			filmstripStructure: getFilmstripStructure()
-		});
-	}
-	else if(curSlideState == "EDIT") {
-		issueEvent("extension_typing", {
-			paragraphRect: document.getElementById(curMonitoringParagraph).getBoundingClientRect()
-		});
+		if (eventFlag) {
+			issueEvent("extension_pageUpdated", {
+				pageID: getPageID(),
+				objects: retValue,
+				filmstrip: filmstripInfo,
+				workspace: document.getElementById("canvas-container").getBoundingClientRect(),
+				notespace: noteSpace,
+				filmstripStructure: getFilmstripStructure()
+			});
+		}
+		else return {
+				pageID: getPageID(),
+				objects: retValue,
+				filmstrip: filmstripInfo,
+				workspace: document.getElementById("canvas-container").getBoundingClientRect(),
+				notespace: noteSpace,
+				filmstripStructure: getFilmstripStructure()
+			}
 	}
 }
 
 function setObserver() {
-	console.log(document.getElementById("pages"));
-	console.log(document.getElementById("filmstrip"));
-
 	issueEvent("extension_getDocSlideStructure", null, "root_getDocSlideStructure").then( result => {
-		console.log(result);
-
 		docSlideStructure = result.detail;
 
-		pageUpdated();
+		pageUpdated(null, true);
 
 		if (document.getElementById("pages") != null) {
-			pageUpdateObserver = new MutationObserver(pageUpdated);
+			pageUpdateObserver = new MutationObserver(() => {pageUpdated(null, true)});
 
 			pageUpdateObserverConfig = { attributes: true, subtree: true };
 			pageUpdateObserver.observe(document.getElementById("pages"), pageUpdateObserverConfig);
@@ -533,8 +522,6 @@ function chromeExtensionBody() {
 
 	$(document).on("root_updateDocSlideStructure", function(e) {
 		docSlideStructure = e.detail;
-
-		console.log(JSON.parse(JSON.stringify(docSlideStructure)));
 	});
 
 	$(document).on("root_getThumbnailPosition", function(e) {

@@ -524,7 +524,7 @@ async function initializeSlide() {
 			list: [{
 				currentContent: {
 					type: "text",
-					label: "HEADER",
+					label: "HEADER_0",
 					contents: "Sketching Informal Presentations",
 					boxIndex: 0,
 				},
@@ -536,7 +536,7 @@ async function initializeSlide() {
 		},
 		"layout": {
 			mapping: {
-				"HEADER": objID
+				"HEADER_0": objID
 			},
 			...getLayout(DEFAULT_SLIDE_ID, "p")
 		},
@@ -7941,8 +7941,8 @@ $(document).ready(function() {
 						contents: {},
 						layout: {
 							mapping: {
-								HEADER: p[i].objs[0],
-								BODY: p[i].objs[1]
+								HEADER_0: p[i].objs[0],
+								BODY_0: p[i].objs[1]
 							},
 							...getLayout(referenceSlideID, "ge93a171212_0_5")
 						},
@@ -8016,11 +8016,175 @@ $(document).ready(function() {
 		hideLoadingSlidePlane();
 	})
 
+	$(document).on("extension_deletionCheck", function(e) {
+			if (adaptivePlaneStatus != 2) {
+				var tempCnt = 1;
+				var p = e.detail;
+
+				console.log(p);
+				curSlideObjects = p;
+
+				if(curSlidePage != p.pageID) {
+					console.log("*** SOMETHING WENT WRONG ***")
+				}
+
+				var idx = getIndexOfSlide(p.pageID);
+
+				// layout 
+	
+				var objList = [];
+
+				for(var i=0;i<p.objects.length;i++) {
+					objList.push(p.objects[i].objectID.split('-')[1]);
+				}
+
+				console.log(objList);
+
+				var mappingKeys = Object.keys(docSlideStructure[idx].layout.mapping);
+
+				for(var kk=0;kk<mappingKeys.length;kk++) {
+					var k = mappingKeys[kk];
+
+					var objID = docSlideStructure[idx].layout.mapping[k]
+					console.log(objID);
+
+					if(objList.indexOf(objID) < 0) {
+						// found. remove the box.
+
+						console.log(JSON.parse(JSON.stringify(docSlideStructure[idx].layout.boxes)));
+
+						for(var i=0;i<docSlideStructure[idx].layout.boxes.length;i++) {
+							if(docSlideStructure[idx].layout.boxes[i].type == k) {
+								docSlideStructure[idx].layout.boxes.splice(i, 1);
+								delete docSlideStructure[idx].layout.mapping[k];
+							}
+						}
+
+						for(var i=0;i<docSlideStructure[idx].contents.list.length;i++) {
+							if(docSlideStructure[idx].contents.list[i].currentContent.label == k) {
+								if (docSlideStructure[idx].contents.list[i].mappingKey != "null") {
+									issueEvent("root_mappingRemoved2", {
+										mappingID: docSlideStructure[idx].contents.list[i].mappingKey
+									});
+								}
+
+								docSlideStructure[idx].contents.list.splice(i, 1);
+								i--;
+							}
+						}
+
+						delete slideDB[p.pageID][objID];
+					}
+				}
+
+				if (curSlidePage == p.pageID) {
+					setDocSlideStructure(docSlideStructure);
+					showDocSlideView(idx);
+					visualizeSlideObjects();
+
+					if (curDocSlideStructureIndex != idx && current_left_plane == "singleslide_layout") { // slide number changed
+						getAlternativeSlides(idx, "layoutAlternative");
+					}
+
+					if (curDocSlideStructureIndex != idx && current_left_plane == "singleslide_style") { // slide number changed
+						getAlternativeSlides(idx, "styleAlternative");
+					}
+
+					curDocSlideStructureIndex = idx;
+
+					if (docSlideStructure[idx].type == "hidden") showReviewSlide();
+					else hideReviewSlide();
+				}
+
+				return;
+/*
+			var resourceDictionary = {};
+
+			for(var obj in curHighlight) {
+				for(var k in curHighlight[obj]) {
+					var mappingID = curHighlight[obj][k].mappingID;
+
+					if(mappingID == "null") continue;
+
+					var pgNumber = mappingPageNumberIndex[mappingID];
+
+					resourceDictionary[mappingID] = highlightDB.mapping[pgNumber][mappingID].text
+				}
+			}
+			*/
+
+			for(var i=0;i<resources.length;i++) {
+				$("#resourceTable").append(
+					'<tr>' +
+					'<td> <input type="checkbox" id="checkbox_' + resources[i].mappingID + '"> </td>' +
+					'<td> <div class="resourceItem" mappingID="' + resources[i].mappingID + '"> ' +
+					resources[i].text +
+					'</div> </td>' +
+					'</tr>'
+				);
+			}
+
+			/* Loading recommendations */
+
+			if (pageID in highlightDB.slideInfo) {
+				if (curSlidePage != p.pageID) {
+					// $("#SlideRecommendation").html("Loading ...");
+					// loadRecommendation(pageID);
+				}
+
+				for (var i = 0; i < p.objects.length; i++) {
+					var objID = p.objects[i].objectID.substr(7);
+
+					if (slideDB == null) slideDB = {};
+					if (!(pageID in slideDB)) slideDB[pageID] = {}
+					if (!(objID in slideDB[pageID])) slideDB[pageID][objID] = {};
+
+					if ("paragraph" in p.objects[i]) { // if text box
+						if (Object.keys(p.objects[i].paragraph).length != Object.keys(slideDB[pageID][objID]).length) {
+							if (Object.keys(p.objects[i].paragraph).length < Object.keys(slideDB[pageID][objID]).length) {
+								var start = parseInt(p.objects[i].paragraph.length) + 1;
+								var end = Object.keys(slideDB[pageID][objID]).length;
+
+								for (var j = start; j <= end; j++) removeSlideMappingInfo(pageID, objID, j);
+							}
+							else {
+								writeSlideMappingInfo(pageID, objID, Object.keys(p.objects[i].paragraph).length - 1, "null");
+							}
+						}
+					}
+				}
+			}
+			else {
+				$("#SlideRecommendation").html("No recommendation");
+			}
+
+			visualizeSlideObjects();
+
+					/*
+			if(curSlidePage == p.pageID) {
+			}
+			else {
+				if(curSlideState == "WAIT")
+				else if(curSlideState == "EDIT") {
+					editFocus( {
+						parent: $("#workspaceRect")[0].getBoundingClientRect(),
+						child: $(popoverElement)[0].getBoundingClientRect()
+					});
+				}
+			}
+			*/
+			hideLoadingSlidePlane();
+
+			curSlidePage = p.pageID;
+			}
+	})
+
 		$(document).on("extension_pageUpdated", function(e) {
 			if (adaptivePlaneStatus != 2) {
 				var tempCnt = 1;
 				var p = e.detail;
 
+				console.log("PAGE UPDATED");
 				console.log(p);
 
 				curSlideObjects = p;
@@ -8031,34 +8195,67 @@ $(document).ready(function() {
 				var idx = getIndexOfSlide(curSlidePage);
 
 				if(idx == -1) {
-					// newly created
+					// newly created. will be handled in filestrip updated
 					return;
 				}
 
 				// layout 
+	
+				var objList = [];
+
+				for(var i=0;i<p.objects.length;i++) {
+					objList.push(p.objects[i].objectID.split('-')[1]);
+				}
+
+				console.log(objList);
+
+				var mappingKeys = Object.keys(docSlideStructure[idx].layout.mapping);
+
+				for(var kk=0;kk<mappingKeys.length;kk++) {
+					var k = mappingKeys[kk];
+
+					var objID = docSlideStructure[idx].layout.mapping[k]
+					console.log(objID);
+
+					if(objList.indexOf(objID) < 0) {
+						// found. remove the box.
+
+						console.log(JSON.parse(JSON.stringify(docSlideStructure[idx].layout.boxes)));
+
+						for(var i=0;i<docSlideStructure[idx].layout.boxes.length;i++) {
+							if(docSlideStructure[idx].layout.boxes[i].type == k) {
+								docSlideStructure[idx].layout.boxes.splice(i, 1);
+								delete docSlideStructure[idx].layout.mapping[k];
+							}
+						}
+					}
+				}
 
 				for(var i=0;i<p.objects.length;i++) {
 					var objID = p.objects[i].objectID.split('-')[1];
+					var flag = false;
+
+					var w, h, l, t;
+
+					w = p.objects[i].rect.width / p.workspace.width;
+					h = p.objects[i].rect.height / p.workspace.height;
+					l = (p.objects[i].rect.left - p.workspace.left) / p.workspace.width;
+					t = (p.objects[i].rect.top - p.workspace.top) / p.workspace.height;
+
+					var widthString = $(".layoutSlide").css("width");
+					var heightString = $(".layoutSlide").css("height");
+
+					var pageSize = {
+						width: parseInt(widthString.substring(0, widthString.length - 2)),
+						height: parseInt(heightString.substring(0, heightString.length - 2)),
+					}
 
 					for(var j=0;j<docSlideStructure[idx].layout.boxes.length;j++) {
 						var label = docSlideStructure[idx].layout.boxes[j].type
 						var objID2 = docSlideStructure[idx].layout.mapping[label];
 
 						if(objID == objID2) {
-							var w, h, l, t;
-
-							w = p.objects[i].rect.width / p.workspace.width;
-							h = p.objects[i].rect.height / p.workspace.height;
-							l = (p.objects[i].rect.left - p.workspace.left) / p.workspace.width;
-							t = (p.objects[i].rect.top - p.workspace.top) / p.workspace.height;
-
-							var widthString = $(".layoutSlide").css("width");
-							var heightString = $(".layoutSlide").css("height");
-
-							var pageSize = {
-								width: parseInt(widthString.substring(0, widthString.length-2)),
-								height: parseInt(heightString.substring(0, heightString.length-2)),
-							}
+							flag = true;
 
 							docSlideStructure[idx].layout.boxes[j].height = pageSize.height * h;
 							docSlideStructure[idx].layout.boxes[j].width = pageSize.width * w;
@@ -8068,15 +8265,36 @@ $(document).ready(function() {
 							break;
 						}
 					}
-				}
 
+					if(!flag) {
+						// newly created. add to docSlideStructure
+
+						var label = docSlideStructure[idx].contents.list[docSlideStructure[idx].contents.list.length-1].currentContent.label.split('_')[0];
+						var cnt = 0;
+
+						for(var k in docSlideStructure[idx].layout.mapping) {
+							var l = k.split('_')[0];
+
+							if(label == l)
+								cnt++;
+						}
+
+						docSlideStructure[idx].layout.boxes.push({
+							height: pageSize.height * h,
+							width: pageSize.width * w,
+							left: pageSize.width * l,
+							top: pageSize.height * t,
+							type: (label + "_" + cnt)
+						})
+
+						docSlideStructure[idx].layout.mapping[label + "_" + cnt] = objID;
+					}
+				}
 
 				// content
 
 				if(curDocSlideStructureIndex == idx) {
 					var contents = p.objects;
-
-					console.log(contents);
 
 					var numParagraphsOnSlides = 0;
 
@@ -8147,11 +8365,6 @@ $(document).ready(function() {
 						}
 						*/
 
-						console.log("DIFF");
-
-						console.log(JSON.parse(JSON.stringify(contents)));
-						console.log(JSON.parse(JSON.stringify(docSlideStructure[idx])));
-
 						var slideID = docSlideStructure[idx].slide.id;
 						var objID = '';
 
@@ -8174,8 +8387,29 @@ $(document).ready(function() {
 								}
 							}
 
-							if(firstIdx == -1) {
-								console.log("*** SOMETHING WENT WRONG ***");
+							if(firstIdx == -1) { 
+								if(myLabel == -1)  {
+									console.log("*** SOMETHING WENT WRONG ***");
+								}
+								else {
+									docSlideStructure[idx].contents.list.push(
+										{
+											"mappingKey": "null",
+											originalContent: {
+												type: "text",
+												contents: ''
+											},
+											currentContent: {
+												label: myLabel,
+												type: "text",
+												contents: ''
+											}
+										}
+									)
+									slideDB[slideID][objID] = [{
+										mappingID: "null"
+									}]
+								}
 							}
 							else {
 								if(pCnt != Object.keys(contents[i].paragraph).length) {
@@ -8203,23 +8437,12 @@ $(document).ready(function() {
 										cur--;
 									}
 
-									console.log(JSON.parse(JSON.stringify(docSlideStructure[idx].contents.list)));
-									console.log(JSON.parse(JSON.stringify(contents[i])));
-									console.log(JSON.parse(JSON.stringify(slideDB[slideID][objID])));
-									console.log(startIdx, endIdx);
-
 									// contents added
-
-									console.log(pCnt, startIdx + 1, keys.length - endIdx, docSlideStructure[idx].contents.list.length);
 
 									docSlideStructure[idx].contents.list.splice(firstIdx+(startIdx+1), pCnt-(startIdx+1)-(keys.length-endIdx));
 
 									for(var j=firstIdx+(startIdx+1);j<(firstIdx+(startIdx+1) + (pCnt-(startIdx+1)-(keys.length-endIdx)));j++) {
-										console.log(j-firstIdx);
-
 										if(j-firstIdx < slideDB[slideID][objID].length && slideDB[slideID][objID][j-firstIdx].mappingID != "null") {
-											console.log(slideDB[slideID][objID][j-firstIdx].mappingID);
-
 											issueEvent("root_mappingRemoved2", {
 												mappingID: slideDB[slideID][objID][j-firstIdx].mappingID
 											});
@@ -8227,8 +8450,6 @@ $(document).ready(function() {
 									}
 
 									slideDB[slideID][objID].splice(startIdx+1, pCnt-(startIdx+1)-(keys.length-endIdx));
-
-									console.log(JSON.parse(JSON.stringify(docSlideStructure[idx].contents.list)));
 
 									for (var j = firstIdx + (startIdx + 1); j <= firstIdx + (endIdx - 1); j++) {
 										console.log(j);
@@ -8250,9 +8471,6 @@ $(document).ready(function() {
 											mappingID: "null"
 										})
 									}
-
-									console.log(objID);
-									console.log(JSON.parse(JSON.stringify(docSlideStructure[idx].contents.list)));
 								}
 							}
 						}
@@ -9913,7 +10131,7 @@ function getAdaptationViewBodyLayout(idx) {
 				'left: ' + box.left + 'px; ' +
 				'width: ' + box.width + 'px; ' +
 				'height: ' + box.height + 'px;" type="' + box.type + '"> ' +
-				box.type + 
+				(box.type.split('_')[0]) + '<sub>' + (box.type.split('_')[1]) + '</sub>' + 
 				'</div> '
 		}
 
@@ -10012,7 +10230,8 @@ function getAdaptationViewBodyContents(index) {
 			if(i == 0 || docSlideStructure[index].contents.list[i].currentContent.label != docSlideStructure[index].contents.list[i-1].currentContent.label) {
 				resultString += (resultString != '' ? "</div></div>" : '') + 
 					"<div class='adaptationViewDocumentLabelDiv' label='" + docSlideStructure[index].contents.list[i].currentContent.label + "'> " + 
-						"<div class='adaptationViewDocumentLabelDivHeader'> <span class='adaptationViewDocumentLabelDivHeaderSpan'> " + docSlideStructure[index].contents.list[i].currentContent.label + "</span> </div>" +
+						"<div class='adaptationViewDocumentLabelDivHeader'> <span class='adaptationViewDocumentLabelDivHeaderSpan'> " + 
+							docSlideStructure[index].contents.list[i].currentContent.label.split('_')[0] + '<sub>' + docSlideStructure[index].contents.list[i].currentContent.label.split('_')[1] + "</sub></span> </div>" +
 						"<div class='adaptationViewDocumentLabelDivBody'>";
 			}
 
@@ -10186,8 +10405,6 @@ function updateSlideThumbnail() {
 function putContentsToDocSlide(index, c) {
 	showLoadingSlidePlane();
 
-	console.log(docSlideStructure);
-
 	var label = docSlideStructure[index].contents.list[docSlideStructure[index].contents.list.length-1].currentContent.label;
 
 	var slideID = docSlideStructure[index].slide.id;
@@ -10226,12 +10443,8 @@ function updateDocSlideToExtension() {
 async function automaticallyPutContents(textInfo, mapping) {
 	var sectionKey = getSectionKey(textInfo.pageNumber, textInfo.startWordIndex, textInfo.endWordIndex);
 
-	console.log(sectionKey);
-	
 	var flag = false;
 	var index = -1;
-
-	console.log(JSON.parse(JSON.stringify(docSlideStructure)));
 
 	for(i=docSlideStructure.length-1;i>=1;i--) {
 		if(docSlideStructure[i].contents.sectionKey == sectionKey) {
@@ -10244,8 +10457,6 @@ async function automaticallyPutContents(textInfo, mapping) {
 	}
 
 	var resourceIndex = -1;
-
-	console.log(flag);
 
 	if(flag) { // add to the current slide
 		if (referenceSlideID == DEFAULT_SLIDE_ID) {
@@ -10271,8 +10482,6 @@ async function automaticallyPutContents(textInfo, mapping) {
 		if(index == -1) { // create the section
 			index = 0;
 
-			console.log(docSlideStructure);
-
 			for(var i=docSlideStructure.length-1;i>=1;i--) {
 				if ("sectionKey" in docSlideStructure[i].contents) {
 					var sectionIdx = parseInt(docSlideStructure[i].contents.sectionKey.substring(20));
@@ -10288,7 +10497,6 @@ async function automaticallyPutContents(textInfo, mapping) {
 
 		// add a new slide to (index+1)
 
-		console.log(index);
 		var titleID = makeid(10);
 		var bodyID = makeid(10);
 		var slideID = makeid(10);
@@ -10309,7 +10517,7 @@ async function automaticallyPutContents(textInfo, mapping) {
 					},
 					currentContent: {
 						type: "text",
-						label: "HEADER",
+						label: "HEADER_0",
 						contents: structureHighlightDB[sectionKey].text,
 					},
 				},
@@ -10321,15 +10529,15 @@ async function automaticallyPutContents(textInfo, mapping) {
 					},
 					currentContent: {
 						type: "text",
-						label: "BODY",
+						label: "BODY_0",
 						contents: mapping.text,
 					},
 				}]
 			},
 			layout: {
 				mapping: {
-					"HEADER": titleID,
-					"BODY": bodyID
+					"HEADER_0": titleID,
+					"BODY_0": bodyID
 				},
 				...getLayout(referenceSlideID, "ge93a171212_0_5")
 			},
