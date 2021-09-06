@@ -7927,7 +7927,7 @@ $(document).ready(function() {
 		$(document).on("extension_slideAdded", function(e) {
 			var p = e.detail;
 
-			console.log(p);
+			console.log(JSON.parse(JSON.stringify(p)));
 
 			for (var i = 0; i < p.length; i++) {
 				var index = p[i].index;
@@ -7938,7 +7938,10 @@ $(document).ready(function() {
 				if (p[i].objs.length > 0) {
 					docSlideStructure.splice(index, 0, {
 						type: "visible",
-						contents: {},
+						contents: {
+							sectionKey: '',
+							list: []
+						},
 						layout: {
 							mapping: {
 								HEADER_0: p[i].objs[0],
@@ -7965,14 +7968,42 @@ $(document).ready(function() {
 						},
 					});
 
+					if(!(p[i].slideID in slideDB)) slideDB[p[i].slideID] = {};
+					else console.log(" **** HMM NEED TO CHECK ***");
+
+					for(var j=0;j<p[i].objs.length;j++) {
+						slideDB[p[i].slideID][p[i].objs[j]] = [{
+							mappingID: "null"
+						}]
+
+						docSlideStructure[index].contents.list.push({
+							mappingKey: "null",
+							originalContent: {
+								type: "text",
+								contents: ''
+							},
+							currentContent: {
+								type: "text",
+								label: (j == 0 ? "HEADER_0" : "BODY_0"),
+								contents: ''
+							},
+						})
+					}
 				}
 				else {
 					docSlideStructure.splice(index, 0, {
 						type: "visible",
-						contents: {},
+						contents: {
+							sectionKey: '',
+							list: []
+						},
 						layout: {
 							mapping: {},
-							...getLayout(referenceSlideID, "ge93a171212_0_5")
+							boxes: [],
+							pageSize: { height: 303.75, width: 540},
+							slideID: 'BLANK_SLIDE',
+							thumbnailURL: "BLANK_SLIDE"
+							// ...getLayout(referenceSlideID, "ge93a171212_0_5")
 						},
 						style: {
 							slideId: "ge93a171212_0_5"
@@ -8269,25 +8300,41 @@ $(document).ready(function() {
 					if(!flag) {
 						// newly created. add to docSlideStructure
 
-						var label = docSlideStructure[idx].contents.list[docSlideStructure[idx].contents.list.length-1].currentContent.label.split('_')[0];
-						var cnt = 0;
+						if(docSlideStructure[idx].contents.list.length <= 0) {
+							var label = "BODY";
+							var cnt = 0;
 
-						for(var k in docSlideStructure[idx].layout.mapping) {
-							var l = k.split('_')[0];
+							docSlideStructure[idx].layout.boxes.push({
+								height: pageSize.height * h,
+								width: pageSize.width * w,
+								left: pageSize.width * l,
+								top: pageSize.height * t,
+								type: (label + "_" + cnt)
+							})
 
-							if(label == l)
-								cnt++;
+							docSlideStructure[idx].layout.mapping["BODY_0"] = objID;
 						}
+						else {
+							var label = docSlideStructure[idx].contents.list[docSlideStructure[idx].contents.list.length - 1].currentContent.label.split('_')[0];
+							var cnt = 0;
 
-						docSlideStructure[idx].layout.boxes.push({
-							height: pageSize.height * h,
-							width: pageSize.width * w,
-							left: pageSize.width * l,
-							top: pageSize.height * t,
-							type: (label + "_" + cnt)
-						})
+							for (var k in docSlideStructure[idx].layout.mapping) {
+								var l = k.split('_')[0];
 
-						docSlideStructure[idx].layout.mapping[label + "_" + cnt] = objID;
+								if (label == l)
+									cnt++;
+							}
+
+							docSlideStructure[idx].layout.boxes.push({
+								height: pageSize.height * h,
+								width: pageSize.width * w,
+								left: pageSize.width * l,
+								top: pageSize.height * t,
+								type: (label + "_" + cnt)
+							})
+
+							docSlideStructure[idx].layout.mapping[label + "_" + cnt] = objID;
+						}
 					}
 				}
 
@@ -10214,7 +10261,7 @@ function getAdaptationViewBodyContents(index) {
 
 	var curDivID = makeid(10);
 
-	if(("contents" in docSlideStructure[index]) && ("list" in docSlideStructure[index].contents)) {
+	if(("contents" in docSlideStructure[index]) && ("list" in docSlideStructure[index].contents) && docSlideStructure[index].contents.list.length > 0) {
 		for(var i=0;i<docSlideStructure[index].contents.list.length;i++) {
 			var item = docSlideStructure[index].contents.list[i];
 			var layoutID = docSlideStructure[index].layout.slideId;
@@ -10257,6 +10304,8 @@ function getAdaptationViewBodyContents(index) {
 		}
 
 		resultString += "</div></div>";
+
+		console.log(resultString);
 
 		return resultString;
 	}
