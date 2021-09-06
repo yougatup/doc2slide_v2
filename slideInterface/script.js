@@ -6987,6 +6987,16 @@ $(document).ready(function() {
 
 		var requests = [];
 
+		for(var i=0;i<docSlideStructure[curDocSlideStructureIndex].contents.list.length;i++) {
+			var obj = docSlideStructure[curDocSlideStructureIndex].contents.list[i];
+
+			if(obj.mappingKey != "null") {
+				issueEvent("root_mappingRemoved2", {
+					mappingID: obj.mappingKey
+				});
+			}
+		}
+
 		requests.push({
 			"deleteObject": {
 				"objectId": docSlideStructure[curDocSlideStructureIndex].slide.id,
@@ -7506,6 +7516,8 @@ $(document).ready(function() {
 
 		var req = await getRequestsForRemovingAllSlidesOnGoogleSlide(PRESENTATION_ID);
 		req = req.concat(slide_deck_adaptation_req);
+
+		console.log(req);
 
 		gapi.client.slides.presentations.batchUpdate({
 			presentationId: PRESENTATION_ID,
@@ -8069,20 +8081,15 @@ $(document).ready(function() {
 					objList.push(p.objects[i].objectID.split('-')[1]);
 				}
 
-				console.log(objList);
-
 				var mappingKeys = Object.keys(docSlideStructure[idx].layout.mapping);
 
 				for(var kk=0;kk<mappingKeys.length;kk++) {
 					var k = mappingKeys[kk];
 
 					var objID = docSlideStructure[idx].layout.mapping[k]
-					console.log(objID);
 
 					if(objList.indexOf(objID) < 0) {
 						// found. remove the box.
-
-						console.log(JSON.parse(JSON.stringify(docSlideStructure[idx].layout.boxes)));
 
 						for(var i=0;i<docSlideStructure[idx].layout.boxes.length;i++) {
 							if(docSlideStructure[idx].layout.boxes[i].type == k) {
@@ -8238,7 +8245,6 @@ $(document).ready(function() {
 					objList.push(p.objects[i].objectID.split('-')[1]);
 				}
 
-				console.log(objList);
 
 				var mappingKeys = Object.keys(docSlideStructure[idx].layout.mapping);
 
@@ -8246,12 +8252,9 @@ $(document).ready(function() {
 					var k = mappingKeys[kk];
 
 					var objID = docSlideStructure[idx].layout.mapping[k]
-					console.log(objID);
 
 					if(objList.indexOf(objID) < 0) {
 						// found. remove the box.
-
-						console.log(JSON.parse(JSON.stringify(docSlideStructure[idx].layout.boxes)));
 
 						for(var i=0;i<docSlideStructure[idx].layout.boxes.length;i++) {
 							if(docSlideStructure[idx].layout.boxes[i].type == k) {
@@ -8376,8 +8379,6 @@ $(document).ready(function() {
 									docSlideStructure[idx].contents.list[cur].currentContent.contents = contents[i].paragraph[k].text;
 									cur++;
 								}
-
-								console.log(JSON.parse(JSON.stringify(docSlideStructure[idx].contents.list)))
 							}
 						}
 					}
@@ -10146,6 +10147,7 @@ function getThumbnailOfOriginalSlide(refSlideID, template_id) {
 }
 
 function getLayout(slideID, layoutSlideID) {
+	console.log(slideID, layoutSlideID);
 	retValue = JSON.parse(JSON.stringify(referenceLayout[slideID][layoutSlideID]));
 
 	for(var i=0;i<retValue.boxes.length;i++) {
@@ -10305,7 +10307,7 @@ function getAdaptationViewBodyContents(index) {
 
 		resultString += "</div></div>";
 
-		console.log(resultString);
+		// console.log(resultString);
 
 		return resultString;
 	}
