@@ -160,7 +160,7 @@ function initializeGAPI(callback) {
 
     // Authorization scopes required by the API; multiple scopes can be
     // included, separated by spaces.
-    var SCOPES = "https://www.googleapis.com/auth/presentations https://www.googleapis.com/auth/script.scriptapp https://www.googleapis.com/auth/documents https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/script.external_request https://www.googleapis.com/auth/drive.metadata.readonly";
+    var SCOPES = "https://www.googleapis.com/auth/presentations https://www.googleapis.com/auth/script.scriptapp https://www.googleapis.com/auth/documents https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/script.external_request https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/drive";
 
     var authorizeButton = document.getElementById('authorize-button');
     var signoutButton = document.getElementById('signout-button');
@@ -589,6 +589,7 @@ async function initializeSlide() {
 		requests: requests
 	}).then((createSlideResponse) => {
 		// successfully pasted the text
+		copyCurrentSlide("THIS_IS_FIRST_SLIDE");
 		return true;
 	});
 }
@@ -6847,6 +6848,82 @@ async function moveItem(slideIndex, resourceIndex, targetLabel) {
 	*/
 }
 
+function test() {
+	function printFile(fileId) {
+		var request = gapi.client.drive.files.get({
+		  'fileId': fileId
+		});
+		request.execute(function(resp) {
+		  console.log('Title: ' + resp.title);
+		  console.log('Description: ' + resp.description);
+		  console.log('MIME type: ' + resp.mimeType);
+		});
+	  }
+	  
+	  /**
+	   * Download a file's content.
+	   *
+	   * @param {File} file Drive File instance.
+	   * @param {Function} callback Function to call when the request is complete.
+	   */
+	  function downloadFile(file, callback) {
+		if (file.downloadUrl) {
+		  var accessToken = gapi.auth.getToken().access_token;
+		  var xhr = new XMLHttpRequest();
+		  xhr.open('GET', file.downloadUrl);
+		  xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+		  xhr.onload = function() {
+			callback(xhr.responseText);
+		  };
+		  xhr.onerror = function() {
+			callback(null);
+		  };
+		  xhr.send();
+		} else {
+		  callback(null);
+		}
+	  }
+
+	function copyFile(originFileId, copyTitle) {
+		var body = { 'title': copyTitle };
+		var request = gapi.client.drive.files.copy({
+			'fileId': originFileId,
+			'resource': body
+		});
+		request.execute(function (resp) {
+			console.log('Copy ID: ' + resp.id);
+		});
+	}
+
+	copyFile("1zVgYIrE3QgRySBa16zuYzG4YAe0nnVOHZhKR4t6CheQ", "hahaha");
+}
+
+async function copyCurrentSlide(slideId) {
+	/*
+	var body = { 'title': copyTitle };
+	var request = gapi.client.drive.files.copy({
+		'fileId': PRESENTATION_ID,
+		'resource': body
+	});
+	request.execute(function (resp) {
+		console.log('Copy ID: ' + resp.id);
+	});
+	*/
+
+	console.log({
+			"presentationId": PRESENTATION_ID,
+			"pageId": slideId
+	});
+
+	var r = await postRequest(
+		"http://localhost:8010/proxy/get_data_single_slide", {
+			"presentationId": PRESENTATION_ID,
+			"pageId": slideId
+		});
+
+	console.log(r);
+}
+
 $(document).ready(function() {
 	$(document).on("extension_getDocSlideStructure", function(e) {
 		issueEvent("root_getDocSlideStructure", docSlideStructure);
@@ -6899,7 +6976,6 @@ $(document).ready(function() {
 
 		var req = [];
 		var requests = JSON.parse(JSON.stringify(obj.requests).replaceAll(slideid, docSlideStructure[docslideindex].slide.id));
-
 
 		updateMappingInternal(docSlideStructure[docslideindex].slide.id, obj.matching, false);
 		setDocSlideStructure(docSlideStructure);
@@ -10884,6 +10960,7 @@ async function automaticallyPutContents(textInfo, mapping) {
 								loadStarted: false,
 								result: []
 						},
+			previousVersion: null
 			/*
 			template: {
 				id: "DEFAULT",
