@@ -5705,25 +5705,16 @@ function getLayoutForAdaptation(m_body) {
 		var objID = b.objectId;
 		var e = 0;
 
-		if (label in cnt) {
-			e = cnt[label];
-			cnt[label]++;
-		}
-		else {
-			e = 0;
-			cnt[label] = 1;
-		}
+		m_body.pageElements[obj].box.type = label;
 
-		m_body.pageElements[obj].box.type = label + "_" + e;
-
-		retValue.mapping[label + "_" + e] = objID;
+		retValue.mapping[label] = objID;
 
 		retValue.boxes.push({
 			height: b.height,
 			left: b.left,
 			objectId: objID,
 			top: b.top,
-			type: label + "_" + e,
+			type: label,
 			width: b.width
 		})
 	}
@@ -6328,6 +6319,151 @@ function constructRequestForLayoutStyleAlternatives(index, subject, defaultFlag)
             },	
 		)
 	}
+
+	gapi.client.slides.presentations.get({
+		presentationId: PRESENTATION_ID
+	}).then(async function (response) {
+		var retValue = {};
+
+		retValue.userPresentation = response.result;
+		retValue.presentationId = referenceSlideID;
+		retValue.sort = true;
+		retValue.maxCnt = 40;
+		retValue.userPageId = null;
+		retValue.styles = {
+			"styles": {
+				"HEADER_0": {
+					"type": "HEADER_0",
+					"objectId": docSlideStructure[index].layout.mapping["HEADER_0"],
+					"originalContents": [],
+					"fontSize": 39,
+					"fontFamily": "Arial",
+					"foregroundColor": {
+						"rgbColor": {
+							"red": 0,
+							"green": 0,
+							"blue": 0
+						}
+					},
+					"bold": false,
+					"italic": false,
+					"strikethrough": false,
+					"underline": false,
+					"textAlign": "center",
+					"prefix": "none",
+					"lineHeight": 100,
+					"spaceAbove": 0,
+					"spaceBelow": 0,
+					"recommendedLength": 25
+				},
+				"BODY_0": {
+					"type": "BODY_0",
+					"objectId": docSlideStructure[index].layout.mapping["BODY_0"],
+					"originalContents": [],
+					"fontSize": 21,
+					"fontFamily": "Arial",
+					"foregroundColor": {
+						"rgbColor": {
+							"red": 0.34901962,
+							"green": 0.34901962,
+							"blue": 0.34901962
+						}
+					},
+					"bold": false,
+					"italic": false,
+					"strikethrough": false,
+					"underline": false,
+					"textAlign": "center",
+					"prefix": "none",
+					"lineHeight": 100,
+					"spaceAbove": 0,
+					"spaceBelow": 0,
+					"recommendedLength": 12
+				}
+			}
+		};
+
+		retValue.resources = {};
+
+		retValue.resources.header = {
+			"shortenings": [
+				{
+					"text": docSlideStructure[index].contents.list[0].currentContent.contents,
+					"score": {
+						"grammatical": 1,
+						"semantic": 1,
+						"importantWords": 1
+					}
+				}
+			],
+			"singleWord": {
+				"text": docSlideStructure[index].contents.list[0].currentContent.contents,
+				"score": {
+					"grammatical": 1,
+					"semantic": 1,
+					"importantWords": 1
+				}
+			},
+			"phrases": [],
+			"images": [],
+			"type": "TEXT"
+		};
+
+		retValue.resources.body = []
+
+		for (var i = 1; i < docSlideStructure[index].contents.list.length; i++) {
+			console.log(docSlideStructure[index].contents.list[i].currentContent.contents)
+			retValue.resources.body.push(
+				{
+					"paragraph": {
+						"shortenings": [
+							{
+								"text": docSlideStructure[index].contents.list[i].currentContent.contents,
+								"score": {
+									"grammatical": 1,
+									"semantic": 1,
+									"importantWords": 1
+								}
+							},
+							{
+								"text": docSlideStructure[index].contents.list[i].currentContent.contents,
+								"score": {
+									"grammatical": 1,
+									"semantic": 1,
+									"importantWords": 1
+								}
+							}
+						],
+						"singleWord": {
+							"text": docSlideStructure[index].contents.list[i].currentContent.contents,
+							"score": {
+								"grammatical": 1,
+								"semantic": 1,
+								"importantWords": 1
+							}
+						},
+						"phrases": [],
+						"id": (docSlideStructure[index].contents.list[i].mappingKey == "null" ? null : docSlideStructure[index].contents.list[i].mappingKey)
+					}
+				},
+			)
+		}
+
+		retValue.settings = {
+			"fast": true,
+			"contentControl": false,
+			"debug": false,
+			"putOriginalContent": false
+		}
+
+		console.log(retValue);
+		
+		console.log(JSON.stringify(retValue));
+		var res1 = await postRequest(
+			"http://localhost:8010/proxy/generate_duplicate_alternatives_requests", retValue);
+
+		console.log(res1);
+	});
 
 	return r;
 }
