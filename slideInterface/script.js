@@ -521,6 +521,7 @@ async function initializeSlide() {
 	docSlideStructure = [{
 		"type": "visible",
 		"contents": {
+			sectionKey: '',
 			list: [{
 				currentContent: {
 					type: "text",
@@ -541,7 +542,7 @@ async function initializeSlide() {
 			...getLayout(DEFAULT_SLIDE_ID, "p")
 		},
 		"style": {
-			"slideId": "p"
+			...getStyle(DEFAULT_SLIDE_ID, "p")
 		},
 		"slide": {
 			id: "THIS_IS_FIRST_SLIDE",
@@ -5686,6 +5687,50 @@ function constructRequestForSingleSlideAdaptation(presentationID, slideID, targe
 	return retValue;
 }
 
+function getLayoutForAdaptation(m_body) {
+	var retValue = {};
+
+	retValue.boxes = [];
+	retValue.mapping = {};
+	retValue.pageSize = m_body.pageSize;
+	retValue.slideID = m_body.layoutPageId;
+	retValue.thumbnailURL = '';
+
+	var cnt = {};
+
+	for (var obj in m_body.pageElements) {
+		var b = m_body.pageElements[obj].box;
+
+		var label = b.type;
+		var objID = b.objectId;
+		var e = 0;
+
+		if (label in cnt) {
+			e = cnt[label];
+			cnt[label]++;
+		}
+		else {
+			e = 0;
+			cnt[label] = 1;
+		}
+
+		m_body.pageElements[obj].box.type = label + "_" + e;
+
+		retValue.mapping[label + "_" + e] = objID;
+
+		retValue.boxes.push({
+			height: b.height,
+			left: b.left,
+			objectId: objID,
+			top: b.top,
+			type: label + "_" + e,
+			width: b.width
+		})
+	}
+
+	return retValue;
+}
+
 function updateMappingInternal(slideID, m_body, pushFlag) {
 	console.log(docSlideStructure);
 	console.log(slideID);
@@ -5705,9 +5750,9 @@ function updateMappingInternal(slideID, m_body, pushFlag) {
 			sectionKey: '',
 			list: []
 		};
-		obj.layout = getLayout(slideID, m_body.layoutPageId);
+		obj.layout = getLayoutForAdaptation(m_body);
 		obj.style = {
-			slideId: m_body.stylesPageId
+			... getStyle(referenceSlideID, m_body.stylesPageId)
 		}
 		obj.slide = {
 			id: slideID,
@@ -5720,9 +5765,9 @@ function updateMappingInternal(slideID, m_body, pushFlag) {
 			sectionKey: '',
 			list: []
 		},
-		layout: getLayout(slideID, m_body.layoutPageId),
+		layout: getLayoutForAdaptation(m_body),
 		style: {
-			slideId: m_body.stylesPageId
+			... getStyle(referenceSlideID, m_body.stylesPageId)
 		},
 		slide: {
 			id: slideID,
@@ -5793,13 +5838,65 @@ function updateMappingInternal(slideID, m_body, pushFlag) {
 		slideDB[slideID][objID] = [];
 
 		for (var j = 0; j < m_body.pageElements[objID].contents.length; j++) {
-			if(m_body.pageElements[objID].contents[j].styles.type == "PICTURE") continue;
+			if(m_body.pageElements[objID].box.type.startsWith("PICTURE")) {
+				obj.contents.list.push({
+					currentContent: {
+						type: "image",
+						label: m_body.pageElements[objID].box.type,
+						contents: m_body.pageElements[objID].contents[0].url,
+					},
+					mappingKey: m_body.pageElements[objID].contents[0].contentId,
+					originalContent: {
+						type: "image",
+						contents: m_body.pageElements[objID].contents[0].url
+					}
+				})
 
-			var textKey = m_body.pageElements[objID].contents[j].contentId;
+				slideDB[slideID][objID] = [{
+					mappingID: m_body.pageElements[objID].contents[0].contentId
+				}]
+			}
+			else {
+				var textKey = m_body.pageElements[objID].contents[j].contentId;
 
-			console.log(textKey);
-			console.log(getOriginalText(textKey));
+				if (textKey != null && textKey.startsWith('-')) {
+					obj.contents.list.push({
+						currentContent: {
+							type: "text",
+							label: m_body.pageElements[objID].box.type,
+							contents: m_body.pageElements[objID].contents[j].text,
+						},
+						mappingKey: textKey,
+						originalContent: {
+							type: "text",
+							contents: getOriginalText(textKey)
+						}
+					})
 
+					slideDB[slideID][objID].push({
+						mappingID: textKey
+					})
+				}
+				else {
+					obj.contents.list.push({
+						currentContent: {
+							type: "text",
+							label: m_body.pageElements[objID].box.type,
+							contents: m_body.pageElements[objID].contents[j].text,
+						},
+						mappingKey: "null",
+						originalContent: {
+							type: "text",
+							contents: ''
+						}
+					})
+
+					slideDB[slideID][objID].push({
+						mappingID: "null" 
+					})
+				}
+			}
+/*
 			var label = m_body.pageElements[objID].box.type;
 			var layoutID = m_body.layoutPageId;
 			var boxIndex = -1;
@@ -5851,6 +5948,7 @@ function updateMappingInternal(slideID, m_body, pushFlag) {
 					}
 				})
 			}
+			*/
 		}
 	}
 
@@ -6155,8 +6253,8 @@ function constructRequestForLayoutStyleAlternatives(index, subject, defaultFlag)
 	r.presentationId = (defaultFlag ? DEFAULT_SLIDE_ID : referenceSlideID);
 	r.sort = true;
 	r.maxCnt = 10;
-	r.layoutPageId = (subject == "layoutAlternative" ? null : docSlideStructure[index].layout.slideId);
-	r.stylesPageId = (subject == "styleAlternative" ? null : docSlideStructure[index].style.slideId);
+	r.layoutPageId = (subject == "layoutAlternative" ? null : docSlideStructure[index].layout.slideID);
+	r.stylesPageId = (subject == "styleAlternative" ? null : docSlideStructure[index].style.slideID);
 
 	r.settings = {
 		putOriginalContent: false,
@@ -6254,6 +6352,9 @@ async function getAlternativeSlides(index, subject) {
 
 			// if (DEFAULT_SLIDE_ID == referenceSlideID) {
 				var r = constructRequestForLayoutStyleAlternatives(index, subject, false);
+				console.log(r);
+				console.log(JSON.stringify(r));
+
 				var res1 = await postRequest(
 					"http://localhost:8010/proxy/generate_alternatives_requests", r);
 
@@ -7003,6 +7104,20 @@ $(document).ready(function() {
 			},
 		});
 
+		var slideID = docSlideStructure[curDocSlideStructureIndex].slide.id;
+
+		for(var i=0;i<docSlideStructure[curDocSlideStructureIndex].contents.list.length;i++) {
+			var obj = docSlideStructure[curDocSlideStructureIndex].contents.list[i];
+
+			if (obj.mappingKey != "null") {
+				issueEvent("root_mappingRemoved2", {
+					mappingID: obj.mappingKey
+				});
+			}
+		}
+
+		delete slideDB[slideID]
+
 		docSlideStructure.splice(curDocSlideStructureIndex, 1);
 
 		updateDocSlideToExtension();
@@ -7564,13 +7679,14 @@ $(document).ready(function() {
 		slideDeckAdaptationDivAppear(presentationID);
 
 		console.log(JSON.stringify(req));
-
+/*
 		var r = await postRequest(
 			"http://localhost:8010/proxy/get_data_single_presentation", {
 				"presentationId": presentationID
 			});
 
 		console.log(r);
+		*/
 
 		const requestOptions = {
 			method: 'POST',
@@ -7609,12 +7725,21 @@ $(document).ready(function() {
 		console.log(m);
 
 		slideDB = {};
+
+		var temp = JSON.parse(JSON.stringify(docSlideStructure));
 		docSlideStructure = [];
 
 		for(var i=0;i<m.length;i++) {
 			var slideID = m[i].objectId;
 
 			updateMappingInternal(slideID, m[i], true);
+		}
+
+		console.log(JSON.parse(JSON.stringify(docSlideStructure)));
+		console.log(JSON.parse(JSON.stringify(temp)));
+
+		for(var i=0;i<docSlideStructure.length;i++) {
+			docSlideStructure[i].contents.sectionKey = temp[i].contents.sectionKey;
 		}
 
 		console.log(docSlideStructure);
@@ -7959,10 +8084,10 @@ $(document).ready(function() {
 								HEADER_0: p[i].objs[0],
 								BODY_0: p[i].objs[1]
 							},
-							...getLayout(referenceSlideID, "ge93a171212_0_5")
+							...getLayout(DEFAULT_SLIDE_ID, "ge93a171212_0_5")
 						},
 						style: {
-							slideId: "ge93a171212_0_5"
+							...getStyle(DEFAULT_SLIDE_ID, "ge93a171212_0_5")
 						},
 						slide: {
 							id: p[i].slideID,
@@ -8018,7 +8143,7 @@ $(document).ready(function() {
 							// ...getLayout(referenceSlideID, "ge93a171212_0_5")
 						},
 						style: {
-							slideId: "ge93a171212_0_5"
+							...getStyle(DEFAULT_SLIDE_ID, "ge93a171212_0_5")
 						},
 						slide: {
 							id: p[i].slideID,
@@ -8231,6 +8356,7 @@ $(document).ready(function() {
 				curSlidePage = p.pageID;
 
 				var idx = getIndexOfSlide(curSlidePage);
+				console.log(idx);
 
 				if(idx == -1) {
 					// newly created. will be handled in filestrip updated
@@ -10146,6 +10272,15 @@ function getThumbnailOfOriginalSlide(refSlideID, template_id) {
 	return '';
 }
 
+function getStyle(slideID, styleSlideID) {
+	retValue = JSON.parse(JSON.stringify(referenceStyle[slideID][styleSlideID]));
+
+	return JSON.parse(JSON.stringify({
+		slideID: styleSlideID,
+		styles: referenceStyle[slideID][styleSlideID].styles
+	}));
+}
+
 function getLayout(slideID, layoutSlideID) {
 	console.log(slideID, layoutSlideID);
 	retValue = JSON.parse(JSON.stringify(referenceLayout[slideID][layoutSlideID]));
@@ -10203,34 +10338,31 @@ function getAdaptationViewBodyLayout(idx) {
 }
 function getAdaptationViewBodyStyle(idx)  {
 	var resultString = '';
-	var styleSlideID = docSlideStructure[idx].style.slideId;
+	var styleSlideID = docSlideStructure[idx].style.slideID;
 
-	if(referenceSlideID != null && referenceSlideID in referenceStyle) {
-		var obj = referenceStyle[referenceSlideID][styleSlideID].styles;
-		var retString = '';
+	var obj = docSlideStructure[idx].style.styles; 
+	var retString = '';
 
-		for(var type in obj) {
-			retString = retString + (retString == '' ? '' : '<br>') + type + " { ";
+	for (var type in obj) {
+		retString = retString + (retString == '' ? '' : '<br>') + type + " { ";
 
-			for(var k in obj[type]) {
-				if(k != "type" && k != "recommendedLength") {
-					if(k == "foregroundColor") {
-						retString = retString + '<br> &emsp;' + k + ': ' + '<div class="fontForegroundColorDiv" style="background-color: rgb(' + obj[type][k].rgbColor.red*255 + ", " + obj[type][k].rgbColor.green*255 + ", " + obj[type][k].rgbColor.blue*255 + ');")> </div>'
-					}
-					else if(k == "fontSize") {
-						retString = retString + '<br> &emsp;' + k + ': ' + obj[type][k].toFixed(2);
-					}
-					else {
-						retString = retString + '<br> &emsp;' + k + ': ' + obj[type][k];
-					}
+		for (var k in obj[type]) {
+			if (k != "type" && k != "recommendedLength") {
+				if (k == "foregroundColor") {
+					retString = retString + '<br> &emsp;' + k + ': ' + '<div class="fontForegroundColorDiv" style="background-color: rgb(' + obj[type][k].rgbColor.red * 255 + ", " + obj[type][k].rgbColor.green * 255 + ", " + obj[type][k].rgbColor.blue * 255 + ');")> </div>'
+				}
+				else if (k == "fontSize") {
+					retString = retString + '<br> &emsp;' + k + ': ' + obj[type][k].toFixed(2);
+				}
+				else {
+					retString = retString + '<br> &emsp;' + k + ': ' + obj[type][k];
 				}
 			}
-			retString = retString + "<br> }"
 		}
-
-		return retString;
+		retString = retString + "<br> }"
 	}
-	else return '';
+
+	return retString;
 }
 
 function getLayoutTypes(index) {
@@ -10299,7 +10431,8 @@ function getAdaptationViewBodyContents(index) {
 							"</tr>"
 							*/
 
-			resultString += "<div class='adaptationTableResourceBody' slideIndex='" + index + "' resourceIndex='" + i + "'>" + item.currentContent.contents + 
+			resultString += "<div class='adaptationTableResourceBody' slideIndex='" + index + "' resourceIndex='" + i + "'>" + 
+					( item.currentContent.label.startsWith("PICTURE") ? "<img class='adaptationTableImage' src='" + item.currentContent.contents + "'> </img>" : item.currentContent.contents ) + 
 									"<div class='temptemp upper'> </div>" + 
 									"<div class='temptemp lower'> </div>" +
 								"</div>";
@@ -10590,10 +10723,10 @@ async function automaticallyPutContents(textInfo, mapping) {
 					"HEADER_0": titleID,
 					"BODY_0": bodyID
 				},
-				...getLayout(referenceSlideID, "ge93a171212_0_5")
+				...getLayout(DEFAULT_SLIDE_ID, "ge93a171212_0_5")
 			},
 			style: {
-				slideId: "ge93a171212_0_5"
+				...getStyle(DEFAULT_SLIDE_ID, "ge93a171212_0_5")
 			},
 			slide: {
 				id: slideID,
