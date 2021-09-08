@@ -7154,6 +7154,11 @@ $(document).ready(function() {
 	})
 
 	$(document).on("click", ".alternativeThumbnail", async function(e) {
+		var t = $(e.target);
+		
+		var docslideindex = parseInt($(t).attr("docslideindex"));
+		var index = parseInt($(t).attr("index"));
+
 		showLoadingSlidePlane();
 
 		var response = await gapi.client.slides.presentations.get({
@@ -7170,6 +7175,17 @@ $(document).ready(function() {
 		var res = await postRequest(
 			"http://localhost:8010/proxy/get_data_single_slide", r);
 
+		for(var i=0;i<res.layout.boxes.length;i++) {
+			var boxObjID = res.layout.boxes[i].objectID;
+
+			for(var k in docSlideStructure[docslideindex].layout.mapping) {
+				if(docSlideStructure[docslideindex].layout.mapping[k] == boxObjID) {
+					res.layout.boxes[i].type = k;
+				}
+			}
+		}
+
+		console.log(JSON.parse(JSON.stringify(docSlideStructure[docslideindex])));
 		console.log(res);
 
 		var r2 = {
@@ -7190,29 +7206,33 @@ $(document).ready(function() {
 		console.log(r2);
 		console.log(JSON.stringify(r2));
 
-
-
 		var res2 = await postRequest(
 			"http://localhost:8010/proxy/generate_slide_requests_explicit", r2
 		)
 
 		console.log(res2);
 
+		/*
 		gapi.client.slides.presentations.batchUpdate({
 			presentationId: PRESENTATION_ID,
 			requests: res2.requests
 		}).then((createSlideResponse) => {
 			console.log(createSlideResponse);
 		});
+		*/
 
-		var t = $(e.target);
-		
-		var docslideindex = parseInt($(t).attr("docslideindex"));
-		var index = parseInt($(t).attr("index"));
 
 		var subject = $(t).attr("subject");
 
 		console.log(docslideindex, subject, index);
+
+		docSlideStructure[docslideindex].previousVersion = {};
+
+		docSlideStructure[docslideindex].previousVersion.requests = res2.requests;
+		docSlideStructure[docslideindex].previousVersion.matching = res2.matching;
+		docSlideStructure[docslideindex].previousVersion.contents = JSON.parse(JSON.stringify(docSlideStructure[docslideindex].contents));
+		docSlideStructure[docslideindex].previousVersion.layout = JSON.parse(JSON.stringify(docSlideStructure[docslideindex].layout));
+		docSlideStructure[docslideindex].previousVersion.style = JSON.parse(JSON.stringify(docSlideStructure[docslideindex].style));
 
 		var obj = docSlideStructure[docslideindex][subject].result[index];
 		var slideid = obj.requests[0].createSlide.objectId;
@@ -7568,52 +7588,125 @@ $(document).ready(function() {
 				});
 	});
 
-	$(document).on("click", "#reviewCancelBtn", function(e) {
+	$(document).on("click", "#reviewCancelBtn", async function(e) {
 		showLoadingSlidePlane();
 
-		var requests = [];
+		if(docSlideStructure[curDocSlideStructureIndex].previousVersion == null) {
+			var requests = [];
 
-		for(var i=0;i<docSlideStructure[curDocSlideStructureIndex].contents.list.length;i++) {
-			var obj = docSlideStructure[curDocSlideStructureIndex].contents.list[i];
+			for(var i=0;i<docSlideStructure[curDocSlideStructureIndex].contents.list.length;i++) {
+				var obj = docSlideStructure[curDocSlideStructureIndex].contents.list[i];
 
-			if(obj.mappingKey != "null") {
-				issueEvent("root_mappingRemoved2", {
-					mappingID: obj.mappingKey
+				if(obj.mappingKey != "null") {
+					issueEvent("root_mappingRemoved2", {
+						mappingID: obj.mappingKey
+					});
+				}
+			}
+
+			requests.push({
+				"deleteObject": {
+					"objectId": docSlideStructure[curDocSlideStructureIndex].slide.id,
+				},
+			});
+
+			var slideID = docSlideStructure[curDocSlideStructureIndex].slide.id;
+
+			for(var i=0;i<docSlideStructure[curDocSlideStructureIndex].contents.list.length;i++) {
+				var obj = docSlideStructure[curDocSlideStructureIndex].contents.list[i];
+
+				if (obj.mappingKey != "null") {
+					issueEvent("root_mappingRemoved2", {
+						mappingID: obj.mappingKey
+					});
+				}
+			}
+
+			delete slideDB[slideID]
+
+			docSlideStructure.splice(curDocSlideStructureIndex, 1);
+
+			updateDocSlideToExtension();
+			setDocSlideStructure(docSlideStructure);
+
+			gapi.client.slides.presentations.batchUpdate({
+				presentationId: PRESENTATION_ID,
+				requests: requests
+			}).then((createSlideResponse) => {
+				console.log(createSlideResponse);
+			});
+		}
+		else {
+			var requests = docSlideStructure[curDocSlideStructureIndex].previousVersion.requests;
+			var matching = docSlideStructure[curDocSlideStructureIndex].previousVersion.matching;
+
+			var contents = docSlideStructure[curDocSlideStructureIndex].previousVersion.contents;
+			var layout = docSlideStructure[curDocSlideStructureIndex].previousVersion.layout;
+			var style = docSlideStructure[curDocSlideStructureIndex].previousVersion.style;
+
+			var slideID = docSlideStructure[curDocSlideStructureIndex].slide.id;
+
+			docSlideStructure[curDocSlideStructureIndex].contents = JSON.parse(JSON.stringify(contents));
+			docSlideStructure[curDocSlideStructureIndex].layout = JSON.parse(JSON.stringify(layout));
+			docSlideStructure[curDocSlideStructureIndex].style = JSON.parse(JSON.stringify(style));
+
+			slideDB[slideID] = {};
+
+			for(var objID in matching.pageElements) {
+				var label = matching.pageElements[objID].box.type;
+
+				docSlideStructure[curDocSlideStructureIndex].layout.mapping[label] = objID;
+
+				slideDB[slideID][objID] = [];
+			}
+
+			console.log(JSON.parse(JSON.stringify(docSlideStructure[curDocSlideStructureIndex])));
+
+			var pIndex = {};
+
+			for(var i=0;i<docSlideStructure[curDocSlideStructureIndex].contents.list.length;i++) {
+				var item = docSlideStructure[curDocSlideStructureIndex].contents.list[i];
+				var key = item.mappingKey;
+				var objID = docSlideStructure[curDocSlideStructureIndex].layout.mapping[item.label];
+
+				if(key != "null") {
+					slideDB[slideID][objID].push( {mappingID: key} );
+				}
+				else {
+					slideDB[slideID][objID].push( {mappingID: "null"} );
+				}
+			}
+
+			var objIDs = await getRequestsForRemovingAllObjectsOnPage(PRESENTATION_ID, slideID);
+			var req = [];
+
+			for (var i = 0; i < objIDs.length; i++) {
+				req.push({
+					"deleteObject": {
+						"objectId": objIDs[i]
+					},
 				});
 			}
+
+			requests = requests.concat(req);
+
+			updateDocSlideToExtension();
+			updateSlideThumbnail();
+
+			var idx = getIndexOfSlide(curSlidePage);
+
+			setDocSlideStructure(docSlideStructure);
+			showDocSlideView(idx);
+			visualizeSlideObjects();
+
+			gapi.client.slides.presentations.batchUpdate({
+				presentationId: PRESENTATION_ID,
+				requests: requests 
+			}).then((createSlideResponse) => {
+				console.log(createSlideResponse);
+			});
+
 		}
-
-		requests.push({
-			"deleteObject": {
-				"objectId": docSlideStructure[curDocSlideStructureIndex].slide.id,
-			},
-		});
-
-		var slideID = docSlideStructure[curDocSlideStructureIndex].slide.id;
-
-		for(var i=0;i<docSlideStructure[curDocSlideStructureIndex].contents.list.length;i++) {
-			var obj = docSlideStructure[curDocSlideStructureIndex].contents.list[i];
-
-			if (obj.mappingKey != "null") {
-				issueEvent("root_mappingRemoved2", {
-					mappingID: obj.mappingKey
-				});
-			}
-		}
-
-		delete slideDB[slideID]
-
-		docSlideStructure.splice(curDocSlideStructureIndex, 1);
-
-		updateDocSlideToExtension();
-		setDocSlideStructure(docSlideStructure);
-
-		gapi.client.slides.presentations.batchUpdate({
-			presentationId: PRESENTATION_ID,
-			requests: requests
-		}).then((createSlideResponse) => {
-			console.log(createSlideResponse);
-		});
 		/*
 		if (("list" in docSlideStructure[curDocSlideStructureIndex].contents)) {
 			for (var i = 0; i < docSlideStructure[curDocSlideStructureIndex].contents.list.length; i++) {
