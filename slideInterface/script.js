@@ -4637,13 +4637,41 @@ function showIndividualSlides(presentationID) {
 	$("#slideListDiv").html(slideListDivHTML);
 }
 
-function showTextShorteningView(slideIndex, resourceIndex) {
+async function showTextShorteningView(slideIndex, resourceIndex) {
 	var originalText = docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents;
-	var currentText = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents;
 
 	$("#textShorteningViewOriginalText").html(originalText)
-	$("#textShorteningViewCurrentText").html(currentText)
-	$("#textShorteningView").show();
+
+	$("#textShorteningViewAlternativeTextDiv").attr("loading", true);
+	$("#textShorteningViewAlternativeTextDiv").attr("slideindex", slideIndex);
+	$("#textShorteningViewAlternativeTextDiv").attr("resourceindex", resourceIndex);
+
+	$("#textShorteningViewAlternativeTextDiv").html("Loading... ");
+	
+	var shortening = await getShortening(originalText);
+
+	console.log(shortening);
+
+	var curSlideIndex = parseInt($("#textShorteningViewAlternativeTextDiv").attr("slideindex"));
+	var curResourceIndex = parseInt($("#textShorteningViewAlternativeTextDiv").attr("resourceindex"));
+
+	if(curSlideIndex == slideIndex && curResourceIndex == resourceIndex) {
+		var shorteningHtml = '';
+
+		for(var i=0;i<shortening.result.shortenings.length;i++) {
+			shorteningHtml += '<tr class="textShorteningViewAlternativeTextItem">' + 
+								'<td>' + 
+									shortening.result.shortenings[i].text +
+								'</td>' + 
+							'</tr>';
+		}
+
+		$("#textShorteningViewAlternativeTextDiv").html(
+			"<table id='textShorteningViewAlternativeTable'> " +
+				shorteningHtml + 
+			"</table>"
+		)
+	}
 }
 
 function closeTextShorteningView() {
@@ -4988,7 +5016,7 @@ async function handleChangeText(slideIndex, resourceIndex, deletionFlag) {
 }
 
 function getVisualHighlightForImage(slideIndex, resourceIndex) {
-	var indexes = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents.index;
+	var indexes = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.imageIndex;
 	var originalText = docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents;
 
 	for(var i=indexes.length-1;i>=0;i--) {
@@ -5002,7 +5030,7 @@ function getVisualHighlightForImage(slideIndex, resourceIndex) {
 }
 
 function getQueryKeywordsForImage(slideIndex, resourceIndex) {
-	var keywords = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents.keywords;
+	var keywords = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.imageKeywords;
 	var retValue = '';
 
 	for(var i=0;i<keywords.length;i++) {
@@ -5013,7 +5041,7 @@ function getQueryKeywordsForImage(slideIndex, resourceIndex) {
 }
 
 function getSearchResult(slideIndex, resourceIndex) {
-	var keywords = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents.keywords;
+	var keywords = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.imageKeywords;
 	var queryStatement = '';
 	var firstFlag = true;
 
@@ -5056,13 +5084,40 @@ function getSearchResult(slideIndex, resourceIndex) {
 		});
 }
 
-function showImageSelectionView(slideIndex, resourceIndex) {
+async function showImageSelectionView(slideIndex, resourceIndex) {
 	$("#imageView").attr("slideindex", slideIndex);
 	$("#imageView").attr("resourceindex", resourceIndex);
 
 	$("#imageViewOriginalSentence").html('');
 	$("#imageViewQueryKeywordDiv").html("");
 	
+	var queryString = docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents;
+
+	const requestOptions = {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(
+		),
+	};
+
+	var res = await postRequest('http://localhost:8010/proxy/findQueriess', 
+		{
+			text: queryString,
+		}
+	)
+
+	docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.imageIndex = res.index;
+	docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.imageKeywords = []
+
+	console.log(JSON.parse(JSON.stringify(docSlideStructure[slideIndex])));
+
+	for (var j = 0; j < res.surfaceWords.length; j++) {
+		docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.imageKeywords.push({
+			keyword: res.surfaceWords[j],
+			selected: true
+		})
+	}
+
 	var q = getVisualHighlightForImage(slideIndex, resourceIndex);
 	$("#imageViewOriginalSentence").html(q);
 
@@ -5071,7 +5126,37 @@ function showImageSelectionView(slideIndex, resourceIndex) {
 
 	getSearchResult(slideIndex, resourceIndex);
 
-	$("#imageView").show();
+	/*
+	fetch('http://localhost:8010/proxy/findQueriess', requestOptions)
+		.then(response => response.json())
+		.then(data => function(s, r, d) {
+			console.log(s);
+			console.log(r);
+			console.log(d);
+
+			var rowObj = $(".adaptationTableRow[slideindex='" + s + "'][resourceindex='" + r + "']")
+
+			console.log(rowObj);
+
+			substituteTextToFigure(s, r, d).then(res => {
+			//	removeSingleRowOnDocSlideStructure(s, r);
+
+				$(rowObj).removeClass("onLoading");
+			})
+
+		}(slideIndex, resourceIndex, data)
+
+		);
+		*/
+		/*
+	var q = getVisualHighlightForImage(slideIndex, resourceIndex);
+	$("#imageViewOriginalSentence").html(q);
+
+	var k = getQueryKeywordsForImage(slideIndex, resourceIndex);
+	$("#imageViewQueryKeywordDiv").html(k);
+
+	getSearchResult(slideIndex, resourceIndex);
+	*/
 }
 
 function closeImageSelectionView() {
@@ -6898,6 +6983,11 @@ function test() {
 	copyFile("1zVgYIrE3QgRySBa16zuYzG4YAe0nnVOHZhKR4t6CheQ", "hahaha");
 }
 
+function hideAlternativeView() {
+	$(".selectedForAlternative").removeClass("selectedForAlternative");
+	$("#alternativeElementView").hide();
+}
+
 async function copyCurrentSlide(slideId) {
 	/*
 	var body = { 'title': copyTitle };
@@ -7052,11 +7142,11 @@ $(document).ready(function() {
 		var target = e.target;
 
 		if($(target).hasClass("keywordSelected")) {
-			docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents.keywords[keywordIndex].selected = false;
+			docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.imageKeywords[keywordIndex].selected = false;
 			$(target).removeClass("keywordSelected");
 		}
 		else {
-			docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents.keywords[keywordIndex].selected = true;
+			docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.imageKeywords[keywordIndex].selected = true;
 			$(target).addClass("keywordSelected");
 		}
 	});
@@ -7065,7 +7155,7 @@ $(document).ready(function() {
 		var slideIndex = parseInt($("#imageView").attr("slideindex"));
 		var resourceIndex = parseInt($("#imageView").attr("resourceindex"));
 
-		firebase.database().ref("/users/" + userName + '/docSlideStructure/' + slideIndex + "/resources/" + resourceIndex + "/currentContent/contents/keywords/").set(docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents.keywords);
+		// firebase.database().ref("/users/" + userName + '/docSlideStructure/' + slideIndex + "/resources/" + resourceIndex + "/currentContent/contents/keywords/").set(docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents.keywords);
 
 		getSearchResult(slideIndex, resourceIndex);
 	})
@@ -7750,22 +7840,27 @@ $(document).ready(function() {
 		var slideIndex = parseInt($(curRowObj).attr("slideIndex"));
 		var resourceIndex = parseInt($(curRowObj).attr("resourceIndex"));
 
+		$(curRowObj).addClass("selectedForAlternative");
+
+		var label = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.label;
+		var objID = docSlideStructure[slideIndex].layout.mapping[label];
+
+		var paragraphIndex = getParagraphIndexOfDocSlideStructure(slideIndex, resourceIndex);
+
+		var objectIndicator = $(".objectIndicator[objid='" + objID + "'][paragraphindex='" + paragraphIndex + "']");
+
+		$(objectIndicator).addClass("selectedForAlternative");
+
 		console.log(docSlideStructure[slideIndex].contents.list[resourceIndex])
 
-		if(docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.type == "text") {
-			console.log("TEXT");
+		$("#alternativeElementView").show();
 
-			showTextShorteningView(slideIndex, resourceIndex);
-		}
-		else {
-			console.log("IMAGE");
-
-			showImageSelectionView(slideIndex, resourceIndex);
-		}
+		showTextShorteningView(slideIndex, resourceIndex);
+		showImageSelectionView(slideIndex, resourceIndex);
 	})
 
-	$(document).on("click", "#textShorteningViewCloseBtn", function(e) {
-		closeTextShorteningView();
+	$(document).on("click", "#alternativeElementViewCloseBtn", function(e) {
+		hideAlternativeView();
 	});
 
 	$(document).on("click", "#adaptationViewHideBtn", function(e) {

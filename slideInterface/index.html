@@ -80,19 +80,65 @@
 		<button id='slideDeckCompareCancelBtn'> Cancel </button>
 		<button id='slideDeckCompareApplyBtn'> Apply </button>
 	</div>
-        <div id='topBar'> 
-			<div id='titleText' style='float: left;'> Doc2Slide </div>
-			<button id="authorize-button" style="display: none; float: left; background-color: red; height: 35px; width: 120px; margin-left: 20px; font-size: 20px; font-weight: bold;">Authorize</button>
-			<button id="signout-button" style="display: none; float: left;">Sign Out</button>
 
-			<div class='switchDiv'>
-				<label class="switch">
-				  <input id='check1' type="checkbox">
-				  <span class="slider round"></span>
-				</label>
+	<div id="alternativeElementView">
+		<div id='alternativeElementViewTopBar'>
+			<button id="alternativeElementViewCloseBtn"> X </button>
+		</div>
 
-				<div style='float: left'>
-					Disable Doc2Slide
+		<div id='textShorteningViewTextViewOriginalDiv'>
+			<span> <b> Original text </b> </span>
+			<div id='textShorteningViewOriginalText'> </div>
+		</div>
+
+		<div id='textShorteningView'>
+			<div id='textShorteningViewBody'>
+				<div id='textShorteningViewTextViewWrapper'>
+					Alternative text representation
+
+					<div id='textShorteningViewAlternativeTextDiv'> 
+						<table id='textShorteningTable'>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+		<div id='imageView'>
+			<div id='imageViewBody'>
+				<div id='imageViewQueryDiv'>
+					<div id='imageViewQueryStatementDiv'>
+						Alternative image representation <br> <br>
+
+						<span> Query keywords: </span>
+						<div id='imageViewQueryKeywordDiv'>
+	
+						</div>
+						<button id='imageViewQuerySubmitBtn'> Search </button>
+					</div>
+				</div>
+	
+				<div id='imageViewResultDiv'>
+	
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id='topBar'>
+		<div id='titleText' style='float: left;'> Doc2Slide </div>
+		<button id="authorize-button"
+			style="display: none; float: left; background-color: red; height: 35px; width: 120px; margin-left: 20px; font-size: 20px; font-weight: bold;">Authorize</button>
+		<button id="signout-button" style="display: none; float: left;">Sign Out</button>
+	
+		<div class='switchDiv'>
+			<label class="switch">
+				<input id='check1' type="checkbox">
+				<span class="slider round"></span>
+			</label>
+	
+			<div style='float: left'>
+				Disable Doc2Slide
 				</div>
 			</div>
 
@@ -424,59 +470,6 @@
 
 								</div>
 
-								<div id='textShorteningView'>
-									<div id='textShorteningViewTopBar'> 
-										<button id="textShorteningViewCloseBtn"> X </button>
-									 </div>
-
-									<div id='textShorteningViewBody'>
-											<div id='textShorteningViewTextViewWrapper'>
-												<div id='textShorteningViewTextView'>
-													<div id='textShorteningViewTextViewOriginalDiv'>
-														<span> Original text </span>
-														<div id='textShorteningViewOriginalText'> </div>
-													</div>
-													<div id='textShorteningViewTextViewCurrentDiv'>
-														<span> Result text </span>
-														<div id='textShorteningViewCurrentText'> </div>
-													</div>
-												</div>
-										
-												<button id='textShorteningViewApplyBtn'> Apply </button>
-											</div>
-
-										<hr />
-
-									<input id='textShorteningSlider' type="range" min="1" max="100" value="50" class="textShorteningSlider">
-
-									</div>
-								</div>
-
-							<div id='imageView'>
-								<div id='imageViewTopBar'>
-									<button id="imageViewCloseBtn"> X </button>
-								</div>
-
-								<div id='imageViewBody'>
-									<div id='imageViewQueryDiv'>
-										<div id='imageViewOriginalTextDiv'> 
-											<span> Original text: </span>
-											<div id='imageViewOriginalSentence'> haha </div>
-										</div>
-										<div id='imageViewQueryStatementDiv'>
-											<span> Query keywords: </span>
-											<div id='imageViewQueryKeywordDiv'>
-
-											</div>
-											<button id='imageViewQuerySubmitBtn'> Search </button>
-										</div>
-									</div>
-
-									<div id='imageViewResultDiv'>
-
-									</div>
-								</div>
-							</div>
 							</div>
 							
 

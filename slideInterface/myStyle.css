@@ -1467,15 +1467,12 @@ width: 100%;
   }
 
   #textShorteningView {
-	  display: none;
-	  height: calc(100% - 30px);
+	  overflow: auto;
+	  height: 200px;
 	  width: calc(100% - 30px);
-	  position: absolute;
 	  margin: 15px;
 	  box-sizing: border-box;
 	  border: 1px solid black;
-	  left: 0px;
-	  top: 0px;
   }
 
   #textShorteningViewTopBar {
@@ -1486,7 +1483,6 @@ width: 100%;
   }
 
   #textShorteningViewBody {
-	  height: calc(100% - 30px); 
 	  width: 100%;
 	  box-sizing: border-box;
 	  background-color: white;
@@ -1513,12 +1509,14 @@ width: 100%;
 
   #textShorteningViewTextViewWrapper {
 	  display: inline-block;
-	  width: 100%;
+	  width: calc(100% - 30px);
+	  padding: 15px;
   }
 
 
   #textShorteningViewTextViewOriginalDiv {
 	  padding: 2px;
+	  margin: 15px;
   }
   
   #textShorteningViewTextViewCurrentDiv {
@@ -1527,15 +1525,11 @@ width: 100%;
 
   
   #imageView {
-	  display: none;
-	  height: calc(100% - 30px);
+	  height: calc(100% - 350px);
 	  width: calc(100% - 30px);
-	  position: absolute;
 	  margin: 15px;
 	  box-sizing: border-box;
 	  border: 1px solid black;
-	  left: 0px;
-	  top: 0px;
   }
 
   #imageViewTopBar {
@@ -2042,4 +2036,62 @@ width: 100%;
 	  color: red;
 	  font-weight: bold;
 	  padding: 5px;
+  }
+
+  #alternativeElementView {
+	  position: absolute;
+	  height: calc(70% - 100px);
+	  width: calc(50% - 100px);
+	  box-sizing: border-box;
+	  background-color: white;
+	  border: 1px solid black;
+	  z-index: 987987987 !important;
+	  margin: 50px;
+	  top: 30%;
+	  display: none;
+  }
+
+  #alternativeElementViewTopBar {
+	  height: 30px;
+	  width: 100%;
+	  background-color: lightgray;
+	  box-sizing: border-box;
+  }
+
+  #alternativeElementViewCloseBtn {
+	  font-size: 12px;
+	  float: right;
+	  margin: 5px;
+  }
+
+  #textShorteningSlider {
+	  margin: 20px;
+  }
+
+  #textShorteingViewAlternativeTextDiv {
+	  margin-top: 10px;
+  }
+
+  #textShorteningViewAlternativeTextDiv {
+	  margin-left: 5px;
+	  margin-top: 10px;
+  }
+
+  .textShorteningViewAlternativeTextItem {
+	  padding: 3px;
+	  cursor: pointer;
+
+		user-select: none; /* supported by Chrome and Opera */
+	   -webkit-user-select: none; /* Safari */
+	   -khtml-user-select: none; /* Konqueror HTML */
+	   -moz-user-select: none; /* Firefox */
+	   -ms-user-select: none; /* Internet Explorer/Edge */
+  }
+
+  .textShorteningViewAlternativeTextItem:hover {
+	  background-color: yellow;
+  }
+
+  .selectedForAlternative {
+	  border: 3px dashed darkorange;
   }
