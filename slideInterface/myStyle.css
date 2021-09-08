@@ -1628,7 +1628,7 @@ width: 100%;
 		border: 1px solid black;
 		padding: 2px;
 		margin-left: 2px;
-		font-size: 9px;
+		font-size: 13px;
 		cursor: pointer;
 	}
 
@@ -2099,4 +2099,9 @@ width: 100%;
   .adaptationTableImage {
 	  max-width: 100%;
 	  height: 30px;
+  }
+
+  #imageQueryKeywordAddBtn {
+	  margin-left: 3px;
+	  font-size: 13px;
   }

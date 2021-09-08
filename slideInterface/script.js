@@ -5143,6 +5143,8 @@ function getQueryKeywordsForImage(slideIndex, resourceIndex) {
 		retValue = retValue + '<span index="' + i + '" class="imageViewQueryKeywordItem ' + (keywords[i].selected ? "keywordSelected" : "") + '">' + keywords[i].keyword + '</span>';
 	}
 
+	retValue += "<button id='imageQueryKeywordAddBtn'> + </button>"
+
 	return retValue;
 }
 
@@ -7154,10 +7156,60 @@ $(document).ready(function() {
 	$(document).on("click", ".alternativeThumbnail", async function(e) {
 		showLoadingSlidePlane();
 
-		var t = $(e.target);
+		var response = await gapi.client.slides.presentations.get({
+			presentationId: PRESENTATION_ID
+		})
 
+		console.log(response);
+
+		var r = {
+			userPresentation: response.result,
+			pageId: curSlidePage
+		}
+
+		var res = await postRequest(
+			"http://localhost:8010/proxy/get_data_single_slide", r);
+
+		console.log(res);
+
+		var r2 = {
+			presentationId: PRESENTATION_ID,
+			targetPageId: curSlidePage,
+			layout: res.layout,
+			styles: res.styles,
+			pageNum: 1,
+			resources: {},
+			settings: {
+				fast: false,
+				contentControl: false,
+				debug: false,
+				putOriginalContent: true
+			}
+		}
+
+		console.log(r2);
+		console.log(JSON.stringify(r2));
+
+
+
+		var res2 = await postRequest(
+			"http://localhost:8010/proxy/generate_slide_requests_explicit", r2
+		)
+
+		console.log(res2);
+
+		gapi.client.slides.presentations.batchUpdate({
+			presentationId: PRESENTATION_ID,
+			requests: res2.requests
+		}).then((createSlideResponse) => {
+			console.log(createSlideResponse);
+		});
+
+		var t = $(e.target);
+		
 		var docslideindex = parseInt($(t).attr("docslideindex"));
 		var index = parseInt($(t).attr("index"));
+
 		var subject = $(t).attr("subject");
 
 		console.log(docslideindex, subject, index);
@@ -9600,6 +9652,10 @@ $(document).ready(function() {
 			}
 		});
 	
+		$(document).on("click", "#imageQueryKeywordAddBtn", function(e) {
+
+		})
+
 		$(document).on("click", "#documentStructureDisappearBtn", function(e) {
 				disappearDocumentStructureBtn();
 		});
