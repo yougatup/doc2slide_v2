@@ -1042,8 +1042,6 @@ function visualizeSlideObjects() {
 		var bottom = -1;
 
 		if("0" in curSlideObjects.objects[i].paragraph) { // image
-			/* /// TEMPORARY FOR WAITING BEKZAT'S IMPLEMENTATION
-
 			var objectID = curSlideObjects.objects[i].objectID.substr(7);
 			var rectInfo = curSlideObjects.objects[i].paragraph[0];
 			var mappedFlag = false;
@@ -1078,7 +1076,7 @@ function visualizeSlideObjects() {
 			});
 
 			tempCnt = tempCnt + 1;
-			*/
+			
 		}
 		else {
 			for(k in curSlideObjects.objects[i].paragraph) {
@@ -1108,7 +1106,6 @@ function visualizeSlideObjects() {
 					 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator mapped' objID='" + objectID + "' paragraphID=" + k + " mappingID=" + slideDB[curSlideObjects.pageID][objectID][paragraphID].mappingID + "></div>" 
 					 : 
 					 "<div id='mappingIndicator" + tempCnt + "' class='mappingIndicator' objID='" + objectID + "' paragraphID=" + k + "></div>")
-
 				);
 
 				setFocusBox("objectIndicator" + tempCnt, {
@@ -1274,15 +1271,20 @@ function getImageToShow(imgList) {
 	return -1;
 }
 
-async function substituteTextToFigure(s, r, d) {
+async function substituteTextToFigure(s, r, imgUrl) {
 	var slidePageID = docSlideStructure[s].slide.id;
-	var objectID = docSlideStructure[s].contents.list[r].currentContent.objID;
+	var label = docSlideStructure[s].contents.list[r].currentContent.label;
+	var objectID = docSlideStructure[s].layout.mapping[label];
+
 	var paragraphIndex = getParagraphIndexOfDocSlideStructure(s, r);
 
-	var imgList = await findImages(d.surfaceWords);
-	var finalImage = getImageToShow(imgList);
+	// var imgList = await findImages(d.surfaceWords);
+	// var finalImage = getImageToShow(imgList);
 
-	console.log(imgList);
+	var finalImage = imgUrl;
+
+	console.log(finalImage);
+	console.log(objectID);
 
 	var imgObjID = makeid(10);
 
@@ -1292,6 +1294,8 @@ async function substituteTextToFigure(s, r, d) {
 		var presentation = response.result;
 		var length = presentation.slides.length;
 	
+		console.log(response);
+
 		// slideDB = {};
 	
 		for (i = 0; i < length; i++) {
@@ -1375,18 +1379,45 @@ async function substituteTextToFigure(s, r, d) {
 										mappingID: mappingKey
 									}
 
-									docSlideStructure[s].contents.list[r].currentContent.objID = imgObjID;
 									docSlideStructure[s].contents.list[r].currentContent.type = "image";
 									docSlideStructure[s].contents.list[r].currentContent.contents = finalImage;
-									docSlideStructure[s].contents.list[r].currentContent.contents.index = d.index;
-									docSlideStructure[s].contents.list[r].currentContent.contents.keywords = []
 
-									for (var j = 0; j < d.surfaceWords.length; j++) {
-										docSlideStructure[s].contents.list[r].currentContent.contents.keywords.push({
-											keyword: d.surfaceWords[j],
-											selected: true
-										})
+									var prevLabel = docSlideStructure[s].contents.list[r].currentContent.label;
+									var pictureCnt = 0;
+
+									for(var i=0;i<docSlideStructure[s].contents.list[r].length;i++) {
+										if(docSlideStructure[s].contents.list[r].currentContent.label.startsWith("PICTURE"))
+											pictureCnt++;
 									}
+
+									docSlideStructure[s].contents.list[r].currentContent.label = "PICTURE_" + pictureCnt;
+									docSlideStructure[s].layout.mapping["PICTURE_" + pictureCnt] = imgObjID;
+									
+									var obj = JSON.parse(JSON.stringify(docSlideStructure[s].contents.list[r]));
+									docSlideStructure[s].contents.list.push(obj);
+									docSlideStructure[s].contents.list.splice(r, 1);
+
+
+									if (objDeletionFlag) {
+										delete docSlideStructure[s].layout.mapping[prevLabel];
+
+										for (var i = 0; i < docSlideStructure[s].layout.boxes.length; i++) {
+											var b = docSlideStructure[s].layout.boxes[i];
+
+											if (b.type == prevLabel) {
+												docSlideStructure[s].layout.boxes.splice(i, 1);
+											}
+										}
+									}
+
+									docSlideStructure[s].layout.boxes.push({
+										height: 0,
+										id: imgObjID,
+										left: 0,
+										top: 0,
+										type: "PICTURE_" + pictureCnt,
+										width: 0
+									})
 
 									updates['/users/' + userName + '/docSlideStructure/' + s + '/resources/' + r + '/currentContent/'] = docSlideStructure[s].contents.list[r].currentContent;
 
@@ -1409,11 +1440,13 @@ async function substituteTextToFigure(s, r, d) {
 												},
 											},
 										},
-										url: finalImage.url
+										url: finalImage
 									}
 								});
 
 								console.log(lastParagraphFlag);
+
+								console.log(requests);
 
 								if(objDeletionFlag) {
 									return gapi.client.slides.presentations.batchUpdate({
@@ -1978,6 +2011,85 @@ function testGAPICall() {
 }
 
 
+async function replaceParagraph(slidePageID, objectID, paragraphIndex, _text) {
+    return await gapi.client.slides.presentations.get({
+		presentationId: PRESENTATION_ID
+    }).then(function(response) {
+		paragraphIndex = parseInt(paragraphIndex);
+
+		var presentation = response.result;
+		var length = presentation.slides.length;
+	
+		// slideDB = {};
+	
+		for (i = 0; i < length; i++) {
+			var slide = presentation.slides[i];
+	
+			var slideID = slide.objectId;
+
+			if(slideID == slidePageID) {
+				for(var j=0;j<slide.pageElements.length;j++) {
+					var slideItem = slide.pageElements[j];
+
+					if(slideItem.objectId == objectID) {
+						var textInfo = slideItem.shape.text.textElements;
+						var __paragraphIndex = -1;
+						var startIndex = -1, endIndex = -1;
+
+						for(var k=0;k<textInfo.length;k++) {
+							if(endIndex != textInfo[k].endIndex) {
+								startIndex = ("startIndex" in textInfo[k]) ? textInfo[k].startIndex : 0;
+								endIndex = textInfo[k].endIndex;
+								__paragraphIndex++;
+							}
+
+							if(__paragraphIndex == paragraphIndex) {
+								var mappingKey = null;
+								var lastParagraphFlag = false;
+
+								if(slidePageID in slideDB &&
+									objectID in slideDB[slidePageID] &&
+									slideDB[slidePageID][objectID] && 
+									paragraphIndex in slideDB[slidePageID][objectID]) {
+
+									mappingKey = slideDB[slidePageID][objectID][paragraphIndex].mappingID;
+
+									var numParagraphs = Object.keys(slideDB[slidePageID][objectID]).length;
+									var updates = {};
+
+									if(numParagraphs-1 == paragraphIndex) lastParagraphFlag = true;
+
+									console.log(paragraphIndex);
+									console.log(slideDB[slidePageID][objectID]);
+									console.log(updates);
+								}
+
+								var r = [{
+									insertText: {
+										"objectId": objectID,
+										"text": _text,
+										"insertionIndex": (lastParagraphFlag ? (startIndex == 0 ? 0 : startIndex - 1) : startIndex)
+										}
+								}]
+
+								return removeRangeInObj(slidePageID, objectID, {
+									startIndex: (lastParagraphFlag? (startIndex == 0 ? 0 : startIndex-1) : startIndex),
+									endIndex: endIndex + (lastParagraphFlag? -1 : 0)
+								}, r)
+							}
+						}
+					}
+				}
+			}
+		}
+    }, function(response) {
+		console.log(response);
+		//appendPre('Error: ' + response.result.error.message);
+   	}).catch(function(er) {
+		console.log("WHAT?");
+		console.log(er);
+    });
+}
 async function removeParagraph(slidePageID, objectID, paragraphIndex, removeHighlightFlag, __requests) {
     return await gapi.client.slides.presentations.get({
 		presentationId: PRESENTATION_ID
@@ -2116,6 +2228,8 @@ async function removeRangeInObjWithRequest(slidePageID, objectID, range, request
    } ];
 
    console.log(requests);
+
+   if(request != null) requests = requests.concat(request);
 
    return await gapi.client.slides.presentations.batchUpdate({
      presentationId: PRESENTATION_ID,
@@ -2592,7 +2706,7 @@ function showLoadingSlidePlane(){
 	$("#loadingSlidePlane").show();
 	$("#slidePlaneCanvas").css("background-color", "rgb(0, 0, 0, 0.3)");
 */
-	setTimeout(function() { hideLoadingSlidePlane(); }, 5000);
+	// setTimeout(function() { hideLoadingSlidePlane(); }, 5000);
 }
 
 function hideLoadingSlidePlane() {
@@ -4640,14 +4754,6 @@ function showIndividualSlides(presentationID) {
 async function showTextShorteningView(slideIndex, resourceIndex) {
 	var originalText = docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents;
 
-	$("#textShorteningViewOriginalText").html(originalText)
-
-	$("#textShorteningViewAlternativeTextDiv").attr("loading", true);
-	$("#textShorteningViewAlternativeTextDiv").attr("slideindex", slideIndex);
-	$("#textShorteningViewAlternativeTextDiv").attr("resourceindex", resourceIndex);
-
-	$("#textShorteningViewAlternativeTextDiv").html("Loading... ");
-	
 	var shortening = await getShortening(originalText);
 
 	console.log(shortening);
@@ -5085,12 +5191,6 @@ function getSearchResult(slideIndex, resourceIndex) {
 }
 
 async function showImageSelectionView(slideIndex, resourceIndex) {
-	$("#imageView").attr("slideindex", slideIndex);
-	$("#imageView").attr("resourceindex", resourceIndex);
-
-	$("#imageViewOriginalSentence").html('');
-	$("#imageViewQueryKeywordDiv").html("");
-	
 	var queryString = docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents;
 
 	const requestOptions = {
@@ -7000,18 +7100,21 @@ async function copyCurrentSlide(slideId) {
 	});
 	*/
 
-	console.log({
-			"presentationId": PRESENTATION_ID,
+    gapi.client.slides.presentations.get({
+		presentationId: PRESENTATION_ID
+    }).then(async function(response) {
+		console.log(response);
+
+		var r = {
+			"userPresentation": response.result,
 			"pageId": slideId
+		}
+
+		var res = await postRequest(
+			"http://localhost:8010/proxy/get_data_single_slide", r);
+
+		console.log(res);
 	});
-
-	var r = await postRequest(
-		"http://localhost:8010/proxy/get_data_single_slide", {
-			"presentationId": PRESENTATION_ID,
-			"pageId": slideId
-		});
-
-	console.log(r);
 }
 
 $(document).ready(function() {
@@ -7112,6 +7215,33 @@ $(document).ready(function() {
 		var resourceIndex = $("#imageView").attr("resourceindex");
 		var imgSrc = $(e.target).attr("src");
 
+		console.log(slideIndex, resourceIndex, imgSrc);
+
+		if(docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.type == "image") {
+			var label = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.label;
+			var objID = docSlideStructure[slideIndex].layout.mapping[label];
+
+			docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents = imgSrc;
+
+			requests = [{
+				replaceImage: {
+					"imageObjectId": objID,
+					"imageReplaceMethod": "CENTER_INSIDE",
+					"url": imgSrc
+				}
+			}]
+
+			gapi.client.slides.presentations.batchUpdate({
+				presentationId: PRESENTATION_ID,
+				requests: requests
+			}).then((createSlideResponse) => {
+				console.log(createSlideResponse);
+			});
+		}
+		else {
+			substituteTextToFigure(slideIndex, resourceIndex, imgSrc);
+		}
+		/*
 		var objID = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.objID;
 
 		requests = [{
@@ -7130,6 +7260,7 @@ $(document).ready(function() {
 		});
 
 		console.log(slideIndex, resourceIndex, imgSrc);
+		*/
 	})
 
 	$(document).on("click", ".imageViewQueryKeywordItem", function(e) {
@@ -7839,6 +7970,24 @@ $(document).ready(function() {
 
 		var slideIndex = parseInt($(curRowObj).attr("slideIndex"));
 		var resourceIndex = parseInt($(curRowObj).attr("resourceIndex"));
+		var originalText = docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents;
+
+		$("#textShorteningViewOriginalText").html(originalText)
+
+		$("#textShorteningViewAlternativeTextDiv").attr("loading", true);
+		$("#textShorteningViewAlternativeTextDiv").attr("slideindex", slideIndex);
+		$("#textShorteningViewAlternativeTextDiv").attr("resourceindex", resourceIndex);
+
+		$("#textShorteningViewAlternativeTextDiv").html("Loading... ");
+
+		$("#imageView").attr("slideindex", slideIndex);
+		$("#imageView").attr("resourceindex", resourceIndex);
+
+		$("#imageViewOriginalSentence").html('');
+		$("#imageViewQueryKeywordDiv").html("Loading...");
+		$("#imageViewResultDiv").html("on Loading...");
+
+		$(".selectedForAlternative").removeClass("selectedForAlternative");
 
 		$(curRowObj).addClass("selectedForAlternative");
 
@@ -8566,6 +8715,8 @@ $(document).ready(function() {
 					else hideReviewSlide();
 				}
 
+				console.log("DONE");
+				hideLoadingSlidePlane();
 				return;
 /*
 			var resourceDictionary = {};
@@ -8647,9 +8798,12 @@ $(document).ready(function() {
 
 			curSlidePage = p.pageID;
 			}
+
 	})
 
 		$(document).on("extension_pageUpdated", function(e) {
+			console.log(JSON.parse(JSON.stringify(docSlideStructure)));
+
 			if (adaptivePlaneStatus != 2) {
 				var tempCnt = 1;
 				var p = e.detail;
@@ -8751,7 +8905,7 @@ $(document).ready(function() {
 							docSlideStructure[idx].layout.mapping["BODY_0"] = objID;
 						}
 						else {
-							var label = docSlideStructure[idx].contents.list[docSlideStructure[idx].contents.list.length - 1].currentContent.label.split('_')[0];
+							var label = "BODY";
 							var cnt = 0;
 
 							for (var k in docSlideStructure[idx].layout.mapping) {
@@ -8809,7 +8963,14 @@ $(document).ready(function() {
 							}
 							else {
 								for(var k in contents[i].paragraph) {
-									docSlideStructure[idx].contents.list[cur].currentContent.contents = contents[i].paragraph[k].text;
+									if(!docSlideStructure[idx].contents.list[cur].currentContent.label.startsWith("PICTURE"))  {
+										docSlideStructure[idx].contents.list[cur].currentContent.contents = contents[i].paragraph[k].text;
+
+										if(docSlideStructure[idx].contents.list[cur].mappingKey == "null") {
+											docSlideStructure[idx].contents.list[cur].originalContent.contents = contents[i].paragraph[k].text;
+										}
+									}
+
 									cur++;
 								}
 							}
@@ -8978,7 +9139,7 @@ $(document).ready(function() {
 				if(docSlideStructure[idx].type == "hidden") showReviewSlide();
 				else hideReviewSlide();
 
-				hideLoadingSlidePlane();
+				// hideLoadingSlidePlane();
 			return;
 /*
 			var resourceDictionary = {};
@@ -9310,6 +9471,44 @@ $(document).ready(function() {
 
               //  closeNav();
                 });
+
+	$(document).on("click", ".textShorteningViewAlternativeTextItem", function(e) {
+		showLoadingSlidePlane();
+
+		console.log($(e.target));
+
+		var text = $(e.target).html();
+		var cur = $(e.target);
+
+		for (var i = 0; i < 100; i++) {
+			console.log($(cur));
+			console.log($(cur).hasClass("textShorteningViewAlternativeTextDiv"));
+
+			if ($(cur).attr("id") == "textShorteningViewAlternativeTextDiv")
+				break;
+
+			cur = $(cur).parent();
+		}
+
+		console.log($(cur));
+
+		var slideIndex = parseInt($(cur).attr("slideindex"));
+		var resourceIndex = parseInt($(cur).attr("resourceindex"));
+		
+		console.log(slideIndex, resourceIndex);
+
+		docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents = text;
+
+		if(docSlideStructure[slideIndex].contents.list[resourceIndex].mappingKey == "null")
+			docSlideStructure[slideIndex].contents.list[resourceIndex].originalContent.contents = text;
+
+		var slideID = docSlideStructure[slideIndex].slide.id;
+		var label = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.label;
+		var objectID = docSlideStructure[slideIndex].layout.mapping[label];
+		var pIndex =  getParagraphIndexOfDocSlideStructure(slideIndex, resourceIndex);
+
+		replaceParagraph(slideID, objectID, pIndex, text);
+	});
 
 	$(document).on("pdfjs_pageRendered", function (e) {
 		var p = e.detail;
@@ -10699,7 +10898,6 @@ function getAdaptationViewBodyContents(index) {
 	var resultString = '';
 
 	var boxTypes = getLayoutTypes(index);
-
 	var curDivID = makeid(10);
 
 	if(("contents" in docSlideStructure[index]) && ("list" in docSlideStructure[index].contents) && docSlideStructure[index].contents.list.length > 0) {
@@ -10896,14 +11094,31 @@ function updateSlideThumbnail() {
 function putContentsToDocSlide(index, c) {
 	showLoadingSlidePlane();
 
-	var label = docSlideStructure[index].contents.list[docSlideStructure[index].contents.list.length-1].currentContent.label;
+	var label = '';
+	var idx = -1;
+
+	console.log(JSON.parse(JSON.stringify(docSlideStructure)));
+
+	for(var i=docSlideStructure[index].contents.list.length-1;i>=0;i--) {
+		var l = docSlideStructure[index].contents.list[i].currentContent.label;
+
+		if(!l.startsWith("PICTURE")) {
+			label = l;
+			idx = i;
+			break;
+		}
+	}
+
+	if(label == '') {
+		console.log("*** SOMETHING WENT WRONG ***");
+	}
 
 	var slideID = docSlideStructure[index].slide.id;
 	var objID = docSlideStructure[index].layout.mapping[label];
 	var text = c.contents;
 	var mappingID = c.mapping;
 
-	docSlideStructure[index].contents.list.push({
+	docSlideStructure[index].contents.list.splice(idx+1, 0, {
 		"mappingKey": c.mapping,
 		originalContent: {
 			type: c.type,

@@ -125,9 +125,7 @@ function filmstripUpdated(mutationsList) {
 
 	if(locateFlag) {
 		locateSlideIfExist();
-		issueEvent("extension_hideLoading", null);
 	}
-
 
 	var filmstripStructure = getFilmstripStructure();
 	var addRequest = [];

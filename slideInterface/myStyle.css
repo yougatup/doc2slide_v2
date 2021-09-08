@@ -2095,3 +2095,8 @@ width: 100%;
   .selectedForAlternative {
 	  border: 3px dashed darkorange;
   }
+
+  .adaptationTableImage {
+	  max-width: 100%;
+	  height: 30px;
+  }
