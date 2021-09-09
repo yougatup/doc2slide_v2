@@ -1,6 +1,7 @@
 var MAX_ELEMENTS_PER_SLIDE = 4;
 var SLIDES_PER_MIN = 2;
 
+var API_URL= 'http://localhost:8010/proxy/'
 var rowSelected = false;
 var selectedSlideIndex = -1;
 var selectedResourceIndex = -1;
@@ -657,7 +658,7 @@ async function createSlide(presentationIDToAdapt, contents, layoutSlideID, style
 
 	console.log(JSON.stringify(r));
 	var res = await postRequest(
-		"http://localhost:8010/proxy/generate_slide_requests", r
+		API_URL + "generate_slide_requests", r
 	);
 
 	return res;
@@ -1218,7 +1219,7 @@ async function findImages(queries) {
 		),
 	};
 
-	var result = await fetch('http://localhost:8010/proxy/getImages', requestOptions)
+	var result = await fetch(API_URL+'getImages', requestOptions)
 		.then(response => response.json())
 		.then(data => {
 			return data;
@@ -4806,7 +4807,7 @@ function handleChangeImage(slideIndex, resourceIndex) {
 		),
 	};
 
-	fetch('http://localhost:8010/proxy/findQueriess', requestOptions)
+	fetch(API_URL+'findQueriess', requestOptions)
 		.then(response => response.json())
 		.then(data => function(s, r, d) {
 			console.log(s);
@@ -5174,7 +5175,7 @@ function getSearchResult(slideIndex, resourceIndex) {
 		),
 	};
 
-	fetch('http://localhost:8010/proxy/getImages', requestOptions)
+	fetch(API_URL+'getImages', requestOptions)
 		.then(response => response.json())
 		.then(data => {
 			console.log(data);
@@ -5199,7 +5200,7 @@ async function showImageSelectionView(slideIndex, resourceIndex) {
 		),
 	};
 
-	var res = await postRequest('http://localhost:8010/proxy/findQueriess', 
+	var res = await postRequest(API_URL+'findQueriess', 
 		{
 			text: queryString,
 		}
@@ -5226,7 +5227,7 @@ async function showImageSelectionView(slideIndex, resourceIndex) {
 	getSearchResult(slideIndex, resourceIndex);
 
 	/*
-	fetch('http://localhost:8010/proxy/findQueriess', requestOptions)
+	fetch(API_URL+'findQueriess', requestOptions)
 		.then(response => response.json())
 		.then(data => function(s, r, d) {
 			console.log(s);
@@ -6211,7 +6212,7 @@ async function getSingleSlideAdaptationRequest(input) {
 		body: JSON.stringify(input),
 	};
 
-	var res = await fetch('http://localhost:8010/proxy/generate_slide_requests', requestOptions)
+	var res = await fetch(API_URL+'generate_slide_requests', requestOptions)
 		.then(response => response.json())
 		.then(data => {
 			return data;
@@ -8723,7 +8724,7 @@ $(document).ready(function() {
 			body: JSON.stringify(req),
 		};
 
-		fetch('http://localhost:8010/proxy/generate_presentation_requests', requestOptions)
+		fetch(API_URL+'generate_presentation_requests', requestOptions)
 			.then(response => response.json())
 			.then(async data => {
 				console.log(data);
@@ -10358,7 +10359,7 @@ $(document).ready(function() {
 			sectionLevelCoverageValueUpdate(e.target, value+1);
 		});
 
-		$(document).on("mouseenter", ".thumbnailBoxTop, .thumbnailBoxMiddle, .thumbnailBoxBottom", function(e) {
+		$(document).on("mouseenter", ".thumbnailBoxTop, .thumbnailBoxBottom", function(e) {
 			if (rowSelected) {
 				var t = e.target;
 
@@ -10368,11 +10369,28 @@ $(document).ready(function() {
 			}
 		});
 
+		$(document).on("mouseenter", ".thumbnailBoxMiddle", function(e) {
+			if (rowSelected) {
+				var t = $(e.target).parent();
+
+				console.log(t);
+
+				var top = $(t).find(".thumbnailBoxTop")[0];
+				var middle = $(t).find(".thumbnailBoxMiddle")[0];
+				var bottom = $(t).find(".thumbnailBoxBottom")[0];
+
+				$(top).addClass("mouseMiddleIn");
+				$(middle).addClass("mousein");
+				$(bottom).addClass("mouseMiddleIn");
+			}
+		});
+
 		$(document).on("mouseleave", ".thumbnailBoxTop, .thumbnailBoxMiddle, .thumbnailBoxBottom", function(e) {
 			if(rowSelected) {
 				console.log("leave");
 
 				$(".mousein").removeClass("mousein");
+				$(".mouseMiddleIn").removeClass("mouseMiddleIn");
 			}
 		});
 
@@ -11660,7 +11678,7 @@ async function getShortening(text) {
 		),
 	};
 
-	var res = await fetch('http://localhost:8010/proxy/get_shortenings_abstract', requestOptions)
+	var res = await fetch(API_URL+'get_shortenings_abstract', requestOptions)
 		.then(response => response.json())
 		.then(data => {
 			return data;
