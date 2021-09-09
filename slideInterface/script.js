@@ -1227,11 +1227,7 @@ async function findImages(queries) {
 }
 
 function getParagraphIndexOfDocSlideStructure(s, r) {
-	var slideID = docSlideStructure[s].slide.id;
-	var mappingKey = docSlideStructure[s].contents.list[r].mappingKey;
 	var label = docSlideStructure[s].contents.list[r].currentContent.label;
-
-	var slideObjID = docSlideStructure[s].layout.mapping[label];
 	var pIndex = 0;
 
 	for(var i=0;i<r;i++) {
@@ -8047,6 +8043,8 @@ $(document).ready(function() {
 			}
 		}
 		else if($(e.target).hasClass("thumbnailDest")) {
+			showLoadingSlidePlane();
+
 			var targetSlideID = $($(e.target).parent()).attr("slideid");
 			var slideindex = $($(e.target).parent()).attr("slideindex");
 
@@ -8057,8 +8055,6 @@ $(document).ready(function() {
 			else option = "bottom";
 
 			if(option == "middle") {
-				showLoadingSlidePlane();
-
 				moveItemToDifferentSlide(selectedSlideIndex, selectedResourceIndex, targetSlideID);
 
 				var source = JSON.parse(JSON.stringify(docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex]));
@@ -8077,15 +8073,208 @@ $(document).ready(function() {
 			else {
 				var insertIndex = -1;
 
-				if(option == "top")  insertIndex = slideindex;
-				else insertIndex = slideindex + 1;
+				if(option == "top")  insertIndex = parseInt(slideindex);
+				else insertIndex = parseInt(slideindex) + 1;
 
 				console.log(insertIndex);
+				
+				// add a new slide to (index+1)
 
+				var source = JSON.parse(JSON.stringify(docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex]));
+				
+				var sourceLabel = source.currentContent.label;
+				var sourceSlideID = docSlideStructure[selectedSlideIndex].slide.id;
+				var sourceObjID = docSlideStructure[selectedSlideIndex].layout.mapping[sourceLabel];
 
+				console.log(source);
+
+				var titleID = makeid(10);
+				var bodyID = makeid(10);
+				var slideID = makeid(10);
+
+				// var shorteningResult = findShortening(mapping.key);
+				// console.log(shorteningResult);
+
+				var mappingKey = source.mappingKey;
+				var myPageNumber, startWordIndex, endWordIndex
+				var sectionKey = null;
+
+				if (mappingKey != "null") {
+					for (var pageNumber in highlightDB.mapping) {
+						if (mappingKey in highlightDB.mapping[pageNumber]) {
+							myPageNumber = pageNumber;
+							startWordIndex = highlightDB.mapping[pageNumber][mappingKey].startWordIndex;
+							endWordIndex = highlightDB.mapping[pageNumber][mappingKey].endWordIndex;
+
+							break;
+						}
+					}
+
+					console.log(mappingKey);
+					console.log(startWordIndex);
+					console.log(endWordIndex);
+
+					sectionKey = getSectionKey(myPageNumber, startWordIndex, endWordIndex);
+				}
+
+				console.log(sectionKey);
+				console.log(JSON.parse(JSON.stringify(docSlideStructure)));
+
+				if (source.currentContent.type == "text") { // text
+					var requests = [];
+
+					requests.push({
+						createSlide: {
+							objectId: slideID,
+							insertionIndex: insertIndex,
+							slideLayoutReference: {
+								predefinedLayout: 'TITLE_AND_BODY'
+							},
+							placeholderIdMappings: [{
+								objectId: titleID,
+								layoutPlaceholder: {
+									type: "TITLE",
+									index: 0
+								}
+							}, {
+								objectId: bodyID,
+								layoutPlaceholder: {
+									type: "BODY",
+									index: 0
+								}
+							}
+							]
+						}
+					});
+
+					requests.push({
+						insertText: {
+							objectId: titleID,
+							text: sectionKey == null ? '' : structureHighlightDB[sectionKey].text,
+							insertionIndex: 0
+						}
+					});
+					requests.push({
+						insertText: {
+							objectId: bodyID,
+							text: source.currentContent.contents,
+							insertionIndex: 0
+						}
+					});
+
+					if (!(slideID in slideDB)) slideDB[slideID] = {};
+
+					slideDB[slideID][titleID] = [];
+					slideDB[slideID][titleID].push({ mappingID: "null" });
+
+					slideDB[slideID][bodyID] = [];
+					slideDB[slideID][bodyID].push({ mappingID: source.mappingKey });
+
+					var updates = {};
+
+					// updates['/users/' + userName + '/structureHighlightInfo/' + sectionKey] = structureHighlightDB[sectionKey];
+
+					firebase.database().ref().update(updates);
+
+					console.log(requests);
+					console.log(selectedSlideIndex, selectedResourceIndex);
+
+					var sourceParagraphIndex = getParagraphIndexOfDocSlideStructure(selectedSlideIndex, selectedResourceIndex);
+
+					console.log(sourceParagraphIndex);
+					console.log(JSON.parse(JSON.stringify(slideDB[sourceSlideID][sourceObjID])));
+					console.log(JSON.parse(JSON.stringify(docSlideStructure[selectedSlideIndex].contents)));
+
+					docSlideStructure[selectedSlideIndex].contents.list.splice(selectedResourceIndex, 1);
+
+					docSlideStructure.splice(insertIndex, 0, {
+						type: "visible",
+						contents: {
+							sectionKey: sectionKey,
+							list: [{
+								mappingKey: "null",
+								originalContent: {
+									type: "text",
+									contents: sectionKey != null ? structureHighlightDB[sectionKey].text : '',
+								},
+								currentContent: {
+									type: "text",
+									label: "HEADER_0",
+									contents: sectionKey != null ? structureHighlightDB[sectionKey].text : '',
+								},
+							},
+							{
+								mappingKey: source.mappingKey,
+								originalContent: source.originalContent,
+								currentContent: {
+									type: "text",
+									label: "BODY_0",
+									contents: source.currentContent.contents,
+								},
+							}]
+						},
+						layout: {
+							mapping: {
+								"HEADER_0": titleID,
+								"BODY_0": bodyID
+							},
+							...getLayout(DEFAULT_SLIDE_ID, "ge93a171212_0_5")
+						},
+						style: {
+							...getStyle(DEFAULT_SLIDE_ID, "ge93a171212_0_5")
+						},
+						slide: {
+							id: slideID,
+							objs: [{
+								id: titleID
+							},
+							{
+								id: bodyID
+							}
+							]
+						},
+						layoutAlternative: {
+							loaded: false,
+							loadStarted: false,
+							result: []
+						},
+						styleAlternative: {
+							loaded: false,
+							loadStarted: false,
+							result: []
+						},
+						previousVersion: null
+						/*
+						template: {
+							id: "DEFAULT",
+							structure: {
+								title: titleID,
+								body: [bodyID]
+							}
+						},
+						slide: {
+							id: slideID
+						},
+						*/
+					});
+				}
+				else { // image
+
+				}
+				updateDocSlideToExtension();
+				setDocSlideStructure(docSlideStructure);
+
+				// showReviewSlide(index+1);
+
+				var idx = getIndexOfSlide(sourceSlideID);
+				showDocSlideView(idx);
+
+				// locateSlide(docSlideStructure[index+1].slide.id, true)
+
+				console.log(JSON.parse(JSON.stringify(slideDB[sourceSlideID][sourceObjID])));
+				removeParagraph(sourceSlideID, sourceObjID, sourceParagraphIndex, false, requests)
 			}
 		}
-
 
 		rowSelected = false;
 		selectedSlideIndex = -1;
