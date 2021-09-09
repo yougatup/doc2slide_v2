@@ -67,6 +67,7 @@ transition: all .3s ease-in-out;
 	box-sizing: border-box;
 	float: left;
 	border: 1px solid black;
+	overflow: auto;
 }
 
 .adaptationViewSlide {
@@ -1780,6 +1781,15 @@ width: 100%;
 
 .styleRow.selected {
 	border: 2px solid red;
+}
+
+#statusLight {
+	position: absolute;
+	top: -20px;
+	width: 10px;
+	height: 10px;
+	background-color: yellow;
+	border: 1px solid black;
 }
 
 #reviewSlide {

@@ -4,6 +4,7 @@ var SLIDES_PER_MIN = 2;
 var rowSelected = false;
 var selectedSlideIndex = -1;
 var selectedResourceIndex = -1;
+var statusFlag = true;
 
 var current_left_plane = 'document';
 
@@ -5641,6 +5642,8 @@ function genAlternativeThumbnail(presentationID, slideList, docSlideIndex, subje
 		num_slides_in_total = slideList.length;
 		adaptedSlideURLs = {};
 
+		docSlideStructure[docSlideIndex][subject].result = [];
+
 		console.log(num_slides_in_total);
 		console.log(slideList);
 
@@ -6422,14 +6425,54 @@ function constructRequestForStyleAlternatives(index) {
 	return r;
 }
 
-function constructRequestForLayoutStyleAlternatives(index, subject, defaultFlag) {
+async function constructRequestForLayoutStyleAlternatives(index, subject, defaultFlag) {
 	var r = {};
+
+	var response = await gapi.client.slides.presentations.get({
+		presentationId: PRESENTATION_ID
+	})
+
+	console.log(response);
+	var labels = {};
+
+	for (var k in docSlideStructure[index].layout.mapping) {
+		labels[docSlideStructure[index].layout.mapping[k]] = k;
+	}
+
+	var r = {
+		userPresentation: response.result,
+		pageId: curSlidePage,
+		labels: labels
+	}
+
+	console.log(r);
+
+	var res = await postRequest(
+		"http://localhost:8010/proxy/get_data_single_slide", r);
+
+	console.log(JSON.parse(JSON.stringify(res)));
+
+	for (var i = 0; i < res.layout.boxes.length; i++) {
+		var boxObjID = res.layout.boxes[i].originalId;
+
+		for (var k in docSlideStructure[index].layout.mapping) {
+			if (docSlideStructure[index].layout.mapping[k] == boxObjID) {
+				res.layout.boxes[i].type = k;
+			}
+		}
+	}
+
+	var layout = res.layout;
+	var styles = res.styles;
+
+	console.log(JSON.parse(JSON.stringify(docSlideStructure[index])));
+	console.log(res);
 
 	r.presentationId = (defaultFlag ? DEFAULT_SLIDE_ID : referenceSlideID);
 	r.sort = true;
 	r.maxCnt = 10;
-	r.layoutPageId = (subject == "layoutAlternative" ? null : docSlideStructure[index].layout.slideID);
-	r.stylesPageId = (subject == "styleAlternative" ? null : docSlideStructure[index].style.slideID);
+// 	r.layoutPageId = (subject == "layoutAlternative" ? null : docSlideStructure[index].layout.slideID);
+//  r.stylesPageId = (subject == "styleAlternative" ? null : docSlideStructure[index].style.slideID);
 
 	r.settings = {
 		putOriginalContent: false,
@@ -6467,7 +6510,6 @@ function constructRequestForLayoutStyleAlternatives(index, subject, defaultFlag)
 	r.resources.body = []
 
 	for(var i=1;i<docSlideStructure[index].contents.list.length;i++) {
-		console.log(docSlideStructure[index].contents.list[i].currentContent.contents)
 		r.resources.body.push(
 			{
                 "paragraph": {
@@ -6504,6 +6546,11 @@ function constructRequestForLayoutStyleAlternatives(index, subject, defaultFlag)
 		)
 	}
 
+	r.layout = (subject == "layoutAlternative" ? null : layout);
+	r.styles = (subject == "styleAlternative" ? null : styles);
+
+	return r;
+/*
 	gapi.client.slides.presentations.get({
 		presentationId: PRESENTATION_ID
 	}).then(async function (response) {
@@ -6648,6 +6695,7 @@ function constructRequestForLayoutStyleAlternatives(index, subject, defaultFlag)
 
 		console.log(res1);
 	});
+	*/
 
 	return r;
 }
@@ -6670,62 +6718,25 @@ async function getAlternativeSlides(index, subject) {
 
 			console.log(DEFAULT_SLIDE_ID, referenceSlideID);
 
-			// if (DEFAULT_SLIDE_ID == referenceSlideID) {
-				var r = constructRequestForLayoutStyleAlternatives(index, subject, false);
-				console.log(r);
-				console.log(JSON.stringify(r));
+			var r = await constructRequestForLayoutStyleAlternatives(index, subject, false);
 
-				var res1 = await postRequest(
-					"http://localhost:8010/proxy/generate_alternatives_requests", r);
+			console.log(r);
+			console.log(JSON.stringify(r));
 
-				for (var i = 0; i < res1.requestsList.length; i++) slideList.push({
-					requestInstance: res1.requestsList[i],
-					matchingInstance: res1.matchings[i],
-					mappingInstance: res1.mappings[i]
-				});
+			var res1 = await postRequest(
+				"http://localhost:8010/proxy/generate_alternatives_requests_explicit", r);
 
-				for (var i = 0; i < res1.requestsList.length; i++) {
-					req = req.concat(res1.requestsList[i].requests);
-				}
-				/*
+			console.log(JSON.parse(JSON.stringify(res1)));
+
+			for (var i = 0; i < res1.requestsList.length; i++) slideList.push({
+				requestInstance: res1.requestsList[i],
+				matchingInstance: res1.matchings[i],
+				mappingInstance: res1.mappings[i]
+			});
+
+			for (var i = 0; i < res1.requestsList.length; i++) {
+				req = req.concat(res1.requestsList[i].requests);
 			}
-			else {
-				var r1 = constructRequestForLayoutStyleAlternatives(index, subject, true);
-				console.log(r1);
-
-				var res1 = await postRequest(
-					"http://localhost:8010/proxy/generate_alternatives_requests", r1);
-
-				console.log(res1);
-
-				var r2 = constructRequestForLayoutStyleAlternatives(index, subject, false);
-				console.log(r2);
-
-				var res2 = await postRequest(
-					"http://localhost:8010/proxy/generate_alternatives_requests", r2);
-
-				console.log(res2);
-
-				for (var i = 0; i < res1.requestsList.length; i++) slideList.push({
-					requestInstance: res1.requestsList[i],
-					matchingInstance: res1.matchings[i],
-					mappingInstance: res1.mappings[i]
-				});
-
-				for (var i = 0; i < res2.requestsList.length; i++) slideList.push({
-					requestInstance: res2.requestsList[i],
-					matchingInstance: res2.matchings[i],
-					mappingInstance: res2.mappings[i]
-				});
-
-				for (var i = 0; i < res1.requestsList.length; i++) {
-					req = req.concat(res1.requestsList[i].requests);
-				}
-				for (var i = 0; i < res2.requestsList.length; i++) {
-					req = req.concat(res2.requestsList[i].requests);
-				}
-			}
-			*/
 
 			if (req != null && req.length > 0) {
 				gapi.client.slides.presentations.batchUpdate({
@@ -7116,6 +7127,38 @@ async function copyCurrentSlide(slideId) {
 }
 
 $(document).ready(function() {
+	$(document).on("click", "#alternativeRefreshBtn", function(e) {
+		console.log($(e.target));
+
+		if ($(".slideRepresentationSwitch").find("input")[0].checked) {
+			if ($(".dimensionSelectionSwitch").find("input")[0].checked) current_left_plane = "singleslide_style";
+			else current_left_plane = "singleslide_layout";
+		}
+		else current_left_plane = "slidedeck";
+
+		console.log(current_left_plane);
+
+
+		if (current_left_plane == 'singleslide_layout') {
+			docSlideStructure[curDocSlideStructureIndex].layoutAlternative.loaded = false;
+			docSlideStructure[curDocSlideStructureIndex].layoutAlternative.loadStarted = false;
+
+			$("#slideListDivBodyLayout").show();
+			$("#slideListDivBodyStyle").hide();
+
+			getAlternativeSlides(curDocSlideStructureIndex, "layoutAlternative");
+		}
+		else if (current_left_plane == 'singleslide_style') {
+			docSlideStructure[curDocSlideStructureIndex].styleAlternative.loaded = false;
+			docSlideStructure[curDocSlideStructureIndex].styleAlternative.loadStarted = false;
+
+			$("#slideListDivBodyLayout").hide();
+			$("#slideListDivBodyStyle").show();
+
+			getAlternativeSlides(curDocSlideStructureIndex, "styleAlternative");
+		}
+	})
+
 	$(document).on("extension_getDocSlideStructure", function(e) {
 		issueEvent("root_getDocSlideStructure", docSlideStructure);
 	});
@@ -7162,17 +7205,27 @@ $(document).ready(function() {
 		})
 
 		console.log(response);
+		var labels = {};
+
+		for(var k in docSlideStructure[docslideindex].layout.mapping) {
+			labels[docSlideStructure[docslideindex].layout.mapping[k]] = k;
+		}
 
 		var r = {
 			userPresentation: response.result,
-			pageId: curSlidePage
+			pageId: curSlidePage,
+			labels: labels
 		}
+
+		console.log(r);
 
 		var res = await postRequest(
 			"http://localhost:8010/proxy/get_data_single_slide", r);
 
+		console.log(JSON.parse(JSON.stringify(res)));
+
 		for(var i=0;i<res.layout.boxes.length;i++) {
-			var boxObjID = res.layout.boxes[i].objectID;
+			var boxObjID = res.layout.boxes[i].originalId;
 
 			for(var k in docSlideStructure[docslideindex].layout.mapping) {
 				if(docSlideStructure[docslideindex].layout.mapping[k] == boxObjID) {
@@ -7222,13 +7275,15 @@ $(document).ready(function() {
 
 		console.log(docslideindex, subject, index);
 
-		docSlideStructure[docslideindex].previousVersion = {};
+		if (docSlideStructure[docslideindex].type == "visible") {
+			docSlideStructure[docslideindex].previousVersion = {};
 
-		docSlideStructure[docslideindex].previousVersion.requests = res2.requests;
-		docSlideStructure[docslideindex].previousVersion.matching = res2.matching;
-		docSlideStructure[docslideindex].previousVersion.contents = JSON.parse(JSON.stringify(docSlideStructure[docslideindex].contents));
-		docSlideStructure[docslideindex].previousVersion.layout = JSON.parse(JSON.stringify(docSlideStructure[docslideindex].layout));
-		docSlideStructure[docslideindex].previousVersion.style = JSON.parse(JSON.stringify(docSlideStructure[docslideindex].style));
+			docSlideStructure[docslideindex].previousVersion.requests = res2.requests;
+			docSlideStructure[docslideindex].previousVersion.matching = res2.matching;
+			docSlideStructure[docslideindex].previousVersion.contents = JSON.parse(JSON.stringify(docSlideStructure[docslideindex].contents));
+			docSlideStructure[docslideindex].previousVersion.layout = JSON.parse(JSON.stringify(docSlideStructure[docslideindex].layout));
+			docSlideStructure[docslideindex].previousVersion.style = JSON.parse(JSON.stringify(docSlideStructure[docslideindex].style));
+		}
 
 		var obj = docSlideStructure[docslideindex][subject].result[index];
 		var slideid = obj.requests[0].createSlide.objectId;
@@ -7663,7 +7718,10 @@ $(document).ready(function() {
 			for(var i=0;i<docSlideStructure[curDocSlideStructureIndex].contents.list.length;i++) {
 				var item = docSlideStructure[curDocSlideStructureIndex].contents.list[i];
 				var key = item.mappingKey;
-				var objID = docSlideStructure[curDocSlideStructureIndex].layout.mapping[item.label];
+
+				var objID = docSlideStructure[curDocSlideStructureIndex].layout.mapping[item.currentContent.label];
+
+				console.log(objID);
 
 				if(key != "null") {
 					slideDB[slideID][objID].push( {mappingID: key} );
@@ -7672,6 +7730,8 @@ $(document).ready(function() {
 					slideDB[slideID][objID].push( {mappingID: "null"} );
 				}
 			}
+
+			docSlideStructure[curDocSlideStructureIndex].type = "visible";
 
 			var objIDs = await getRequestsForRemovingAllObjectsOnPage(PRESENTATION_ID, slideID);
 			var req = [];
@@ -7693,7 +7753,6 @@ $(document).ready(function() {
 
 			setDocSlideStructure(docSlideStructure);
 			showDocSlideView(idx);
-			visualizeSlideObjects();
 
 			gapi.client.slides.presentations.batchUpdate({
 				presentationId: PRESENTATION_ID,
@@ -8975,6 +9034,7 @@ $(document).ready(function() {
 	})
 
 	$(document).on("extension_deletionCheck", function(e) {
+
 			if (adaptivePlaneStatus != 2) {
 				var tempCnt = 1;
 				var p = e.detail;
@@ -9050,6 +9110,10 @@ $(document).ready(function() {
 				}
 
 				console.log("DONE");
+
+				statusFlag = true;
+
+				setStatusLight("green");
 				hideLoadingSlidePlane();
 				return;
 /*
@@ -9135,7 +9199,14 @@ $(document).ready(function() {
 
 	})
 
+	function setStatusLight(color) {
+		$("#statusLight").css("background-color", color);
+	}
+
 		$(document).on("extension_pageUpdated", function(e) {
+			statusFlag = false;
+			setStatusLight("red");
+
 			console.log(JSON.parse(JSON.stringify(docSlideStructure)));
 
 			if (adaptivePlaneStatus != 2) {
@@ -9556,6 +9627,11 @@ $(document).ready(function() {
 			curSlidePage = p.pageID;
 			}
 		});
+
+		$(document).on("extension_filmstripInfo", function(e) {
+			console.log(e);
+
+		})
 
 		$(document).on("click", ".mappingIndicator.mapped", function(e) {
 			issueEvent("root_navigateToWord", {
@@ -11503,22 +11579,19 @@ async function automaticallyPutContents(textInfo, mapping) {
 	var resourceIndex = -1;
 
 	if(flag) { // add to the current slide
-		if (referenceSlideID == DEFAULT_SLIDE_ID) {
-			docSlideStructure[index].layoutAlternative.loaded = false;
-			docSlideStructure[index].layoutAlternative.loadStarted = false;
-			docSlideStructure[index].layoutAlternative.result = [];
+		docSlideStructure[index].layoutAlternative.loaded = false;
+		docSlideStructure[index].layoutAlternative.loadStarted = false;
+		docSlideStructure[index].layoutAlternative.result = [];
 
-			docSlideStructure[index].styleAlternative.loaded = false;
-			docSlideStructure[index].styleAlternative.loadStarted = false;
-			docSlideStructure[index].styleAlternative.result = [];
+		docSlideStructure[index].styleAlternative.loaded = false;
+		docSlideStructure[index].styleAlternative.loadStarted = false;
+		docSlideStructure[index].styleAlternative.result = [];
 
-			putContentsToDocSlide(index, {
-				type: "text",
-				contents: mapping.text,
-				mapping: mapping.key
-			})
-		}
-		else console.log("*** DO NOT KNOW YET ***");
+		putContentsToDocSlide(index, {
+			type: "text",
+			contents: mapping.text,
+			mapping: mapping.key
+		})
 	}
 	else {
 		showLoadingSlidePlane();
@@ -11637,7 +11710,7 @@ async function automaticallyPutContents(textInfo, mapping) {
 
 		console.log(JSON.parse(JSON.stringify(docSlideStructure)));
 
-		firebase.database().ref("/users/" + userName + '/docSlideStructure').set(docSlideStructure);
+		// firebase.database().ref("/users/" + userName + '/docSlideStructure').set(docSlideStructure);
 
 
 		var requests = [];

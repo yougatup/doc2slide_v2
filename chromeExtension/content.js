@@ -41,6 +41,7 @@ var eventList = {
 	"extension_getDocSlideStructure": ["extension", "root"],
 	"root_getDocSlideStructure": ["root", "extension"],
 	"extension_deletionCheck": ["extension", "root"],
+	"extension_filmstripInfo": ["extension", "root"],
 }
 
 var locateSlideID = '';
@@ -93,8 +94,6 @@ function focusObject(objID) {
 
 function filmstripUpdated(mutationsList) {
 	if(docSlideStructure.length <= 0 || !checkFilmstripIDs()) return;
-
-	console.log(mutationsList);
 
 	var flag = false;
 
@@ -169,6 +168,7 @@ function filmstripUpdated(mutationsList) {
 	var pageObj = pageUpdated(null, false);
 
 	issueEvent("extension_deletionCheck", pageObj);
+	issueEvent("extension_filmstripInfo", filmstripStructure);
 }
 
 function isDifferent(ds, film) {
