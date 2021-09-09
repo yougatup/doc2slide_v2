@@ -7127,6 +7127,69 @@ async function copyCurrentSlide(slideId) {
 }
 
 $(document).ready(function() {
+	$(document).on("click", ".resourceRemoveBtn", function(e) {
+		var t = $(e.target);
+
+		for(var i=0;i<100;i++) {
+			if($(t).hasClass("adaptationTableResourceBody")) break;
+
+			t = $(t).parent();
+		}
+
+		var slideIndex = $(t).attr("slideindex");
+		var resourceIndex = $(t).attr("resourceindex");
+
+		var slideID = docSlideStructure[slideIndex].slide.id;
+
+		var label = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.label;
+		var objID = docSlideStructure[slideIndex].layout.mapping[label];
+
+		var paragraphIndex = getParagraphIndexOfDocSlideStructure(slideIndex, resourceIndex);
+
+		if(docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.type == "text") {
+			console.log(paragraphIndex);
+			console.log(JSON.parse(JSON.stringify(docSlideStructure[slideIndex].contents.list)))
+
+			if(paragraphIndex == 0 && docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents == "") return;
+
+			showLoadingSlidePlane();
+
+			removeParagraph(slideID, objID, paragraphIndex, true, null);
+
+			docSlideStructure[slideIndex].contents.list.splice(resourceIndex, 1);
+		}
+		else {
+			showLoadingSlidePlane();
+
+			var label = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.label;
+			var objID = docSlideStructure[slideIndex].layout.mapping[label];
+
+			var req = [];
+
+			req.push({
+				"deleteObject": {
+					"objectId": objID
+				},
+			});
+
+			if (docSlideStructure[slideIndex].contents.list[resourceIndex].mappingKey != "null") {
+				issueEvent("root_mappingRemoved2", {
+					mappingID: docSlideStructure[slideIndex].contents.list[resourceIndex].mappingKey
+				});
+			}
+
+			docSlideStructure[slideIndex].contents.list.splice(resourceIndex, 1);
+			delete slideDB[slideID][objID];
+
+			gapi.client.slides.presentations.batchUpdate({
+				presentationId: PRESENTATION_ID,
+				requests: req
+			}).then((createSlideResponse) => {
+				console.log(createSlideResponse);
+			});
+		}
+	});
+
 	$(document).on("click", "#alternativeRefreshBtn", function(e) {
 		console.log($(e.target));
 
@@ -7527,6 +7590,8 @@ $(document).ready(function() {
 			t = $(t).parent();
 		}
 
+		$($(t).find(".resourceRemoveBtn")[0]).addClass("removeBtnActivated");
+
 		for(var i=0;i<100;i++) {
 			if($(div).hasClass("adaptationViewDiv")) break;
 			div = $(div).parent();
@@ -7546,6 +7611,8 @@ $(document).ready(function() {
 		console.log(objectIndicator);
 
 		$(objectIndicator).addClass("highlighted");
+
+		console.log($(t));
 
 		// console.log(rect);
 
@@ -7569,6 +7636,7 @@ $(document).ready(function() {
 		// console.log("MOUSE LEAVE");
 
 		$(".objectIndicator.highlighted").removeClass("highlighted");
+		$(".removeBtnActivated").removeClass("removeBtnActivated");
 	})
 
 	function getParents(curRowObj, className) {
@@ -7585,6 +7653,8 @@ $(document).ready(function() {
 
 	$(document).on("mousedown", ".adaptationTableResourceBody", function(e) {
 		console.log($(e.target));
+
+		if($(e.target).hasClass("resourceRemoveBtn")) return;
 
 		rowSelected = true;
 
@@ -8316,10 +8386,119 @@ $(document).ready(function() {
 						},
 						*/
 					});
+
+					removeParagraph(sourceSlideID, sourceObjID, sourceParagraphIndex, false, requests)
 				}
 				else { // image
+					var label = docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex].currentContent.label;
+					var objID = docSlideStructure[selectedSlideIndex].layout.mapping[label];
 
+					var source = JSON.parse(JSON.stringify(docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex]));
+
+					var imageURL = docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex].currentContent.contents;
+
+					var slideID = makeid(10);
+					var imageObjID = makeid(10);
+
+					var requests = [];
+
+					requests.push({
+						"deleteObject": {
+							"objectId": objID,
+						},
+					});
+
+					requests.push({
+						createSlide: {
+							objectId: slideID,
+							insertionIndex: insertIndex,
+							slideLayoutReference: {
+								predefinedLayout: "BLANK"
+							},
+						}
+					});
+
+					requests.push({
+						createImage: {
+							objectId: imageObjID,
+							elementProperties: {
+								pageObjectId: slideID
+							},
+							url: imageURL
+						}
+					});
+
+					source.label = "PICTURE_0";
+
+					docSlideStructure.splice(insertIndex, 0, {
+						type: "visible",
+						contents: {
+							sectionKey: sectionKey,
+							list: [
+								source
+							]
+						},
+						layout: {
+							mapping: {
+								"PICTURE_0": imageObjID
+							},
+							...getLayout(DEFAULT_SLIDE_ID, "ge93a171212_0_5")
+						},
+						style: {
+							...getStyle(DEFAULT_SLIDE_ID, "ge93a171212_0_5")
+						},
+						slide: {
+							id: slideID,
+						},
+						layoutAlternative: {
+							loaded: false,
+							loadStarted: false,
+							result: []
+						},
+						styleAlternative: {
+							loaded: false,
+							loadStarted: false,
+							result: []
+						},
+						previousVersion: null
+						/*
+						template: {
+							id: "DEFAULT",
+							structure: {
+								title: titleID,
+								body: [bodyID]
+							}
+						},
+						slide: {
+							id: slideID
+						},
+						*/
+					});
+
+					docSlideStructure[insertIndex].layout.boxes = [{
+						height: 0,
+						left: 0,
+						top: 0,
+						width: 0,
+						type: "PICTURE_0"
+					}];
+
+					slideDB[slideID] = {};
+					slideDB[slideID][imageObjID] = [];
+					slideDB[slideID][imageObjID].push({
+						mappingID: source.mappingKey
+					});
+
+					docSlideStructure[selectedSlideIndex].contents.list.splice(selectedResourceIndex, 1);
+
+					gapi.client.slides.presentations.batchUpdate({
+						presentationId: PRESENTATION_ID,
+						requests: requests
+					}).then((createSlideResponse) => {
+						console.log(createSlideResponse);
+					});
 				}
+
 				updateDocSlideToExtension();
 				setDocSlideStructure(docSlideStructure);
 
@@ -8331,7 +8510,6 @@ $(document).ready(function() {
 				// locateSlide(docSlideStructure[index+1].slide.id, true)
 
 				console.log(JSON.parse(JSON.stringify(slideDB[sourceSlideID][sourceObjID])));
-				removeParagraph(sourceSlideID, sourceObjID, sourceParagraphIndex, false, requests)
 			}
 		}
 
@@ -8352,6 +8530,8 @@ $(document).ready(function() {
 		console.log(e.target);
 
 		var curRowObj = $(e.target);
+
+		if($(e.target).hasClass("resourceRemoveBtn")) return;
 
 		for(var i=0;i<100;i++) {
 			if($(curRowObj).hasClass("adaptationTableResourceBody")) break;
@@ -11354,6 +11534,7 @@ function getAdaptationViewBodyContents(index) {
 					( item.currentContent.label.startsWith("PICTURE") ? "<img class='adaptationTableImage' src='" + item.currentContent.contents + "'> </img>" : item.currentContent.contents ) + 
 									"<div class='temptemp upper'> </div>" + 
 									"<div class='temptemp lower'> </div>" +
+									"<button class='resourceRemoveBtn'> X </button>" + 
 								"</div>";
 		}
 
