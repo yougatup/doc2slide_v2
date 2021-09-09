@@ -1,7 +1,7 @@
 var MAX_ELEMENTS_PER_SLIDE = 4;
 var SLIDES_PER_MIN = 2;
 
-var API_URL= 'http://localhost:8010/proxy/'
+var API_URL= 'http://server.hyungyu.com:5713/'
 var rowSelected = false;
 var selectedSlideIndex = -1;
 var selectedResourceIndex = -1;
