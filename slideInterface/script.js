@@ -5540,7 +5540,7 @@ function genSlideThumbnail(presentationID) {
 						}),
 					};
 
-					var blob = await fetch("http://localhost:8010/proxy/get_image_file", requestOptions)
+					var blob = await fetch(API_URL+"get_image_file", requestOptions)
 						.then(response => response.blob())
 						.then(data => {
 							return data;
@@ -5682,7 +5682,7 @@ function genAlternativeThumbnail(presentationID, slideList, docSlideIndex, subje
 						}),
 					};
 
-					var blob = await fetch("http://localhost:8010/proxy/get_image_file", requestOptions)
+					var blob = await fetch(API_URL+"get_image_file", requestOptions)
 						.then(response => response.blob())
 						.then(data => {
 							return data;
@@ -6449,7 +6449,7 @@ async function constructRequestForLayoutStyleAlternatives(index, subject, defaul
 	console.log(r);
 
 	var res = await postRequest(
-		"http://localhost:8010/proxy/get_data_single_slide", r);
+		API_URL + "get_data_single_slide", r);
 
 	console.log(JSON.parse(JSON.stringify(res)));
 
@@ -6692,7 +6692,7 @@ async function constructRequestForLayoutStyleAlternatives(index, subject, defaul
 		
 		console.log(JSON.stringify(retValue));
 		var res1 = await postRequest(
-			"http://localhost:8010/proxy/generate_duplicate_alternatives_requests", retValue);
+			API_URL+"generate_duplicate_alternatives_requests", retValue);
 
 		console.log(res1);
 	});
@@ -6725,7 +6725,7 @@ async function getAlternativeSlides(index, subject) {
 			console.log(JSON.stringify(r));
 
 			var res1 = await postRequest(
-				"http://localhost:8010/proxy/generate_alternatives_requests_explicit", r);
+				API_URL + "generate_alternatives_requests_explicit", r);
 
 			console.log(JSON.parse(JSON.stringify(res1)));
 
@@ -6768,7 +6768,7 @@ async function getAlternativeSlides(index, subject) {
 		console.log(r);
 
 		var res = await postRequest(
-			"http://localhost:8010/proxy/generate_alternatives_requests", r);
+			API_URL+"generate_alternatives_requests", r);
 
 		console.log(res);
 
@@ -7121,7 +7121,7 @@ async function copyCurrentSlide(slideId) {
 		}
 
 		var res = await postRequest(
-			"http://localhost:8010/proxy/get_data_single_slide", r);
+			API_URL + "get_data_single_slide", r);
 
 		console.log(res);
 	});
@@ -7284,7 +7284,7 @@ $(document).ready(function() {
 		console.log(r);
 
 		var res = await postRequest(
-			"http://localhost:8010/proxy/get_data_single_slide", r);
+			API_URL + "get_data_single_slide", r);
 
 		console.log(JSON.parse(JSON.stringify(res)));
 
@@ -7320,7 +7320,7 @@ $(document).ready(function() {
 		console.log(JSON.stringify(r2));
 
 		var res2 = await postRequest(
-			"http://localhost:8010/proxy/generate_slide_requests_explicit", r2
+			API_URL + "generate_slide_requests_explicit", r2
 		)
 
 		console.log(res2);
@@ -8711,7 +8711,7 @@ $(document).ready(function() {
 		console.log(JSON.stringify(req));
 /*
 		var r = await postRequest(
-			"http://localhost:8010/proxy/get_data_single_presentation", {
+			API_URL+"get_data_single_presentation", {
 				"presentationId": presentationID
 			});
 
