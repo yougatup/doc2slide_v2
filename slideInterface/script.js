@@ -1,6 +1,8 @@
 var MAX_ELEMENTS_PER_SLIDE = 4;
 var SLIDES_PER_MIN = 2;
 
+// var API_URL= 'https://server.hyungyu.com:5713/'
+var API_URL= 'http://localhost:8010/proxy/'
 var rowSelected = false;
 var selectedSlideIndex = -1;
 var selectedResourceIndex = -1;
@@ -657,7 +659,7 @@ async function createSlide(presentationIDToAdapt, contents, layoutSlideID, style
 
 	console.log(JSON.stringify(r));
 	var res = await postRequest(
-		"http://localhost:8010/proxy/generate_slide_requests", r
+		API_URL + "generate_slide_requests", r
 	);
 
 	return res;
@@ -1218,7 +1220,7 @@ async function findImages(queries) {
 		),
 	};
 
-	var result = await fetch('http://localhost:8010/proxy/getImages', requestOptions)
+	var result = await fetch(API_URL+'getImages', requestOptions)
 		.then(response => response.json())
 		.then(data => {
 			return data;
@@ -4806,7 +4808,7 @@ function handleChangeImage(slideIndex, resourceIndex) {
 		),
 	};
 
-	fetch('http://localhost:8010/proxy/findQueriess', requestOptions)
+	fetch(API_URL+'findQueriess', requestOptions)
 		.then(response => response.json())
 		.then(data => function(s, r, d) {
 			console.log(s);
@@ -5174,7 +5176,7 @@ function getSearchResult(slideIndex, resourceIndex) {
 		),
 	};
 
-	fetch('http://localhost:8010/proxy/getImages', requestOptions)
+	fetch(API_URL+'getImages', requestOptions)
 		.then(response => response.json())
 		.then(data => {
 			console.log(data);
@@ -5199,7 +5201,7 @@ async function showImageSelectionView(slideIndex, resourceIndex) {
 		),
 	};
 
-	var res = await postRequest('http://localhost:8010/proxy/findQueriess', 
+	var res = await postRequest(API_URL+'findQueriess', 
 		{
 			text: queryString,
 		}
@@ -5226,7 +5228,7 @@ async function showImageSelectionView(slideIndex, resourceIndex) {
 	getSearchResult(slideIndex, resourceIndex);
 
 	/*
-	fetch('http://localhost:8010/proxy/findQueriess', requestOptions)
+	fetch(API_URL+'findQueriess', requestOptions)
 		.then(response => response.json())
 		.then(data => function(s, r, d) {
 			console.log(s);
@@ -5539,7 +5541,7 @@ function genSlideThumbnail(presentationID) {
 						}),
 					};
 
-					var blob = await fetch("http://localhost:8010/proxy/get_image_file", requestOptions)
+					var blob = await fetch(API_URL+"get_image_file", requestOptions)
 						.then(response => response.blob())
 						.then(data => {
 							return data;
@@ -5681,7 +5683,7 @@ function genAlternativeThumbnail(presentationID, slideList, docSlideIndex, subje
 						}),
 					};
 
-					var blob = await fetch("http://localhost:8010/proxy/get_image_file", requestOptions)
+					var blob = await fetch(API_URL+"get_image_file", requestOptions)
 						.then(response => response.blob())
 						.then(data => {
 							return data;
@@ -6211,7 +6213,7 @@ async function getSingleSlideAdaptationRequest(input) {
 		body: JSON.stringify(input),
 	};
 
-	var res = await fetch('http://localhost:8010/proxy/generate_slide_requests', requestOptions)
+	var res = await fetch(API_URL+'generate_slide_requests', requestOptions)
 		.then(response => response.json())
 		.then(data => {
 			return data;
@@ -6448,7 +6450,7 @@ async function constructRequestForLayoutStyleAlternatives(index, subject, defaul
 	console.log(r);
 
 	var res = await postRequest(
-		"http://localhost:8010/proxy/get_data_single_slide", r);
+		API_URL + "get_data_single_slide", r);
 
 	console.log(JSON.parse(JSON.stringify(res)));
 
@@ -6691,7 +6693,7 @@ async function constructRequestForLayoutStyleAlternatives(index, subject, defaul
 		
 		console.log(JSON.stringify(retValue));
 		var res1 = await postRequest(
-			"http://localhost:8010/proxy/generate_duplicate_alternatives_requests", retValue);
+			API_URL+"generate_duplicate_alternatives_requests", retValue);
 
 		console.log(res1);
 	});
@@ -6724,7 +6726,7 @@ async function getAlternativeSlides(index, subject) {
 			console.log(JSON.stringify(r));
 
 			var res1 = await postRequest(
-				"http://localhost:8010/proxy/generate_alternatives_requests_explicit", r);
+				API_URL + "generate_alternatives_requests_explicit", r);
 
 			console.log(JSON.parse(JSON.stringify(res1)));
 
@@ -6767,7 +6769,7 @@ async function getAlternativeSlides(index, subject) {
 		console.log(r);
 
 		var res = await postRequest(
-			"http://localhost:8010/proxy/generate_alternatives_requests", r);
+			API_URL+"generate_alternatives_requests", r);
 
 		console.log(res);
 
@@ -7120,13 +7122,76 @@ async function copyCurrentSlide(slideId) {
 		}
 
 		var res = await postRequest(
-			"http://localhost:8010/proxy/get_data_single_slide", r);
+			API_URL + "get_data_single_slide", r);
 
 		console.log(res);
 	});
 }
 
 $(document).ready(function() {
+	$(document).on("click", ".resourceRemoveBtn", function(e) {
+		var t = $(e.target);
+
+		for(var i=0;i<100;i++) {
+			if($(t).hasClass("adaptationTableResourceBody")) break;
+
+			t = $(t).parent();
+		}
+
+		var slideIndex = $(t).attr("slideindex");
+		var resourceIndex = $(t).attr("resourceindex");
+
+		var slideID = docSlideStructure[slideIndex].slide.id;
+
+		var label = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.label;
+		var objID = docSlideStructure[slideIndex].layout.mapping[label];
+
+		var paragraphIndex = getParagraphIndexOfDocSlideStructure(slideIndex, resourceIndex);
+
+		if(docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.type == "text") {
+			console.log(paragraphIndex);
+			console.log(JSON.parse(JSON.stringify(docSlideStructure[slideIndex].contents.list)))
+
+			if(paragraphIndex == 0 && docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents == "") return;
+
+			showLoadingSlidePlane();
+
+			removeParagraph(slideID, objID, paragraphIndex, true, null);
+
+			docSlideStructure[slideIndex].contents.list.splice(resourceIndex, 1);
+		}
+		else {
+			showLoadingSlidePlane();
+
+			var label = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.label;
+			var objID = docSlideStructure[slideIndex].layout.mapping[label];
+
+			var req = [];
+
+			req.push({
+				"deleteObject": {
+					"objectId": objID
+				},
+			});
+
+			if (docSlideStructure[slideIndex].contents.list[resourceIndex].mappingKey != "null") {
+				issueEvent("root_mappingRemoved2", {
+					mappingID: docSlideStructure[slideIndex].contents.list[resourceIndex].mappingKey
+				});
+			}
+
+			docSlideStructure[slideIndex].contents.list.splice(resourceIndex, 1);
+			delete slideDB[slideID][objID];
+
+			gapi.client.slides.presentations.batchUpdate({
+				presentationId: PRESENTATION_ID,
+				requests: req
+			}).then((createSlideResponse) => {
+				console.log(createSlideResponse);
+			});
+		}
+	});
+
 	$(document).on("click", "#alternativeRefreshBtn", function(e) {
 		console.log($(e.target));
 
@@ -7220,7 +7285,7 @@ $(document).ready(function() {
 		console.log(r);
 
 		var res = await postRequest(
-			"http://localhost:8010/proxy/get_data_single_slide", r);
+			API_URL + "get_data_single_slide", r);
 
 		console.log(JSON.parse(JSON.stringify(res)));
 
@@ -7256,7 +7321,7 @@ $(document).ready(function() {
 		console.log(JSON.stringify(r2));
 
 		var res2 = await postRequest(
-			"http://localhost:8010/proxy/generate_slide_requests_explicit", r2
+			API_URL + "generate_slide_requests_explicit", r2
 		)
 
 		console.log(res2);
@@ -7527,6 +7592,8 @@ $(document).ready(function() {
 			t = $(t).parent();
 		}
 
+		$($(t).find(".resourceRemoveBtn")[0]).addClass("removeBtnActivated");
+
 		for(var i=0;i<100;i++) {
 			if($(div).hasClass("adaptationViewDiv")) break;
 			div = $(div).parent();
@@ -7546,6 +7613,8 @@ $(document).ready(function() {
 		console.log(objectIndicator);
 
 		$(objectIndicator).addClass("highlighted");
+
+		console.log($(t));
 
 		// console.log(rect);
 
@@ -7569,6 +7638,7 @@ $(document).ready(function() {
 		// console.log("MOUSE LEAVE");
 
 		$(".objectIndicator.highlighted").removeClass("highlighted");
+		$(".removeBtnActivated").removeClass("removeBtnActivated");
 	})
 
 	function getParents(curRowObj, className) {
@@ -7585,6 +7655,8 @@ $(document).ready(function() {
 
 	$(document).on("mousedown", ".adaptationTableResourceBody", function(e) {
 		console.log($(e.target));
+
+		if($(e.target).hasClass("resourceRemoveBtn")) return;
 
 		rowSelected = true;
 
@@ -8316,9 +8388,117 @@ $(document).ready(function() {
 						},
 						*/
 					});
+
+					removeParagraph(sourceSlideID, sourceObjID, sourceParagraphIndex, false, requests)
 				}
 				else { // image
+					var label = docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex].currentContent.label;
+					var objID = docSlideStructure[selectedSlideIndex].layout.mapping[label];
 
+					var source = JSON.parse(JSON.stringify(docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex]));
+
+					var imageURL = docSlideStructure[selectedSlideIndex].contents.list[selectedResourceIndex].currentContent.contents;
+
+					var slideID = makeid(10);
+					var imageObjID = makeid(10);
+
+					var requests = [];
+
+					requests.push({
+						"deleteObject": {
+							"objectId": objID,
+						},
+					});
+
+					requests.push({
+						createSlide: {
+							objectId: slideID,
+							insertionIndex: insertIndex,
+							slideLayoutReference: {
+								predefinedLayout: "BLANK"
+							},
+						}
+					});
+
+					requests.push({
+						createImage: {
+							objectId: imageObjID,
+							elementProperties: {
+								pageObjectId: slideID
+							},
+							url: imageURL
+						}
+					});
+
+					source.label = "PICTURE_0";
+
+					docSlideStructure.splice(insertIndex, 0, {
+						type: "visible",
+						contents: {
+							sectionKey: sectionKey,
+							list: [
+								source
+							]
+						},
+						layout: {
+							mapping: {
+								"PICTURE_0": imageObjID
+							},
+							...getLayout(DEFAULT_SLIDE_ID, "ge93a171212_0_5")
+						},
+						style: {
+							...getStyle(DEFAULT_SLIDE_ID, "ge93a171212_0_5")
+						},
+						slide: {
+							id: slideID,
+						},
+						layoutAlternative: {
+							loaded: false,
+							loadStarted: false,
+							result: []
+						},
+						styleAlternative: {
+							loaded: false,
+							loadStarted: false,
+							result: []
+						},
+						previousVersion: null
+						/*
+						template: {
+							id: "DEFAULT",
+							structure: {
+								title: titleID,
+								body: [bodyID]
+							}
+						},
+						slide: {
+							id: slideID
+						},
+						*/
+					});
+
+					docSlideStructure[insertIndex].layout.boxes = [{
+						height: 0,
+						left: 0,
+						top: 0,
+						width: 0,
+						type: "PICTURE_0"
+					}];
+
+					slideDB[slideID] = {};
+					slideDB[slideID][imageObjID] = [];
+					slideDB[slideID][imageObjID].push({
+						mappingID: source.mappingKey
+					});
+
+					docSlideStructure[selectedSlideIndex].contents.list.splice(selectedResourceIndex, 1);
+
+					gapi.client.slides.presentations.batchUpdate({
+						presentationId: PRESENTATION_ID,
+						requests: requests
+					}).then((createSlideResponse) => {
+						console.log(createSlideResponse);
+					});
 				}
 
 				updateDocSlideToExtension();
@@ -8332,7 +8512,6 @@ $(document).ready(function() {
 				// locateSlide(docSlideStructure[index+1].slide.id, true)
 
 				console.log(JSON.parse(JSON.stringify(slideDB[sourceSlideID][sourceObjID])));
-				removeParagraph(sourceSlideID, sourceObjID, sourceParagraphIndex, false, requests)
 			}
 		}
 
@@ -8353,6 +8532,8 @@ $(document).ready(function() {
 		console.log(e.target);
 
 		var curRowObj = $(e.target);
+
+		if($(e.target).hasClass("resourceRemoveBtn")) return;
 
 		for(var i=0;i<100;i++) {
 			if($(curRowObj).hasClass("adaptationTableResourceBody")) break;
@@ -8531,7 +8712,7 @@ $(document).ready(function() {
 		console.log(JSON.stringify(req));
 /*
 		var r = await postRequest(
-			"http://localhost:8010/proxy/get_data_single_presentation", {
+			API_URL+"get_data_single_presentation", {
 				"presentationId": presentationID
 			});
 
@@ -8544,7 +8725,7 @@ $(document).ready(function() {
 			body: JSON.stringify(req),
 		};
 
-		fetch('http://localhost:8010/proxy/generate_presentation_requests', requestOptions)
+		fetch(API_URL+'generate_presentation_requests', requestOptions)
 			.then(response => response.json())
 			.then(async data => {
 				console.log(data);
@@ -10179,7 +10360,7 @@ $(document).ready(function() {
 			sectionLevelCoverageValueUpdate(e.target, value+1);
 		});
 
-		$(document).on("mouseenter", ".thumbnailBoxTop, .thumbnailBoxMiddle, .thumbnailBoxBottom", function(e) {
+		$(document).on("mouseenter", ".thumbnailBoxTop, .thumbnailBoxBottom", function(e) {
 			if (rowSelected) {
 				var t = e.target;
 
@@ -10189,11 +10370,28 @@ $(document).ready(function() {
 			}
 		});
 
+		$(document).on("mouseenter", ".thumbnailBoxMiddle", function(e) {
+			if (rowSelected) {
+				var t = $(e.target).parent();
+
+				console.log(t);
+
+				var top = $(t).find(".thumbnailBoxTop")[0];
+				var middle = $(t).find(".thumbnailBoxMiddle")[0];
+				var bottom = $(t).find(".thumbnailBoxBottom")[0];
+
+				$(top).addClass("mouseMiddleIn");
+				$(middle).addClass("mousein");
+				$(bottom).addClass("mouseMiddleIn");
+			}
+		});
+
 		$(document).on("mouseleave", ".thumbnailBoxTop, .thumbnailBoxMiddle, .thumbnailBoxBottom", function(e) {
 			if(rowSelected) {
 				console.log("leave");
 
 				$(".mousein").removeClass("mousein");
+				$(".mouseMiddleIn").removeClass("mouseMiddleIn");
 			}
 		});
 
@@ -11355,6 +11553,7 @@ function getAdaptationViewBodyContents(index) {
 					( item.currentContent.label.startsWith("PICTURE") ? "<img class='adaptationTableImage' src='" + item.currentContent.contents + "'> </img>" : item.currentContent.contents ) + 
 									"<div class='temptemp upper'> </div>" + 
 									"<div class='temptemp lower'> </div>" +
+									"<button class='resourceRemoveBtn'> X </button>" + 
 								"</div>";
 		}
 
@@ -11480,7 +11679,7 @@ async function getShortening(text) {
 		),
 	};
 
-	var res = await fetch('http://localhost:8010/proxy/get_shortenings_abstract', requestOptions)
+	var res = await fetch(API_URL+'get_shortenings_abstract', requestOptions)
 		.then(response => response.json())
 		.then(data => {
 			return data;
