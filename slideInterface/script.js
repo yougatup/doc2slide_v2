@@ -8320,6 +8320,7 @@ $(document).ready(function() {
 				else { // image
 
 				}
+
 				updateDocSlideToExtension();
 				setDocSlideStructure(docSlideStructure);
 
