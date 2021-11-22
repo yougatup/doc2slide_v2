@@ -1006,6 +1006,8 @@ function setMappingIndicator(id, info) {
 }
 
 function visualizeSlideObjects() {
+	return;
+
 	var tempCnt = 1;
 
 	setFocusBox("workspaceRect", {
@@ -8120,6 +8122,8 @@ $(document).ready(function() {
 	});
 
 	$(document).on("mouseup", function(e) {
+		return;
+		 
 		console.log("MOUSE UP");
 		console.log($(e.target));
 		$(".adaptationTableResourceBody.mousedown").removeClass("mousedown");
@@ -9385,6 +9389,61 @@ $(document).ready(function() {
 		$("#statusLight").css("background-color", color);
 	}
 
+	$(document).on("click", "#alternativeBtn", function(e) {
+		console.log("cool");
+		console.log(curSlidePage);
+
+		gapi.client.slides.presentations.get({
+			presentationId: PRESENTATION_ID
+		}).then(async function (response) {
+			var textSet = [];
+
+			var presentation = response.result;
+			var length = presentation.slides.length;
+
+			// slideDB = {};
+
+			var startIndex = -1, endIndex = -1;
+			var myText, myStartIndex = -1, myEndIndex = -1;
+			var curParagraphIndex = -1;
+
+			for (i = 0; i < length; i++) {
+				if (endIndex != -1) break;
+
+				var slide = presentation.slides[i];
+
+				var slideID = slide.objectId;
+				var slideObjId = {};
+
+				if (slideID == curSlidePage) {
+					console.log(slide);
+
+					for(var j=0;j<slide.pageElements.length;j++) {
+						for(var k=0;k<slide.pageElements[j].shape.text.textElements.length;k++) {
+							if("textRun" in slide.pageElements[j].shape.text.textElements[k]) {
+								var tt = slide.pageElements[j].shape.text.textElements[k].textRun.content;
+
+								tt = tt.trim();
+
+								if(tt.length > 0) 
+									textSet.push(tt);
+							}
+						}
+					}
+				}
+			}
+
+			console.log(textSet);
+
+			var res = await postRequest(
+				API_URL + "getImagesFromMultipleText", {text: textSet}
+			);
+
+			console.log(res);
+		});
+		
+	})
+
 		$(document).on("extension_pageUpdated", function(e) {
 			statusFlag = false;
 			setStatusLight("red");
@@ -9403,328 +9462,329 @@ $(document).ready(function() {
 				var pageID = p.pageID;
 				curSlidePage = p.pageID;
 
-				var idx = getIndexOfSlide(curSlidePage);
-				console.log(idx);
+				// var idx = getIndexOfSlide(curSlidePage);
+				// console.log(idx);
 
-				if(idx == -1) {
-					// newly created. will be handled in filestrip updated
-					return;
-				}
+				// if(idx == -1) {
+					// // newly created. will be handled in filestrip updated
+					// return;
+				// }
 
-				// layout 
+				// // layout 
 	
-				var objList = [];
+				// var objList = [];
 
-				for(var i=0;i<p.objects.length;i++) {
-					objList.push(p.objects[i].objectID.split('-')[1]);
-				}
+				// for(var i=0;i<p.objects.length;i++) {
+					// objList.push(p.objects[i].objectID.split('-')[1]);
+				// }
 
 
-				var mappingKeys = Object.keys(docSlideStructure[idx].layout.mapping);
+				// var mappingKeys = Object.keys(docSlideStructure[idx].layout.mapping);
 
-				for(var kk=0;kk<mappingKeys.length;kk++) {
-					var k = mappingKeys[kk];
+				// for(var kk=0;kk<mappingKeys.length;kk++) {
+					// var k = mappingKeys[kk];
 
-					var objID = docSlideStructure[idx].layout.mapping[k]
+					// var objID = docSlideStructure[idx].layout.mapping[k]
 
-					if(objList.indexOf(objID) < 0) {
-						// found. remove the box.
+					// if(objList.indexOf(objID) < 0) {
+						// // found. remove the box.
 
-						for(var i=0;i<docSlideStructure[idx].layout.boxes.length;i++) {
-							if(docSlideStructure[idx].layout.boxes[i].type == k) {
-								docSlideStructure[idx].layout.boxes.splice(i, 1);
-								delete docSlideStructure[idx].layout.mapping[k];
-							}
-						}
-					}
-				}
+						// for(var i=0;i<docSlideStructure[idx].layout.boxes.length;i++) {
+							// if(docSlideStructure[idx].layout.boxes[i].type == k) {
+								// docSlideStructure[idx].layout.boxes.splice(i, 1);
+								// delete docSlideStructure[idx].layout.mapping[k];
+							// }
+						// }
+					// }
+				// }
 
-				for(var i=0;i<p.objects.length;i++) {
-					var objID = p.objects[i].objectID.split('-')[1];
-					var flag = false;
+				// for(var i=0;i<p.objects.length;i++) {
+					// var objID = p.objects[i].objectID.split('-')[1];
+					// var flag = false;
 
-					var w, h, l, t;
+					// var w, h, l, t;
 
-					w = p.objects[i].rect.width / p.workspace.width;
-					h = p.objects[i].rect.height / p.workspace.height;
-					l = (p.objects[i].rect.left - p.workspace.left) / p.workspace.width;
-					t = (p.objects[i].rect.top - p.workspace.top) / p.workspace.height;
+					// w = p.objects[i].rect.width / p.workspace.width;
+					// h = p.objects[i].rect.height / p.workspace.height;
+					// l = (p.objects[i].rect.left - p.workspace.left) / p.workspace.width;
+					// t = (p.objects[i].rect.top - p.workspace.top) / p.workspace.height;
 
-					var widthString = $(".layoutSlide").css("width");
-					var heightString = $(".layoutSlide").css("height");
+					// var widthString = $(".layoutSlide").css("width");
+					// var heightString = $(".layoutSlide").css("height");
 
-					var pageSize = {
-						width: parseInt(widthString.substring(0, widthString.length - 2)),
-						height: parseInt(heightString.substring(0, heightString.length - 2)),
-					}
+					// var pageSize = {
+						// width: parseInt(widthString.substring(0, widthString.length - 2)),
+						// height: parseInt(heightString.substring(0, heightString.length - 2)),
+					// }
 
-					for(var j=0;j<docSlideStructure[idx].layout.boxes.length;j++) {
-						var label = docSlideStructure[idx].layout.boxes[j].type
-						var objID2 = docSlideStructure[idx].layout.mapping[label];
+					// for(var j=0;j<docSlideStructure[idx].layout.boxes.length;j++) {
+						// var label = docSlideStructure[idx].layout.boxes[j].type
+						// var objID2 = docSlideStructure[idx].layout.mapping[label];
 
-						if(objID == objID2) {
-							flag = true;
+						// if(objID == objID2) {
+							// flag = true;
 
-							docSlideStructure[idx].layout.boxes[j].height = pageSize.height * h;
-							docSlideStructure[idx].layout.boxes[j].width = pageSize.width * w;
-							docSlideStructure[idx].layout.boxes[j].left = pageSize.width * l;
-							docSlideStructure[idx].layout.boxes[j].top = pageSize.height * t;
+							// docSlideStructure[idx].layout.boxes[j].height = pageSize.height * h;
+							// docSlideStructure[idx].layout.boxes[j].width = pageSize.width * w;
+							// docSlideStructure[idx].layout.boxes[j].left = pageSize.width * l;
+							// docSlideStructure[idx].layout.boxes[j].top = pageSize.height * t;
 
-							break;
-						}
-					}
+							// break;
+						// }
+					// }
 
-					if(!flag) {
-						// newly created. add to docSlideStructure
+					// if(!flag) {
+						// // newly created. add to docSlideStructure
 
-						if(docSlideStructure[idx].contents.list.length <= 0) {
-							var label = "BODY";
-							var cnt = 0;
+						// if(docSlideStructure[idx].contents.list.length <= 0) {
+							// var label = "BODY";
+							// var cnt = 0;
 
-							docSlideStructure[idx].layout.boxes.push({
-								height: pageSize.height * h,
-								width: pageSize.width * w,
-								left: pageSize.width * l,
-								top: pageSize.height * t,
-								type: (label + "_" + cnt)
-							})
+							// docSlideStructure[idx].layout.boxes.push({
+								// height: pageSize.height * h,
+								// width: pageSize.width * w,
+								// left: pageSize.width * l,
+								// top: pageSize.height * t,
+								// type: (label + "_" + cnt)
+							// })
 
-							docSlideStructure[idx].layout.mapping["BODY_0"] = objID;
-						}
-						else {
-							var label = "BODY";
-							var cnt = 0;
+							// docSlideStructure[idx].layout.mapping["BODY_0"] = objID;
+						// }
+						// else {
+							// var label = "BODY";
+							// var cnt = 0;
 
-							for (var k in docSlideStructure[idx].layout.mapping) {
-								var l = k.split('_')[0];
+							// for (var k in docSlideStructure[idx].layout.mapping) {
+								// var l = k.split('_')[0];
 
-								if (label == l)
-									cnt++;
-							}
+								// if (label == l)
+									// cnt++;
+							// }
 
-							docSlideStructure[idx].layout.boxes.push({
-								height: pageSize.height * h,
-								width: pageSize.width * w,
-								left: pageSize.width * l,
-								top: pageSize.height * t,
-								type: (label + "_" + cnt)
-							})
+							// docSlideStructure[idx].layout.boxes.push({
+								// height: pageSize.height * h,
+								// width: pageSize.width * w,
+								// left: pageSize.width * l,
+								// top: pageSize.height * t,
+								// type: (label + "_" + cnt)
+							// })
 
-							docSlideStructure[idx].layout.mapping[label + "_" + cnt] = objID;
-						}
-					}
-				}
+							// docSlideStructure[idx].layout.mapping[label + "_" + cnt] = objID;
+						// }
+					// }
+				// }
 
-				// content
+				// // content
 
-				if(curDocSlideStructureIndex == idx) {
-					var contents = p.objects;
+				// if(curDocSlideStructureIndex == idx) {
+					// var contents = p.objects;
 
-					var numParagraphsOnSlides = 0;
+					// var numParagraphsOnSlides = 0;
 
-					for(var i=0;i<contents.length;i++) {
-						numParagraphsOnSlides += Object.keys(contents[i].paragraph).length;
-					}
+					// for(var i=0;i<contents.length;i++) {
+						// numParagraphsOnSlides += Object.keys(contents[i].paragraph).length;
+					// }
 
-					if(numParagraphsOnSlides == docSlideStructure[idx].contents.list.length) {
-						var objID = '';
+					// if(numParagraphsOnSlides == docSlideStructure[idx].contents.list.length) {
+						// var objID = '';
 
-						for(var i=0;i<contents.length;i++) {
-							var objID = contents[i].objectID.split('-')[1];
-							var cur = -1;
+						// for(var i=0;i<contents.length;i++) {
+							// var objID = contents[i].objectID.split('-')[1];
+							// var cur = -1;
 
-							for(var k in docSlideStructure[idx].layout.mapping) {
-								if(docSlideStructure[idx].layout.mapping[k] == objID) {
-									for(var j=0;j<docSlideStructure[idx].contents.list.length;j++) {
-										if(docSlideStructure[idx].contents.list[j].currentContent.label == k) {
-											cur = j;
-											break;
-										}
-									}
-									break;
-								}
-							}
+							// for(var k in docSlideStructure[idx].layout.mapping) {
+								// if(docSlideStructure[idx].layout.mapping[k] == objID) {
+									// for(var j=0;j<docSlideStructure[idx].contents.list.length;j++) {
+										// if(docSlideStructure[idx].contents.list[j].currentContent.label == k) {
+											// cur = j;
+											// break;
+										// }
+									// }
+									// break;
+								// }
+							// }
 
-							if(cur == -1) {
-								console.log("*** SOMETHING WENT WRONG ***");
-							}
-							else {
-								for(var k in contents[i].paragraph) {
-									if(!docSlideStructure[idx].contents.list[cur].currentContent.label.startsWith("PICTURE"))  {
-										docSlideStructure[idx].contents.list[cur].currentContent.contents = contents[i].paragraph[k].text;
+							// if(cur == -1) {
+								// console.log("*** SOMETHING WENT WRONG ***");
+							// }
+							// else {
+								// for(var k in contents[i].paragraph) {
+									// if(!docSlideStructure[idx].contents.list[cur].currentContent.label.startsWith("PICTURE"))  {
+										// docSlideStructure[idx].contents.list[cur].currentContent.contents = contents[i].paragraph[k].text;
 
-										if(docSlideStructure[idx].contents.list[cur].mappingKey == "null") {
-											docSlideStructure[idx].contents.list[cur].originalContent.contents = contents[i].paragraph[k].text;
-										}
-									}
+										// if(docSlideStructure[idx].contents.list[cur].mappingKey == "null") {
+											// docSlideStructure[idx].contents.list[cur].originalContent.contents = contents[i].paragraph[k].text;
+										// }
+									// }
 
-									cur++;
-								}
-							}
-						}
-					}
-					else {
+									// cur++;
+								// }
+							// }
+						// }
+					// }
+					// else {
 
-						/*
-						var typeList = [];
+						// /*
+						// var typeList = [];
 
-						for (var i = 0; i < docSlideStructure[idx].contents.list.length; i++) {
-							if (i == 0 || docSlideStructure[idx].contents.list[i].currentContent.label != docSlideStructure[idx].contents.list[i - 1].currentContent.label) {
-								typeList.push({
-									label: docSlideStructure[idx].contents.list[i].currentContent.label,
-									index: i
-								});
-							}
-						}
+						// for (var i = 0; i < docSlideStructure[idx].contents.list.length; i++) {
+							// if (i == 0 || docSlideStructure[idx].contents.list[i].currentContent.label != docSlideStructure[idx].contents.list[i - 1].currentContent.label) {
+								// typeList.push({
+									// label: docSlideStructure[idx].contents.list[i].currentContent.label,
+									// index: i
+								// });
+							// }
+						// }
 
-						for (var i = 0; i < typeList.length; i++) {
-							var objID = docSlideStructure[idx].layout.mapping[typeList[i].label];
-							var labelIndex = typeList[i].index;
+						// for (var i = 0; i < typeList.length; i++) {
+							// var objID = docSlideStructure[idx].layout.mapping[typeList[i].label];
+							// var labelIndex = typeList[i].index;
 
-							for (var j = 0; j < contents.length; j++) {
-								var objID2 = contents[j].objectID.split('-')[1];
+							// for (var j = 0; j < contents.length; j++) {
+								// var objID2 = contents[j].objectID.split('-')[1];
 
-								if (objID == objID2) {
-									for (var k in contents[j].paragraph) {
-										var t = contents[j].paragraph[k].text;
+								// if (objID == objID2) {
+									// for (var k in contents[j].paragraph) {
+										// var t = contents[j].paragraph[k].text;
 
-									}
-								}
-							}
-						}
-						*/
+									// }
+								// }
+							// }
+						// }
+						// */
 
-						var slideID = docSlideStructure[idx].slide.id;
-						var objID = '';
+						// var slideID = docSlideStructure[idx].slide.id;
+						// var objID = '';
 
-						for(var i=0;i<contents.length;i++) {
-							var objID = contents[i].objectID.split('-')[1];
-							var pCnt = 0;
-							var firstIdx = -1, myLabel = -1;
+						// for(var i=0;i<contents.length;i++) {
+							// var objID = contents[i].objectID.split('-')[1];
+							// var pCnt = 0;
+							// var firstIdx = -1, myLabel = -1;
 
-							for(var k in docSlideStructure[idx].layout.mapping) {
-								if(docSlideStructure[idx].layout.mapping[k] == objID) {
-									myLabel = k;
+							// for(var k in docSlideStructure[idx].layout.mapping) {
+								// if(docSlideStructure[idx].layout.mapping[k] == objID) {
+									// myLabel = k;
 
-									for(var j=0;j<docSlideStructure[idx].contents.list.length;j++) {
-										if(docSlideStructure[idx].contents.list[j].currentContent.label == k) {
-											pCnt++;
-											firstIdx = (firstIdx == -1 ? j : firstIdx);
-										}
-									}
-									break;
-								}
-							}
+									// for(var j=0;j<docSlideStructure[idx].contents.list.length;j++) {
+										// if(docSlideStructure[idx].contents.list[j].currentContent.label == k) {
+											// pCnt++;
+											// firstIdx = (firstIdx == -1 ? j : firstIdx);
+										// }
+									// }
+									// break;
+								// }
+							// }
 
-							if(firstIdx == -1) { 
-								if(myLabel == -1)  {
-									console.log("*** SOMETHING WENT WRONG ***");
-								}
-								else {
-									docSlideStructure[idx].contents.list.push(
-										{
-											"mappingKey": "null",
-											originalContent: {
-												type: "text",
-												contents: ''
-											},
-											currentContent: {
-												label: myLabel,
-												type: "text",
-												contents: ''
-											}
-										}
-									)
-									slideDB[slideID][objID] = [{
-										mappingID: "null"
-									}]
-								}
-							}
-							else {
-								if(pCnt != Object.keys(contents[i].paragraph).length) {
-									var cur = 0;
-									var keys = Object.keys(contents[i].paragraph);
-									var startIdx = -1, endIdx = keys.length;
+							// if(firstIdx == -1) { 
+								// if(myLabel == -1)  {
+									// console.log("*** SOMETHING WENT WRONG ***");
+								// }
+								// else {
+									// docSlideStructure[idx].contents.list.push(
+										// {
+											// "mappingKey": "null",
+											// originalContent: {
+												// type: "text",
+												// contents: ''
+											// },
+											// currentContent: {
+												// label: myLabel,
+												// type: "text",
+												// contents: ''
+											// }
+										// }
+									// )
+									// slideDB[slideID][objID] = [{
+										// mappingID: "null"
+									// }]
+								// }
+							// }
+							// else {
+								// if(pCnt != Object.keys(contents[i].paragraph).length) {
+									// var cur = 0;
+									// var keys = Object.keys(contents[i].paragraph);
+									// var startIdx = -1, endIdx = keys.length;
 
-									cur = firstIdx;
+									// cur = firstIdx;
 									
-									for(var j=0;j<keys.length;j++) {
-										if(cur < docSlideStructure[idx].contents.list.length && contents[i].paragraph[keys[j]].text == docSlideStructure[idx].contents.list[cur].currentContent.contents)
-											startIdx = j;
-										else break;
+									// for(var j=0;j<keys.length;j++) {
+										// if(cur < docSlideStructure[idx].contents.list.length && contents[i].paragraph[keys[j]].text == docSlideStructure[idx].contents.list[cur].currentContent.contents)
+											// startIdx = j;
+										// else break;
 
-										cur++;
-									}
+										// cur++;
+									// }
 
-									cur = docSlideStructure[idx].contents.list.length-1;
+									// cur = docSlideStructure[idx].contents.list.length-1;
 
-									for(var j=keys.length-1;j>=0;j--) {
-										if(cur >= 0 && contents[i].paragraph[keys[j]].text == docSlideStructure[idx].contents.list[cur].currentContent.contents)
-											endIdx = j;
-										else break;
+									// for(var j=keys.length-1;j>=0;j--) {
+										// if(cur >= 0 && contents[i].paragraph[keys[j]].text == docSlideStructure[idx].contents.list[cur].currentContent.contents)
+											// endIdx = j;
+										// else break;
 
-										cur--;
-									}
+										// cur--;
+									// }
 
-									// contents added
+									// // contents added
 
-									docSlideStructure[idx].contents.list.splice(firstIdx+(startIdx+1), pCnt-(startIdx+1)-(keys.length-endIdx));
+									// docSlideStructure[idx].contents.list.splice(firstIdx+(startIdx+1), pCnt-(startIdx+1)-(keys.length-endIdx));
 
-									for(var j=firstIdx+(startIdx+1);j<(firstIdx+(startIdx+1) + (pCnt-(startIdx+1)-(keys.length-endIdx)));j++) {
-										if(j-firstIdx < slideDB[slideID][objID].length && slideDB[slideID][objID][j-firstIdx].mappingID != "null") {
-											issueEvent("root_mappingRemoved2", {
-												mappingID: slideDB[slideID][objID][j-firstIdx].mappingID
-											});
-										}
-									}
+									// for(var j=firstIdx+(startIdx+1);j<(firstIdx+(startIdx+1) + (pCnt-(startIdx+1)-(keys.length-endIdx)));j++) {
+										// if(j-firstIdx < slideDB[slideID][objID].length && slideDB[slideID][objID][j-firstIdx].mappingID != "null") {
+											// issueEvent("root_mappingRemoved2", {
+												// mappingID: slideDB[slideID][objID][j-firstIdx].mappingID
+											// });
+										// }
+									// }
 
-									slideDB[slideID][objID].splice(startIdx+1, pCnt-(startIdx+1)-(keys.length-endIdx));
+									// slideDB[slideID][objID].splice(startIdx+1, pCnt-(startIdx+1)-(keys.length-endIdx));
 
-									for (var j = firstIdx + (startIdx + 1); j <= firstIdx + (endIdx - 1); j++) {
-										console.log(j);
+									// for (var j = firstIdx + (startIdx + 1); j <= firstIdx + (endIdx - 1); j++) {
+										// console.log(j);
 
-										docSlideStructure[idx].contents.list.splice(j, 0, {
-											"mappingKey": "null",
-											originalContent: {
-												type: "text",
-												contents: ""
-											},
-											currentContent: {
-												label: myLabel,
-												type: "text",
-												contents: contents[i].paragraph[keys[j - firstIdx]].text
-											}
-										})
+										// docSlideStructure[idx].contents.list.splice(j, 0, {
+											// "mappingKey": "null",
+											// originalContent: {
+												// type: "text",
+												// contents: ""
+											// },
+											// currentContent: {
+												// label: myLabel,
+												// type: "text",
+												// contents: contents[i].paragraph[keys[j - firstIdx]].text
+											// }
+										// })
 
-										slideDB[slideID][objID].splice(j - firstIdx, 0, {
-											mappingID: "null"
-										})
-									}
-								}
-							}
-						}
-					}
-				}
+										// slideDB[slideID][objID].splice(j - firstIdx, 0, {
+											// mappingID: "null"
+										// })
+									// }
+								// }
+							// }
+						// }
+					// }
+				// }
 
 
-				// style
+				// // style
 
-				setDocSlideStructure(docSlideStructure);
-				showDocSlideView(idx);
+				// setDocSlideStructure(docSlideStructure);
+				// showDocSlideView(idx);
 				visualizeSlideObjects();
 
-				if (curDocSlideStructureIndex != idx && current_left_plane == "singleslide_layout") { // slide number changed
-					getAlternativeSlides(idx, "layoutAlternative");
-				}
+				// if (curDocSlideStructureIndex != idx && current_left_plane == "singleslide_layout") { // slide number changed
+					// getAlternativeSlides(idx, "layoutAlternative");
+				// }
 
-				if (curDocSlideStructureIndex != idx && current_left_plane == "singleslide_style") { // slide number changed
-					getAlternativeSlides(idx, "styleAlternative");
-				}
+				// if (curDocSlideStructureIndex != idx && current_left_plane == "singleslide_style") { // slide number changed
+					// getAlternativeSlides(idx, "styleAlternative");
+				// }
 
-				curDocSlideStructureIndex = idx;
 
-				if(docSlideStructure[idx].type == "hidden") showReviewSlide();
-				else hideReviewSlide();
+				// if(docSlideStructure[idx].type == "hidden") showReviewSlide();
+				// else hideReviewSlide();
+
+				// curDocSlideStructureIndex = idx;
 
 				// hideLoadingSlidePlane();
 			return;
@@ -11571,23 +11631,25 @@ function getDocSlideStructureView(index) {
 
 	var tableBody = '';
 
-	return "<div class='adaptationViewDiv' index='" + index + "' " + ("slide" in docSlideStructure[index] && "id" in docSlideStructure[index].slide ? ("slideid='" + docSlideStructure[index].slide.id) + "'": '') + ">" +
-		"<div class='adaptationViewDocument'>" +
-		// "<table class='adaptationViewDocumentTable'>" +
-			getAdaptationViewBodyContents(index) + 
-		// "</table>" +
-		"</div>" +
-
-		"<div class='adaptationViewBodyLayout'> " +
-		getAdaptationViewBodyLayout(index) +
-		"</div>" +
-		"<div class='adaptationViewBodyStyle'> " +
-		getAdaptationViewBodyStyle(index) +
-		"</div>" +
-
-		// "<div class='adaptationViewSlide'>" +
+	return '';
+	
+	// "<div class='adaptationViewDiv' index='" + index + "' " + ("slide" in docSlideStructure[index] && "id" in docSlideStructure[index].slide ? ("slideid='" + docSlideStructure[index].slide.id) + "'": '') + ">" +
+		// "<div class='adaptationViewDocument'>" +
+		// // "<table class='adaptationViewDocumentTable'>" +
+			// getAdaptationViewBodyContents(index) + 
+		// // "</table>" +
 		// "</div>" +
-		"</div>";
+
+		// "<div class='adaptationViewBodyLayout'> " +
+		// getAdaptationViewBodyLayout(index) +
+		// "</div>" +
+		// "<div class='adaptationViewBodyStyle'> " +
+		// getAdaptationViewBodyStyle(index) +
+		// "</div>" +
+
+		// // "<div class='adaptationViewSlide'>" +
+		// // "</div>" +
+		// "</div>";
 
 /*
 	if (docSlideStructure[index] != null && "slide" in docSlideStructure[index]) {

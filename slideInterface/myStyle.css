@@ -2144,3 +2144,39 @@ width: 100%;
   .resourceRemoveBtn.removeBtnActivated {
 	  display: block;
   }
+
+  #alternativeView {
+	height: 30%;
+	width: 100%;
+	box-sizing: border-box;
+	transition: all .3s ease-in-out;
+	position: relative;
+  }
+
+  #alternativeViewTopBar {
+	  border-top: 2px solid black;
+	  height: 30px;
+	  width: 100%;
+	  background-color: lightgray;
+	  box-sizing: border-box;
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	line-height: 30px;
+	padding-left: 10px;
+  }
+
+  #alternativeViewBody {
+	  height: calc(100% - 30px);
+	  width: 100%;
+  }
+
+  #alternativeViewTitle {
+	  float: left;
+  }
+
+  #alternativeBtn {
+	  float: left;
+	  margin: 3px;
+	  margin-left: 10px;
+  }
