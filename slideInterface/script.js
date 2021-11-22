@@ -8,6 +8,7 @@ var selectedSlideIndex = -1;
 var selectedResourceIndex = -1;
 var statusFlag = true;
 
+var currentSelectedResourceIndex = -1, currentSelectedSlideIndex, currentResourceSelectedFlag = false;
 var current_left_plane = 'document';
 
 var curDocSlideStructureIndex = -1;
@@ -2065,16 +2066,18 @@ async function replaceParagraph(slidePageID, objectID, paragraphIndex, _text) {
 									console.log(updates);
 								}
 
+								console.log(lastParagraphFlag);
+
 								var r = [{
 									insertText: {
 										"objectId": objectID,
-										"text": _text,
-										"insertionIndex": (lastParagraphFlag ? (startIndex == 0 ? 0 : startIndex - 1) : startIndex)
+										"text": _text + (lastParagraphFlag ? "" : "\n"),
+										"insertionIndex": (lastParagraphFlag ? (startIndex == 0 ? 0 : startIndex) : startIndex)
 										}
 								}]
 
 								return removeRangeInObj(slidePageID, objectID, {
-									startIndex: (lastParagraphFlag? (startIndex == 0 ? 0 : startIndex-1) : startIndex),
+									startIndex: (lastParagraphFlag? (startIndex == 0 ? 0 : startIndex) : startIndex),
 									endIndex: endIndex + (lastParagraphFlag? -1 : 0)
 								}, r)
 							}
@@ -5178,19 +5181,26 @@ function getSearchResult(slideIndex, resourceIndex) {
 		),
 	};
 
-	fetch(API_URL+'getImages', requestOptions)
-		.then(response => response.json())
-		.then(data => {
-			console.log(data);
+	console.log(queryStatement);
 
-			var htmlString = '';
+	if(queryStatement.length <= 0) {
+		$("#imageViewResultDiv").html("No keyword has been identified. Please add keywords.");
+	}
+	else {
+		fetch(API_URL + 'getImages', requestOptions)
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
 
-			for (var i = 0; i < data.length; i++) {
-				htmlString = htmlString + "<img class='imageResultItem' src='" + data[i].url + "'> </img>"
-			}
+				var htmlString = '';
 
-			$("#imageViewResultDiv").html(htmlString);
-		});
+				for (var i = 0; i < data.length; i++) {
+					htmlString = htmlString + "<img class='imageResultItem' src='" + data[i].url + "'> </img>"
+				}
+
+				$("#imageViewResultDiv").html(htmlString);
+			});
+	}
 }
 
 async function showImageSelectionView(slideIndex, resourceIndex) {
@@ -5266,19 +5276,27 @@ function closeImageSelectionView() {
 	$("#imageView").hide();
 }
 
-function constructRequestForSlideDeckAdaptation(presentationId) {
-	var info = organizeHighlightOnSections();
+async function constructRequestForSlideDeckAdaptation(presentationId, flag) {
+	var userSlideInfo = await gapi.client.slides.presentations.get({
+		presentationId: PRESENTATION_ID 
+	});
+	
+	var result = userSlideInfo.result;
+
 	var retValue = {};
 
-	console.log(info);
-
+	retValue.userPresentation = result;
 	retValue.presentationId = presentationId;
 	retValue.settings = {
 		fast: true,
 		contentControl: false,
-		method: "greedy"
+		method: "greedy",
+		debug: false,
+		putOriginalContent: true,
+		adaptLayout: flag.layout,
+		adaptStyles: flag.style
 	}
-	
+
 	retValue.resources = {};
 
 	retValue.resources.title = {
@@ -5295,6 +5313,15 @@ function constructRequestForSlideDeckAdaptation(presentationId) {
 		// "id": "temp"
 	};
 	retValue.resources.sections = [];
+	var labels = {};
+
+	for(var i=0;i<docSlideStructure.length;i++) {
+		for(var k in docSlideStructure[i].layout.mapping) {
+			labels[docSlideStructure[i].layout.mapping[k]] = k;
+		}
+	}
+
+	retValue.labels = labels;
 
 	for(var i=0;i<docSlideStructure.length;i++) {
 		var sectionItem = {};
@@ -5334,37 +5361,81 @@ function constructRequestForSlideDeckAdaptation(presentationId) {
 		sectionItem.body = [];
 
 		for(var j=1;j<docSlideStructure[i].contents.list.length;j++) {
-			sectionItem.body.push({
-				paragraph: {
-					shortenings: [{
-						text: docSlideStructure[i].contents.list[j].currentContent.contents,
-						score: {
-							"grammatical": 1,
-							"semantic": 1,
-							"importantWords": 1
-						}
-					}],
-					"singleWord": {
-						text: docSlideStructure[i].contents.list[j].currentContent.contents,
-						score: {
-							"grammatical": 1,
-							"semantic": 1,
-							"importantWords": 1
-						}
+			if(docSlideStructure[i].contents.list[j].currentContent.type == "image") {
+				sectionItem.body.push({
+					paragraph: {
+						shortenings: [{
+							text: "",
+							score: {
+								"grammatical": 0,
+								"semantic": 0,
+								"importantWords": 0
+							}
+						}],
+						"singleWord": {
+							text: "",
+							score: {
+								"grammatical": 0,
+								"semantic": 0,
+								"importantWords": 0
+							}
+						},
+						"phrases": [
+							{
+								text: "",
+								score: {
+									"grammatical": 0,
+									"semantic": 0,
+									"importantWords": 0
+								}
+							}
+						],
 					},
-					"phrases": [
+					id: (docSlideStructure[i].contents.list[j].mappingKey == "null" ? makeid(20) : docSlideStructure[i].contents.list[j].mappingKey),
+					images: [
 						{
+							url: docSlideStructure[i].contents.list[j].currentContent.contents
+						}
+					],
+					"format": "image",
+					"type": docSlideStructure[i].contents.list[j].currentContent.label
+				})
+			}
+			else {
+				sectionItem.body.push({
+					paragraph: {
+						shortenings: [{
 							text: docSlideStructure[i].contents.list[j].currentContent.contents,
 							score: {
 								"grammatical": 1,
 								"semantic": 1,
 								"importantWords": 1
 							}
-						}
-					],
-					'id': (docSlideStructure[i].contents.list[j].mappingKey == "null" ? null : docSlideStructure[i].contents.list[j].mappingKey)
-				}
-			})
+						}],
+						"singleWord": {
+							text: docSlideStructure[i].contents.list[j].currentContent.contents,
+							score: {
+								"grammatical": 1,
+								"semantic": 1,
+								"importantWords": 1
+							}
+						},
+						"phrases": [
+							{
+								text: docSlideStructure[i].contents.list[j].currentContent.contents,
+								score: {
+									"grammatical": 1,
+									"semantic": 1,
+									"importantWords": 1
+								}
+							}
+						],
+						'id': (docSlideStructure[i].contents.list[j].mappingKey == "null" ? makeid(20): docSlideStructure[i].contents.list[j].mappingKey),
+						"format": "text",
+						"type": docSlideStructure[i].contents.list[j].currentContent.label
+					}
+				})
+			}
 		}
 
 		retValue.resources.sections.push(sectionItem);
@@ -5447,6 +5518,7 @@ function constructRequestForSlideDeckAdaptation(presentationId) {
 	*/
 
 	console.log(retValue);
+	console.log(JSON.stringify(retValue));
 
 	return retValue;
 }
@@ -7097,6 +7169,8 @@ function test() {
 }
 
 function hideAlternativeView() {
+	currentResourceSelectedFlag = false;
+
 	$(".selectedForAlternative").removeClass("selectedForAlternative");
 	$("#alternativeElementView").hide();
 }
@@ -7131,6 +7205,57 @@ async function copyCurrentSlide(slideId) {
 }
 
 $(document).ready(function() {
+	$(document).on("click", ".slideDeckCompareDivControllerCheckbox", async function(e) {
+		var presentationID = $(".checkedSlideDeck").attr("presentationid");
+
+		var segmentationChecked = $("#slideDeckCompareDivControllerSegmentationCheckbox")[0].checked;
+		var layoutChecked = $("#slideDeckCompareDivControllerLayoutCheckbox")[0].checked;
+		var styleChecked =  $("#slideDeckCompareDivControllerStyleCheckbox")[0].checked
+
+		showLoadingScreenOnCompareDivResult();
+		slideDeckAdaptationDivAppear(presentationID);
+
+		var req = await constructRequestForSlideDeckAdaptation(presentationID, {
+			segmentation: segmentationChecked,
+			layout: layoutChecked,
+			style: styleChecked
+		});
+
+		console.log(JSON.stringify(req));
+
+		const requestOptions = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(req),
+		};
+
+		fetch(API_URL + 'generate_presentation_requests', requestOptions)
+			.then(response => response.json())
+			.then(async data => {
+				console.log(data);
+
+				var req = await getRequestsForRemovingAllSlidesOnGoogleSlide(TEMP_PRESENTATION_ID);
+
+				if (req == null) req = data.requests;
+				else req = req.concat(data.requests);
+
+				slide_deck_adaptation_req = data.requests;
+				slide_deck_matching = data.matchings;
+
+				console.log(slide_deck_matching);
+				gapi.client.slides.presentations.batchUpdate({
+					presentationId: TEMP_PRESENTATION_ID,
+					requests: req
+				}).then((createSlideResponse) => {
+					console.log(createSlideResponse);
+
+					genSlideThumbnail(TEMP_PRESENTATION_ID);
+				});
+
+				return data;
+			});
+	});
+
 	$(document).on("click", ".resourceRemoveBtn", function(e) {
 		var t = $(e.target);
 
@@ -8570,6 +8695,10 @@ $(document).ready(function() {
 
 		$(curRowObj).addClass("selectedForAlternative");
 
+		currentResourceSelectedFlag = true;
+		currentSelectedResourceIndex = resourceIndex;
+		currentSelectedSlideIndex = slideIndex;
+
 		var label = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.label;
 		var objID = docSlideStructure[slideIndex].layout.mapping[label];
 
@@ -8704,14 +8833,25 @@ $(document).ready(function() {
 	});
 
 	$(document).on("click", ".slideDeckThumbnailImage", async function(e) {
+		$("#slideDeckCompareDivControllerSegmentationCheckbox")[0].checked = false;
+		$("#slideDeckCompareDivControllerLayoutCheckbox")[0].checked = true;
+		$("#slideDeckCompareDivControllerStyleCheckbox")[0].checked = true
+
+		var segmentationChecked = $("#slideDeckCompareDivControllerSegmentationCheckbox")[0].checked;
+		var layoutChecked = $("#slideDeckCompareDivControllerLayoutCheckbox")[0].checked;
+		var styleChecked = $("#slideDeckCompareDivControllerStyleCheckbox")[0].checked
+
 		var presentationID = $(e.target).parent().attr("presentationid");
 		$(e.target).parent().addClass("checkedSlideDeck");
 
-		var req = constructRequestForSlideDeckAdaptation(presentationID);
-
 		showLoadingScreenOnCompareDivResult();
-
 		slideDeckAdaptationDivAppear(presentationID);
+
+		var req = await constructRequestForSlideDeckAdaptation(presentationID, {
+			segmentation: segmentationChecked,
+			layout: layoutChecked,
+			style: styleChecked
+		});
 
 		console.log(JSON.stringify(req));
 /*
@@ -9706,7 +9846,6 @@ $(document).ready(function() {
 									// var startIdx = -1, endIdx = keys.length;
 
 									// cur = firstIdx;
-									
 									// for(var j=0;j<keys.length;j++) {
 										// if(cur < docSlideStructure[idx].contents.list.length && contents[i].paragraph[keys[j]].text == docSlideStructure[idx].contents.list[cur].currentContent.contents)
 											// startIdx = j;
