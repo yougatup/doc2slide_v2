@@ -50,7 +50,7 @@ class ChangeDetection:
                 break
 
             # frame = frame[:, 640:1280]
-            frame = frame[:, 0:640]
+            frame = frame[:, 640:1280]
 
             original = frame.copy()
 
