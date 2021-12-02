@@ -174,7 +174,7 @@ while (True):
 
             print(name)
 
-            cv2.imwrite(name, frame)
+            cv2.imwrite(name, frame[:, :len(frame[0])//2])
             cur = cur + 1
 
             if cur >= len(scriptTime)-1 :

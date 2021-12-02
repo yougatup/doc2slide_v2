@@ -6,7 +6,7 @@ IFS=','
 
 [ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 99; }
 
-while IFS=',' read title paperfile videofile subtitleFile videoUrl dataImported
+while IFS=',' read index title paperfile videofile subtitleFile videoUrl dataImported
 do
 	echo "Name : $title"
 	echo "paper: $paperfile"

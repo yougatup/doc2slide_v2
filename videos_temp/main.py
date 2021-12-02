@@ -106,8 +106,8 @@ class Main:
 
         self.detection.start(cv2.VideoCapture(self.vidpath.strip()))
 
-        print("Saving PDF...")
-        self.convertToPDF()
+        # print("Saving PDF...")
+        # self.convertToPDF()
 
         print("All done!")
 

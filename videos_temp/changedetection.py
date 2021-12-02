@@ -128,7 +128,8 @@ class ChangeDetection:
     def detectContours(self, thresh):
         cnts = cv2.findContours(
             thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        cnts = cnts[0] if imutils.is_cv2() else cnts[1]
+
+        cnts = cnts[0]
 
         validCnts = []
 

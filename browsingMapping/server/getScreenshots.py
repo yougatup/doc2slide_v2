@@ -1,11 +1,13 @@
 #ncica & Data_sniffer solution remake
+import sys
 import cv2
 import os
 import time
 
+filename = str(sys.argv[1])
 step = 10
-frames_count = 3
-cam = cv2.VideoCapture('./example_video.mp4')
+frames_count = 987987987
+cam = cv2.VideoCapture('./video/' + filename + '.mp4')
 
 currentframe = 0
 frame_per_second = cam.get(cv2.CAP_PROP_FPS) 
@@ -16,7 +18,7 @@ while (True):
     if ret:
         if currentframe > (step*frame_per_second):  
             currentframe = 0
-            name = 'photo/frame' + str(frames_captured) + '.jpg'
+            name = 'frame_parsed/' + filename + '/' + str(frames_captured) + '.jpg'
             print(name)
             cv2.imwrite(name, frame)            
             frames_captured+=1
@@ -25,6 +27,7 @@ while (True):
         currentframe += 1           
     if ret==False:
         break
+
 cam.release()
 cv2.destroyAllWindows()
 
