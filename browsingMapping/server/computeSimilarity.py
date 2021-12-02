@@ -1,7 +1,7 @@
 import sys
 
-from sentence_transformers import SentenceTransformer
-model = SentenceTransformer('all-MiniLM-L6-v2')
+# from sentence_transformers import SentenceTransformer
+# model = SentenceTransformer('all-MiniLM-L6-v2')
 
 ###############
 
@@ -44,29 +44,29 @@ for s in scriptTime :
 
 #################
 
-import spacy
-import json
-
-nlp = spacy.load('en_core_web_sm')
-
-jsonData = json.load(open(paperFilename))
-
-bodyText = []
-
-for p in jsonData['sections'] :
-    for j in range(len(p['paragraphs'])) :
-#         __t = nlp(p['paragraphs'][j]['text'])
-#         sentences = list(__t.sents)
-#         
-#         for s in sentences :
-#             bodyText.append(str(s))
-        
-        bodyText.append(p['paragraphs'][j]['text']) # paragraph-level
-
-paper_f = open("./paperParsed/" + thisIndex + ".txt", "w")
-
-for b in bodyText:
-    paper_f.write(b + "\n")
+#   import spacy
+#   import json
+#   
+#   nlp = spacy.load('en_core_web_sm')
+#   
+#   jsonData = json.load(open(paperFilename))
+#   
+#   bodyText = []
+#   
+#   for p in jsonData['sections'] :
+#       for j in range(len(p['paragraphs'])) :
+#   #         __t = nlp(p['paragraphs'][j]['text'])
+#   #         sentences = list(__t.sents)
+#   #         
+#   #         for s in sentences :
+#   #             bodyText.append(str(s))
+#           
+#           bodyText.append(p['paragraphs'][j]['text']) # paragraph-level
+#   
+#   paper_f = open("./paperParsed/" + thisIndex + ".txt", "w")
+#   
+#   for b in bodyText:
+#       paper_f.write(b + "\n")
 
 ###############
 
@@ -80,62 +80,62 @@ script_post = []
 for i in range(len(script)-l+1) :
     script_post.append(' '.join(script[i:i+l]))
     
-script_embeddings = model.encode(script_post)
-document_embeddings = model.encode(bodyText)
+# script_embeddings = model.encode(script_post)
+# document_embeddings = model.encode(bodyText)
 
 
 
 ################
-
-
-import numpy
-
-threshold = 5
-
-post_script = []
-
-similarity = sklearn.metrics.pairwise.cosine_similarity(script_embeddings, document_embeddings)
-__sim = []
-__sim_t = []
-
-trans = numpy.transpose(similarity)
-
-for i in range(len(similarity)) :
-    top_k = numpy.argsort(similarity[i])[-threshold:]
-    prob = similarity[i][top_k[0]]
-    
-    __sim.append([val if val >= prob else 0 for idx, val in enumerate(similarity[i])])
-    
-for i in range(len(trans)) :
-    top_k = numpy.argsort(trans[i])[-threshold:]
-    prob = trans[i][top_k[0]]
-    
-    __sim_t.append([val if val >= prob else 0 for idx, val in enumerate(trans[i])])
-    
-__sim_t = numpy.transpose(__sim_t)
-
-overall = []
-
-for i in range(len(similarity)) :
-    overall.append([ min(__sim[i][j], __sim_t[i][j]) for j in range(len(similarity[i]))])
-    
-#similarity = overall
-
-#########################
-
-print(similarity)
-
-print(len(script))
-print(len(bodyText))
-
-print(similarity.shape)
-
-import pandas as pd
-
-df = pd.DataFrame(data=similarity.astype(float))
-df.to_csv('./similarity/' + thisIndex + ".csv", sep=',', header=False, float_format='%.10f', index=False)
-
-
+#   
+#   
+#   import numpy
+#   
+#   threshold = 5
+#   
+#   post_script = []
+#   
+#   similarity = sklearn.metrics.pairwise.cosine_similarity(script_embeddings, document_embeddings)
+#   __sim = []
+#   __sim_t = []
+#   
+#   trans = numpy.transpose(similarity)
+#   
+#   for i in range(len(similarity)) :
+#       top_k = numpy.argsort(similarity[i])[-threshold:]
+#       prob = similarity[i][top_k[0]]
+#       
+#       __sim.append([val if val >= prob else 0 for idx, val in enumerate(similarity[i])])
+#       
+#   for i in range(len(trans)) :
+#       top_k = numpy.argsort(trans[i])[-threshold:]
+#       prob = trans[i][top_k[0]]
+#       
+#       __sim_t.append([val if val >= prob else 0 for idx, val in enumerate(trans[i])])
+#       
+#   __sim_t = numpy.transpose(__sim_t)
+#   
+#   overall = []
+#   
+#   for i in range(len(similarity)) :
+#       overall.append([ min(__sim[i][j], __sim_t[i][j]) for j in range(len(similarity[i]))])
+#       
+#   #similarity = overall
+#   
+#   #########################
+#   
+#   print(similarity)
+#   
+#   print(len(script))
+#   print(len(bodyText))
+#   
+#   print(similarity.shape)
+#   
+#   import pandas as pd
+#   
+#   df = pd.DataFrame(data=similarity.astype(float))
+#   df.to_csv('./similarity/' + thisIndex + ".csv", sep=',', header=False, float_format='%.10f', index=False)
+#   
+#   
 ############################
 
 import cv2

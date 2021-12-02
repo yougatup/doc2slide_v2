@@ -6,7 +6,7 @@ IFS=','
 
 [ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 99; }
 
-while IFS=',' read title paperfile videofile subtitleFile
+while IFS=',' read title paperfile videofile subtitleFile videoUrl dataImported
 do
 	echo "Name : $title"
 	echo "paper: $paperfile"
@@ -19,20 +19,20 @@ do
 
 	if [ $index -gt 0 ] 
  	then
- 		cp papers/$paperfile ../../pdffigures2/paper.pdf
+#  		cp papers/$paperfile ../../pdffigures2/paper.pdf
 
-		cd ../../pdffigures2
-		sbt "runMain org.allenai.pdffigures2.FigureExtractorBatchCli paper.pdf -g myPrefix"
+#		cd ../../pdffigures2
+#		sbt "runMain org.allenai.pdffigures2.FigureExtractorBatchCli paper.pdf -g myPrefix"
 
-		cp myPrefixpaper.json ../browsingMapping/server/paperData/$index.json
+#		cp myPrefixpaper.json ../browsingMapping/server/paperData/$index.json
 
-		cd ../browsingMapping/server
+#		cd ../browsingMapping/server
 
 		mkdir ./frame/$index
 
-		echo python computeSimilarity.py "subtitles/$subtitleFile" "./paperData/$index.json"
+		echo python computeSimilarity.py "$subtitleFile" "./paperData/$index.json"
 
-		python computeSimilarity.py "./videos/$videofile" "./subtitles/$subtitleFile" "./paperData/$index.json" "$index"
+		python computeSimilarity.py "$videofile" "$subtitleFile" "./paperData/$index.json" "$index"
 	fi
 
 	index=$((index+1))
