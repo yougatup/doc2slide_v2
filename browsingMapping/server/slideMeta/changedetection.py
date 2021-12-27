@@ -4,9 +4,9 @@ import cv2
 import imutils
 import eventhook
 
-
 class ChangeDetection:
     # minimum contour area (1000)
+    frames = []
     minArea = 1000
     # maximum frames before firstFrame reset (3)
     maxIdle = 3
@@ -20,6 +20,8 @@ class ChangeDetection:
     onProgress = eventhook.EventHook()
 
     def __init__(self, stepSize, progressInterval, showDebug=False):
+        self.frames = []
+        self.selectedFrames = []
         self.stepSize = stepSize
         self.progressInterval = progressInterval
         self.showDebug = showDebug
@@ -53,11 +55,17 @@ class ChangeDetection:
 
         while currentPosition < totalFrames:
             (grabbed, frame) = camera.read()
+
             if frame is None:
                 break
 
             # frame = frame[:, 640:1280]
             frame = frame[:, 0:640]
+
+            self.frames.append({
+                "frame": frame.copy(),
+                "curPos": camera.get(cv2.CAP_PROP_POS_FRAMES)
+            })
 
             original = frame.copy()
 
@@ -104,7 +112,9 @@ class ChangeDetection:
                 firstFrameCount = prevFrameCount
                 firstTime = prevTime
 
+                self.selectedFrames.append(original)
                 self.onTrigger.fire(original)
+
                 idleCount = 0
 
             prevFrame = gray
@@ -147,6 +157,38 @@ class ChangeDetection:
 
         camera.release()
         cv2.destroyAllWindows()
+
+        print(len(self.frames))
+        print(len(self.selectedFrames))
+
+        dist = []
+
+        f = open("frameResult.txt", "w")
+
+        for i in range(len(self.selectedFrames)) :
+            tmp = []
+
+            _f1 = imutils.resize(self.selectedFrames[i], width=500)
+            _g1 = cv2.cvtColor(self.selectedFrames[i], cv2.COLOR_BGR2GRAY)
+            _g1 = cv2.GaussianBlur(_g1, (21, 21), 0)
+
+            print(i)
+
+            for j in range(len(self.frames)) :
+                _f2 = imutils.resize(self.frames[j]["frame"], width=500)
+                _g2 = cv2.cvtColor(self.frames[j]["frame"], cv2.COLOR_BGR2GRAY)
+                _g2 = cv2.GaussianBlur(_g2, (21, 21), 0)
+
+                delta = cv2.absdiff(_g1, _g2)
+                thresh = self.calcThresh(delta)
+                cnts = self.detectContours(thresh)
+
+                tmp.append(len(cnts))
+
+            f.write('\t'.join(map(str, tmp)))
+            f.write('\n')
+
+        print(tmp)
 
     def calcThresh(self, frame):
         thresh = cv2.threshold(frame, 25, 255, cv2.THRESH_BINARY)[1]
