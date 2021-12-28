@@ -6,6 +6,7 @@ IFS=','
 
 [ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 99; }
 
+rm -rf slideData
 mkdir slideData
 
 while IFS=',' read index title paperfile videofile subtitleFile videoUrl dataImported
@@ -18,8 +19,9 @@ do
     subtitleFile=$(echo ${subtitleFile//[$'\t\r\n']})
 
     echo $subtitleFile
+    echo $index
 
-    if [ $index -gt 0 ]
+    if [ $index -gt -1 ]
     then
 #       cp papers/$paperfile ../../pdffigures2/paper.pdf
 
@@ -46,6 +48,7 @@ do
 
         sh genSlides.sh
         python getSubtitle.py
+        python genJsonStructure.py
 
         echo "mv slideImages slideData"
         mv slideImages slideData
@@ -60,6 +63,8 @@ do
     fi
 
     index=$((index+1))
+
+    echo '{"presentationCnt": '$index'}' > slideData/summary.json
 
 done < $INPUT
 IFS=$OLDIFS
