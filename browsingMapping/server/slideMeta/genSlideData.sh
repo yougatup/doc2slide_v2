@@ -64,7 +64,7 @@ do
 
     index=$((index+1))
 
-    echo '{"presentationCnt": '$index'}' > slideData/summary.json
+    echo '{"presentationCnt": '($index+1)'}' > slideData/summary.json
 
 done < $INPUT
 IFS=$OLDIFS
