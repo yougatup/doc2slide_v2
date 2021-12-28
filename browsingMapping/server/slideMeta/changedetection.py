@@ -47,8 +47,9 @@ class ChangeDetection:
 
         startTime = time.time()
 
+        fps = int(camera.get(cv2.CAP_PROP_FPS))
+
         print('change detection initiated')
-        print(camera.get(cv2.CAP_PROP_FPS))
 
         totalFrames = camera.get(cv2.CAP_PROP_FRAME_COUNT) - 1
         cnt = 0
@@ -64,7 +65,8 @@ class ChangeDetection:
 
             self.frames.append({
                 "frame": frame.copy(),
-                "curPos": camera.get(cv2.CAP_PROP_POS_FRAMES)
+                "curFrameCount": camera.get(cv2.CAP_PROP_POS_FRAMES),
+                "index": cnt
             })
 
             original = frame.copy()
@@ -101,21 +103,28 @@ class ChangeDetection:
 
             # we have now seen the same image for too long, reset firstImage
             if idleCount > self.maxIdle:
-                print(currentPosition, totalFrames)
-                print(currentPosition/30)
-
-                print(camera.get(cv2.CAP_PROP_POS_FRAMES))
-                print("+++++", firstFrameCount, firstTime)
-                print("-----", prevFrameCount, prevTime)
+#                print(currentPosition, totalFrames)
+#                print(currentPosition/30)
+#
+#                print(camera.get(cv2.CAP_PROP_POS_FRAMES))
+#                print("+++++", firstFrameCount, firstTime)
+#                print("-----", prevFrameCount, prevTime)
 
                 firstFrame = prevFrame
                 firstFrameCount = prevFrameCount
                 firstTime = prevTime
 
-                self.selectedFrames.append(original)
+                self.selectedFrames.append({
+                    'frame': original,
+                    'curFrameCount': camera.get(cv2.CAP_PROP_POS_FRAMES),
+                    "index": cnt
+                })
+
                 self.onTrigger.fire(original)
 
                 idleCount = 0
+
+            cnt = cnt + 1
 
             prevFrame = gray
             prevFrameCount = camera.get(cv2.CAP_PROP_POS_FRAMES)
@@ -162,33 +171,53 @@ class ChangeDetection:
         print(len(self.selectedFrames))
 
         dist = []
-
-        f = open("frameResult.txt", "w")
+        frameRange = []
 
         for i in range(len(self.selectedFrames)) :
-            tmp = []
 
-            _f1 = imutils.resize(self.selectedFrames[i], width=500)
-            _g1 = cv2.cvtColor(self.selectedFrames[i], cv2.COLOR_BGR2GRAY)
+            tmp = [ 987987987 for i in range(len(self.frames)) ]
+            pos = int(self.selectedFrames[i]["index"])
+
+            _f1 = imutils.resize(self.selectedFrames[i]['frame'], width=500)
+            _g1 = cv2.cvtColor(self.selectedFrames[i]['frame'], cv2.COLOR_BGR2GRAY)
             _g1 = cv2.GaussianBlur(_g1, (21, 21), 0)
 
-            print(i)
+            myRange = [pos, pos]
 
-            for j in range(len(self.frames)) :
-                _f2 = imutils.resize(self.frames[j]["frame"], width=500)
-                _g2 = cv2.cvtColor(self.frames[j]["frame"], cv2.COLOR_BGR2GRAY)
-                _g2 = cv2.GaussianBlur(_g2, (21, 21), 0)
+            for k in [-1, 1] :
+                cur = pos+k
 
-                delta = cv2.absdiff(_g1, _g2)
-                thresh = self.calcThresh(delta)
-                cnts = self.detectContours(thresh)
+                if not (0 <= cur and cur < len(self.frames)) :
+                    continue
 
-                tmp.append(len(cnts))
+                tmp[pos] = 0
 
-            f.write('\t'.join(map(str, tmp)))
+                while 0 <= cur and cur < len(self.frames) :
+                    _f2 = imutils.resize(self.frames[cur]["frame"], width=500)
+                    _g2 = cv2.cvtColor(self.frames[cur]["frame"], cv2.COLOR_BGR2GRAY)
+                    _g2 = cv2.GaussianBlur(_g2, (21, 21), 0)
+
+                    delta = cv2.absdiff(_g1, _g2)
+                    thresh = self.calcThresh(delta)
+                    cnts = self.detectContours(thresh)
+
+                    if len(cnts) > 0 :
+                        break
+
+                    tmp[cur] = 0
+                    myRange[ 0 if k == -1 else 1 ] = self.frames[cur]["curFrameCount"]
+
+                    cur = cur + k
+
+            frameRange.append(myRange)
+
+        f = open("slideImages/frameTimestamp.txt", "w")
+
+        print(fps)
+        
+        for i in range(len(frameRange)) :
+            f.write(str(round((frameRange[i][0]-1)/fps, 2)) + '\t' + str(round((frameRange[i][1]-1)/fps, 2)))
             f.write('\n')
-
-        print(tmp)
 
     def calcThresh(self, frame):
         thresh = cv2.threshold(frame, 25, 255, cv2.THRESH_BINARY)[1]
