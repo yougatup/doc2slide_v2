@@ -21,7 +21,7 @@ do
     echo $subtitleFile
     echo $index
 
-    if [ $index -gt -1 ]
+    if [ $index -eq 7 ]
     then
 #       cp papers/$paperfile ../../pdffigures2/paper.pdf
 
@@ -47,6 +47,7 @@ do
         rm -rf slideImages
 
         sh genSlides.sh
+        sh genOCR.sh
         python getSubtitle.py
         python genJsonStructure.py
 
@@ -56,15 +57,15 @@ do
         echo "mv slideData/slideImages $index"
         mv slideData/slideImages ./slideData/$index
 
-        if [ $index -gt 2 ]
-        then
-            break
-        fi
+#        if [ $index -gt 2 ]
+#        then
+#            break
+#        fi
     fi
 
     index=$((index+1))
 
-    echo '{"presentationCnt": '($index+1)'}' > slideData/summary.json
+    echo '{"presentationCnt": '{{$index+1}}'}' > slideData/summary.json
 
 done < $INPUT
 IFS=$OLDIFS

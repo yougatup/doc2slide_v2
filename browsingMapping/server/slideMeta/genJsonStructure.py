@@ -1,5 +1,4 @@
 import json
-
 timestamp = open("slideImages/frameTimestamp.txt", "r")
 script = open("slideImages/scriptData.txt", "r")
 
@@ -26,12 +25,33 @@ result['title'] = "tempTitle"
 result['slideCnt'] = len(timestampData)
 result['slideInfo']= []
 
+ocrResult = [];
+
+for i in range(len(timestampData)) :
+    ocrFile = open("slideImages/ocr/" + str(i) + ".jpg.txt", "r")
+
+    ocrResult.append('');
+
+    while True :
+        line = ocrFile.readline()
+
+        if not line :
+            break
+
+        res = line.split('\t')[-1].strip()
+
+        if len(res) > 0 :
+            ocrResult[-1] = ocrResult[-1] + ' ' + res
+
+print(ocrResult)
+
 for i in range(len(timestampData)) :
     result['slideInfo'].append({
         "index": i,
         "startTime": timestampData[i][0],
         "endTime": timestampData[i][1],
-        "script": scriptData[i]
+        "script": scriptData[i],
+        "ocrResult": ocrResult[i]
     })
 
 jsonFile = open("slideImages/result.json", "w")
