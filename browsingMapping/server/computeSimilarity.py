@@ -44,31 +44,43 @@ for s in scriptTime :
 
 #################
 
-#   import spacy
-#   import json
-#   
-#   nlp = spacy.load('en_core_web_sm')
-#   
-#   jsonData = json.load(open(paperFilename))
-#   
-#   bodyText = []
-#   
-#   for p in jsonData['sections'] :
-#       for j in range(len(p['paragraphs'])) :
-#   #         __t = nlp(p['paragraphs'][j]['text'])
-#   #         sentences = list(__t.sents)
-#   #         
-#   #         for s in sentences :
-#   #             bodyText.append(str(s))
-#           
-#           bodyText.append(p['paragraphs'][j]['text']) # paragraph-level
-#   
-#   paper_f = open("./paperParsed/" + thisIndex + ".txt", "w")
-#   
-#   for b in bodyText:
-#       paper_f.write(b + "\n")
+import spacy
+import json
+
+nlp = spacy.load('en_core_web_sm')
+
+jsonData = json.load(open(paperFilename))
+
+bodyText = []
+sectionInfo = []
+
+for p in jsonData['sections'] :
+    sectionTitle = ''
+
+    if 'title' in p :
+        sectionTitle = p['title']['text']
+
+    for j in range(len(p['paragraphs'])) :
+#         __t = nlp(p['paragraphs'][j]['text'])
+#         sentences = list(__t.sents)
+#         
+#         for s in sentences :
+#             bodyText.append(str(s))
+        
+        bodyText.append(p['paragraphs'][j]['text']) # paragraph-level
+        sectionInfo.append(sectionTitle)
+
+paper_f = open("./paperParsed/" + thisIndex + ".txt", "w")
+
+for b in bodyText:
+    paper_f.write(b + "\n")
 
 ###############
+
+paper_s = open("./sectionParsed/" + thisIndex + ".txt", "w")
+
+for b in sectionInfo:
+    paper_s.write(b + "\n")
 
 
 import sklearn

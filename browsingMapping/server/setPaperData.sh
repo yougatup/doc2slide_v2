@@ -37,6 +37,11 @@ do
 
 	index=$((index+1))
 
+    if [ $index -gt 5 ]
+    then
+        break
+    fi
+
 done < $INPUT
 IFS=$OLDIFS
 
