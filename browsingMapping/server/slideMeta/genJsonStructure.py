@@ -31,6 +31,9 @@ paperData = readFile("slideImages/paperData.txt")
 sectionData = readFile("slideImages/sectionData.txt")
 scriptData = readFile("slideImages/scriptData.txt")
 
+print(len(paperData))
+print(len(sectionData))
+
 while True :
     line = timestamp.readline()
     if not line :
@@ -256,8 +259,6 @@ for i in range(len(timestampData)) :
     })
 
 result['outline'] = outline
-result['topSections'] = topSections
-result['weight'] = weight
 
 jsonFile = open("slideImages/result.json", "w")
 jsonFile.write(json.dumps(result))
