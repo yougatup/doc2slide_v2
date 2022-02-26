@@ -73,6 +73,11 @@ var T = null, C = null;
 var MAX_NUMBER_OF_BULLETS = 3;
 var MAX_NUMBER_OF_SLIDES = 10;
 
+var outlineStructure = [];
+var curPresentationDuration = 0;
+
+var waitingOutlineIndex = -1;
+
 function getImgList(x) { 
 	for(var i in x) {
 		if(x[i].length > 0)
@@ -500,11 +505,12 @@ async function initializeSlide() {
 		createSlide: {
 			objectId: resultingSlideID,
 			slideLayoutReference: {
-				predefinedLayout: 'BLANK'
+				predefinedLayout: 'TITLE'
 			}
 		}
 	});
 
+	/*
 	var res = await createSlide(referenceSlideID, {
 		header: {
 			currentContent: {
@@ -567,6 +573,8 @@ async function initializeSlide() {
 
 	requests = requests.concat(res.requests);
 
+	*/
+
 	/*
 	requests.push({
 		createSlide: {
@@ -593,7 +601,7 @@ async function initializeSlide() {
 		requests: requests
 	}).then((createSlideResponse) => {
 		// successfully pasted the text
-		copyCurrentSlide("THIS_IS_FIRST_SLIDE");
+		// copyCurrentSlide("THIS_IS_FIRST_SLIDE");
 		return true;
 	});
 }
@@ -669,6 +677,7 @@ async function createSlide(presentationIDToAdapt, contents, layoutSlideID, style
 async function initializeDB() {
 	// testGAPICall();
 
+/*
 	var req = await getRequestsForRemovingAllSlidesOnGoogleSlide(LAYOUT_SLIDE_ID);
 
 	gapi.client.slides.presentations.batchUpdate({
@@ -688,7 +697,7 @@ async function initializeDB() {
 	}).then((createSlideResponse) => {
 		console.log(createSlideResponse)
 	});
-
+*/
 	readData('/users/' + userName).then(result => {
 		console.log(result);
 		console.log(result.parameters.heavy);
@@ -6410,6 +6419,12 @@ function locateSlide(slideID) {
 	});
 }
 
+function locateSlideDirectly(slideID) {
+	issueEvent("root_locateSlideDirectly", {
+		slideID: slideID,
+	});
+}
+
 function appendTextToBox(contents, boxIndex) {
 	var boxObj = $(".reviewSlideObj[index='" + boxIndex + "']");
 
@@ -7204,7 +7219,246 @@ async function copyCurrentSlide(slideId) {
 	});
 }
 
+function getLinearSlidesFromOutline() {
+	var returnValue = [];
+
+	for(var i=0;i<outlineStructure.length;i++) {
+		returnValue = returnValue.concat(outlineStructure[i].slideIDs);
+	}
+
+	return returnValue;
+}
+
+function handleOutlineEvent(relX, p) {
+	if(outlineStructure.length > 0 && outlineStructure[outlineStructure.length-1].endX >= relX) {
+		// dupliate. 
+
+		$("#outlineSegmentEventLeft").css("left", "0px");
+		$("#outlineSegmentEventLeft").width(relX);
+
+		$("#outlineSegmentEventLeft").html('');
+		$("#outlineSegmentLabelTemp").html('');
+	}
+	else {
+		var thisTime = Math.max(Math.min(p, 1), 0) * curPresentationDuration;
+		var x = 0;
+
+		if(outlineStructure.length > 0){
+			x = outlineStructure[outlineStructure.length-1].endX;
+			thisTime = thisTime - outlineStructure[outlineStructure.length-1].endTime;
+		} 
+
+		var thisMin = parseInt(thisTime);
+		var thisSec = parseInt((thisTime - parseInt(thisTime)) * 60)
+
+		$("#outlineSegmentEventLeft").css("left", x + "px");
+		$("#outlineSegmentEventLeft").width(relX - x);
+
+		$("#outlineSegmentEventLeft").prop("duration", thisTime);
+		$("#outlineSegmentEventLeft").html(thisMin + ":" + thisSec);
+
+		$("#outlineSegmentLabelTemp").css("left", x + "px");
+		$("#outlineSegmentLabelTemp").width(relX - x);
+
+		$("#outlineSegmentLabelTemp").html('Create a segment');
+	}
+}
+
+function getOutlineLabel(index) {
+	if(outlineStructure[index].status == "need_name") {
+		return "<input class='outlineLabelInput' index='" + index + "'> </input>" + 
+		"<button class='outlineLabelInputBtn' index='" + index + "'> Confirm </button>"
+	}
+	else {
+		return outlineStructure[index].label;
+	}
+}
+
+function updateOutlineSegments() {
+	$("#outlineSegments").html('');
+
+	var htmls = '';
+	var labelHtml = '';
+
+	for(var i=0;i<outlineStructure.length;i++) {
+		htmls = htmls + 
+
+		"<div class='outlineSegmentElement' " + 
+			 "index='" + i + "'> " + 
+				parseInt(outlineStructure[i].duration) + ":" + parseInt((outlineStructure[i].duration - parseInt(outlineStructure[i].duration)) * 60) + 
+				( outlineStructure[i].status == "okay" ? 
+			 		"<div class='outlineSegmentElementSlideIndex'>" + 
+			 			"Slide " + outlineStructure[i].endSlideIndex + 
+					"</div>"
+					:
+					"" )  + 
+		"</div>";
+
+		labelHtml = labelHtml + 
+
+		"<div class='outlineSegmentLabelElement' " + 
+			"index='" + i + "'> " + 
+			getOutlineLabel(i) + 
+			"</div>"
+	}
+
+	$("#outlineSegments").html(htmls);
+	$("#outlineSegmentLabelArray").html(labelHtml);
+
+	for(var i=0;i<outlineStructure.length;i++) {
+		// $(".outlineSegmentElement[index='" + i + "']").css("left", outlineStructure[i].startX);
+		$(".outlineSegmentElement[index='" + i + "']").width(outlineStructure[i].endX - outlineStructure[i].startX);
+		$(".outlineSegmentElement[index='" + i + "']").css("background-color", outlineStructure[i].colorCode);
+
+		$(".outlineSegmentLabelElement[index='" + i + "']").width(outlineStructure[i].endX - outlineStructure[i].startX);
+	}
+
+	issueEvent("root_highlightSlideThumbnail", {outlineStructure: outlineStructure})
+}
+
+function genColor() {
+	var randomColor = Math.floor(Math.random()*16777215).toString(16);
+
+	return "#" + randomColor;
+}
+
+function selectSegment(index) {
+	$(".outlineSegmentElement").removeClass("selectedSegment");
+
+	$(".outlineSegmentElement[index='" + index + "']").addClass("selectSegment");
+
+	locateSlideDirectly(outlineStructure[index].slideIDs[0]);
+}
+
 $(document).ready(function() {
+	$(document).on("click", ".outlineLabelInputBtn", function(e) {
+		var index = parseInt($(e.target).attr("index"));
+
+		var inputLabel = $(".outlineLabelInput[index='" + index + "']").val();
+
+		outlineStructure[index].label = inputLabel;
+		outlineStructure[index].status = "ready_slide";
+
+		var slideIndex = -1;
+
+		if(index == 0){
+			slideIndex = 1;
+			outlineStructure[index].startSlideIndex = 1;
+			outlineStructure[index].endSlideIndex = 2;
+		} 
+		else slideIndex = outlineStructure[index-1].endSlideIndex;
+
+		var requests = [];
+
+		requests.push({
+			createSlide: {
+				objectId: outlineStructure[index].slideIDs[0],
+				insertionIndex: slideIndex,
+				slideLayoutReference: {
+					predefinedLayout: 'TITLE_AND_BODY'
+				},
+				/*
+				placeholderIdMappings: [{
+					objectId: titleObjectID,
+					layoutPlaceholder: {
+						type: "TITLE",
+						index: 0
+					}
+				}, {
+					objectId: bodyObjectID,
+					layoutPlaceholder: {
+						type: "BODY",
+						index: 0
+					}
+				}
+				]*/
+			}
+		});
+
+		showLoadingSlidePlane();
+		waitingOutlineIndex = index;
+
+		gapi.client.slides.presentations.batchUpdate({
+			presentationId: PRESENTATION_ID,
+			requests: requests
+		}).then((createSlideResponse) => {
+			console.log(createSlideResponse);
+		});
+
+		updateOutlineSegments();
+	})
+
+	$(document).on("click", "#outlineSegmentEvent", function(e) {
+		$("#outlineSegmentEventLeft").html('');
+		$("#outlineSegmentLabelTemp").html('');
+
+		var relX = e.pageX - $(this).offset().left;
+
+		console.log(relX);
+
+		if(outlineStructure.length > 0 && outlineStructure[outlineStructure.length-1].endX > relX) {
+			for(var j=0;j<outlineStructure.length;j++) {
+				if(outlineStructure[j].startX <= relX && relX <= outlineStructure[j].endX) {
+					
+				}
+			}
+			// within
+		}
+		else {
+			var leftValue = parseFloat(String($("#outlineSegmentEventLeft").css("left")).slice(0, -2))
+			var widthValue = $("#outlineSegmentEventLeft").width();
+			
+			var startX = leftValue;
+			var endX = leftValue + widthValue;
+
+			var duration = parseFloat($("#outlineSegmentEventLeft").prop("duration"));
+			var slideIndex = outlineStructure.length <= 0 ? -1 : outlineStructure[outlineStructure.length-1].endSlideIndex+1;
+
+			var slideID = makeid(10);
+
+			outlineStructure.push({
+				status: "need_name",
+				startX: startX,
+				endX: endX,
+				duration: duration,
+				startSlideID: slideID,
+				startSlideIndex: outlineStructure.length <= 0 ? 2 : slideIndex,
+				endSlideIndex: outlineStructure.length <= 0 ? 2 : slideIndex,
+				slideIDs: [slideID],
+				colorCode: genColor(),
+				startTime: outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length-1].endTime,
+				endTime: (outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length-1].endTime) + duration
+			})
+
+			console.log(outlineStructure);
+
+			updateOutlineSegments();
+		}
+	})
+
+	$(document).on("mousemove", "#outlineSegmentEvent", function(e) {
+		var relX = e.pageX - $(this).offset().left;
+		var relY = e.pageY - $(this).offset().top;
+
+		var totalWidth = $("#outlineSegmentEvent").width();
+
+		relX = Math.max(Math.min(relX, totalWidth), 0);
+
+		var p = relX / totalWidth;
+
+		handleOutlineEvent(relX, p);
+	});
+
+	$(document).on("input", "#outlineTimeInput", function(e) {
+		var time = parseInt($(e.target).val());
+
+		curPresentationDuration = time;
+
+		$("#outlineSegmentLabelMaxTime").html(curPresentationDuration + " min")
+
+		updateOutlineSegments();
+	});
+
 	$(document).on("click", ".slideDeckCompareDivControllerCheckbox", async function(e) {
 		var presentationID = $(".checkedSlideDeck").attr("presentationid");
 
@@ -9360,6 +9614,7 @@ $(document).ready(function() {
 	})
 
 	$(document).on("extension_deletionCheck", function(e) {
+		return;
 
 			if (adaptivePlaneStatus != 2) {
 				var tempCnt = 1;
@@ -9585,6 +9840,138 @@ $(document).ready(function() {
 	})
 
 		$(document).on("extension_pageUpdated", function(e) {
+			var p = e.detail;
+
+			var slidesFromOutline = getLinearSlidesFromOutline();
+			var diffFlag = -1;
+
+			if(slidesFromOutline.length != p.filmstripStructure.length-1) {
+				// slide added or deleted
+				console.log(slidesFromOutline.length, p.filmstripStructure.length-1);
+
+				if(slidesFromOutline.length > p.filmstripStructure.length-1) {
+					diffFlag = 1; // removed
+				}
+				else {
+					diffFlag = 2; // added
+				}
+			}
+
+			if (diffFlag == -1) {
+				for (var i = 1; i < p.filmstripStructure.length; i++) {
+					if (slidesFromOutline[i - 1] != p.filmstripStructure[i].slideID) {
+						diffFlag = 2;
+						break;
+					}
+				}
+			}
+
+			if(diffFlag != -1) {
+				console.log(slidesFromOutline);
+				console.log(p.filmstripStructure);
+
+				if(diffFlag == 1) { // slides removed
+					var slideDict = {};
+
+					for (var i = 1; i < p.filmstripStructure.length; i++) {
+						slideDict[p.filmstripStructure[i].slideID] = 1;
+					}
+
+					console.log(slideDict);
+
+					var removedSlideCnt = 0;
+
+					for(var i=0;i<outlineStructure.length;i++) {
+						outlineStructure[i].startSlideIndex -= removedSlideCnt;
+						outlineStructure[i].endSlideIndex -= removedSlideCnt;
+
+						for(var j=0;j<outlineStructure[i].slideIDs.length;j++) {
+							if(!(outlineStructure[i].slideIDs[j] in slideDict)) {
+								outlineStructure[i].slideIDs.splice(j, 1);
+								outlineStructure[i].endSlideIndex--;
+
+								removedSlideCnt++;
+
+								j--;
+							}
+						}
+
+						if(outlineStructure[i].slideIDs.length <= 0) {
+							outlineStructure.splice(i, 1);
+							i--;
+						}
+					}
+				}
+				else if(diffFlag == 2) { // slides added
+					var addedSlides = [];
+					var prevSlide = -1;
+
+					for(var i=1;i<p.filmstripStructure.length;i++) {
+						if(!slidesFromOutline.includes(p.filmstripStructure[i].slideID)) {
+							addedSlides.push(p.filmstripStructure[i].slideID);
+
+							if(prevSlide == -1) prevSlide = p.filmstripStructure[i-1].slideID;
+						}
+					}
+
+					console.log(addedSlides);
+
+					if(prevSlide == "THIS_IS_FIRST_SLIDE") {
+						for(var i=0;i<outlineStructure.length;i++) {
+							outlineStructure[i].startSlideIndex += numAddedSlides;
+							outlineStructure[i].endSlideIndex += numAddedSlides;
+
+							if(i == 0) {
+								outlineStructure[i].slideIDs.splice(0, 0, ...addedSlides);
+
+								numAddedSlides += addedSlides.length;
+								outlineStructure[i].endSlideIndex += numAddedSlides;
+							}
+						}
+					}
+					else {
+						var numAddedSlides = 0;
+
+						console.log(addedSlides);
+						console.log(prevSlide);
+
+						for(var i=0;i<outlineStructure.length;i++) {
+							console.log(i, numAddedSlides);
+
+							outlineStructure[i].startSlideIndex += numAddedSlides;
+							outlineStructure[i].endSlideIndex += numAddedSlides;
+
+							if(outlineStructure[i].slideIDs.includes(prevSlide)) {
+								var idx = outlineStructure[i].slideIDs.indexOf(prevSlide);
+
+								outlineStructure[i].slideIDs.splice(idx+1, 0, ...addedSlides);
+
+								numAddedSlides += addedSlides.length;
+								outlineStructure[i].endSlideIndex += numAddedSlides;
+							}
+						}
+					}
+				}
+				else { // slide moved
+
+				}
+				
+				updateOutlineSegments();
+			}
+
+			console.log(waitingOutlineIndex);
+
+			if(waitingOutlineIndex != -1) {
+				hideLoadingSlidePlane();
+
+				outlineStructure[waitingOutlineIndex].status = "okay";
+
+				updateOutlineSegments();
+				selectSegment(waitingOutlineIndex);
+
+				waitingOutlineIndex = -1;
+			}
+
 			statusFlag = false;
 			setStatusLight("red");
 
