@@ -2181,17 +2181,15 @@ width: 100%;
 	  margin-left: 10px;
   }
 
-
   #outlineView {
 	  width: 100%;
 	  height: 200px;
-	  border: 1px solid black;
 	  position: relative;
   }
 
   #outlineHeader {
 	  width : 100%;
-	  height: 40px;
+	  height: 30px;
   }
 
   #outlineHeaderTitle {
@@ -2274,6 +2272,7 @@ width: 100%;
 	  float: left;
 	  text-align: center;
 	  box-sizing: border-box;
+	  height: 100%;
   }
 
   .outlineSegmentLabelElement{
@@ -2292,13 +2291,59 @@ width: 100%;
 
   #outlineSegmentLabel {
 	  margin-left: 10px;
+	  display: inline-block;
   }
 
   .outlineSegmentElementSlideIndex {
 	  float: right;
 	  margin-right: 2px;
+	  margin-top: -1px;
   }
 
-  .outlineSegmentElement.selectSegment {
-	  border: 3px solid black;
+  .outlineSegmentElement.selectedSegment {
+	  border: 3px solid #ff6666;
+  }
+
+  #outlineMessageBoxDiv {
+	  position: relative;
+	  width: 100%;
+	  height: calc(100% - 100px);
+  }
+
+  #outlineMessageBoxHeader {
+	  font-weight: bold;
+	  font-size: 20px;
+	  margin-top: 10px;
+	  margin-left: 5px;
+  }
+
+  #outlineMessageBoxContents {
+	  border: 1px solid black;
+	  width: calc(100% - 20px);
+	  margin: 10px;
+	  height: calc(100% - 70px);
+	  overflow: auto;
+  }
+
+  #outlineMessageElements {
+	  position: relative;
+  }
+
+  #outlineMessageAddBtn {
+	  margin-top: 3px;
+	  margin-left: calc(50% - 25px);
+	  margin-bottom: 5px;
+  }
+
+  .outlineMessageElement {
+	  background-color: lightgreen;
+	  margin: 3px;
+	  padding: 5px;
+	  border-radius: 7px;
+	  cursor: pointer;
+  }
+
+  .outlineMessageElementInput {
+	  width: calc(100% - 80px);
+	  font-size: 17px;
   }

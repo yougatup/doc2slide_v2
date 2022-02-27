@@ -92,6 +92,8 @@ var Split = function (ids, options) {
     // All DOM elements in the split should have a common parent. We can grab
     // the first elements parent and hope users read the docs because the
     // behavior will be whacky otherwise.
+    console.log(ids);
+
     var parent = elementOrSelector(ids[0]).parentNode;
     var parentFlexDirection = global.getComputedStyle(parent).flexDirection;
 

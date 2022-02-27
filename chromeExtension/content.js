@@ -230,7 +230,7 @@ function getFilmstripStructure() {
 			var bbar = $(document.createElementNS("http://www.w3.org/2000/svg", "rect")).attr({
 				x: 0,
 				y: 0,
-				width: 10,
+				width: 15,
 				height:100 
 			}).addClass("punch-filmstrip-thumbnail-outlineStrip");
 

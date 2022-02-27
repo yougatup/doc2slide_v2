@@ -74,6 +74,7 @@ var MAX_NUMBER_OF_BULLETS = 3;
 var MAX_NUMBER_OF_SLIDES = 10;
 
 var outlineStructure = [];
+var selectedOutlineIndex = -1;
 var curPresentationDuration = 0;
 
 var waitingOutlineIndex = -1;
@@ -7219,6 +7220,62 @@ async function copyCurrentSlide(slideId) {
 	});
 }
 
+function addBlankMessage(index) {
+	outlineStructure[index].messages.push({
+		status: "blank",
+	});
+
+	updateMessageBox();
+}
+
+function addMessage(index, message, mapping) {
+	outlineStructure[index].messages.push({
+		status: "okay",
+		body: message,
+		mapping: mapping
+	});
+
+	updateMessageBox();
+}
+
+function updateMessageBox() {
+	var html = '';
+
+	if(selectedOutlineIndex == -1) return;
+
+	for(var i=0;i<outlineStructure[selectedOutlineIndex].messages.length;i++) {
+		var msgObj = outlineStructure[selectedOutlineIndex].messages[i];
+
+		console.log(msgObj);
+
+		if(msgObj.status == "okay") {
+			var body = outlineStructure[selectedOutlineIndex].messages[i].body;
+			var mapping = outlineStructure[selectedOutlineIndex].messages[i].mapping;
+
+			html = html +
+				"<div class='outlineMessageElement' index='" + i + "' " +
+				(mapping != null ? "mapping='" + mapping + "' " : "") +
+				"> " + body + "</div>"
+		}
+		else if(msgObj.status == "blank") {
+			html = html +
+				"<div class='outlineMessageElement' index='" + i + "'> " + 
+					"<input class='outlineMessageElementInput' index='" + i + "'> </input>" + 
+					"<button class='outlineMessageElementSubmitBtn' index='" + i + "'> Confirm </button>" + 
+				"</div>"
+		}
+		else if(msgObj.status == "edit") {
+			html = html +
+				"<div class='outlineMessageElement' index='" + i + "'> " + 
+					"<input class='outlineMessageElementInput' index='" + i + "' value='" + msgObj.body + "'> </input>" + 
+					"<button class='outlineMessageElementSubmitBtn' index='" + i + "'> Confirm </button>" + 
+				"</div>"
+		}
+	}
+
+	$("#outlineMessageElements").html(html);
+}
+
 function getLinearSlidesFromOutline() {
 	var returnValue = [];
 
@@ -7314,6 +7371,8 @@ function updateOutlineSegments() {
 	}
 
 	issueEvent("root_highlightSlideThumbnail", {outlineStructure: outlineStructure})
+
+	selectSegment(selectedOutlineIndex);
 }
 
 function genColor() {
@@ -7322,15 +7381,46 @@ function genColor() {
 	return "#" + randomColor;
 }
 
-function selectSegment(index) {
+function selectSegment(index, locateFlag) {
+	selectedOutlineIndex = index;
+
 	$(".outlineSegmentElement").removeClass("selectedSegment");
 
-	$(".outlineSegmentElement[index='" + index + "']").addClass("selectSegment");
+	$(".outlineSegmentElement[index='" + index + "']").addClass("selectedSegment");
 
-	locateSlideDirectly(outlineStructure[index].slideIDs[0]);
+	if(locateFlag) locateSlideDirectly(outlineStructure[index].slideIDs[0]);
 }
 
 $(document).ready(function() {
+	$(document).on("click", "#outlineMessageAddBtn", function(e) {
+		addBlankMessage(selectedOutlineIndex);
+	});
+
+	$(document).on("click", ".outlineMessageElement", function(e) {
+		console.log(e);
+
+		if ($(e.target).hasClass("outlineMessageElement")) {
+			var idx = parseInt($(e.target).attr("index"));
+
+			if (outlineStructure[selectedOutlineIndex].messages[idx].status == "okay") {
+				outlineStructure[selectedOutlineIndex].messages[idx].status = "edit";
+
+				updateMessageBox();
+			}
+		}
+	})
+
+	$(document).on("click", ".outlineMessageElementSubmitBtn", function(e) {
+		var index = parseInt($(e.target).attr("index"));
+		
+		var body = $(".outlineMessageElementInput[index='" + index + "']").val();
+
+		outlineStructure[selectedOutlineIndex].messages[index].status = "okay";
+		outlineStructure[selectedOutlineIndex].messages[index].body = body;
+
+		updateMessageBox();
+	})
+
 	$(document).on("click", ".outlineLabelInputBtn", function(e) {
 		var index = parseInt($(e.target).attr("index"));
 
@@ -7417,6 +7507,7 @@ $(document).ready(function() {
 			var slideID = makeid(10);
 
 			outlineStructure.push({
+				messages: [],
 				status: "need_name",
 				startX: startX,
 				endX: endX,
@@ -9953,7 +10044,7 @@ $(document).ready(function() {
 					}
 				}
 				else { // slide moved
-
+					
 				}
 				
 				updateOutlineSegments();
@@ -9961,15 +10052,26 @@ $(document).ready(function() {
 
 			console.log(waitingOutlineIndex);
 
+			console.log(p.pageID);
+			console.log(outlineStructure);
+
 			if(waitingOutlineIndex != -1) {
 				hideLoadingSlidePlane();
 
 				outlineStructure[waitingOutlineIndex].status = "okay";
 
 				updateOutlineSegments();
-				selectSegment(waitingOutlineIndex);
+				selectSegment(waitingOutlineIndex, true);
 
 				waitingOutlineIndex = -1;
+			}
+			else {
+				for(var i=0;i<outlineStructure.length;i++) {
+					if(outlineStructure[i].slideIDs.includes(p.pageID)) {
+						selectSegment(i, false);
+						updateMessageBox();
+					}
+				}
 			}
 
 			statusFlag = false;
