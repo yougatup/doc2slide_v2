@@ -7411,7 +7411,105 @@ function updateOutlineSegments() {
 		items: $(".outlineSegmentElement"),
 		axis: "x",
 		tolerance: "pointer",
-		distance: 20
+		distance: 20,
+		stop: function(e, ui) {
+			console.log(e);
+			console.log(ui);
+
+			var startPoint = $(ui.item[0]).attr("index");
+
+			var newOutlineStructure = [];
+			var slideIndex = 2;
+			var changeFlag = false;
+
+			$("#outlineSegments").children().each(function(i) {
+				console.log(i);
+				console.log($(this));
+
+				var idx = parseInt($(this).attr("index"));
+
+				if(idx != i) changeFlag = true;
+
+				newOutlineStructure.push(JSON.parse(JSON.stringify(outlineStructure[idx])));
+
+				var lastIdx = newOutlineStructure.length-1;
+
+				newOutlineStructure[lastIdx].startSlideIndex = slideIndex == 2 ? 1 : slideIndex;
+				newOutlineStructure[lastIdx].endSlideIndex = slideIndex + newOutlineStructure[lastIdx].slideIDs.length - 1;
+				newOutlineStructure[lastIdx].startX = lastIdx == 0 ? 0 : newOutlineStructure[lastIdx-1].endX;
+				newOutlineStructure[lastIdx].endX = newOutlineStructure[lastIdx].startX + $("#outlineSegmentDiv").width() * newOutlineStructure[lastIdx].duration / curPresentationDuration;
+
+				slideIndex += newOutlineStructure[lastIdx].slideIDs.length;
+
+				$(this).attr("index", i);
+			})
+
+			if(!changeFlag){
+				return;
+			} 
+
+			showLoadingSlidePlane();
+
+			var startIndex = -1, endIndex = -1;
+
+			for(var i=0;i<outlineStructure.length;i++) {
+				if(outlineStructure[i].slideIDs[0] != newOutlineStructure[i].slideIDs[0]) {
+					startIndex = i;
+					break;
+				}
+			}
+
+			for(var i=outlineStructure.length-1;i>=0;i--) {
+				if(outlineStructure[i].slideIDs[0] != newOutlineStructure[i].slideIDs[0]) {
+					endIndex = i;
+					break;
+				}
+			}
+
+			var requests = [];
+
+			console.log(JSON.parse(JSON.stringify(outlineStructure)));
+			console.log(JSON.parse(JSON.stringify(newOutlineStructure)));
+
+			console.log(startIndex, endIndex);
+
+			if(startIndex == startPoint) {
+				// from start to end
+				requests.push({
+					updateSlidesPosition: {
+						slideObjectIds: outlineStructure[startIndex].slideIDs,
+						insertionIndex: outlineStructure[endIndex].endSlideIndex
+					}
+				});
+
+				waitingOutlineIndex = endIndex;
+			}
+			else {
+				// from end to start
+				requests.push({
+					updateSlidesPosition: {
+						slideObjectIds: outlineStructure[endIndex].slideIDs,
+						insertionIndex: startIndex == 0 ? 1 : outlineStructure[startIndex-1].endSlideIndex
+					}
+				});
+
+				waitingOutlineIndex = startIndex;
+			}
+
+			console.log(requests);
+
+			gapi.client.slides.presentations.batchUpdate({
+				presentationId: PRESENTATION_ID,
+				requests: requests
+			}).then((createSlideResponse) => {
+				console.log(createSlideResponse);
+			});
+
+			outlineStructure = newOutlineStructure;
+
+			updateOutlineSegments();
+
+		}
 	})
 }
 
