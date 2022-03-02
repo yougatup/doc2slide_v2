@@ -2345,7 +2345,7 @@ width: 100%;
   }
 
   .outlineMessageElementInput {
-	  width: calc(100% - 80px);
+	  width: calc(100% - 140px);
 	  font-size: 17px;
   }
 
@@ -2359,4 +2359,13 @@ width: 100%;
 
   .outlineSegmentElement:hover {
 	  background-color: yellow !important;
+  }
+
+  .outlineMessageElementXBtn {
+	  float: right;
+	  margin-right: 5px;
+  }
+
+  .outlineMessageElementSubmitBtn {
+	  margin-right: 5px;
   }

@@ -7255,13 +7255,16 @@ function updateMessageBox() {
 			html = html +
 				"<div class='outlineMessageElement' index='" + i + "' " +
 				(mapping != null ? "mapping='" + mapping + "' " : "") +
-				"> " + body + "</div>"
+				"> " + body + 
+				"<button class='outlineMessageElementRemoveBtn outlineMessageElementXBtn' index='" + i + "'> X </button>" + 
+				"</div>"
 		}
 		else if(msgObj.status == "blank") {
 			html = html +
 				"<div class='outlineMessageElement' index='" + i + "'> " + 
 					"<input class='outlineMessageElementInput' index='" + i + "'> </input>" + 
 					"<button class='outlineMessageElementSubmitBtn' index='" + i + "'> Confirm </button>" + 
+					"<button class='outlineMessageElementRemoveBtn' index='" + i + "'> Cancel </button>" + 
 				"</div>"
 		}
 		else if(msgObj.status == "edit") {
@@ -7269,6 +7272,7 @@ function updateMessageBox() {
 				"<div class='outlineMessageElement' index='" + i + "'> " + 
 					"<input class='outlineMessageElementInput' index='" + i + "' value='" + msgObj.body + "'> </input>" + 
 					"<button class='outlineMessageElementSubmitBtn' index='" + i + "'> Confirm </button>" + 
+					"<button class='outlineMessageElementCancelBtn' index='" + i + "'> Cancel </button>" + 
 				"</div>"
 		}
 	}
@@ -7537,6 +7541,26 @@ function selectSegment(index, locateFlag) {
 }
 
 $(document).ready(function() {
+	$(document).on("click", ".outlineMessageElementRemoveBtn", function(e) {
+		var idx = parseInt($(this).attr("index"));
+
+		outlineStructure[selectedOutlineIndex].messages.splice(idx, 1);
+
+		updateMessageBox();
+	})
+
+	$(document).on("click", ".outlineMessageElementCancelBtn", function(e) {
+		var idx = parseInt($(this).attr("index"));
+
+		outlineStructure[selectedOutlineIndex].messages[idx].status = "okay";
+
+		updateMessageBox();
+	})
+	
+	$(document).on("keydown", function(e) {
+		console.log(e);
+	})
+
 	$(document).on("click", "#outlineMessageAddBtn", function(e) {
 		addBlankMessage(selectedOutlineIndex);
 	});
