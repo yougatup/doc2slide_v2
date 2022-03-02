@@ -17835,6 +17835,110 @@ function iterateWords(pageNumber, startWordIndex, endWordIndex, func, arg) {
 	}
 }
 
+function hideOutlinePopup() {
+  $("#outlinePopup").hide();
+}
+
+function showOutlinePopup(mode) {
+  var objs = $(".wordHighlighted");
+
+  if(objs.length <= 0) return;
+
+  var lastWordObj = objs[objs.length-1];
+
+  var popupObj = $("#outlinePopup");
+
+  var cur = $(lastWordObj);
+
+  for(var i=0;i<100;i++) {
+    console.log(cur);
+
+    if($(cur).hasClass("page")) break;
+
+    cur = $(cur).parent();
+  }
+
+  console.log(cur);
+
+  var pageNumber = parseInt($(cur).attr("data-page-number"));
+
+  console.log(pageNumber);
+
+  var pageTop = $(cur).offset().top;
+  var lastWordTop = $(lastWordObj).offset().top;
+
+  popupObj.css("left", Math.min(640, $(lastWordObj).offset().left))
+  popupObj.css("top", (lastWordTop - pageTop) + (pageNumber-1) * 1161 + 20)
+
+  console.log($(lastWordObj).offset());
+  console.log($(popupObj).css("top"));
+
+  if (mode == "segmentSelect") {
+
+    issueEvent("pdfjs_getSectionTitle", curHighlightInfo, "root_getSectionTitle").then(result => {
+      var title = result.detail.title;
+
+      $(popupObj).css("width", "300px");
+      $(popupObj).css("height", "80px");
+
+      $(popupObj).html(
+        '<div id="outlinePopupMessage"> Add this highlight to </div>' +
+        '<div id="outlinePopupCandidate">' +
+        '<input id="outlinePopupInput" value="' + title + '"> </input>' +
+        '<button id="outlinePopupConfirmBtn"> Confirm </button>' +
+        '</div>'
+      )
+
+      var myList = sectionStructure.map((elem) => { return elem.text })
+
+      $('#outlinePopupInput').autocomplete({
+        minLength: 0,
+        source: function (request, response) {
+          var data = $.grep(myList, function (value) {
+            return value.toLowerCase().includes(request.term.toLowerCase());
+          });
+
+          response(data);
+        }
+      }).focus(function () {
+        $(this).autocomplete("search", "");
+      });
+
+      $(popupObj).show();
+    });
+  }
+  else if(mode == "confirmation"){
+    $("#outlinePopupMessage").hide();
+    $("#outlinePopupCandidate").hide();
+
+    $(popupObj).css("height", "150px");
+    $(popupObj).css("width", "350px");
+
+    var userInputSegment = $("#outlinePopupInput").val();
+
+    $("#outlineConfirmationMessageDiv").remove();
+
+    $(popupObj).append("<div id='outlineConfirmationMessageDiv'>" + 
+    " <div class='outlineConfirmationMessageText'> The current timeline does not have </div>" + 
+    " <div class='outlineConfirmationMessageUserSegment'> " + userInputSegment + " </div> " + 
+    " <div class='outlineConfirmationMessageText'> Do you want to create a new segment? </div>" +  
+    " <div class='outlineConfirmationMessageBtnDiv'> " + 
+    " <button id='outlineConfirmationMessageConfirmBtn'> Yes </button> " + 
+    " <button id='outlineConfirmationMessageCancelBtn'> No </button> "  + 
+    " </div> "
+    )
+  }
+  else if(mode == "confirmationCancel") {
+    $("#outlineConfirmationMessageDiv").remove();
+
+    $(popupObj).css("width", "300px");
+    $(popupObj).css("height", "80px");
+
+    $("#outlinePopupMessage").show();
+    $("#outlinePopupCandidate").show();
+  }
+}
+
 function getHighlightedTextWithMappingID(mappingID) {
 	var result = '';
 
@@ -18029,6 +18133,62 @@ $(document).ready(function() {
 			$(".wordHighlighted").removeClass("wordHighlighted");
 		}
 
+    $(document).on("click", "#outlineConfirmationMessageConfirmBtn", function(e) {
+      var segmentTitle = $("#outlinePopupInput").val();
+      var text = getHighlightedText(curHighlightInfo.pageNumber, curHighlightInfo.startWordIndex, curHighlightInfo.endWordIndex);
+
+      var pageNumber = curHighlightInfo.pageNumber;
+      var startWordIndex = curHighlightInfo.startWordIndex;
+      var endWordIndex = curHighlightInfo.endWordIndex;
+
+      issueEvent("pdfjs_addSegment", { title: segmentTitle, 
+                                       body: text,
+                                       pageNumber: pageNumber,
+                                       startWordIndex: startWordIndex,
+                                       endWordIndex: endWordIndex,
+                                       text: text
+                                      }); 
+    })
+
+  $(document).on("root_sendMappingIdentifier", function (result) {
+    var p = result.detail;
+
+    console.log(p);
+
+    applyClassToHighlight(p.pageNumber, p.startWordIndex, p.endWordIndex, "wordMapped", {
+      mappingID: p.mappingID
+    });
+
+    hideOutlinePopup();
+  });
+    $(document).on("click", "#outlineConfirmationMessageCancelBtn", function(e) {
+        showOutlinePopup("confirmationCancel");
+    })
+
+    $(document).on("click", "#outlinePopupConfirmBtn", function(e) {
+      var pageNumber = curHighlightInfo.pageNumber;
+      var startWordIndex = curHighlightInfo.startWordIndex;
+      var endWordIndex = curHighlightInfo.endWordIndex;
+
+      var segmentTitle = $("#outlinePopupInput").val();
+      var text = getHighlightedText(curHighlightInfo.pageNumber, curHighlightInfo.startWordIndex, curHighlightInfo.endWordIndex);
+      
+      console.log(segmentTitle);
+      console.log(text);
+
+      issueEvent("pdfjs_addHighlight", { title: segmentTitle, 
+                                         text: text,
+                                         pageNumber: pageNumber,
+                                         startWordIndex: startWordIndex,
+                                         endWordIndex: endWordIndex,
+      },
+          "root_segmentNotFound").then( result => {
+            var p = result.detail;
+
+            showOutlinePopup("confirmation");
+          });
+    });
+
 		$(document).on("root_getStructureHighlight", function(e) {
 			console.log(e.detail);
 
@@ -18118,6 +18278,13 @@ $(document).ready(function() {
 			}
 		});
 
+    function isInOutline(target) {
+      if($("#outlinePopup").find(target).length > 0 || 
+         $(".ui-autocomplete-input").find(target).length > 0 || 
+         $(".ui-autocomplete").find(target).length > 0) return true;
+      else return false;
+    }
+
 		$(document).on("mouseup", function(e) {
 			mouseDown = 0;
 
@@ -18151,7 +18318,9 @@ $(document).ready(function() {
 				else {
 					if(curHighlightInfo.pageNumber != -1) {
 						var text = getHighlightedText(curHighlightInfo.pageNumber, curHighlightInfo.startWordIndex, curHighlightInfo.endWordIndex);
-						
+       
+            showOutlinePopup("segmentSelect");
+            /*
 						issueEvent("pdfjs_highlighted", {
 							text: text,
 							pageNumber: curHighlightInfo.pageNumber,
@@ -18163,13 +18332,18 @@ $(document).ready(function() {
 							applyClassToHighlight(p.pageNumber, p.startWordIndex, p.endWordIndex, "wordMapped", {
 								mappingID: p.mappingID
 							});
-						});
+            });
+            */
 					}
 
-					issueEvent("pdfjs_extensionTemp", null);
+          issueEvent("pdfjs_extensionTemp", null);
 				}
 			}
-			else clearCurHighlightInfo();
+      else if(isInOutline(target)) ; // do nothing
+      else {
+        clearCurHighlightInfo();
+        hideOutlinePopup();
+      }
 
 		});
 

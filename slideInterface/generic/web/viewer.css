@@ -2591,3 +2591,56 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
       color: white;
  
     }
+
+
+#outlinePopup {
+    background-color: white;
+    position: absolute;
+    z-index: 987987987;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    display: none;
+}
+
+#outlinePopupMessage {
+    font-size: 15px;
+}
+
+#outlinePopupCandidate {
+    margin-top: 5px;
+}
+
+#outlinePopupInput {
+    font-size: 12px;
+    width: 200px;
+}
+#outlinePopupConfirmBtn {
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.ui-autocomplete {
+    z-index: 987987988
+}
+
+.outlineConfirmationMessageUserSegment {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.outlineConfirmationMessageBtnDiv {
+    text-align: center;
+    margin-top: 5px;
+}
+
+#outlineConfirmationMessageConfirmBtn {
+    padding: 3px;
+}
+
+#outlineConfirmationMessageCancelBtn {
+    padding: 3px;
+}

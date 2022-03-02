@@ -7287,38 +7287,68 @@ function getLinearSlidesFromOutline() {
 }
 
 function handleOutlineEvent(relX, p) {
+	/*
 	if(outlineStructure.length > 0 && outlineStructure[outlineStructure.length-1].endX >= relX) {
 		// dupliate. 
 
+		$("#outlineSegmentEventLeft").css("border-right",  "0px");
 		$("#outlineSegmentEventLeft").css("left", "0px");
 		$("#outlineSegmentEventLeft").width(relX);
 
 		$("#outlineSegmentEventLeft").html('');
 		$("#outlineSegmentLabelTemp").html('');
+
+		var curHoveredIndex = -1;
+
+		for(var i=0;i<outlineStructure.length;i++) {
+			if(outlineStructure[i].startX <= relX && relX <= outlineStructure[i].endX) {
+				curHoveredIndex = i;
+				break;
+			}
+		}
+
+		if(curHoveredIndex != -1) {
+			var hoveredObj = $(".outlineSegmentElement[index='" + curHoveredIndex + "']");
+
+			if(!$(hoveredObj).hasClass("outlineSegmentHovered") && !$(hoveredObj).hasClass("outlineSegmentElementWaiting")) {
+				$(".outlineSegmentHovered").removeClass("outlineSegmentHovered");
+
+				$(hoveredObj).addClass("outlineSegmentHovered");
+			}
+		}
 	}
 	else {
+		*/
+		// if((".outlineSegmentEventLeftWaiting").length > 0) return;
+
+		var len = $(".outlineSegmentEventLeftWaiting").length;
+		if(len > 0) return;
+
 		var thisTime = Math.max(Math.min(p, 1), 0) * curPresentationDuration;
 		var x = 0;
-
+/*
 		if(outlineStructure.length > 0){
 			x = outlineStructure[outlineStructure.length-1].endX;
 			thisTime = thisTime - outlineStructure[outlineStructure.length-1].endTime;
 		} 
+		*/
 
 		var thisMin = parseInt(thisTime);
 		var thisSec = parseInt((thisTime - parseInt(thisTime)) * 60)
 
-		$("#outlineSegmentEventLeft").css("left", x + "px");
-		$("#outlineSegmentEventLeft").width(relX - x);
+		$("#outlineSegmentEventLeft").css("border-right",  "5px solid #ff7777");
+
+		// $("#outlineSegmentEventLeft").css("left", x + "px");
+		$("#outlineSegmentEventLeft").width(relX);
 
 		$("#outlineSegmentEventLeft").prop("duration", thisTime);
 		$("#outlineSegmentEventLeft").html(thisMin + ":" + thisSec);
 
-		$("#outlineSegmentLabelTemp").css("left", x + "px");
-		$("#outlineSegmentLabelTemp").width(relX - x);
+		// $("#outlineSegmentLabelTemp").css("left", x + "px");
+		$("#outlineSegmentLabelTemp").width(relX);
 
 		$("#outlineSegmentLabelTemp").html('Create a segment');
-	}
+	// }
 }
 
 function getOutlineLabel(index) {
@@ -7340,7 +7370,7 @@ function updateOutlineSegments() {
 	for(var i=0;i<outlineStructure.length;i++) {
 		htmls = htmls + 
 
-		"<div class='outlineSegmentElement' " + 
+		"<div class='outlineSegmentElement " + (outlineStructure[i].status == "need_name" ? "outlineSegmentElementWaiting" : "") + "' " + 
 			 "index='" + i + "'> " + 
 				parseInt(outlineStructure[i].duration) + ":" + parseInt((outlineStructure[i].duration - parseInt(outlineStructure[i].duration)) * 60) + 
 				( outlineStructure[i].status == "okay" ? 
@@ -7370,13 +7400,28 @@ function updateOutlineSegments() {
 		$(".outlineSegmentLabelElement[index='" + i + "']").width(outlineStructure[i].endX - outlineStructure[i].startX);
 	}
 
+	$("#outlineSegmentEvent").css("left", outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length-1].endX);
+	$("#outlineSegmentEvent").css("width", $("#outlineSegments").width() - (outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length-1].endX) );
+
 	issueEvent("root_highlightSlideThumbnail", {outlineStructure: outlineStructure})
 
 	selectSegment(selectedOutlineIndex);
+
+	$("#outlineSegments").sortable({
+		items: $(".outlineSegmentElement"),
+		axis: "x",
+		tolerance: "pointer",
+		distance: 20
+	})
 }
 
 function genColor() {
-	var randomColor = Math.floor(Math.random()*16777215).toString(16);
+	function pad(num, size) {
+		var s = "000000000" + num;
+		return s.substr(s.length-size);
+	}
+
+	var randomColor = pad(Math.floor(Math.random()*16777215).toString(16), 6)
 
 	return "#" + randomColor;
 }
@@ -7389,12 +7434,20 @@ function selectSegment(index, locateFlag) {
 	$(".outlineSegmentElement[index='" + index + "']").addClass("selectedSegment");
 
 	if(locateFlag) locateSlideDirectly(outlineStructure[index].slideIDs[0]);
+
+	updateMessageBox();
 }
 
 $(document).ready(function() {
 	$(document).on("click", "#outlineMessageAddBtn", function(e) {
 		addBlankMessage(selectedOutlineIndex);
 	});
+
+	$(document).on("click", ".outlineSegmentElement", function(e) {
+		var idx = parseInt($(e.target).attr("index"));
+
+		selectSegment(idx, true);
+	})
 
 	$(document).on("click", ".outlineMessageElement", function(e) {
 		console.log(e);
@@ -7421,6 +7474,10 @@ $(document).ready(function() {
 		updateMessageBox();
 	})
 
+	$(document).on("mouseleave", "#outlineSegmentEvent", function(e) {
+		$(".outlineSegmentHovered").removeClass("outlineSegmentHovered");
+	})
+	
 	$(document).on("click", ".outlineLabelInputBtn", function(e) {
 		var index = parseInt($(e.target).attr("index"));
 
@@ -7428,6 +7485,9 @@ $(document).ready(function() {
 
 		outlineStructure[index].label = inputLabel;
 		outlineStructure[index].status = "ready_slide";
+
+		$(".outlineSegmentElementWaiting").removeClass("outlineSegmentElementWaiting");
+		$("#outlineSegmentEventLeft").removeClass("outlineSegmentEventLeftWaiting");
 
 		var slideIndex = -1;
 
@@ -7486,16 +7546,29 @@ $(document).ready(function() {
 
 		console.log(relX);
 
+		/*
 		if(outlineStructure.length > 0 && outlineStructure[outlineStructure.length-1].endX > relX) {
-			for(var j=0;j<outlineStructure.length;j++) {
-				if(outlineStructure[j].startX <= relX && relX <= outlineStructure[j].endX) {
-					
-				}
+			var hoveredObj = $(".outlineSegmentHovered") // it should be hovered.
+
+			if($(hoveredObj).length <= 0) {
+				console.log("*** SOMETHING WENT WRONG ***");
 			}
-			// within
+			else {
+				var outlineIndex = $(hoveredObj).attr("index");
+
+				console.log(outlineIndex);
+
+				selectSegment(outlineIndex, true);
+			}
 		}
 		else {
-			var leftValue = parseFloat(String($("#outlineSegmentEventLeft").css("left")).slice(0, -2))
+			*/
+			var curWidth = $("#outlineSegmentEvent").width();
+			var curLeft = $("#outlineSegmentEvent").css("left")
+
+			curLeft = parseFloat(curLeft.substr(0, curLeft.length-2));
+
+			var leftValue = parseFloat(String($("#outlineSegmentEvent").css("left")).slice(0, -2))
 			var widthValue = $("#outlineSegmentEventLeft").width();
 			
 			var startX = leftValue;
@@ -7523,15 +7596,17 @@ $(document).ready(function() {
 
 			console.log(outlineStructure);
 
+			$("#outlineSegmentEventLeft").addClass("outlineSegmentEventLeftWaiting");
+
 			updateOutlineSegments();
-		}
+		// }
 	})
 
 	$(document).on("mousemove", "#outlineSegmentEvent", function(e) {
 		var relX = e.pageX - $(this).offset().left;
 		var relY = e.pageY - $(this).offset().top;
 
-		var totalWidth = $("#outlineSegmentEvent").width();
+		var totalWidth = $("#outlineSegmentDiv").width();
 
 		relX = Math.max(Math.min(relX, totalWidth), 0);
 
@@ -9971,10 +10046,14 @@ $(document).ready(function() {
 					console.log(slideDict);
 
 					var removedSlideCnt = 0;
+					var delta_X = 0;
 
 					for(var i=0;i<outlineStructure.length;i++) {
 						outlineStructure[i].startSlideIndex -= removedSlideCnt;
 						outlineStructure[i].endSlideIndex -= removedSlideCnt;
+
+						outlineStructure[i].startX -= delta_X;
+						outlineStructure[i].endX -= delta_X;
 
 						for(var j=0;j<outlineStructure[i].slideIDs.length;j++) {
 							if(!(outlineStructure[i].slideIDs[j] in slideDict)) {
@@ -9988,6 +10067,7 @@ $(document).ready(function() {
 						}
 
 						if(outlineStructure[i].slideIDs.length <= 0) {
+							delta_X += (outlineStructure[i].endX - outlineStructure[i].startX);
 							outlineStructure.splice(i, 1);
 							i--;
 						}
@@ -10809,6 +10889,148 @@ $(document).ready(function() {
 			});
 		});
 
+		$(document).on("pdfjs_addSegment", function(e) {
+			var p = e.detail;
+
+			var startX = outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length-1].endX;
+			var duration = 1;
+			var width = duration / curPresentationDuration * $("#outlineSegmentEvent").width();
+			var endX = startX + width;
+
+			var slideID = makeid(10);
+			var slideIndex = outlineStructure.length <= 0 ? 2 : outlineStructure[outlineStructure.length-1].endSlideIndex+1;
+
+			outlineStructure.push({
+				messages: [],
+				status: "ready_slide",
+				startX: startX,
+				endX: endX,
+				duration: duration,
+				startSlideID: slideID,
+				startSlideIndex: slideIndex,
+				endSlideIndex: slideIndex,
+				slideIDs: [slideID],
+				colorCode: genColor(),
+				startTime: outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length-1].endTime,
+				endTime: (outlineStructure.length <= 0 ? duration : outlineStructure[outlineStructure.length-1].endTime + duration),
+				label: p.title
+			})
+
+			console.log(outlineStructure);
+
+			var requests = [];
+
+			requests.push({
+				createSlide: {
+					objectId: slideID,
+					insertionIndex: slideIndex-1,
+					slideLayoutReference: {
+						predefinedLayout: 'TITLE_AND_BODY'
+					},
+					/*
+					placeholderIdMappings: [{
+						objectId: titleObjectID,
+						layoutPlaceholder: {
+							type: "TITLE",
+							index: 0
+						}
+					}, {
+						objectId: bodyObjectID,
+						layoutPlaceholder: {
+							type: "BODY",
+							index: 0
+						}
+					}
+					]*/
+				}
+			});
+
+			showLoadingSlidePlane();
+			waitingOutlineIndex = outlineStructure.length-1;
+
+			gapi.client.slides.presentations.batchUpdate({
+				presentationId: PRESENTATION_ID,
+				requests: requests
+			}).then((createSlideResponse) => {
+				console.log(createSlideResponse);
+			});
+
+			console.log(p);
+
+			registerHighlight(p).then(mapping => {
+				console.log(mapping);
+
+				addMessage(outlineStructure.length-1, p.body, mapping.key);
+					
+				issueEvent("root_sendMappingIdentifier", {
+					mappingID: mapping.key,
+					pageNumber: p.pageNumber,
+					startWordIndex: p.startWordIndex,
+					endWordIndex: p.endWordIndex
+				});
+			});
+
+			updateOutlineSegments();
+		})
+
+		$(document).on("pdfjs_getSectionTitle", function(e) {
+			var p = e.detail;
+
+			console.log(p);
+			console.log(structureHighlightDB);
+
+			var result = '';
+
+			for(var k in structureHighlightDB) {
+				console.log(k);
+
+				if(structureHighlightDB[k].pageNumber < p.pageNumber || 
+				   structureHighlightDB[k].pageNumber == p.pageNumber && 
+					structureHighlightDB[k].startWordIndex <= p.startWordIndex) result = structureHighlightDB[k].text;
+				else break;
+			}
+
+			issueEvent("root_getSectionTitle", { title: result });
+		});
+
+		$(document).on("pdfjs_addHighlight", function(e) {
+			var p = e.detail;
+
+			console.log(p);
+
+			var flag = false;
+			var index = -1;
+
+			for(var i=0;i<outlineStructure.length;i++) {
+				if(outlineStructure[i].label == p.title) {
+					flag = true;
+					index = i;
+
+					break;
+				}
+			}
+
+			if(!flag) {
+				issueEvent("root_segmentNotFound", p);
+			}
+			else {
+				registerHighlight(p).then(mapping => {
+					console.log(mapping);
+
+					addMessage(index, p.text, mapping.key);
+
+					issueEvent("root_sendMappingIdentifier", {
+						mappingID: mapping.key,
+						pageNumber: p.pageNumber,
+						startWordIndex: p.startWordIndex,
+						endWordIndex: p.endWordIndex
+					});
+				});
+
+				updateMessageBox();
+			}
+		})
+
 		$(document).on("pdfjs_highlighted", function(e) {
 			var p = e.detail;
 //			var info = organizeHighlightOnSections();
@@ -10816,6 +11038,7 @@ $(document).ready(function() {
 		// 	showLoadingSlidePlane();
 
 			registerHighlight(p).then(mapping => {
+				/*
 				return automaticallyPutContents(p, mapping).then(() => {
 					issueEvent("root_sendMappingIdentifier", {
 						mappingID: mapping.key,
@@ -10824,6 +11047,7 @@ $(document).ready(function() {
 						endWordIndex: p.endWordIndex
 					});
 				})
+				*/
 			});
 
 			/*

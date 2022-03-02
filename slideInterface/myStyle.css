@@ -2273,6 +2273,7 @@ width: 100%;
 	  text-align: center;
 	  box-sizing: border-box;
 	  height: 100%;
+	  cursor: pointer;
   }
 
   .outlineSegmentLabelElement{
@@ -2346,4 +2347,16 @@ width: 100%;
   .outlineMessageElementInput {
 	  width: calc(100% - 80px);
 	  font-size: 17px;
+  }
+
+  .outlineSegmentHovered {
+	  border: 3px dashed black;
+  }
+
+  .outlineSegmentEventLeftWaiting {
+	  border: 0px !important;
+  }
+
+  .outlineSegmentElement:hover {
+	  background-color: yellow !important;
   }

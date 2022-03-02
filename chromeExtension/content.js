@@ -43,7 +43,13 @@ var eventList = {
 	"root_getDocSlideStructure": ["root", "extension"],
 	"extension_deletionCheck": ["extension", "root"],
 	"extension_filmstripInfo": ["extension", "root"],
-	"root_highlightSlideThumbnail": ["root", "extension"]
+	"root_highlightSlideThumbnail": ["root", "extension"],
+	"pdfjs_addHighlight": ["pdfjs", "root"],
+	"root_segmentNotFound": ["root", "pdfjs"],
+	"pdfjs_addSegment": ["pdfjs", "root"],
+	"pdfjs_getSectionTitle": ["pdfjs", "root"],
+	"root_getSectionTitle": ["root", "pdfjs"]
+
 }
 
 var locateSlideID = '';
