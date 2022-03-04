@@ -2369,3 +2369,10 @@ width: 100%;
   .outlineMessageElementSubmitBtn {
 	  margin-right: 5px;
   }
+
+  #slideDiv {
+	  height: calc(100% - 90px);
+	  width: 100%;
+	  box-sizing: border-box;
+	  padding-left: 20px;
+  }
