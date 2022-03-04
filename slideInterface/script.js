@@ -684,6 +684,13 @@ async function createSlide(presentationIDToAdapt, contents, layoutSlideID, style
 }
 
 async function initializeDB() {
+	var res = await postRequest(
+		API_URL + "get_presentation_info", {
+			presentationId: 0
+		}
+	);
+
+	console.log(res);
 	// testGAPICall();
 
 /*
