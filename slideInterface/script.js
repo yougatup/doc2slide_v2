@@ -153,13 +153,140 @@ function appendDocumentStructureRow() {
 }
 
 async function getExamplePresentationInfo() {
-	var res = await postRequest(API_URL+'get_presentation_info');
+	var res = await postRequest(
+		API_URL + "get_presentation_info", {
+			presentationId: 0
+		}
+	);
 
-	console.log(res);
+	for(var i=0;i<res.data.outline.length;i++) {
+		res.data.outline[i].colorCode = genColor();
+	}
+
+	examplePresentations.push({
+		outline: res.data.outline,
+		paperSentences: res.data.paperSentences,
+		scriptSentences: res.data.scriptSentences,
+		slideInfo: res.data.slideInfo
+	})
+}
+
+function getKeywordDiv(k) {
+	var result = '';
+
+	for(var i=0;i<k.length;i++) {
+		result = result + "<div class='examplePresentationKeyword'> " + k[i] + "</div>"
+	}
+
+	return "<div class='examplePresentationKeywordDiv'> " + result + "</div>";
+}
+
+function getDurationString(d) {
+	return parseInt(d) + ":" + ("00" + String(parseInt((d- parseInt(d)) * 60))).substring(2)
+}
+
+function getOutlineDiv(outline, slides) {
+	var width = $("#examplePresentationListBody").width() - 60;
+	var result = "<div class='examplePresentationOutline'>" ;
+
+	var presentationDuration = slides[slides.length-1].endTime - slides[0].startTime;
+
+	console.log(outline);
+
+	result = result + "<div class='examplePresentationOutlineSegmentDiv'>"
+	for(var i=0;i<outline.length;i++) {
+		var duration = (slides[outline[i].endSlideIndex].endTime - slides[outline[i].startSlideIndex].startTime) 
+		var segmentWidth = duration / presentationDuration * 100;
+
+		duration = duration / 60;
+ 
+		result = result +
+			"<div class='outlineSegmentElement exampleSegmentElement' segmentIndex='" + i + "' style='width: " + segmentWidth + "%; background-color: " + outline[i].colorCode + "'>" + 
+				getDurationString(duration) + 
+			"</div>"
+	}
+	result = result + "</div>"
+
+	result = result + "<div class='examplePresentationOutlineSegmentLabelDiv'>"
+
+	for(var i=0;i<outline.length;i++) {
+		var duration = (slides[outline[i].endSlideIndex].endTime - slides[outline[i].startSlideIndex].startTime) 
+		var segmentWidth = duration / presentationDuration * 100;
+
+		duration = duration / 60;
+ 
+		result = result +
+			"<div class='outlineSegmentLabelElement exampleLabelElement' segmentIndex='" + i + "' style='width: " + segmentWidth + "%;'>" + 
+				outline[i].sectionTitle + 
+			"</div>"
+	}
+
+	result = result + "</div>"
+	result = result + "</div>"
+
+	return result;
+}
+
+function getSlideThumbnail(presentationIndex, outline, slides) {
+	var result = '';
+
+	for(var i=0;i<outline.length;i++) {
+		result = result + "<div class='examplePresentationSlideThumbnailOutlineSegment' segmentIndex='" + i + "' style='background-color: " + outline[i].colorCode + "'> ";
+
+		for(var j=outline[i].startSlideIndex;j<(i >= outline.length-1 ? slides.length : outline[i+1].startSlideIndex);j++) {
+			result = result + "<div class='examplePresentationSlideThumbnailImageDiv'> " + 
+				"<img class='examplePresentationSlideThumbnailImage' " + 
+				"src='http://localhost:8000/slideThumbnail/" + presentationIndex + "/images/" + j + ".jpg'> </img>" + 
+				"<div class='examplePresentationSlideThumbnailLabel'> " + 
+					getDurationString(slides[j].endTime - slides[j].startTime) + 
+				"</div>" + 
+			"</div>"
+		}
+
+		result = result + "</div>"
+	}
+
+	return "<div class='examplePresentationSlideThumbnailDiv'> " + result + "</div>";
+}
+
+function getScriptDiv(slides) {
+	var result = '';
+
+	for(var i=0;i<slides.length;i++) {
+		result = result + "<div class='examplePresentationScriptInstance' index='" + i + "'>" +
+							"<div class='examplePresentationScriptHeader'>"  +
+								"<div class='examplePresentationScriptHeaderInside'>" + i + "</div>" + 
+							"</div>" + 
+							"<div class='examplePresentationScriptBody'>" + slides[i].script + "</div>" +  
+					  	  "</div>"
+	}
+
+	return "<div class='examplePresentationScriptDiv'>" + result + "</div>";
+}
+
+function updateExamplePresentation() {
+	console.log("??");
+
+	var title = "Seeing Beyond Expert Blind Spots";
+	var keywords = ["HCI education", "Instructor belief", "Learning@Scale"];
+
+	var resultHtml = '';
+
+	for(var i=0;i<examplePresentations.length;i++) {
+		resultHtml = resultHtml + 
+				"<div class='examplePresentationInstance' index='" + i + "'> " + 
+					"<div class='examplePresentationInstanceTitle'>" + title + "</div>" + 
+					getKeywordDiv(keywords) + 
+					getOutlineDiv(examplePresentations[i].outline, examplePresentations[i].slideInfo) + 
+					getSlideThumbnail(0, examplePresentations[i].outline, examplePresentations[i].slideInfo) + 
+					getScriptDiv(examplePresentations[i].slideInfo) + 
+				"</div>"
+	}
+
+	$("#examplePresentationListBody").html(resultHtml);
 }
 
 async function prepare() {
-	await getExamplePresentationInfo();
     initializeGAPI();
 /*
     Split(['#leftPlane', '#slidePlane'], {
@@ -684,13 +811,12 @@ async function createSlide(presentationIDToAdapt, contents, layoutSlideID, style
 }
 
 async function initializeDB() {
-	var res = await postRequest(
-		API_URL + "get_presentation_info", {
-			presentationId: 0
-		}
-	);
+	var res = await getExamplePresentationInfo();
+
+	updateExamplePresentation()
 
 	console.log(res);
+
 	// testGAPICall();
 
 /*
@@ -4731,11 +4857,13 @@ function makeSlideTransition(presentationID, curSlideIndex, dir) {
 	}
 }
 
+/*
 function getSlideThumbnail(slide) {
 	return "<div class='slideThumbnailDiv'>" + 
 				"<img class='slideThumbnailImage' src='" + slide.thumbnailURL + "'> </img>" +
 			"</div>"
 }
+*/
 
 function slideDeckAdaptationDivAppear(presentationID) {
 	if (presentationID in slideDeckInfo) {
@@ -7533,14 +7661,12 @@ function updateOutlineSegments() {
 }
 
 function genColor() {
-	function pad(num, size) {
-		var s = "000000000" + num;
-		return s.substr(s.length-size);
-	}
+	let color = "#";
 
-	var randomColor = pad(Math.floor(Math.random()*16777215).toString(16), 6)
+	for (let i = 0; i < 3; i++)
+		color += ("0" + Math.floor(((1 + Math.random()) * Math.pow(16, 2)) / 2).toString(16)).slice(-2);
 
-	return "#" + randomColor;
+	return color;
 }
 
 function selectSegment(index, locateFlag) {
