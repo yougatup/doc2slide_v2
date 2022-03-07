@@ -73,6 +73,7 @@ var T = null, C = null;
 var MAX_NUMBER_OF_BULLETS = 3;
 var MAX_NUMBER_OF_SLIDES = 10;
 
+var examplePresentations = [];
 var outlineStructure = [];
 var selectedOutlineIndex = -1;
 var curPresentationDuration = 0;
@@ -151,7 +152,14 @@ function appendDocumentStructureRow() {
 	);
 }
 
+async function getExamplePresentationInfo() {
+	var res = await postRequest(API_URL+'get_presentation_info');
+
+	console.log(res);
+}
+
 async function prepare() {
+	await getExamplePresentationInfo();
     initializeGAPI();
 /*
     Split(['#leftPlane', '#slidePlane'], {
