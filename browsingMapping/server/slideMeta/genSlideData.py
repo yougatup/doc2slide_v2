@@ -5,11 +5,11 @@ import pandas as pd
 import os
 
 flag = 0 # 1 : already created, 0: newly create
-datasetFile = "../videoDataset/chi2019/dataset_chi2018.csv"
+datasetFile = "../videoDataset/chi2019/dataset_chi2019.csv"
 
-paperDataPath = "../videoDataset/chi2019/papers_chi2018/"
-subtitleDataPath = "../videoDataset/chi2019/subtitle_chi2018/"
-videoDataPath = "../videoDataset/chi2019/video_chi2018/"
+paperDataPath = "../videoDataset/chi2019/papers_chi2019/"
+subtitleDataPath = "../videoDataset/chi2019/subtitle_chi2019/"
+videoDataPath = "../videoDataset/chi2019/video_chi2019/"
 
 def getKeyword() :
     import csv
