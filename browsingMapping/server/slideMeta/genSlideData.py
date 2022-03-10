@@ -91,6 +91,7 @@ def getSectionStructure() :
     paper_s.close()
 
 
+# dataFile = pd.read_csv(datasetFile, encoding_errors='ignore')
 dataFile = pd.read_csv(datasetFile)
 cnt = 0
 
