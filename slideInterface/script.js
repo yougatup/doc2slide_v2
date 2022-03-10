@@ -152,10 +152,10 @@ function appendDocumentStructureRow() {
 	);
 }
 
-async function getExamplePresentationInfo() {
+async function getExamplePresentationInfo(r) {
 	var res = await postRequest(
 		API_URL + "get_presentation_info", {
-			presentationId: 0
+			presentationId: r
 		}
 	);
 
@@ -163,11 +163,16 @@ async function getExamplePresentationInfo() {
 		res.data.outline[i].colorCode = genColor();
 	}
 
+	console.log(res);
+
 	examplePresentations.push({
+		index: r, 
 		outline: res.data.outline,
 		paperSentences: res.data.paperSentences,
 		scriptSentences: res.data.scriptSentences,
-		slideInfo: res.data.slideInfo
+		slideInfo: res.data.slideInfo,
+		title: "metaInfo" in res.data ? res.data.metaInfo.title : 'TEMP_TITLE',
+		keywords: "metaInfo" in res.data ? res.data.metaInfo.keywords : ["keyword 1", "keyword 2", "keyword 3"]
 	})
 }
 
@@ -238,7 +243,7 @@ function getSlideThumbnail(presentationIndex, outline, slides) {
 				"<img class='examplePresentationSlideThumbnailImage' " + 
 				"src='http://localhost:8000/slideThumbnail/" + presentationIndex + "/images/" + j + ".jpg'> </img>" + 
 				"<div class='examplePresentationSlideThumbnailLabel'> " + 
-					getDurationString(slides[j].endTime - slides[j].startTime) + 
+					getDurationString((slides[j].endTime - slides[j].startTime) / 60) + 
 				"</div>" + 
 			"</div>"
 		}
@@ -275,10 +280,10 @@ function updateExamplePresentation() {
 	for(var i=0;i<examplePresentations.length;i++) {
 		resultHtml = resultHtml + 
 				"<div class='examplePresentationInstance' index='" + i + "'> " + 
-					"<div class='examplePresentationInstanceTitle'>" + title + "</div>" + 
-					getKeywordDiv(keywords) + 
+					"<div class='examplePresentationInstanceTitle'>" + examplePresentations[i].title + "</div>" + 
+					getKeywordDiv(examplePresentations[i].keywords) + 
 					getOutlineDiv(examplePresentations[i].outline, examplePresentations[i].slideInfo) + 
-					getSlideThumbnail(0, examplePresentations[i].outline, examplePresentations[i].slideInfo) + 
+					getSlideThumbnail(examplePresentations[i].index, examplePresentations[i].outline, examplePresentations[i].slideInfo) + 
 					getScriptDiv(examplePresentations[i].slideInfo) + 
 				"</div>"
 	}
@@ -811,11 +816,14 @@ async function createSlide(presentationIDToAdapt, contents, layoutSlideID, style
 }
 
 async function initializeDB() {
-	var res = await getExamplePresentationInfo();
+	await getExamplePresentationInfo(4);
+	await getExamplePresentationInfo(6);
+	await getExamplePresentationInfo(7);
+	await getExamplePresentationInfo(9);
 
 	updateExamplePresentation()
 
-	console.log(res);
+	// console.log(res);
 
 	// testGAPICall();
 

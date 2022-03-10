@@ -2398,6 +2398,8 @@ width: 100%;
   #tabs-slide {
 	  padding-top: 10px;
 	  padding-left: 0px;
+	  overflow: auto;
+	  height: 100%;
   }
 
   #examplePresentationListDivTitle {
@@ -2450,7 +2452,12 @@ width: 100%;
 	  margin-left: 5px;
 	  margin-right: 5px;
 	  border-radius: 10px;
-	  height: 100px;
+	  height: 110px;
+  }
+
+  .examplePresentationSlideThumbnailImage {
+	  width: 100%;
+	  height: 100%;
   }
 
   .examplePresentationSlideThumbnailImageDiv {
@@ -2540,3 +2547,9 @@ width: 100%;
   .examplePresentationOutlineSegmentLabelDiv {
 	  height: 15px;
   }
+
+  .examplePresentationSlideThumbnailLabel {
+	  font-size: 13px;
+	  text-align: center;
+  }
+
