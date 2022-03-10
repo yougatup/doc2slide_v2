@@ -152,18 +152,21 @@ function appendDocumentStructureRow() {
 	);
 }
 
-async function getExamplePresentationInfo() {
+async function getExamplePresentationInfo(index) {
 	var res = await postRequest(
 		API_URL + "get_presentation_info", {
-			presentationId: 0
+			presentationId: index
 		}
 	);
+
+	console.log(res);
 
 	for(var i=0;i<res.data.outline.length;i++) {
 		res.data.outline[i].colorCode = genColor();
 	}
 
 	examplePresentations.push({
+		index: index,
 		outline: res.data.outline,
 		paperSentences: res.data.paperSentences,
 		scriptSentences: res.data.scriptSentences,
@@ -182,7 +185,7 @@ function getKeywordDiv(k) {
 }
 
 function getDurationString(d) {
-	return parseInt(d) + ":" + ("00" + String(parseInt((d- parseInt(d)) * 60))).substring(2)
+	return parseInt(d) + ":" + ("00" + String(parseInt((d-parseInt(d)) * 60))).slice(-2);
 }
 
 function getOutlineDiv(outline, slides) {
@@ -221,6 +224,11 @@ function getOutlineDiv(outline, slides) {
 			"</div>"
 	}
 
+	result = result + 
+	"<div class='examplePresentationDuration'>" + 
+		getDurationString(presentationDuration / 60) + 
+	 "</div>"
+
 	result = result + "</div>"
 	result = result + "</div>"
 
@@ -235,10 +243,11 @@ function getSlideThumbnail(presentationIndex, outline, slides) {
 
 		for(var j=outline[i].startSlideIndex;j<(i >= outline.length-1 ? slides.length : outline[i+1].startSlideIndex);j++) {
 			result = result + "<div class='examplePresentationSlideThumbnailImageDiv'> " + 
+				"<div class='examplePresentationSlideThumbnailNumber'>" + j + "</div>" +
 				"<img class='examplePresentationSlideThumbnailImage' " + 
 				"src='http://localhost:8000/slideThumbnail/" + presentationIndex + "/images/" + j + ".jpg'> </img>" + 
 				"<div class='examplePresentationSlideThumbnailLabel'> " + 
-					getDurationString(slides[j].endTime - slides[j].startTime) + 
+					getDurationString((slides[j].endTime - slides[j].startTime) / 60) + 
 				"</div>" + 
 			"</div>"
 		}
@@ -246,7 +255,7 @@ function getSlideThumbnail(presentationIndex, outline, slides) {
 		result = result + "</div>"
 	}
 
-	return "<div class='examplePresentationSlideThumbnailDiv'> " + result + "</div>";
+	return "<div class='examplePresentationSlideThumbnailDiv folded'> " + result + "</div>";
 }
 
 function getScriptDiv(slides) {
@@ -261,7 +270,11 @@ function getScriptDiv(slides) {
 					  	  "</div>"
 	}
 
-	return "<div class='examplePresentationScriptDiv'>" + result + "</div>";
+	return "<div class='examplePresentationScriptDiv folded'>" + result + "</div>";
+}
+
+function getFoldingBtn(index) {
+	return "<div class='examplePresentationFoldingBtn unfold' index='" + index + "'> </div>"
 }
 
 function updateExamplePresentation() {
@@ -274,12 +287,13 @@ function updateExamplePresentation() {
 
 	for(var i=0;i<examplePresentations.length;i++) {
 		resultHtml = resultHtml + 
-				"<div class='examplePresentationInstance' index='" + i + "'> " + 
+				"<div class='examplePresentationInstance folded' index='" + i + "'> " + 
 					"<div class='examplePresentationInstanceTitle'>" + title + "</div>" + 
 					getKeywordDiv(keywords) + 
 					getOutlineDiv(examplePresentations[i].outline, examplePresentations[i].slideInfo) + 
-					getSlideThumbnail(0, examplePresentations[i].outline, examplePresentations[i].slideInfo) + 
+					getSlideThumbnail(examplePresentations[i].index, examplePresentations[i].outline, examplePresentations[i].slideInfo) + 
 					getScriptDiv(examplePresentations[i].slideInfo) + 
+					getFoldingBtn(i) + 
 				"</div>"
 	}
 
@@ -811,11 +825,28 @@ async function createSlide(presentationIDToAdapt, contents, layoutSlideID, style
 }
 
 async function initializeDB() {
-	var res = await getExamplePresentationInfo();
+	var presentationList = [
+		0, 4, 6,
+            7,
+            9,
+            10,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+	];
+
+	for (var i = 0; i < presentationList.length; i++) {
+		console.log(i);
+		await getExamplePresentationInfo(presentationList[i]);
+	}
 
 	updateExamplePresentation()
-
-	console.log(res);
 
 	// testGAPICall();
 
@@ -7530,8 +7561,8 @@ function updateOutlineSegments() {
 
 		labelHtml = labelHtml + 
 
-		"<div class='outlineSegmentLabelElement' " + 
-			"index='" + i + "'> " + 
+		"<div class='outlineSegmentLabelElement " + (outlineStructure[i].status == "need_name" ? "underWriting" : "") + "' " + 
+			"index='" + i + "' > " + 
 			getOutlineLabel(i) + 
 			"</div>"
 	}
@@ -7682,6 +7713,27 @@ function selectSegment(index, locateFlag) {
 }
 
 $(document).ready(function() {
+	$(document).on("click", ".examplePresentationFoldingBtn", function(e) {
+		var idx = parseInt($(this).attr("index"));
+
+		console.log(idx);
+
+		var presentationInstanceObj = $(".examplePresentationInstance[index='" + idx + "']");
+
+		if($(presentationInstanceObj).hasClass("folded")) {
+			$(presentationInstanceObj).removeClass("folded").addClass("unfolded");
+			$(presentationInstanceObj).find(".examplePresentationSlideThumbnailDiv").removeClass("folded").addClass("unfolded");
+			$(presentationInstanceObj).find(".examplePresentationScriptDiv").removeClass("folded").addClass("unfolded");
+			$(presentationInstanceObj).find(".examplePresentationFoldingBtn").removeClass("unfold").addClass("fold");
+		}
+		else {
+			$(presentationInstanceObj).removeClass("unfolded").addClass("folded");
+			$(presentationInstanceObj).find(".examplePresentationSlideThumbnailDiv").removeClass("unfolded").addClass("folded");
+			$(presentationInstanceObj).find(".examplePresentationScriptDiv").removeClass("unfolded").addClass("folded");
+			$(presentationInstanceObj).find(".examplePresentationFoldingBtn").removeClass("fold").addClass("unfold");
+		}
+	})
+
 	$(document).on("click", ".outlineMessageElementRemoveBtn", function(e) {
 		var idx = parseInt($(this).attr("index"));
 
