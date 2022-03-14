@@ -165,12 +165,16 @@ async function getExamplePresentationInfo(index) {
 		res.data.outline[i].colorCode = genColor();
 	}
 
+	console.log(res);
+
 	examplePresentations.push({
 		index: index,
 		outline: res.data.outline,
 		paperSentences: res.data.paperSentences,
 		scriptSentences: res.data.scriptSentences,
-		slideInfo: res.data.slideInfo
+		slideInfo: res.data.slideInfo,
+		title: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.title : 'TEMP_TITLE',
+		keywords: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.keywords : ["keyword 1", "keyword 2", "keyword 3"]
 	})
 }
 
@@ -287,9 +291,9 @@ function updateExamplePresentation() {
 
 	for(var i=0;i<examplePresentations.length;i++) {
 		resultHtml = resultHtml + 
-				"<div class='examplePresentationInstance folded' index='" + i + "'> " + 
-					"<div class='examplePresentationInstanceTitle'>" + title + "</div>" + 
-					getKeywordDiv(keywords) + 
+				"<div class='examplePresentationInstance' index='" + i + "'> " + 
+					"<div class='examplePresentationInstanceTitle'>" + examplePresentations[i].title + "</div>" + 
+					getKeywordDiv(examplePresentations[i].keywords) + 
 					getOutlineDiv(examplePresentations[i].outline, examplePresentations[i].slideInfo) + 
 					getSlideThumbnail(examplePresentations[i].index, examplePresentations[i].outline, examplePresentations[i].slideInfo) + 
 					getScriptDiv(examplePresentations[i].slideInfo) + 
@@ -828,17 +832,6 @@ async function initializeDB() {
 	var presentationList = [
 		0, 4, 6,
             7,
-            9,
-            10,
-            12,
-            13,
-            14,
-            15,
-            16,
-            17,
-            18,
-            19,
-            20
 	];
 
 	for (var i = 0; i < presentationList.length; i++) {
