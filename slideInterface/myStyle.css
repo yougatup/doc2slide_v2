@@ -2417,8 +2417,9 @@ width: 100%;
 
   #examplePresentationListBody {
 	  width: 100%;
-	  height: calc(100% - 100px);
-	  overflow: auto;
+	  height: 100%;
+	  overflow-y: auto;
+	  overflow-x: hidden;
   }
 
   .examplePresentationInstance {
@@ -2514,6 +2515,7 @@ width: 100%;
 	  border-radius: 20px;
 	  position: relative;
 	  background-color: #ffecbd;
+	  cursor: pointer;
   }
 
   .examplePresentationScriptHeaderInside {
@@ -2550,6 +2552,7 @@ width: 100%;
 
   .examplePresentationOutlineSegmentLabelDiv {
 	  height: 15px;
+	  position: relative;
   }
 
   .examplePresentationSlideThumbnailLabel {
@@ -2559,7 +2562,8 @@ width: 100%;
 
   .examplePresentationDuration {
 	  position: absolute;
-	  right: 10px;
+	  right: 0px;
+	  top: -40px;
 	  font-size: 14px;
   }
 
@@ -2567,6 +2571,8 @@ width: 100%;
   .examplePresentationSlideThumbnailImage {
 	  height: 100%;
 	  width: 100%;
+	  cursor: pointer;
+	  object-fit: cover;
   }
 
   .examplePresentationSlideThumbnailImage:hover {
@@ -2583,12 +2589,12 @@ width: 100%;
   }
 
 
-  .examplePresentationScriptDiv.folded, .examplePresentationSlideThumbnailDiv.folded {
-	  display: none;
+  .examplePresentationZoomDiv.folded, .examplePresentationScriptDiv.folded, .examplePresentationSlideThumbnailDiv.folded {
+	  display: none !important;
   }
 
-  .examplePresentationScriptDiv.unfolded, .examplePresentationSlideThumbnailDiv.unfolded {
-	  display: block;
+  .examplePresentationZoomDiv.unfolded, .examplePresentationScriptDiv.unfolded, .examplePresentationSlideThumbnailDiv.unfolded {
+	  display: block !important;
   }
 
   .examplePresentationFoldingBtn.unfold {
@@ -2601,7 +2607,27 @@ width: 100%;
 	  background-size: cover;
   }
 
-
-  .examplePresentationThumbnailNumber {
+  .examplePresentationSlideThumbnailNumber {
 	  text-align: center;
+	  font-size: 14px;
+  }
+
+  .examplePresentationZoomDiv {
+	  height: 400px;
+	  width: 100%;
+	  display: none;
+	  margin-top: 5px;
+	  margin-bottom: 5px;
+  }
+
+  .examplePresentationZoomImage {
+	  height: 100%;
+	  width: 90%;
+	  margin-left: 5%;
+	  object-fit: cover;
+  }
+  
+  .thumbnailClicked {
+	  border: 2px solid red;
+	  box-sizing: border-box;
   }
