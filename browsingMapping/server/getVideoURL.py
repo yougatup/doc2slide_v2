@@ -9,8 +9,8 @@ except :
 
 print(df)
 # p = Playlist('https://www.youtube.com/playlist?list=PLqhXYFYmZ-VfKka9TC5zKdvWeFf8AWc6s') # chi2019
-# p = Playlist('https://www.youtube.com/playlist?list=PLqhXYFYmZ-VctgnS59-jZt13-yC4DXvGm') # chi2020 
-p = Playlist('https://www.youtube.com/playlist?list=PLqhXYFYmZ-Vez20PWol8EVmJDmpr9DdPG') # chi2021
+p = Playlist('https://www.youtube.com/playlist?list=PLqhXYFYmZ-VctgnS59-jZt13-yC4DXvGm') # chi2020 
+# p = Playlist('https://www.youtube.com/playlist?list=PLqhXYFYmZ-Vez20PWol8EVmJDmpr9DdPG') # chi2021
 cnt = 0
 
 print(len(p.video_urls))
