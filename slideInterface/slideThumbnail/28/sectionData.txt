@@ -1,0 +1,71 @@
+CCS CONCEPTS
+KEYWORDS
+ACM Reference Format:
+1 INTRODUCTION
+1 INTRODUCTION
+2 BACKGROUND
+2 BACKGROUND
+3 DESIGN SPACE: RANKED-LIST VISUALIZATION
+Basic Requirements
+Basic Requirements
+Taxonomy of Ranked-List Visualization
+Taxonomy of Ranked-List Visualization
+Taxonomy of Ranked-List Visualization
+Barcharts
+Treemaps
+Packed Bubble Chart
+Packed Bubble Chart
+Wrapped Bars
+Wrapped Bars
+Wrapped Bars
+Packed Bars
+Piled Bars
+Piled Bars
+Zvinca Plots
+4 METHOD
+Tasks and Data
+Tasks and Data
+Tasks and Data
+Tasks and Data
+Tasks and Data
+Tasks and Data
+Participants
+Participants
+Apparatus
+Experimental Factors
+Experimental Factors
+Experimental Factors
+Experimental Factors
+Experimental Design
+Experimental Design
+Experimental Design
+Experimental Design
+Hypotheses
+Hypotheses
+Hypotheses
+Hypotheses
+5 RESULTS
+5 RESULTS
+5 RESULTS
+5 RESULTS
+5 RESULTS
+5 RESULTS
+5 RESULTS
+6 DISCUSSION
+6 DISCUSSION
+6 DISCUSSION
+6 DISCUSSION
+Explaining the Results
+Explaining the Results
+Generalizing the Results
+Generalizing the Results
+Generalizing the Results
+7 CONCLUSION AND FUTUREWORK
+ACKNOWLEDGMENTS
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES

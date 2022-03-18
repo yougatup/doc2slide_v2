@@ -1,0 +1,91 @@
+CCS CONCEPTS
+KEYWORDS
+ACM Reference Format:
+ACM Reference Format:
+ACM Reference Format:
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+2 RELATEDWORK Expert shortcuts
+2 RELATEDWORK Expert shortcuts
+2 RELATEDWORK Expert shortcuts
+Speech interfaces
+Speech interfaces
+Speech interfaces
+Creative applications
+Creative applications
+Creative applications
+Creative applications
+3 FORMATIVE INTERVIEWSWITH EXPERTS
+3 FORMATIVE INTERVIEWSWITH EXPERTS
+Suggested use cases
+Suggested use cases
+Suggested use cases
+Suggested use cases
+Suggested use cases
+Suggested use cases
+Suggested use cases
+Suggested use cases
+4 SYSTEM DESCRIPTION
+VoiceCuts user experience
+VoiceCuts user experience
+VoiceCuts user experience
+VoiceCuts user experience
+Interpreting user commands
+Interpreting user commands
+Interpreting user commands
+Interpreting user commands
+Interpreting user commands
+Interpreting user commands
+Interpreting user commands
+Interpreting user commands
+Interpreting user commands
+Interpreting user commands
+Interpreting user commands
+Customizing vocal shortcuts
+Limitations
+Limitations
+Limitations
+Limitations
+5 EVALUATION: LAB STUDY
+Participants
+Participants
+Study Procedure & Task
+Study Procedure & Task
+Study Procedure & Task
+Study Procedure & Task
+Findings
+Findings
+I can maintain a natural posture like drawing on the sketch-
+I can maintain a natural posture like drawing on the sketch-
+I can maintain a natural posture like drawing on the sketch-
+I can maintain a natural posture like drawing on the sketch-
+6 EVALUATION: CASE STUDY
+6 EVALUATION: CASE STUDY
+6 EVALUATION: CASE STUDY
+6 EVALUATION: CASE STUDY
+7 DISCUSSION AND FUTUREWORK
+When to listen
+When to listen
+Customization support
+Costs and mistakes
+Generalizability
+Generalizability
+Generalizability
+Creative flow
+Creative collaboration
+8 CONCLUSION
+8 CONCLUSION
+9 ACKNOWLEDGEMENTS
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
