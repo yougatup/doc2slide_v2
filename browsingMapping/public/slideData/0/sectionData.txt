@@ -1,79 +1,123 @@
-CCS CONCEPTS
-KEYWORDS
-ACM Reference Format:
-ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-2 RELATEDWORK Career Research in HCI
-Sources of Career Mentoring
-Sources of Career Mentoring
-Sources of Career Mentoring
-Sources of Career Mentoring
-Functions of Career Mentoring
-Functions of Career Mentoring
-Functions of Career Mentoring
-Functions of Career Mentoring
-Functions of Career Mentoring
-3 RESEARCH OVERVIEW
-Research Setting: Workplace at StackExchange
-Research Setting: Workplace at StackExchange
-Research Setting: Workplace at StackExchange
-Research Setting: Workplace at StackExchange
-Summary
-4 STUDY 1: QUALITATIVE STUDY OF REQUESTS AND RESPONSES
-Method
-Method
-Analysis
-Analysis
-Analysis
-Analysis
-Results: A Taxonomy of Career Advice Requests
-Results: A Taxonomy of Career Advice Requests
-Results: A Taxonomy of Career Advice Requests
-Results: A Taxonomy of Career Advice Requests
-Results: A Taxonomy of Career Advice Requests
-Results: A Taxonomy of Career Advice Requests
-Results: A Taxonomy of Career Advice Requests
-Results: A Taxonomy of Career Advice Requests
-Discussion
-Discussion
-Discussion
-5 STUDY 2: REQUEST TYPES, RESPONSE FUNCTIONS, AND THE VALUE OF RESPONSES Methods
-5 STUDY 2: REQUEST TYPES, RESPONSE FUNCTIONS, AND THE VALUE OF RESPONSES Methods
-5 STUDY 2: REQUEST TYPES, RESPONSE FUNCTIONS, AND THE VALUE OF RESPONSES Methods
-5 STUDY 2: REQUEST TYPES, RESPONSE FUNCTIONS, AND THE VALUE OF RESPONSES Methods
-5 STUDY 2: REQUEST TYPES, RESPONSE FUNCTIONS, AND THE VALUE OF RESPONSES Methods
-5 STUDY 2: REQUEST TYPES, RESPONSE FUNCTIONS, AND THE VALUE OF RESPONSES Methods
-5 STUDY 2: REQUEST TYPES, RESPONSE FUNCTIONS, AND THE VALUE OF RESPONSES Methods
-5 STUDY 2: REQUEST TYPES, RESPONSE FUNCTIONS, AND THE VALUE OF RESPONSES Methods
-5 STUDY 2: REQUEST TYPES, RESPONSE FUNCTIONS, AND THE VALUE OF RESPONSES Methods
-5 STUDY 2: REQUEST TYPES, RESPONSE FUNCTIONS, AND THE VALUE OF RESPONSES Methods
-5 STUDY 2: REQUEST TYPES, RESPONSE FUNCTIONS, AND THE VALUE OF RESPONSES Methods
-Results
-Results
-Results
-Results
-Discussion
-6 OVERALL DISCUSSION
-6 OVERALL DISCUSSION
-6 OVERALL DISCUSSION
-6 OVERALL DISCUSSION
-6 OVERALL DISCUSSION
-6 OVERALL DISCUSSION
-6 OVERALL DISCUSSION
-7 DESIGN IMPLICATIONS
-Critical Events: Event-specific guidance
-Critical Events: Event-specific guidance
-Critical Events: Event-specific guidance
-Critical Events: Event-specific guidance
-Critical Events: Event-specific guidance
-Supporting extended relationships
-8 CONCLUSION
+1 INTRODUCTION
+2.1 Theories of (Moral) Responsibility
+2.1 Theories of (Moral) Responsibility
+2.1 Theories of (Moral) Responsibility
+2.1 Theories of (Moral) Responsibility
+2.1 Theories of (Moral) Responsibility
+2.1 Theories of (Moral) Responsibility
+2.2 Techno-Responsibility Gaps
+2.2 Techno-Responsibility Gaps
+2.2 Techno-Responsibility Gaps
+2.2 Techno-Responsibility Gaps
+2.2 Techno-Responsibility Gaps
+2.2 Techno-Responsibility Gaps
+2.2 Techno-Responsibility Gaps
+2.3 Responsibility, Fairness, Trust in HCI Literature
+2.3 Responsibility, Fairness, Trust in HCI Literature
+2.3 Responsibility, Fairness, Trust in HCI Literature
+3.1 Algorithmic Decision-Making
+3.1 Algorithmic Decision-Making
+3.1 Algorithmic Decision-Making
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.2 The Plurality of Responsibility
+3.4 Participants and Recruitment
+3.4 Participants and Recruitment
+3.4 Participants and Recruitment
+3.4 Participants and Recruitment
+4.1 Responsibility in Bail Decisions
+4.1 Responsibility in Bail Decisions
+4.1 Responsibility in Bail Decisions
+4.1 Responsibility in Bail Decisions
+4.1 Responsibility in Bail Decisions
+4.2 Responsibility Assignment to AI and Humans
+4.2 Responsibility Assignment to AI and Humans
+4.2 Responsibility Assignment to AI and Humans
+4.2 Responsibility Assignment to AI and Humans
+4.2 Responsibility Assignment to AI and Humans
+5.1 The Relation Between Notions of Responsibility
+5.1 The Relation Between Notions of Responsibility
+5.1 The Relation Between Notions of Responsibility
+5.1 The Relation Between Notions of Responsibility
+5.1 The Relation Between Notions of Responsibility
+5.2 Humans Are More Responsible for Their Tasks Than AI Programs
+5.2 Humans Are More Responsible for Their Tasks Than AI Programs
+5.2 Humans Are More Responsible for Their Tasks Than AI Programs
+5.2 Humans Are More Responsible for Their Tasks Than AI Programs
+5.3 The Need for Explanations
+5.3 The Need for Explanations
+5.3 The Need for Explanations
+5.3 The Need for Explanations
+5.4 AI and Human Agents Are Similarly Responsible for Consequences
+5.4 AI and Human Agents Are Similarly Responsible for Consequences
+5.4 AI and Human Agents Are Similarly Responsible for Consequences
+5.4 AI and Human Agents Are Similarly Responsible for Consequences
+5.4 AI and Human Agents Are Similarly Responsible for Consequences
+5.4 AI and Human Agents Are Similarly Responsible for Consequences
+5.4 AI and Human Agents Are Similarly Responsible for Consequences
+5.4 AI and Human Agents Are Similarly Responsible for Consequences
+5.4 AI and Human Agents Are Similarly Responsible for Consequences
+5.4 AI and Human Agents Are Similarly Responsible for Consequences
+6 IMPLICATIONS
+6 IMPLICATIONS
+6 IMPLICATIONS
+6 IMPLICATIONS
+7 CONCLUDING REMARKS
+7 CONCLUDING REMARKS
+7 CONCLUDING REMARKS
+7 CONCLUDING REMARKS
+7 CONCLUDING REMARKS
+7 CONCLUDING REMARKS
+7 CONCLUDING REMARKS
+7 CONCLUDING REMARKS
 ACKNOWLEDGMENTS
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
 REFERENCES
 REFERENCES
 REFERENCES

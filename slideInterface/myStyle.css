@@ -1,3 +1,6 @@
+html {
+	font-family: Arial,Helvetica,sans-serif
+}
 body {
 padding: 0px;
 margin: 0px;
@@ -2248,6 +2251,10 @@ width: 100%;
 	  position: relative;
   }
 
+  #outlineSegmentEventLeft {
+	border-right: 5px solid #ff7777;
+  }
+  /*
   #outlineSegmentEvent:hover #outlineSegmentEventLeft{
 	  display: block;
 	  border-right: 5px solid #ff7777;
@@ -2256,6 +2263,7 @@ width: 100%;
   #outlineSegmentEvent:hover #outlineSegmentLabelTemp {
 	  display: block;
   }
+  */
 
   #outlineSegmentEventLeft {
 	  height: calc(100% - 12px);
@@ -2421,6 +2429,9 @@ width: 100%;
 	  overflow-y: auto;
 	  overflow-x: hidden;
   }
+  #examplePresentationListBody::-webkit-scrollbar {
+	display: none;
+  }
 
   .examplePresentationInstance {
 	  padding-bottom: 10px;
@@ -2429,7 +2440,7 @@ width: 100%;
 
   .examplePresentationInstanceTitle {
 	  margin-top: 20px;
-	  font-size: 18px;
+	  font-size: 20px;
 	  margin-bottom: 5px;
   }
 
@@ -2477,11 +2488,14 @@ width: 100%;
 	  margin-top: 10px;
 	  overflow-x: auto;
 	  white-space: nowrap;
+	  padding-bottom: 10px;
   }
 
+  /*
   .examplePresentationSlideThumbnailDiv::-webkit-scrollbar {
 	display: none;
   }
+  */
 
   .examplePresentationScriptDiv {
 	  overflow: auto;
@@ -2514,7 +2528,6 @@ width: 100%;
 	  font-size: 13px;
 	  border-radius: 20px;
 	  position: relative;
-	  background-color: #ffecbd;
 	  cursor: pointer;
   }
 
@@ -2630,4 +2643,8 @@ width: 100%;
   .thumbnailClicked {
 	  border: 2px solid red;
 	  box-sizing: border-box;
+  }
+
+  .outlineSegmentElementDuration {
+	  display: inline-block;
   }

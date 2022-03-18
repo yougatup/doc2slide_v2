@@ -1,6 +1,8 @@
 var MAX_ELEMENTS_PER_SLIDE = 4;
 var SLIDES_PER_MIN = 2;
 
+var curMouseDown = 0;
+
 // var API_URL= 'https://server.hyungyu.com:5713/'
 var API_URL= 'http://localhost:8010/proxy/'
 var rowSelected = false;
@@ -267,10 +269,22 @@ function getSlideThumbnail(presentationIndex, outline, slides) {
 function showAllScript(presentationIndex) {
 	var result = '';
 	var slides = examplePresentations[presentationIndex].slideInfo;
+	var codes = {};
+
+	for(var i=0;i<examplePresentations[presentationIndex].outline.length;i++) {
+		var start = parseInt(examplePresentations[presentationIndex].outline[i].startSlideIndex);
+		var end = parseInt(examplePresentations[presentationIndex].outline[i].endSlideIndex);
+
+		for(var j=start;j<=end;j++) {
+			codes[j] = examplePresentations[presentationIndex].outline[i].colorCode;
+		}
+	}
+
+	console.log(codes);
 
 	for(var i=0;i<slides.length;i++) {
 		result = result + "<div class='examplePresentationScriptInstance' index='" + i + "'>" +
-							"<div class='examplePresentationScriptHeader'>"  +
+							"<div class='examplePresentationScriptHeader' style='background-color: " + (i in codes ? codes[i] : '') + "'>" +
 								"<div class='examplePresentationScriptHeaderInside'>" + i + "</div>" + 
 							"</div>" + 
 							"<div class='examplePresentationScriptBody'>" + slides[i].script + "</div>" +  
@@ -287,9 +301,6 @@ function showScript(presentationIndex, thumbnailIndex, scrollFlag) {
 	var examplePresentationObj = $(".examplePresentationInstance[index='" + presentationIndex + "']")
 	var scriptObj = examplePresentationObj.find(".examplePresentationScriptDiv");
 
-	console.log(presentationIndex, thumbnailIndex);
-	console.log(examplePresentations[presentationIndex]);
-
 	/*
 	$(scriptObj).html("<div class='examplePresentationScriptInstance' index='" + thumbnailIndex + "'>" +
 							"<div class='examplePresentationScriptHeader'>"  +
@@ -299,8 +310,6 @@ function showScript(presentationIndex, thumbnailIndex, scrollFlag) {
 							"</div>")
 
 							*/
-
-	console.log($(".examplePresentationScriptInstance[index='" + thumbnailIndex +"']").position().top);
 
 	if (scrollFlag) {
 		$(".examplePresentationScriptDiv[index='" + presentationIndex + "']").scrollTop(
@@ -315,9 +324,20 @@ function showScript(presentationIndex, thumbnailIndex, scrollFlag) {
 function getScriptDiv(presentationIndex, slides) {
 	var result = '';
 
+	var codes = {};
+
+	for(var i=0;i<examplePresentations[presentationIndex].outline.length;i++) {
+		var start = parseInt(examplePresentations[presentationIndex].outline[i].startSlideIndex);
+		var end = parseInt(examplePresentations[presentationIndex].outline[i].endSlideIndex);
+
+		for(var j=start;j<=end;j++) {
+			codes[j] = examplePresentations[presentationIndex].outline[i].colorCode;
+		}
+	}
+
 	for(var i=0;i<slides.length;i++) {
 		result = result + "<div class='examplePresentationScriptInstance' index='" + i + "'>" +
-							"<div class='examplePresentationScriptHeader'>"  +
+							"<div class='examplePresentationScriptHeader' style='background-color: " + (i in codes ? codes[i] : '') + "'>" +
 								"<div class='examplePresentationScriptHeaderInside'>" + i + "</div>" + 
 							"</div>" + 
 							"<div class='examplePresentationScriptBody'>" + slides[i].script + "</div>" +  
@@ -7643,7 +7663,9 @@ function updateOutlineSegments() {
 
 		"<div class='outlineSegmentElement " + (outlineStructure[i].status == "need_name" ? "outlineSegmentElementWaiting" : "") + "' " + 
 			 "index='" + i + "'> " + 
-				parseInt(outlineStructure[i].duration) + ":" + parseInt((outlineStructure[i].duration - parseInt(outlineStructure[i].duration)) * 60) + 
+			 "<div class='outlineSegmentElementDuration'> " + 
+			 	getDurationString(outlineStructure[i].duration) + 
+			 "</div>" + 
 				( outlineStructure[i].status == "okay" ? 
 			 		"<div class='outlineSegmentElementSlideIndex'>" + 
 			 			"Slide " + outlineStructure[i].endSlideIndex + 
@@ -7677,6 +7699,32 @@ function updateOutlineSegments() {
 	issueEvent("root_highlightSlideThumbnail", {outlineStructure: outlineStructure})
 
 	selectSegment(selectedOutlineIndex);
+
+	$(".outlineSegmentElement").resizable({
+		handles: 'e',
+		resize: function(e, ui) {
+			var target = $(e.target)
+
+			var totalWidth = $("#outlineSegments").width();
+
+			var segmentIndex = parseInt($(target).attr("index"));
+			var targetWidth = $(target).width();
+
+			var labelObj = $(".outlineSegmentLabelElement[index='" + segmentIndex + "']")
+
+			$(labelObj).width(targetWidth);
+
+			var duration = targetWidth / totalWidth * curPresentationDuration;
+
+			$(target).find(".outlineSegmentElementDuration").html(getDurationString(duration));
+
+			outlineStructure[segmentIndex].duration = duration;
+			outlineStructure[segmentIndex].endX = outlineStructure[segmentIndex].startX + targetWidth;
+		},
+		stop: function(e, ui) {
+			updateOutlineSegments();
+		}
+	}); 
 
 	$("#outlineSegments").sortable({
 		items: $(".outlineSegmentElement"),
@@ -7806,6 +7854,13 @@ function selectSegment(index, locateFlag) {
 }
 
 $(document).ready(function() {
+	document.body.onmousedown = function() { 
+  	++curMouseDown;
+	}
+	document.body.onmouseup = function() {
+  	--curMouseDown;
+	}
+
 	$(document).on("mouseover", ".examplePresentationSlideThumbnailImage", function(e) {
 		var obj = $(e.target).parent();
 		
@@ -7956,7 +8011,18 @@ $(document).ready(function() {
 		updateMessageBox();
 	})
 
+	$(document).on("mouseover", "#outlineSegmentEvent", function(e) {
+		if (curMouseDown <= 0) {
+			$("#outlineSegmentEventLeft").show();
+			$("#outlineSegmentLabelTemp").show();
+		}
+		$(".outlineSegmentHovered").removeClass("outlineSegmentHovered");
+	})
+
 	$(document).on("mouseleave", "#outlineSegmentEvent", function(e) {
+		$("#outlineSegmentEventLeft").hide();
+		$("#outlineSegmentLabelTemp").hide();
+
 		$(".outlineSegmentHovered").removeClass("outlineSegmentHovered");
 	})
 	
@@ -8085,16 +8151,21 @@ $(document).ready(function() {
 	})
 
 	$(document).on("mousemove", "#outlineSegmentEvent", function(e) {
-		var relX = e.pageX - $(this).offset().left;
-		var relY = e.pageY - $(this).offset().top;
+		if (curMouseDown <= 0) {
+			$("#outlineSegmentEventLeft").show();
+			$("#outlineSegmentLabelTemp").show();
 
-		var totalWidth = $("#outlineSegmentDiv").width();
+			var relX = e.pageX - $(this).offset().left;
+			var relY = e.pageY - $(this).offset().top;
 
-		relX = Math.max(Math.min(relX, totalWidth), 0);
+			var totalWidth = $("#outlineSegmentDiv").width();
 
-		var p = relX / totalWidth;
+			relX = Math.max(Math.min(relX, totalWidth), 0);
 
-		handleOutlineEvent(relX, p);
+			var p = relX / totalWidth;
+
+			handleOutlineEvent(relX, p);
+		}
 	});
 
 	$(document).on("input", "#outlineTimeInput", function(e) {

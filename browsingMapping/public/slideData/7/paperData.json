@@ -2,1276 +2,1579 @@
   "abstractText": {
     "page": 0,
     "region": {
-      "x1": 53.499000549316406,
-      "x2": 295.7411193847656,
-      "y1": 437.6898498535156,
-      "y2": 554.7009887695312
+      "x1": 317.5249938964844,
+      "x2": 559.7182006835938,
+      "y1": 606.7521362304688,
+      "y2": 704.0139770507812
     },
-    "text": "ABSTRACT Technologies such as blockchains, smart contracts and programmable batteries facilitate emerging models of energy distribution, trade and consumption, and generate a considerable number of opportunities for energy markets. However, these developments complicate relationships between stakeholders, disrupting traditional notions of value, control and ownership. Discussing these issues with the public is particularly challenging as energy consumption habits often obscure the competing values and interests that shape"
+    "text": "ABSTRACT We present a system for connecting partners in long-distance relationships in bedrooms and at bedtime, a space and time that most couples share. Unlike communications explicitly initiated by users, our system is always-on, staying in the background and enabling remote presence without constant use. We present findings from a field study in which the system was deployed into participants’ bedrooms. The system includes an automated photo-stream (rather than video), which was found to provide a balance between the"
   },
   "figures": [{
-    "caption": "Figure 2: Acting GigBliss: \"Can I just plug in?\" (top), \"Invisible flatmate\" (middle), \"It’s like the cat\" (bottom)",
+    "caption": "Figure 3: How much do you agree with the following: “I would recommend the system to other partners in a long-distance relationship” (top) “The system has connected me with my partner in a way that other technology have not.” (bottom)",
     "captionBoundary": {
       "x1": 53.79800033569336,
-      "x2": 295.6379089355469,
-      "y1": 498.84136962890625,
-      "y2": 515.4400024414062
+      "x2": 558.203125,
+      "y1": 190.49610900878906,
+      "y2": 207.08599853515625
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "3",
+    "page": 5,
+    "regionBoundary": {
+      "x1": 132.0,
+      "x2": 480.0,
+      "y1": 83.0,
+      "y2": 177.0
+    }
+  }, {
+    "caption": "Figure 4: Howmuch do you agree with the following: “I would prefer if the camera was sending video all the time rather than occasional pictures only.” (top) “I would prefer if the pictures were shared only when I say, not automatically.” (bottom)",
+    "captionBoundary": {
+      "x1": 53.79800033569336,
+      "x2": 558.2030639648438,
+      "y1": 178.1970977783203,
+      "y2": 194.7869873046875
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "4",
+    "page": 6,
+    "regionBoundary": {
+      "x1": 137.0,
+      "x2": 475.0,
+      "y1": 83.0,
+      "y2": 165.0
+    }
+  }, {
+    "caption": "Figure 5: How much do you agree with the following (top to bottom): “The feeling of being remotely present is an important part of a relationship to me.”“The systemmade me feel my partner is present at my place.” “The systemmade me feel present at my partner’s place.”",
+    "captionBoundary": {
+      "x1": 53.79800033569336,
+      "x2": 558.2030639648438,
+      "y1": 676.5110473632812,
+      "y2": 704.0599975585938
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "5",
+    "page": 6,
+    "regionBoundary": {
+      "x1": 127.0,
+      "x2": 485.0,
+      "y1": 559.0,
+      "y2": 663.0
+    }
+  }, {
+    "caption": "Figure 6: Example of inking as provided by participants. Top row: relationship maintenance (C4, C2, C5). Bottom row: heavy inking art (“I’d just paint the whole screen once and drew on it” C4F), picture frame (C2M) and tracing a scene (C4F).",
+    "captionBoundary": {
+      "x1": 53.79800033569336,
+      "x2": 558.4540405273438,
+      "y1": 283.901123046875,
+      "y2": 302.1670227050781
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "6",
+    "page": 7,
+    "regionBoundary": {
+      "x1": 88.0,
+      "x2": 524.0,
+      "y1": 83.0,
+      "y2": 270.0
+    }
+  }, {
+    "caption": "Figure 8: How much do you agree with the following (top to bottom): “The system had a positive impact on my relationship” “The system has connected me with my partner in a way that other technology have not.”",
+    "captionBoundary": {
+      "x1": 52.6150016784668,
+      "x2": 559.3864135742188,
+      "y1": 687.4700927734375,
+      "y2": 704.0599975585938
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "8",
+    "page": 8,
+    "regionBoundary": {
+      "x1": 137.0,
+      "x2": 475.0,
+      "y1": 591.0,
+      "y2": 674.0
+    }
+  }, {
+    "caption": "Figure 7: How much do you agree with the following (top to bottom): “Being together when falling asleep and waking up are important moments of a relationship to me.” “I felt comfortable sharing the time when I fall asleep and/or wake up with my partner.” “Seeing my partner fall asleep and/or wake up was valuable to me.”",
+    "captionBoundary": {
+      "x1": 53.79800033569336,
+      "x2": 558.4539794921875,
+      "y1": 200.25111389160156,
+      "y2": 227.79998779296875
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "7",
+    "page": 8,
+    "regionBoundary": {
+      "x1": 127.0,
+      "x2": 485.0,
+      "y1": 83.0,
+      "y2": 187.0
+    }
+  }, {
+    "caption": "Table 1: Participant demographics (self-reported during recruitment)",
+    "captionBoundary": {
+      "x1": 166.1610107421875,
+      "x2": 445.545166015625,
+      "y1": 85.7260971069336,
+      "y2": 91.35699462890625
+    },
+    "figType": "Table",
+    "imageText": ["C5F", "45", "health", "visitor", "UK", "analyst", "UK", "1", "year", "—", "1", "year", "C2F", "32", "student", "Germany", "C3F", "23", "unemployed", "UK", "4", "years", "1", "year", "2", "weeks", "C3M", "23", "unemployed", "UK", "C4F", "26", "student", "UK", "5", "years", "1", "year", "4", "years", "C4M", "25", "student", "UK", "C5M", "46", "research", "computing", "9", "months", "4", "months", "1.5", "years", "Code", "Age", "Occupation", "Location", "Relationship", "length", "Cohabitating", "duration", "Separation", "duration", "C1F", "27", "project", "manager", "UK", "3", "years", "<", "1", "year", "2", "years", "4", "monthsC1M", "27", "business", "developer", "France", "C2M", "38", "lab", "manager", "UK", "2", "years"],
+    "name": "1",
+    "page": 4,
+    "regionBoundary": {
+      "x1": 53.0,
+      "x2": 559.0,
+      "y1": 106.0,
+      "y2": 248.0
+    }
+  }, {
+    "caption": "Figure 2: Active system usage during the study. Red: hours when the display was touched or a face was detected by the camera, pink: accelerometer activity only.",
+    "captionBoundary": {
+      "x1": 53.79800033569336,
+      "x2": 559.2967529296875,
+      "y1": 687.4700927734375,
+      "y2": 704.0599975585938
     },
     "figType": "Figure",
     "imageText": [],
     "name": "2",
-    "page": 6,
+    "page": 4,
     "regionBoundary": {
-      "x1": 58.0,
-      "x2": 290.0,
-      "y1": 92.0,
-      "y2": 485.0
+      "x1": 109.0,
+      "x2": 503.0,
+      "y1": 537.0,
+      "y2": 674.0
     }
   }],
   "sections": [{
     "paragraphs": [{
       "page": 0,
       "region": {
-        "x1": 53.24800109863281,
-        "x2": 295.0179748535156,
-        "y1": 585.2767333984375,
-        "y2": 712.3289794921875
+        "x1": 53.31700134277344,
+        "x2": 294.1769714355469,
+        "y1": 621.2330932617188,
+        "y2": 707.3469848632812
       },
-      "text": "Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org. CHI 2019, May 4–9, 2019, Glasgow, Scotland UK © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM. ACM ISBN 978-1-4503-5970-2/19/05. . . $15.00 https://doi.org/10.1145/3290605.3300617"
+      "text": "Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org. CHI ’21, May 08–13, 2021, Yokohama, Japan © 2021 Copyright held by the owner/author(s). Publication rights licensed to ACM. ACM ISBN 978-1-4503-8096-6/21/05. . . $15.00 https://doi.org/10.1145/3411764.3445121"
     }, {
-      "page": 0,
+      "page": 1,
       "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.89794921875,
-        "y1": 437.2315673828125,
-        "y2": 563.66796875
+        "x1": 53.57400131225586,
+        "x2": 295.0302734375,
+        "y1": 87.45320129394531,
+        "y2": 170.36102294921875
       },
-      "text": "stakeholders’ relationships. To make such difficult discussions more approachable and examine the missing relational aspect of autonomous energy systems, we combined the design of speculative hairdryers with performance and deliberation. This integrated method of inquiry makes visible the competing values and interests, eliciting people’s wishes to negotiate these terms. We argue that the complexity of mediated energy distribution and its convoluted stakeholder relationships requires more sophisticated methods of inquiry to engage people in debates concerning distributed energy systems."
+      "text": "feeling of presence and privacy, and to remove the pressure to communicate. The system also includes a real-time shared inking canvas with disappearing ink, which was found to provide a rich versatile medium allowing for new patterns of communication, live interventions, and collaborative drawing. Learnings from how our system balances privacy and remote connectedness may also have relevance for other domains such as remote healthcare and education."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 53.52899932861328,
+        "x2": 294.68115234375,
+        "y1": 185.79611206054688,
+        "y2": 228.26300048828125
+      },
+      "text": "CCS CONCEPTS • Human-centered computing→ Human computer interaction (HCI); Empirical studies in HCI; Ubiquitous and mobile computing; Ubiquitous and mobile devices."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.5626220703125,
+        "y1": 243.69705200195312,
+        "y2": 275.20599365234375
+      },
+      "text": "KEYWORDS long-distance relationships, remote presence, inking, calm technology, ambient displays, privacy"
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 53.41600036621094,
+        "x2": 295.39056396484375,
+        "y1": 286.144775390625,
+        "y2": 350.9259948730469
+      },
+      "text": "ACM Reference Format: Jan Kučera, James Scott, Siân Lindley, and Patrick Olivier. 2021. Bedtime Window: A Field Study Connecting Bedrooms of Long-Distance Couples Using a Slow Photo-Stream and Shared Real-Time Inking. In CHI Conference on Human Factors in Computing Systems (CHI ’21), May 08– 13, 2021, Yokohama, Japan. ACM, New York, NY, USA, 12 pages. https: //doi.org/10.1145/3411764.3445121"
     }]
   }, {
     "paragraphs": [{
-      "page": 0,
+      "page": 1,
       "region": {
-        "x1": 317.9549865722656,
-        "x2": 558.209716796875,
-        "y1": 593.8685302734375,
-        "y2": 612.7080078125
+        "x1": 52.8120002746582,
+        "x2": 295.5567626953125,
+        "y1": 383.3432312011719,
+        "y2": 477.2099914550781
       },
-      "text": "• Human-centered computing → Interaction design process and methods."
-    }],
-    "title": {
-      "page": 0,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 392.6675109863281,
-        "y1": 579.3828735351562,
-        "y2": 585.8090209960938
-      },
-      "text": "CCS CONCEPTS"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 0,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 560.7401733398438,
-        "y1": 642.9085083007812,
-        "y2": 661.7479858398438
-      },
-      "text": "Distributed Energy, Blockchain, Theatre, Improvisation, Speculative Design, Critical Design, Deliberation"
-    }],
-    "title": {
-      "page": 0,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 375.55108642578125,
-        "y1": 628.4228515625,
-        "y2": 634.8489990234375
-      },
-      "text": "KEYWORDS"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 0,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 566.872802734375,
-        "y1": 684.2155151367188,
-        "y2": 712.3289794921875
-      },
-      "text": "Larissa Pschetz, Kruakae Pothong, andChris Speed. 2019. Autonomous Distributed Energy Systems: Problematising the Invisible through Design, Drama and Deliberation. In CHI Conference on Human"
-    }, {
-      "page": 0,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 387 Page 1"
+      "text": "Going to sleep and waking up together is an everyday yet intimate experience for partners living together. According to the 2013 international bedroom poll conducted by the National Sleep Foundation [1], 89% of people in the United Kingdom living with someone sleep together with their significant other on most nights (82% in USA, 85% in Canada, 79% in Mexico, 87% in Germany, 63% in Japan). Sharing of this time and space among partners separated geographically – in a long-distance relationship (LDR) – is, however, limited to voice/video calls and messaging."
     }, {
       "page": 1,
       "region": {
         "x1": 53.79800033569336,
-        "x2": 295.41827392578125,
-        "y1": 97.21297454833984,
-        "y2": 124.53302001953125
+        "x2": 295.43017578125,
+        "y1": 481.9732360839844,
+        "y2": 553.9229736328125
       },
-      "text": "Factors in Computing Systems Proceedings (CHI 2019), May 4–9, 2019, Glasgow, Scotland UK. ACM, New York, NY, USA, 14 pages. https://doi.org/10.1145/3290605.3300617"
-    }],
-    "title": {
-      "page": 0,
-      "region": {
-        "x1": 317.62298583984375,
-        "x2": 415.4867858886719,
-        "y1": 673.8124389648438,
-        "y2": 679.4520263671875
-      },
-      "text": "ACM Reference Format:"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 1,
-      "region": {
-        "x1": 53.31926345825195,
-        "x2": 295.74139404296875,
-        "y1": 167.46157836914062,
-        "y2": 664.5079956054688
-      },
-      "text": "Energy provision inmost countries is traditionally centralised and heavily regulated. Facilitated by progressive technology innovations, however, new models for energy provision are emerging with the potential to disrupt the existing supply model and alter relationships of trade. New distributed energy systems are facilitated by emerging technologies that are able to collect, process and profile information about consumption and, based on this profiling, make decisions on supply, demand and pricing with limited or no human intervention. This way, algorithms become the new mediators, legislators and regulators of transactions, introducing new layers of complexity into the relationships between suppliers, distributors and consumers. The use of these technologies also raises concerns about exclusion, inequality, security and data protection. Hardwired into algorithms are the values and interests of a diverse range of stakeholders, which might not align with the values and interests of consumers. The traditional top-down approach in the provision and regulation of energy supply and the complexity of the technology and trade relationships exclude people from decisionmaking processes in new autonomous and distributed energy systems. The increasingly seamless design features of connected technologies render the dynamics behind these systems and their implications for social and economic welfare elusive. The fading visibility of such relationships and their implications constrain people’s ability to question, negotiate and influence practices and norms in this context. Given the critical importance of energy to the economy and to citizens, we argue that greater participation is required in the design and development of emerging energy provision models. To overcome barriers for participation in the decisionmaking and design process at the level of both ‘code’ and energy provision models, we devised a method of enquiry that combines speculative design, drama and deliberation. We use speculative design and drama to expose people to the complexity, levels of transparency, difficulties in setting priorities, and the multitude of stakeholders with various interests involved in distributed energy systems. Problematising these dynamics through design and drama reinstates the constrained capabilities, while deliberation provides a protocol for people to exercise them."
+      "text": "Previous work showed that people in LDRs commonly used SMS texting for short greetings such as “Good Morning” or “I love you”. In [2], 6 out of 14 participants reported that they would watch their partner fall asleep, or vice versa over Skype or Google Chat, despite having issues with location, stability and overheating of their devices, so there is clearly an opportunity to address these needs of remote couples."
     }, {
       "page": 1,
       "region": {
-        "x1": 53.54899978637695,
-        "x2": 295.7377624511719,
-        "y1": 669.5785522460938,
-        "y2": 712.3289794921875
+        "x1": 53.79800033569336,
+        "x2": 295.55780029296875,
+        "y1": 558.6862182617188,
+        "y2": 652.552978515625
       },
-      "text": "Our aim is to elicit what people find problematic about automated distributed energy systems and how they would like to engage with these technologies and energy trading. The value of this method lies in its ability to bring speculative"
+      "text": "Furthermore, as highlighted by the Covid-19 pandemic, the need to self-isolate can introduce situations whereby people who normally co-habit may find themselves needing to avoid physical contact with family and loved ones for weeks or even months. This is especially the case for healthcare workers who wish to shield their families from the risk they face, as well as those with particular health concerns. For these groups, the experience of living with loved ones is transformed to one that shares some similarities with those in LDRs."
     }, {
       "page": 1,
       "region": {
-        "x1": 317.1583557128906,
-        "x2": 559.8985595703125,
-        "y1": 95.73056030273438,
-        "y2": 246.0770263671875
+        "x1": 53.79800033569336,
+        "x2": 294.0452880859375,
+        "y1": 657.316162109375,
+        "y2": 707.3469848632812
       },
-      "text": "design into debates and in the narratives and recommendations that derive from what people define as a problem, based on their experience and exposure to aspects of automated systems. We contribute this method of inquiry as an alternative for designers and HCI researchers to explore people’s anticipation of how control, ownership, choice and fairness can be designed into automated systems, or into ‘code’. The ultimate aim is to mobilize discussion in order to find common ground between stakeholders, and to enhance participation and citizenship. This paper further offers insights into how participants anticipate such issues in the context of distributed energy systems through two pilot studies that apply this methodology."
+      "text": "We present the design, implementation and evaluation of the Bedtime Window system, connecting partners in LDR with the aim of enabling them to share bedtime, the time before going to sleep and after waking up, and therefore improving communication and intimacy in long-distance couples."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 327.9179992675781,
+        "x2": 558.2034912109375,
+        "y1": 87.45320129394531,
+        "y2": 106.656982421875
+      },
+      "text": "The main contributions of this paper are as follows: 1. Exploration of bedrooms as an environment for interactive"
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 332.23699951171875,
+        "x2": 559.7214965820312,
+        "y1": 111.42024230957031,
+        "y2": 303.9169921875
+      },
+      "text": "technology. We show that even systems with full-featured display and touch interfaces can become invisible and desirable in bedrooms. 2. The first system for LDR couples that allows them to share bedtime, falling asleep and waking up. We show that partners value spending this time together, and hence identify a gap in the available technology in its ability to facilitate sharing of bedtime between partners. Our system is unique in specifically targeting this scenario. 3. Evaluation of a slow photo-stream as a balance between privacy and remote presence. We show that the qualities of always-on video channels are achievable with a slow photostream. 4. We introduce a collaborative drawing experience in the home environment for everyday communication. Disappearing, shared-layer real-time inking was found to be useful, versatile, and engaging communication channel, that may have many other applications."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.1844482421875,
+        "y1": 310.7292175292969,
+        "y2": 371.718994140625
+      },
+      "text": "While this paper is focused on the bedtime scenario, our findings can also have relevance for other domains that could potentially benefit from the interactivity and feeling of connectedness, but also the privacy afforded by Bedtime Window. This includes domains such as remote healthcare, social services, and remote education, subject to further research in those areas."
     }],
     "title": {
       "page": 1,
       "region": {
         "x1": 53.79800033569336,
-        "x2": 146.90223693847656,
-        "y1": 152.9759063720703,
-        "y2": 159.40203857421875
+        "x2": 156.52899169921875,
+        "y1": 368.9900817871094,
+        "y2": 375.84100341796875
       },
       "text": "1 INTRODUCTION"
     }
   }, {
-    "paragraphs": [{
-      "page": 1,
-      "region": {
-        "x1": 317.5870056152344,
-        "x2": 558.474853515625,
-        "y1": 298.96856689453125,
-        "y2": 401.4939880371094
-      },
-      "text": "Distributed energy Infrastructure. Currently, energy supply in most countries is based on large power plants that generate and transmit energy to national grids, which send the supply on to cities, industry and households. National grids are well-established, regulated, and centralised. A few emerging trends, however, suggest different energy futures. One such model is that of distributed energy generation which allows smaller companies and even households to produce and sell energy in a free-market economy."
-    }, {
-      "page": 1,
-      "region": {
-        "x1": 317.1579895019531,
-        "x2": 559.8980712890625,
-        "y1": 406.5655822753906,
-        "y2": 712.3289794921875
-      },
-      "text": "Distributed energy generation is often considered as a way to support more flexible energy infrastructures and incentivise the development of alternative and more sustainable energy sources. In contrast to centralised national grids, it could require lower initial investment, opening the market to smaller enterprises. This mode of energy supply relies on data management and processing, and fast and secure transactions. Blockchain technologies are often seen as the optimal infrastructure to enable such transactions [1], as their record structure is continuously encrypted, distributed and synchronized across multiple geographic sites, which guarantees data immutability. Most importantly, its replication and synchronization of files assures the integrity of selfexecuting protocols, also known as smart contracts. Once distributed, these protocols cannot be modified and become ‘contracts’. Without central management, they are designed to be autonomous. They can automate payments and negotiations according to predefined parameters, thus reducing friction and intermediaries. Blockchain infrastructures can also support full transparency of data and transactions. This way, they are often seen as a trusted way to authenticate transactions across disparate institutions and economies while providing information about the process. However, research has also indicated the potential of these technologies to support a concentration of power by technological elites [31]."
-    }, {
-      "page": 1,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 387 Page 2"
-    }, {
-      "page": 2,
-      "region": {
-        "x1": 53.43000030517578,
-        "x2": 295.7410888671875,
-        "y1": 95.73056030273438,
-        "y2": 616.68701171875
-      },
-      "text": "Algorithmic balancing and distributed storage. Another key aspect of energy systems involves balancing peak supply and demand for electricity. Proposals have looked at algorithmic predictions, planning and real-time control of consuming sources, and how smart contracts could be used to regulate energy transactions between the grid and cars, homes and appliances. This way, devices could be turned on and off according to predicted user behaviour in the home [34] and homes could ‘collaborate’ with each other in order to regulate supply and demand in a neighbourhood [13]. Distributed storage complements algorithmic balancing of supply and demand. Smart programmable batteries can connect with the grid and carry out energy transactions by selling and buying energy according to fluctuations in demand. Vehicleto-grid [27] is arguably the best known of these storage protocols and has been explored not only to transact energy with the grid, but also to redistribute power to a network of vehicles. This way, each vehicle not only consumes, but also distributes energy. With a steady increase in consumption and the increasing production of electric cars, domestic energy demand is expected to rise, stressing existing infrastructures. This situation has led researchers and companies to look for new business models around energy. Nissan, for example, has test-run offers of free parking in order to use idle electric cars for energy distribution. Grid storage technologies have also been tested in domestic appliances, often combined with blockchain technologies. Hewlett-Packard has incorporated distributed storage with smart contracts to allow an iRobot Roomba vacuum cleaner to buy electricity and recharge itself1, and IBM has patented protocols for connected devices to securely execute blockchain-based smart contracts2. Such trends promise to reduce energy spending and guarantee energy provision for increased demand. In technical discourses, the aim is often to provide seamless distribution that reduces complexity and cognitive effort from end consumers. This paper questions the implications of these discourses and the user-centric approaches of distributed energy systems, particularly given the reported impact of such systems on privacy and a greater requirement for transparency [25]. In doing so, this paper examines the buy-in for people in their role of consumers, as well as the opportunities for new businesses, and the shared values and responsibilities which distributed energy systems promise."
-    }],
+    "paragraphs": [],
     "title": {
       "page": 1,
       "region": {
         "x1": 317.9549865722656,
-        "x2": 500.22821044921875,
-        "y1": 269.53887939453125,
-        "y2": 290.9090270996094
+        "x2": 421.744140625,
+        "y1": 386.1750793457031,
+        "y2": 393.0260009765625
       },
-      "text": "2 BACKGROUND Autonomous distributed energy systems"
+      "text": "2 RELATEDWORK"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 1,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 559.7213134765625,
+        "y1": 416.22021484375,
+        "y2": 532.0050048828125
+      },
+      "text": "Long-distance relationships are fairly common – many individuals were in a LDR at least once (75% in USA in 2017 [3], 54% in Germany in 2014 [4]) and the number is still increasing [5], which is attributable to the continual advancement of travel and communication technologies [6], as well as job market and globalization forces [5]. Despite popular beliefs, partners in LDR can be as satisfied as partners in normal relationships, if properly maintained [7]. Canary & Stafford define relational maintenance behavior as actions and activities used to sustain desired relational definitions and suggest that sharing activities play important role in maintaining relationships [8]."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 558.5325317382812,
+        "y1": 536.7681884765625,
+        "y2": 663.511962890625
+      },
+      "text": "Many prototypes and designs for relationship maintenance were published in the past, from remote hugging [9, 10], touch [11, 12] or kisses [13, 14], to sharing heart rate [15] or glasses [16, 17], from abstract, multimodal interaction [18] to single bit of communication [19, 20]. One system that shares some aspects with our work is Pictures’ Call by Pujol &Umemuro [21], which takes up to 7 pictures at different times of the day at random intervals, and sends them to the remote system, which is continuously showing a slideshow of up to the last 20 pictures received. Users cannot see when or what pictures they are sending, but they can delete any in the past 2 hours for which the transfer is delayed, and they can also ink on received pictures and send them back."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.7030029296875,
+        "y1": 668.2752075195312,
+        "y2": 707.3469848632812
+      },
+      "text": "Themain difference of our system is in specifically target bedtime sharing, i.e. connecting partners when going to sleep and waking up. Our system also employs a situated interactive display with synchronous shared inking, and a transparent slow photo-stream."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.56402587890625,
+        "y1": 87.45320129394531,
+        "y2": 159.4019775390625
+      },
+      "text": "Outside of academic research, several commercial mobile apps have targeted couples in LDR in the past, including Between, Couple, Twyxt, Couplete and others. These apps were primarily designed for memory curation and relationship organization, offering features like shared calendars and lists, timelines of memories, and dedicated text messaging. In contrast, our system foregrounds ephemerality and “being together” through a situated device."
+    }],
+    "title": {
+      "page": 1,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 484.9951477050781,
+        "y1": 401.8660888671875,
+        "y2": 408.7170104980469
+      },
+      "text": "2.1 Long-Distance Relationships"
     }
   }, {
     "paragraphs": [{
       "page": 2,
       "region": {
-        "x1": 53.43000030517578,
-        "x2": 294.1523742675781,
-        "y1": 647.4935302734375,
-        "y2": 666.333984375
+        "x1": 53.48400115966797,
+        "x2": 295.5601501464844,
+        "y1": 197.0421905517578,
+        "y2": 279.95001220703125
       },
-      "text": "In 2012, Pierce and Paulos [37] identified that HCI researchers were mostly focused on exploring energy feedback systems"
+      "text": "Always-on or at least always-available media spaces have been studied for decades in the context of work environments and sharing workspaces [22], summarized by Harrison et al. [23]. Pang et al. looked into creating an always-on channel between workspace and personal space [24] and substantial research also went into connecting homes and families, across generations [25–27], living apart [28, 29]. A good summary of this work can be found in the Connecting Families book [30]."
     }, {
       "page": 2,
       "region": {
-        "x1": 53.65599822998047,
-        "x2": 294.4661865234375,
-        "y1": 685.51171875,
-        "y2": 712.3289794921875
+        "x1": 53.79800033569336,
+        "x2": 294.2739562988281,
+        "y1": 284.7132263183594,
+        "y2": 356.6629943847656
       },
-      "text": "1http://fortune.com/2017/11/10/blockchain-hpe/ 2https://www.coindesk.com/ibm-reimagines-proof-work-blockchain-iotdevices/"
-    }, {
-      "page": 2,
-      "region": {
-        "x1": 317.5870056152344,
-        "x2": 559.8980712890625,
-        "y1": 95.73056030273438,
-        "y2": 293.89801025390625
-      },
-      "text": "to communicate household behaviour or energy provenance. More recently, researchers started to explore fluctuations of renewable energy sources, by looking at ways to communicate spikes and dips in availability [40], exploring ways to facilitate understanding of how blockchain technologies manage energy transactions in microgrids [32], as well as looking into possibilities for devices with a certain degree of autonomy to minimize household energy costs [17]. These efforts communicate new possibilities in energy infrastructures, which are unfamiliar to most. Other researchers have looked at implications in low-income [18] and developing contexts [36]. We contribute to this work by focusing on critical aspects of these systems and how to support discussion with the public. Given the top-down approach to traditional energy systems, energy infrastructures are rarely a subject of public engagement unless they threaten the wellbeing of a group or the ecosystem of an area."
-    }, {
-      "page": 2,
-      "region": {
-        "x1": 316.8290100097656,
-        "x2": 559.8980712890625,
-        "y1": 298.96856689453125,
-        "y2": 616.68701171875
-      },
-      "text": "Design has long been considered as a way to tackle wicked problems [12] which are always unique and symptoms of “higher level” problems [39]. Boucher et al. [10] use design in an attempt to bridge the gap between infrastructure and household behaviours, looking at the potential of domestic consumption to affect energy levels in the national grid. Rather than seeing consumption as an individual concern, the researchers provide design proposals for community members to manage energy usage collectively. Other designers have created concepts that adopt a more critical approach to energy availability and usage. David Chatting designed the Peak Boil (2010), an electrical socket that prevents a kettle being turned onwhen the National Grid is under strain. In “Politics of Power” (2016), Automato.Farm conceptualised multiplugs that demonstrate differences in the ideology of designers, engineers and stakeholders in energy usage: the D-model represents a democratic, selfbalancing network; the T-model is centralised by a leader who can shut down the system; and the M-model supports monarch firmwares and hierarchical functionalities. Auger, Hanna and Encinas designed the Gravity Battery (2017) which combines natural and cultural materials that are made, recycled, and re-appropriated as an expression of their concept of Reconstrained Design [4]. These examples provide insights into how design can help surface critical issues around energy distribution, beyond communicating or building on the capability of these systems."
+      "text": "Judge et al. designed a FamilyWindow to connect part of families living separately [31]. This work was later extended to more than two connected homes through Family Portals [32], and to multiple cameras and/or displays [33]. All these systems are summarized in [34]. The Family Window, offering video and back and forth ink messages is the closest system to ours, albeit targeting a different environment and users."
     }],
     "title": {
       "page": 2,
       "region": {
         "x1": 53.79800033569336,
-        "x2": 114.54241943359375,
-        "y1": 633.0088500976562,
-        "y2": 639.4349975585938
+        "x2": 183.21266174316406,
+        "y1": 182.68807983398438,
+        "y2": 189.53900146484375
       },
-      "text": "Related work"
+      "text": "2.2 Always-On Channels"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 2,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.55889892578125,
+        "y1": 394.3022155761719,
+        "y2": 510.0870056152344
+      },
+      "text": "HCI research in the bedroom environment is still very sparse, although it seems to be getting some traction. Wan prototyped a situated shopping experience from the bedroom [35], and Odom looked at virtual possessions in the context of teen bedrooms in a lab study [36]. Beds themselves have been used as a medium for intimate communication in the past [37, 38], with recent focus on pillows [39, 40], but these channels always conveyed some secondary information about the partner, a physiological state or their activity. We are not aware of any prior work where partners in the bedroom could communicate directly to each other for prolonged periods of time."
+    }],
+    "title": {
+      "page": 2,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 128.4598846435547,
+        "y1": 379.9490661621094,
+        "y2": 386.79998779296875
+      },
+      "text": "2.3 Bedrooms"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 2,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 295.55609130859375,
+        "y1": 547.7271728515625,
+        "y2": 630.635009765625
+      },
+      "text": "According to a survey of private moments in the home by Choe et al., the bedroom is the most frequently mentioned place where people do activities that they don’t want to be recorded [41]. Hindus et al. found even a simple presence light based on remote activity to be perceived as a surveillance device that threatened home privacy despite conveying minimal information [42]. However, as Neustaedter et al. stated [43], video use in homes cannot be stopped; we can only identify and try to resolve the related problems."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.5602722167969,
+        "y1": 635.398193359375,
+        "y2": 707.3469848632812
+      },
+      "text": "Previous research into always-on video media spaces in homes found the transmission of audio to be more privacy-invasive than audioless video [44]. For video streams, various approaches have been explored to provide some level of privacy to users. This includes image processing filters such as pixelization or blur [45] and mechanical metaphors such as blinds or curtain overlays [31]. However, the usage of these was found to quickly cease with time [31]."
+    }],
+    "title": {
+      "page": 2,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 115.81624603271484,
+        "y1": 533.3731079101562,
+        "y2": 540.2239990234375
+      },
+      "text": "2.4 Privacy"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 2,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 559.713134765625,
+        "y1": 101.15119934082031,
+        "y2": 162.14202880859375
+      },
+      "text": "Much research has been devoted to ink input in the work environment, especially for document annotation and review, much of which has been summarized in a survey paper by Sutherland et al. [46]. In the home environment, inking has been used for sharing notes in households [42, 47] as well as for remote communication [32, 48]."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.1917114257812,
+        "y1": 166.9052276611328,
+        "y2": 260.77197265625
+      },
+      "text": "Research into collaborative drawing focused only on the work environment so far, with the pioneering prototypes of VideoDraw by Tang & Minneman [49, 50] and several ClearBoard iterations by Ishii et al. [51–53] using the metaphor of ‘talking through and drawing on a transparent glass window’. Similar experience were supported by DigitalDesk [54] and PlayTogether [55], where remote drawing was overlaid on paper using a projector. In all these cases, each participant had their own inking layer that no one else could interact with."
+    }],
+    "title": {
+      "page": 2,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 376.0677490234375,
+        "y1": 86.7980728149414,
+        "y2": 93.64898681640625
+      },
+      "text": "2.5 Inking"
     }
   }, {
     "paragraphs": [{
       "page": 2,
       "region": {
         "x1": 317.9549865722656,
-        "x2": 559.891357421875,
-        "y1": 650.4795532226562,
-        "y2": 681.2750244140625
+        "x2": 558.2062377929688,
+        "y1": 306.6312255859375,
+        "y2": 466.25201416015625
       },
-      "text": "Discussing the latent effects of distributed autonomous systems and underlining socio-economic issues in the context of energy systems presents three main challenges:"
+      "text": "In [2, 56], Neustaedter & Greenberg interviewed participants in LDR to understand how they make use of video chat systems to maintain their relationships. The authors argue for designs that support a shared sense of presence between partners as a means of supporting and maintaining LDRs, and suggest that researchers consider other mediums in addition to video to provide a rich experience that allows partners to feel like they are part of each other’s life [2]. but However, they also found the video connection to be more challenging to initiate and maintain long-term. Baishya [57] enabled sharing of everyday mundane activities through an audiovisual streaming system. Their users found this valuable, but also found that it unfortunately reduced the number of topics to talk about. These studies raise questions around how one might design communication systems that still place value in the creation of special moments."
     }, {
       "page": 2,
       "region": {
-        "x1": 333.427001953125,
-        "x2": 558.2103881835938,
-        "y1": 693.0611572265625,
-        "y2": 712.3289794921875
+        "x1": 317.9549865722656,
+        "x2": 559.71826171875,
+        "y1": 471.01422119140625,
+        "y2": 575.8410034179688
       },
-      "text": "• The seamlessness of technology that is designed to process and share information, but makes decisions"
+      "text": "Inspired by these challenges and drawing from suggestions and ideas of participants in several other studies (putting devices in LDR bedrooms [29], long calls without audio , exchanging drawings [39], leaving messages for waking up [59]), we designed the Bedtime Window, a technological probe to explore how a similar communication device would be used by partners in LDRs in bedrooms. Hutchinson et al. highlight three goals in relation to technological probes: understanding the needs and desires of users in a real-world setting, field-testing the technology, and inspiring users and researchers to think about new technologies [60]."
     }, {
       "page": 2,
       "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
+        "x1": 317.62298583984375,
+        "x2": 559.719482421875,
+        "y1": 580.6041870117188,
+        "y2": 707.3469848632812
       },
-      "text": "Paper 387 Page 3"
+      "text": "The discussed challenges arising from previous work were addressed as follows: Motivated by salient privacy concerns in the bedroom environment, we opted for a regular exchange of photos rather than constant video stream, and avoided any audio transmission, since it was found to be the most privacy invasive [44]. Moreover, sharing individual photos enables masking of connectivity drops and therefore mitigates problems in maintaining stable video connections. To avoid the hassle of connection initiation and to support sharing mundane activities, the system was designed as an always-on, situated and dedicated device – the lack of dedicated devices was found to be one of the main barriers to the adaption of always-on technologies in the past [24]."
     }, {
       "page": 3,
       "region": {
-        "x1": 69.27000427246094,
-        "x2": 295.7415466308594,
-        "y1": 95.73056030273438,
-        "y2": 210.21197509765625
+        "x1": 53.79800033569336,
+        "x2": 295.0348205566406,
+        "y1": 87.45320129394531,
+        "y2": 181.32000732421875
       },
-      "text": "in the background, so rendering implications of such activities invisible. • The absence of a bridge between emerging technology, which appears unfamiliar, and people’s experience with familiar technology. Without this connection, people do not have a reference to explore what appears unfamiliar to them. • The nature of a conceptual space for experience sharing, reflection, collective problem-solving and decisionmaking needs greater consideration."
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 53.31999969482422,
-        "x2": 295.7366638183594,
-        "y1": 217.83358764648438,
-        "y2": 275.09002685546875
-      },
-      "text": "We address these challenges by devising a method based on: • Speculative Design, and more specifically Critical Design, Design Fictions and Design for Debate, where artefacts embody critical issues and provoke an emotional response that leads to discussion."
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 69.27000427246094,
-        "x2": 299.19952392578125,
-        "y1": 279.7331848144531,
-        "y2": 394.6419982910156
-      },
-      "text": "• Drama, used to a) create a bridge between the critique (embedded in the speculative design objects) and a familiar context and b) allow participants to enact the roles of different stakeholders to understand the complexity of stakeholder relationships involved. • Deliberation method, employed to facilitate a discussion that moves participants from their initial emotional reactions to collective problem-defining, problemsolving and decision-making, building on the participants’ sharing of experiences and reflection."
+      "text": "We added inking in BedtimeWindow as inking is generally found to be fun to use and simple to operate, supporting play and art, and preferred to text messages [47, 48]. Ishii’s work on ClearBoard showed the potential of live collaborative drawing in the working environment, and we wanted to build on this work and discover how this paradigm works in the home setting. To support both live communication and leaving messages for later, we introduced the idea of disappearing ink, where users can specify how long individual strokes stay on the screen."
     }],
     "title": {
       "page": 2,
       "region": {
         "x1": 317.9549865722656,
-        "x2": 493.42333984375,
-        "y1": 635.9938354492188,
-        "y2": 642.4199829101562
+        "x2": 523.3295288085938,
+        "y1": 292.27703857421875,
+        "y2": 299.1279602050781
       },
-      "text": "3 PROBLEMATISING THE INVISIBLE"
+      "text": "3 MOTIVATION AND RESEARCH AIMS"
     }
   }, {
     "paragraphs": [{
       "page": 3,
       "region": {
-        "x1": 53.31999969482422,
-        "x2": 295.7410583496094,
-        "y1": 424.0605773925781,
-        "y2": 658.093017578125
+        "x1": 53.52899932861328,
+        "x2": 294.2163391113281,
+        "y1": 210.79322814941406,
+        "y2": 271.78302001953125
       },
-      "text": "We formulated our designs around the key issues of control, autonomy and ownership, creating three speculative hairdryers: GigBliss Plus, GigBliss Balance and GigBliss Auto. Each hairdryer varied in its level of speculation and critique, from feasible to impractical and improbable. The choice of hairdryers as the artefact that would incorporate this critique referred to its portability as well as its high level of electricity consumption. In our speculation, the hairdryers would be supplied with a battery able to connect to the grid and carry out transactions. The strangeness of a hairdryer charging itself, instead of a vacuum cleaner (e.g., Roomba) or a toothbrush, helped to reinforce the fictitious nature of the scenario. The three concepts were developed into functioning prototypes, which worked based on simulated data stored in each device. The embedded data was set to portray quick changes in the network, which allowed us to provide an experience of the context in the short period of time in which participants were expected to interact and understand the devices. While the prototypes can blow air, their heating systems have been removed for health and safety reasons."
+      "text": "The Bedtime Window is a system connecting two places using a custom developed application running on standard Windows PC tablets with a built-in or off-the-shelf RGB light sensor. The sensor enables a paper-like display experience as described in [61], where the display mimics a reflective surface in terms of light and color produced, making it physically acceptable in bedrooms at night."
     }, {
       "page": 3,
       "region": {
         "x1": 53.79800033569336,
-        "x2": 294.0544128417969,
-        "y1": 669.5785522460938,
-        "y2": 712.3289794921875
+        "x2": 295.0315246582031,
+        "y1": 276.5462341308594,
+        "y2": 293.70098876953125
       },
-      "text": "GigBliss Plus. The first hairdryer, GigBliss Plus, represents a user-centred design approach where end-users are put in control of energy transactions. Users can follow fluctuations in the market through a small display integrated in the device"
+      "text": "A snapshot of the user interface is shown in the cover Figure 1, demonstrating the two most important user experiences:"
     }, {
       "page": 3,
       "region": {
-        "x1": 316.8290100097656,
-        "x2": 559.3411254882812,
-        "y1": 95.73056030273438,
-        "y2": 293.89801025390625
+        "x1": 68.08000183105469,
+        "x2": 295.5583190917969,
+        "y1": 301.1512145996094,
+        "y2": 548.4429931640625
       },
-      "text": "and are able to buy, store and trade energy through three buttons above and below the display to buy (pull) and sell (push) energy. The device can be activated through a third “on” button. In our speculative scenario, GigBliss Plus would be acquired at a high price but would allow end-users to make a profit, which could also cover the initial outlay. The scenario alludes to a tendency of recent systems to support flexible and ad-hoc forms of employment where workers use their own tools. This form of work contrasts to “traditional” forms of work as it includes no security and little guarantee of long-term contracts. In our critical scenario, individuals would use their hairdryers and potentially other appliances to store energy and make money, e.g., possibly from carrying out other services such as riding in their Uber taxis and renting out spare bedrooms through Airbnb. This device was the first concept developed and its name is an allusion to the gig economy."
+      "text": "1. Slow photo stream: the device captures a picture using the front camera every 5 seconds and sends it to the remote device. The user interface shows a live camera preview in the bottom-left corner with a progress bar so that the user knows at what moment the photo is taken. Received photos are shown full screen in the background, over which the users can ink. Note that the background image is different for each user, since each sees the most recent photo from their partner’s camera. 2. Inking: Users can draw on the screen with their finger. As they draw, the inking data is transferred and shown in realtime on the remote device, creating a shared inking space. All inking is in single layer, i.e. later strokes are drawn over earlier strokes regardless of who drew them. Users can select one of 8 predefined colors, 3 predefined ink thicknesses and 4 predefined ink durations (one second, one minute, one hour or one day). All strokes start linearly disappearing (i.e. becoming transparent) as soon as they are drawn, so that full transparency is reached when the selected duration passes. When short duration ink covers long duration ink, the long duration ink will be revealed as the short duration ink disappears. Users also have the ability to instantly erase all ink on both devices at once."
     }, {
       "page": 3,
       "region": {
-        "x1": 317.7060546875,
-        "x2": 559.89794921875,
-        "y1": 310.923583984375,
-        "y2": 533.0009765625
+        "x1": 53.57400131225586,
+        "x2": 295.55938720703125,
+        "y1": 555.8941650390625,
+        "y2": 605.9249877929688
       },
-      "text": "GigBliss Balance. The second model attempts to problematise algorithmic capabilities in order to balance energy in a network of devices. This is illustrated by the GigBliss Balance, which would be acquired cheaply or simply borrowed and returned to the GigBliss Corporation when no longer needed. Entry level would be facilitated and energy prices to users minimised. In return, the corporation would utilise the device to carry out energy transactions through predefined smart contracts hosted on a blockchain. While users can operate the device through an “on/off” button on the interface, its background operations are beyond their control. Such operations are indicated through an LED light that changes colour (green, yellow or red) to indicate that the device is available, available with a waiting time or unavailable, respectively. Waiting time and time of usage are indicated through a seven-segment numeric display. Overall, the usage of the device is affected, but costs are dramatically reduced to end-users and profit and potential losses from energy transactions are returned to the GigBliss Corporation."
+      "text": "Each pair of devices were connected through a server. The devices had a symmetric AES encryption key pre-deployed, so that photos from bedrooms couldn’t be eavesdropped on the network or recovered from the devices transferring them. More technical and architectural details about the system are available in [62]."
     }, {
       "page": 3,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.8980102539062,
-        "y1": 550.0275268554688,
-        "y2": 712.3289794921875
-      },
-      "text": "GigBliss Auto. The third concept, GigBliss Auto, represents a model where a third party would subsidise costs of both devices and electricity supply for the device for a particular group. In this context, a local Council, community service, or charity establishes an agreement with an energy provider and the hairdryer company, paying a fixed price and setting up conditions for energy access. Here we invite reflection on the interests of stakeholders and what happens if this agreement attempts to reduce costs in order to maximise the number of households served by this scheme or if, for example, energy provision is set to occur during very specific or off-peak times in a way that regulates people’s actions rather than vice versa. Illustrating a rather dystopian scenario, GigBliss Auto has no buttons on its panel and offers"
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 387 Page 4"
-    }, {
-      "page": 4,
       "region": {
         "x1": 53.79800033569336,
-        "x2": 294.05438232421875,
-        "y1": 95.73056030273438,
-        "y2": 114.57000732421875
+        "x2": 294.2156066894531,
+        "y1": 610.688232421875,
+        "y2": 649.760986328125
       },
-      "text": "users no control. An LED light and bar display indicate if the device is about to turn on and for how long."
-    }, {
-      "page": 4,
-      "region": {
-        "x1": 53.31999969482422,
-        "x2": 295.734375,
-        "y1": 144.74212646484375,
-        "y2": 258.031982421875
-      },
-      "text": "Speculative design, critical design and the need for dialogue. Wedesigned the GigBliss hairdryers as an embodiment of scenarios that raise critical questions of distributed autonomous systems. Speculative Design and, more specifically, Critical Design and Design Fictions have been extensively employed in HCI as a way to reflect on future technologies or critique current practice. According to Auger [3] a key aspect of Speculative Design is the construction of a ‘perceptual bridge’ by which designers engage their audiences, and which demands a careful management of the speculation."
-    }, {
-      "page": 4,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 295.7410888671875,
-        "y1": 263.1035461425781,
-        "y2": 712.3289794921875
-      },
-      "text": "Critical Design was originally defined by Dunne and Raby [20] as a sort of “design that asks carefully crafted questions and makes us think”, and which contrasts with an affirmative form of design that focused on “solving problems and findings answers” [20]. This approach has received great attention in HCI despite differences in methods [5, 38]. The Peak Boil, Politics of Power and Gravity Battery projects presented above can all be framed within this definition. In our approach, however it was important to expand the critique into a discussion on issues around the design. Gallery spaces are the classical venues for designers to exhibit and engage audiences with critical design pieces [22]. Pieces in the gallery space are often meant to provoke an emotional response that would lead to further conversations beyond this context. The GigBliss hairdryers have been exhibited on two occasions. In our experience, the gallery space did not allow for an analysis of the impact of the designs or a more systematic conversation with participants. Furthermore, although the unfamiliar interface suggests some level of strangeness, in order to trigger discussion, the hairdryers require active interaction and some degree of contextualization. There has been much discussion in HCI about the value of Design Fictions or “diegetic” prototypes that incorporate story worlds [43]. While Bleecker [6] presents it as the creation of artefacts that foster imagination about possible near future worlds in order to tell stories that provoke reactions and raise questions, Bruce Sterling [43] defines it as the creation of stories that speculate about social practices that may be constructed around and through designed artefacts and systems. In HCI, design fictions have been explored around and even without the need of any technological artefact[7]. They have been employed as a tool to criticise [9], comment on, [8] and imagine[7] future approaches to technology as well as to engage participants and test these fictions [29]. We contribute to this work, turning to drama to co-create a fiction in order to contextualize the hairdryers within the intricacies and complexities of algorithmic profiling and energy systems."
-    }, {
-      "page": 4,
-      "region": {
-        "x1": 317.70599365234375,
-        "x2": 559.8977661132812,
-        "y1": 95.73056030273438,
-        "y2": 317.8080139160156
-      },
-      "text": "Finally, our approach is in line with the less discussed concept of Design for Debate [21] presented as a way to enhance discussion on new technologies, scientific developments or sociopolitical issues [28]. Once brought to the public, designs that attempt to embody critical issues or create a sense of connection with participants would help to elicit reactions and prompt dialogue. The way to engage people in discussion vary from face to face conversations with designers, to engaging larger audiences through popular media, where fictitious designs are often portrayed as real-world products. Ultimately the hairdryers were used in two ways 1) to support the performance of the sketches, with GigBliss Plus and Balance in operation, and GigBliss Auto turned off as explained below, and 2) to provide participants with some experience of the infrastructure behind the devices. While in current approaches the discussion seems to end in the ability to raise awareness and critique, our aim was to generate discussion and potentially reconcile the critique with the values and solutions proposed by participants."
+      "text": "In order to produce and then refine Bedtime Window, we used an autobiographical design [63] approach, refining the system over multiple iterations and months based on the first author and his partner’s experiences living with and reacting to the system."
     }],
     "title": {
       "page": 3,
       "region": {
         "x1": 53.79800033569336,
-        "x2": 155.09182739257812,
-        "y1": 409.5748596191406,
-        "y2": 416.0010070800781
+        "x2": 154.61990356445312,
+        "y1": 196.43905639648438,
+        "y2": 203.28997802734375
       },
-      "text": "Designing the critique"
+      "text": "4 SYSTEM DESIGN"
     }
   }, {
     "paragraphs": [{
-      "page": 4,
+      "page": 3,
       "region": {
-        "x1": 317.47698974609375,
-        "x2": 559.7471313476562,
-        "y1": 349.7785949707031,
-        "y2": 416.43798828125
+        "x1": 53.46699905395508,
+        "x2": 294.24761962890625,
+        "y1": 679.2341918945312,
+        "y2": 707.3469848632812
       },
-      "text": "We worked with three actors to devise sketches around the hairdryers as a way to contextualise the design within the critical issues around distributed energy systems. The actors were recruited through word-of-mouth and social media, where we called for artists with strong improvisational skills. We divided the dramatic element into two parts."
+      "text": "To understand the value to LDR couples of Bedtime Window, we conducted a field study with 5 LDR couples using our system for 4 weeks in their bedrooms."
     }, {
-      "page": 4,
-      "region": {
-        "x1": 317.5870056152344,
-        "x2": 559.3048706054688,
-        "y1": 421.50958251953125,
-        "y2": 583.81103515625
-      },
-      "text": "The first part focused on producing three sketches to be used as vignettes to prompt reflective discussion. The second focused on involving participants in role-playing of different stakeholders, as a way to engage them in the deliberation process. In the first part the aim was to provoke an emotional response to critical issues in order to stir discussion. The three actors were briefed with the rationale of each hairdryer, the project aims and the scenarios described above. Each one then devised a sketch for the storyline around their chosen hairdryer; this process took about 15 minutes. Each sketch was rehearsed by all actors three to four times in front of a camera. The whole process took about five hours, including setting up the camera and lighting. The resulting dramatic sketches were:"
-    }, {
-      "page": 4,
-      "region": {
-        "x1": 317.6059875488281,
-        "x2": 559.899169921875,
-        "y1": 597.8475341796875,
-        "y2": 712.3289794921875
-      },
-      "text": "GigBliss Plus sketch: Can I just plug in? This sketch focused on end-user energy transactions through the GigBliss Plus. Anna is visiting Harry and Sarah and asks to plug in the hairdryer as she is waiting for the moment to complete an energy transaction. The strangeness of plugging in a hairdryer prompts Harry’s and Sarah’s interest. Anna explains that the device could earn money and tells them the story of successful transactions that allowed her to afford a nice hotel when going to a wedding. Harry demonstrates interest. Sarah skeptically compares this trading action to the stock"
-    }, {
-      "page": 4,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 387 Page 5"
-    }, {
-      "page": 5,
-      "region": {
-        "x1": 53.42951965332031,
-        "x2": 294.3180236816406,
-        "y1": 95.73056030273438,
-        "y2": 186.301025390625
-      },
-      "text": "exchange market and asks if they would get a cut since Anna is using their mains power. Anna explains that she is actually waiting to sell the stored energy. Sarah wonders if Anna ever has time to relax if she is so often using her appliances to make money. Anna talks about the excitement of carrying out transactions and making money. She then focuses on the device rather than on the conversation. Harry continues to demonstrate interest and suggests that Sarah gets one."
-    }, {
-      "page": 5,
-      "region": {
-        "x1": 53.43000030517578,
-        "x2": 295.73895263671875,
-        "y1": 209.30459594726562,
-        "y2": 395.5169982910156
-      },
-      "text": "GigBliss Balance sketch: It’s like the cat. The second sketch featured GigBliss Balance as a stylish, hi-tech device that is sold at a low price. In exchange for the price-cut, users may sometimes be required to wait until the device finishes transacting energy to be able to use it. In this sketch, Anna again is visiting Harry and Sarah. Sarah talks about the new hairdryer she has received as a birthday present. Harry explains how the device operates. Anna questions if it was worth waiting for a better deal on the energy when one has their hair wet. Sarah compares the hairdryer to Uber, as ride prices rise during rush hours. Harry argues that people don’t wait because they start planning ahead to avoid using the hairdryer in peak hours. The sketch finishes with Sarah making a metaphorical comparison of this model to a cat: “it depends on how much you like to control things, it is like the cat, it is ours but we don’t quite control it.”"
-    }, {
-      "page": 5,
-      "region": {
-        "x1": 53.45018005371094,
-        "x2": 295.7366638183594,
-        "y1": 418.52056884765625,
-        "y2": 712.3289794921875
-      },
-      "text": "GigBliss Auto sketch: Invisible flatmate. The third sketch featured GigBliss Auto and was situated in a council flat. Sarah and Anna are having a cup of tea in the kitchen when Harry arrives and says that he received a new hairdryer as part of a trial scheme that an energy company is carrying out with the council. Sarah and Anna are suspicious. Harry explains that both the device and the energy are free, but there could be certain times when they would not be able to use the device, because the energy company would be using it to carry out transactions. Sarah asks when those times might be. Harry says they needed to test the system first in order to know. Anna questions the usefulness of the device and says that they might need the hairdryer at a time when they couldn’t use it. Sarah becomes even more frustrated and says that they would only be allowed to dry their hair when no one else wants to, e.g. at 2am. Harry says it isn’t that bad and they just needed to imagine the energy company as a fourth flatmate. Sarah remarks that this would be a very wealthy flatmate, as this person would have preference in the hair drying queue. The interpretation of the actors helped to frame the designs as real world contexts while bringing forward issues of recent technologies, such as stock market operations, addiction to devices and social isolation, price variation in Uber taxi services as well as issues of control and social justice."
-    }, {
-      "page": 5,
-      "region": {
-        "x1": 317.5871887207031,
-        "x2": 559.8953857421875,
-        "y1": 96.92113494873047,
-        "y2": 640.5980224609375
-      },
-      "text": "Using performance to support the design process vs its critical framing. HCI has a long history of using performance as way to gain insights into new concepts and possibilities. According to Spence et al. [41], performance has been used to portray technologies, to allow participants to enact or embody the experience of using a technology, to stage or represent the experience as a group to an audience, or to engage participants and make sense of a technology. Taylor et al. [44] further look at the role of researchers as performers. Briggs et al [11] uses film to convey novel functions and outcomes of a design without giving it form. These ‘invisible designs’ are used to support discussion in participatory design sessions in a way that focuses on the intangible, experiential aspects rather than on features of a device. Chatting [14] devises the concept of Speculation by Improvisation, which uses designed props and improvisation to examine alternatives for constructing meaning around in early design stages. This is later developed into Speculative Enactments [23] where participants, either professional actors or the general public, help to co-construct the action around designs through a form of empirical inquiry. Our approach draws from this work, as it uses performance to bring forward aspects of novel technologies that go beyond device features. However, our focus is not on the design itself but on creating a bridge between the critique and the public. We used performance in two moments: a) first, we engaged professional actors in the co-creation of the critique. The enactment of different scenarios of usage resulted in sketches that were selected and used as vignettes to prompt deliberation, b) second, we used improvisation to engage participants in the deliberation process, by inviting them to perform aspects of the technology. We integrated this role-play exercise to give participants a taste of negotiation, creating an event that engages people with unfamiliar technologies through a constructed multi-dimensional experience. Drama exposes participants to the sensational dimension of human experience with the complexity of technologies, a technical or functional aspect of experience. The fusion of theatre techniques is an adaptation of the work of Coleman et al. [15]. This form of storytelling either embodies or supports arguments, providing evidence for claims [24]. Such storytelling also supports participants to slot their personal experience into the larger tapestry of the complex and elusive relationships of stakeholders in the autonomous distributed energy systems at the heart of this deliberative process [26]."
-    }],
-    "title": {
-      "page": 4,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 429.5107727050781,
-        "y1": 335.2928771972656,
-        "y2": 341.7190246582031
-      },
-      "text": "Dramatising the critique"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 5,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.8908081054688,
-        "y1": 669.5785522460938,
-        "y2": 712.3289794921875
-      },
-      "text": "Deliberation provides an open and respectful space for problematizing the latent effects of autonomous distributed energy systems. Deliberative theorists [19, 30] describe deliberation as a talk-based process to achieve mutually acceptable"
-    }, {
-      "page": 5,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 387 Page 6"
-    }, {
-      "page": 6,
-      "region": {
-        "x1": 53.429779052734375,
-        "x2": 295.7423400878906,
-        "y1": 561.9825439453125,
-        "y2": 712.3289794921875
-      },
-      "text": "solutions to social problems through open exchange and reflection on experience, storytelling, opinions, argumentation and persuasion. The value of this process lies in its principles of open and reflective exchanges which accommodate diverse views, needs and calls for actions. While practices of public deliberation have been widely explored in the social sciences [16, 35, 42], deliberative practices have not yet been applied to critical design, particularly in the context of autonomous distributed energy systems. Deliberation can move emotional reactions toward speculative prototypes, which was often negative, and the sensational experience from drama to problem exploration, definition and solving through four steps [16]:"
-    }, {
-      "page": 6,
-      "region": {
-        "x1": 327.8080139160156,
-        "x2": 559.8971557617188,
-        "y1": 95.73056030273438,
-        "y2": 222.1669921875
-      },
-      "text": "(1) Storytelling: an exchange of participants’ experience related to the issues raised by the dramatic sketch; (2) Problem definition: a scoping exercise leading to definition of problems by participants through reflecting on responsibilities, accountability, relevant values and interests; (3) Solution brainstorming: a brainstorming exercise to develop and debate the merits of potential solutions; (4) Resolution: a shortlisting and collective decision exercise to filter in recommendations relevant to the problems identified"
-    }, {
-      "page": 6,
-      "region": {
-        "x1": 317.5870056152344,
-        "x2": 558.2151489257812,
-        "y1": 232.46755981445312,
-        "y2": 275.218017578125
-      },
-      "text": "In our study, we carried out two pilot deliberative sessions with a mixed demographic of 9 and 13 participants, with ages varying between 25 and 35 in the first group and from 25 to 65 in the second."
-    }],
-    "title": {
-      "page": 5,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 552.1851806640625,
-        "y1": 655.0928955078125,
-        "y2": 661.51904296875
-      },
-      "text": "4 FUSING DESIGN, DRAMA AND DELIBERATION"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 6,
-      "region": {
-        "x1": 317.5870056152344,
-        "x2": 559.8980102539062,
-        "y1": 307.18756103515625,
-        "y2": 612.9509887695312
-      },
-      "text": "The two deliberative sessions opened with an improvisation exercise led by one of the professional actors who played the role of a connected technology, in this case Uber. Uber was chosen because of the many parallels established between Uber and the distributed energy system that GigBliss incorporated. Participants were asked to volunteer for the roles of consumer, entrepreneur and mischief-maker. The remaining participants, in the roles of audience members, were allowed to interject, make suggestions, ask questions and otherwise interact with the professional and volunteer actors at any point during the improvisation. The exercise was facilitated by a moderator whose role was to prompt interaction between volunteer actors and the professional actor through questions about the scenarios and the use of technology according to the roles each one played. This introductory improvisation session was designed to ease participants into the world of connected autonomous technology and start engaging with the dynamics of relationships with technology and others in this environment at an empirical, sensational level. Such progression required participants to think aloud, act out and interact with the impersonated technology as well as with other participants who volunteered to be actors. Through role-play improvisation, participants started asking questions to the impersonated technology, articulating an internal dialogue that could otherwise be obscured by the habits of use or immediate demands for services."
-    }, {
-      "page": 6,
-      "region": {
-        "x1": 342.364013671875,
-        "x2": 534.8854370117188,
-        "y1": 624.13427734375,
-        "y2": 642.0919799804688
-      },
-      "text": "Participant in the role of consumer: Yes, I’m scared. I don’t know if I trust you, [Mr. technology]."
-    }, {
-      "page": 6,
-      "region": {
-        "x1": 342.364013671875,
-        "x2": 512.91064453125,
-        "y1": 653.2753295898438,
-        "y2": 659.2780151367188
-      },
-      "text": "Actor, impersonating technology: Why not?"
-    }, {
-      "page": 6,
-      "region": {
-        "x1": 342.364013671875,
-        "x2": 534.8917846679688,
-        "y1": 670.4603271484375,
-        "y2": 712.3289794921875
-      },
-      "text": "Participant in the role of consumer: I don’t know. You’re very anonymous. You’re very ambiguous. I get the feeling that you’re not as safe as a regular taxi somehow."
-    }, {
-      "page": 6,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 387 Page 7"
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 78.20700073242188,
-        "x2": 270.6401062011719,
-        "y1": 96.6122817993164,
-        "y2": 174.34600830078125
-      },
-      "text": "Participant from audience: I am sorry, Mr. [Technology], but you depend on other connected services. I’m assuming if there’re road works, then our local council would let you know, so you could direct your service to take an alternate route. What happens if those [connected services] are compromised?"
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 53.499000549316406,
-        "x2": 295.7395324707031,
-        "y1": 182.83255004882812,
-        "y2": 261.447998046875
-      },
-      "text": "These dialogues, elicited by the role-play improvisation, prompted comments and discussions concerning various issues underpinning people’s relationships with technology and others who use such technologies to provide services. These issues include trust, security, control, data protection, choice, terms of use, reliability, accountability and exploitation."
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 78.20700073242188,
-        "x2": 269.6446533203125,
-        "y1": 270.8162536621094,
-        "y2": 336.5950012207031
-      },
-      "text": "A: I switch, don’t trust anyone anymore from any companies or organizations. Our data is out there but we don’t have much say on it... they are going to have to make money some way, but then it’s still not hugely comfortable, that there is not much choice."
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 78.20700073242188,
-        "x2": 270.7250671386719,
-        "y1": 345.9632873535156,
-        "y2": 435.6520080566406
-      },
-      "text": "B: I think when it comes to data, it’s not possible to keep track of it. Even now we have this consent where you have to click okay or you don’t agree. If you don’t agree you don’t have access to the website sometimes... People don’t know the consequences really and I think you need to be a very high-tech person to know what’s going on with your data"
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 78.20700073242188,
-        "x2": 270.6405334472656,
-        "y1": 445.0202941894531,
-        "y2": 498.843994140625
-      },
-      "text": "C: I think anything that has access to all the functions on your phone, I’m a bit wary of those... you wouldn’t make the connection to whatever it is they’re asking for in return... I’d question why they want it."
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 78.20700073242188,
-        "x2": 269.64459228515625,
-        "y1": 508.2122497558594,
-        "y2": 550.0800170898438
-      },
-      "text": "D: It’s just about transparency, I suppose... it’s knowing what you actually want from me... if you’re open with me and say, “These are the things I want,” I can make that decision and say no."
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 78.20700073242188,
-        "x2": 270.7251281738281,
-        "y1": 559.4483032226562,
-        "y2": 601.3170166015625
-      },
-      "text": "E: If it’s a free service, you tend to be warier in terms of what you’re actually giving... If it’s free, I’m accepting that I’m going to have to give up a couple of golden nuggets of information."
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 295.7342224121094,
-        "y1": 609.8025512695312,
-        "y2": 712.3289794921875
-      },
-      "text": "Participants’ responses to the introductory improvisation demonstrated a high level of value for human agency. Such agency is exhibited in forms of demands that include transparency, choice and opportunities to negotiate the terms of exchange (e.g. personal data for service) which are often obscured by the term ‘free’ and increasingly by the seamlessness of connected autonomous technology. These demands highlight the benefits of role-play improvisation in triggering people to consider their habitual technology engagement"
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 317.95452880859375,
-        "x2": 559.8971557617188,
-        "y1": 95.73056030273438,
-        "y2": 186.301025390625
-      },
-      "text": "and the use of connected autonomous technologies. This enabled participants to start questioning and reflecting on their relationships with technologies and other stakeholders and, as a result, to see through the opacity, technical and relational complexity of connected autonomous technologies. Subsequently, participants could draw on their personal experience to critique these technologies and start negotiating for what they deemed acceptable terms of exchange."
-    }],
-    "title": {
-      "page": 6,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 442.0841064453125,
-        "y1": 292.7018737792969,
-        "y2": 299.1280212402344
-      },
-      "text": "Introductory improvisation"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 7,
-      "region": {
-        "x1": 317.5865173339844,
-        "x2": 559.8931274414062,
-        "y1": 216.82559204101562,
-        "y2": 307.39599609375
-      },
-      "text": "Once participants started to connect what they are familiar with (their technology engagement) to technologies they were less familiar with, they were quick to pick up on the social and economic issues embedded in the dramatised artifacts that represented different models of distributed energy systems. After presenting each of these sketches, participants were prompted to express their reactions to the specific models of such systems."
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 317.5870056152344,
-        "x2": 559.8958740234375,
-        "y1": 319.986572265625,
-        "y2": 386.6470031738281
-      },
-      "text": "GigBliss Balance: It’s like the cat. The first sketch presented to participants was “GigBliss Balance: It’s Like a Cat” wherein users declared that they owned the device, but did not quite control it. The immediate response to this speculative design was negative. However, drawing on their personal experience, they started to explain why they rejected the design."
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 342.364013671875,
-        "x2": 533.80078125,
-        "y1": 396.311279296875,
-        "y2": 462.0899963378906
-      },
-      "text": "A: No... Because it’s not functional, like this is a hairdryer that is one of the very few really on demand things... Uber, I get that because that’s a different person involved... If you don’t have the option to pay the higher price to the energy that’s different, that’s restricting your access."
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 342.364013671875,
-        "x2": 534.7976684570312,
-        "y1": 471.7542724609375,
-        "y2": 537.5330200195312
-      },
-      "text": "B: For me, I think technology is useful for people because we take control of it, and we can use technology for our benefit, but in that case [referring to the sketch] the technology is taking control of our lives... I’d rather pay full price to wholly control the technology I need to use."
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 317.6059875488281,
-        "x2": 559.89892578125,
-        "y1": 546.3155517578125,
-        "y2": 684.70703125
-      },
-      "text": "Participants’ reactions and discussions featured significant anxiety towards the perceived restrictions on their control. According to participants’ responses, control is manifested in forms of choices, on-demand access and abilities to negotiate terms of use or access. Participants determined that choice and transparency about the price facilitated further negotiation. Both groups indicated an intention to pay extra for on-demand access. Underlying demands for on-demand access is a willingness to negotiate, which is a common social practice in human relations. Underpinning participants’ quest for opportunities to negotiate is a consideration of trade-offs based on a cost-benefit calculation."
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 342.364013671875,
-        "x2": 533.8017578125,
-        "y1": 694.371337890625,
-        "y2": 712.3289794921875
-      },
-      "text": "A: [If the price of the device] was [to drop] from 100 pounds to five pounds. Your bar says 23.5 hours"
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 387 Page 8"
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 78.20700073242188,
-        "x2": 270.30169677734375,
-        "y1": 96.6122817993164,
-        "y2": 138.48101806640625
-      },
-      "text": "a day... that’s a sacrifice you can deal with. But if it was like a hundred pounds down to 80 pounds; you can only use it six hours a day, it’s not worth it."
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 78.20700073242188,
-        "x2": 269.6477355957031,
-        "y1": 149.94529724121094,
-        "y2": 203.76898193359375
-      },
-      "text": "B: It depends how big the price surge gets. At the end of the day, if I always use it at peak time but I only spend two pounds extra per month on bills, I don’t see it as a huge problem. But if you’re talking about... times 10 price surge... then sorry."
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 295.5819396972656,
-        "y1": 214.35159301757812,
-        "y2": 245.14697265625
-      },
-      "text": "However, some participants warned about the practicality of such calculation, noting that it consumes quite a lot of mental space:‘everything becomes such a conscious choice’ (C)."
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 53.43000030517578,
-        "x2": 295.73382568359375,
-        "y1": 259.4525451660156,
-        "y2": 361.9779968261719
-      },
-      "text": "GigBliss Plus: “can I just plug in?” The second sketch presented was the “GigBliss Plus: Can I just Plug in?” which was presented as giving users full control over energy trading, allowing them to monitor energy price fluctuation and decide when to sell or buy energy. This sketch also produced an immediate negative reaction with varying degrees of conviction. However, when participants were asked to elucidate why the prototype was rejected, they started examining the implications of this transaction model."
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 78.20700073242188,
-        "x2": 269.6480712890625,
-        "y1": 373.4422912597656,
-        "y2": 463.1319885253906
-      },
-      "text": "A: Wouldn’t it be better off getting regular stocks and bonds rather than doing the miniature version on your hairdryer?... Why do you have to basically do it in a product that you are using? Whereas stocks, you can... clearly delineate as this is my pile of money that I use for that rather than tie that all up in each other and make everything so complex."
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 78.20700073242188,
-        "x2": 269.6456604003906,
-        "y1": 474.5962829589844,
-        "y2": 516.4639892578125
-      },
-      "text": "B: We have that in a form, so you had a phone but now it became your camera, your memory card, your everything else, you do everything on the phone."
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 78.20700073242188,
-        "x2": 269.6477355957031,
-        "y1": 527.9293212890625,
-        "y2": 605.6629638671875
-      },
-      "text": "C: Yes. In the phone it’s not tied to like that... You can store a kilowatt hour on it and then I can resell it. But if I go on the web and I buy some stocks and if I know it’s going to be cheap now and then expensive later I’ll buy a megawatt hour and then sell that and make a bigger profit. Then I don’t need to tie it to my hairdryer."
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 78.20700073242188,
-        "x2": 269.6436767578125,
-        "y1": 617.1273193359375,
-        "y2": 658.9959716796875
-      },
-      "text": "A: I think... It’s like doing stocks with just your normal every day checking account. You should never do that with the same money you buy your groceries."
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 78.20700073242188,
-        "x2": 270.6450500488281,
-        "y1": 670.4603271484375,
-        "y2": 712.3289794921875
-      },
-      "text": "C: I think like he said, the technology is good. It’s just the wrong product, but maybe if it was connected to my house like the whole electricity system, then yes."
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.899169921875,
-        "y1": 95.73056030273438,
-        "y2": 305.8529968261719
-      },
-      "text": "In the excerpts above, participants drew a parallel between a hairdryer and a mobile phone when critiquing the functionality bundle of the hairdryer. They also engaged with the concept of energy trading and built on their understanding of a stock exchange. Initially, discussions in both groups concentrated on the mismatch of the functionality bundle which appeared to have resulted from two factors: 1) the added functionality of energy trading was far too big a stretch of imagination for participants to see as added value to the traditional functionality of a hairdryer and 2) the capital tied to the hairdryer (the energy a hairdryer can stock up to trade) did not seem to generate a worthwhile profit margin. However, the parallel that participants drew between energy trading and the stock exchange further accommodated participants’ reflections on the relationships of trade, unearthing issues of cultivated dependence in technology design that results in addiction, exploitation, market failure and increased economic disparity."
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 342.364013671875,
-        "x2": 534.8853149414062,
-        "y1": 314.1962890625,
-        "y2": 650.1619873046875
-      },
-      "text": "A: It feels like more of a game as well. The stakes are so low there is no control over the market, just it says sell... I don’t know if this price is a good price. B: I’m thinking of the treadmills. It has exploitation with people, wanting people to run for them to make more energy. C: You see how addicted people are to their phones... and if you had an appliance like that suddenly you’re constantly checking everything in your house that’s going to tell you when the best time to do this or that is, or when you can use this or when you can use that... I don’t like the idea of living in a world where everybody is enslaved to all their different pieces of technology. D: One thing that’s already happened with that solar thing... because it’s not a free market, but in Germany the government wanted to promote, still wants to promote renewable energy, so they give you a very good price on energy you sell back to the grid from your solar panels... what happens is all farmers and very rich people with houses or a lot of land just build a lot of solar panels and they feed it back into the system making money. They already have a lot of money and it’s all subsidized by people living in flats or people who don’t have a lot of money. So that’s a big social financial issue to consider."
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.89794921875,
-        "y1": 657.62353515625,
-        "y2": 712.3289794921875
-      },
-      "text": "These comments show that participants managed to work out the interests of different stakeholders, saw through the ideals of the underlying gig-economy and realized the consequences of such relationships of trade. The social and financial concerns that participants raised implied the need"
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 387 Page 9"
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 294.2471923828125,
-        "y1": 95.73056030273438,
-        "y2": 186.301025390625
-      },
-      "text": "for market and trade practice oversight. Such a requirement resulted from the underpinning power asymmetry in the relationship of trade between consumers and suppliers that is facilitated by technology. This relationship becomes even more complicated when consumers can also be suppliers, in this case, of energy. Connected to this asymmetric power relation is control, subtly manifested in forms of abilities to dictate or negotiate the terms of trade."
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 294.0565185546875,
-        "y1": 197.47659301757812,
-        "y2": 264.13702392578125
-      },
-      "text": "GigBliss Auto: “invisible flatmate”. The third sketch featured GigBliss Auto, wherein a device only allowed usage during the agreed time between the manufacturer and a sponsoring partner who subsidised both the energy and device costs to end users. The immediate reaction across both groups of participants reflected frustration."
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 78.20700073242188,
-        "x2": 270.73101806640625,
-        "y1": 272.3152770996094,
-        "y2": 478.5039978027344
-      },
-      "text": "A: No, I don’t think it’s going to work in this society. B: Unless you have short hair. A: It is too risky I mean we are used to using our devices when we want, when we need them. We don’t want to risk to stay wet and to go to work with wet hair, no? B: They didn’t even give them like a fixed time, no? Like if I buy an off-peak gym membership at least I know like I am going in the morning anyway. I don’t need to go there in peak time. Then I can plan that. But [in this sketch] the energy companies suddenly decide: “between six and nine in the morning you can use your hairdryer” C: I’d like to feel free to decide what I want to do. So, I need to have a plan B, otherwise, I don’t care if I can get the hairdryer for free."
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 295.15167236328125,
-        "y1": 485.799560546875,
-        "y2": 612.2359619140625
-      },
-      "text": "The negotiation of terms of use on an ad-hoc basis between the manufacturers of the device and the associated energy companies without people’s involvement was interpreted by participants as an encroachment on autonomy. Again, a careful reading of these responses indicates that what really struck a chord wasn’t the fact that they could not get what they wanted when they wanted it. Rather, it was the absence of opportunities to negotiate. As part of the negotiation, participants showed a willingness to trade away some of their personal gains (e.g., convenience, time, freedom) for the greater good of society or to pay extra for some gains."
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 78.20700073242188,
-        "x2": 269.6480712890625,
-        "y1": 620.414306640625,
-        "y2": 712.3289794921875
-      },
-      "text": "A: Maybe 10 years ago when I was just out of high school with little money but a lot of time, I would have always taken the cheapest route even if it means more hassle for me, but now earning a bit more... having less time, I’m happy to pay a bit more to have more free time or less hassle. B: Yes, how much do you value your time or, in the hairdryer cases, how much do you value your"
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 342.364013671875,
-        "x2": 534.8854370117188,
-        "y1": 96.6122817993164,
-        "y2": 210.21197509765625
-      },
-      "text": "freedom of using a hairdryer anytime you want. That’s why I think that the second model is the most interesting one, especially if it’s not just a hairdryer, but a whole system of home appliances... if I could have a centralized system I could interact on my phone... that becomes a much more interesting proposition because that gives me control of my energy consumption, but also it incentivises me to say “buy more when price’s low and then sell them off to make a quick buck”"
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 342.364013671875,
-        "x2": 534.8878784179688,
-        "y1": 219.58030700683594,
-        "y2": 309.2690124511719
-      },
-      "text": "C: I think I’d be quite willing to accept the concept of that if that worked for environmental reasons rather than any financial profits... If I know that I have to dry my hair at a certain time of the day because that means I’m helping the environment, then yes, that’d be much more convincing. If I’m just saving up money so that the energy company, could use that profit otherwise, then probably not."
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.3085327148438,
-        "y1": 317.7555847167969,
-        "y2": 360.5050048828125
-      },
-      "text": "Prompted by participants’ natural inclination to negotiate the terms of relationships and calculate trade-offs, questions about the actual purposes of the design, power relations, beneficiaries, ethics and oversight were raised."
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 342.364013671875,
-        "x2": 533.802978515625,
-        "y1": 369.873291015625,
-        "y2": 447.60699462890625
-      },
-      "text": "A: Do the consumers have mutual choice or it’s the corporations that gives them the illusion of choice?... Am I only given these three options? Or can I go to a different supplier and they’ll give me different options that can change? Or is it a different energy consumption to other consumers or other stakeholders?"
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 342.364013671875,
-        "x2": 534.8880004882812,
-        "y1": 456.97528076171875,
-        "y2": 558.6190185546875
-      },
-      "text": "B: It’s the energy company that owns the grid. [They can] just say like, “[Participant name], we’ve decided we own the grid that delivers the electricity to your flat and we’ve now decided you pay 200% more from tomorrow on. You can take it or live in the dark.” If this was the case, I was probably going to my local MP or something... It would take a while, but then the government might introduce fines."
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 342.364013671875,
-        "x2": 534.8880004882812,
-        "y1": 567.9873046875,
-        "y2": 621.81103515625
-      },
-      "text": "C: It’s like we were talking about earlier. It’s not free, there’s got to be a catch... I think, if you’ve got the capacity, if an energy company has the capacity to control when people are using appliances, that’s going to be taken advantage of."
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 342.364013671875,
-        "x2": 533.801513671875,
-        "y1": 631.1793212890625,
-        "y2": 661.0919799804688
-      },
-      "text": "D: I just think that there’s a lot of people who would look for convenience. It’s convenience versus ethics."
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 317.5874328613281,
-        "x2": 558.2151489257812,
-        "y1": 669.5785522460938,
-        "y2": 712.3289794921875
-      },
-      "text": "These responses highlight strong skepticism about the way technology is communicated as bringing benefits to consumers. Underpinning the questions is a mix of distrust in corporate practices, expectations of government to keep"
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.001953125,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 387 Page 10"
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 294.0572814941406,
-        "y1": 95.73056030273438,
+      "page": 3,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 558.2024536132812,
+        "y1": 87.45320129394531,
         "y2": 126.5260009765625
       },
-      "text": "the relationships of trade in check, uncertainty about the hidden agenda of both corporations and government, and a sense of agency."
+      "text": "Each participant has been remunerated £150 in recognition of their contribution to the study and had travel costs to the interviews reimbursed if they chose to attend them in person. The study design was approved by the ethics committee at Newcastle University."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 317.7309875488281,
+        "x2": 559.71728515625,
+        "y1": 131.28822326660156,
+        "y2": 192.27899169921875
+      },
+      "text": "The study was advertised using e-mails and printed flyers at various accommodation locations. Interested participants answered an online pre-screening questionnaire and were invited on a firstcome-first-served basis for an initial interview and survey regarding their current communication practices and use of technology in the relationship."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.7132568359375,
+        "y1": 197.0421905517578,
+        "y2": 312.8269958496094
+      },
+      "text": "Initial interviews were conducted with both partners together, either in person or over Skype video-call, depending on participants’ choice. We didn’t see a need to conduct the initial interview individually, since the aim of the interview was to make participants familiar with the system and to find out about their existing communication practices in the relationship, which includes the dynamics of interacting with each other. All but one couple chose a Skype call; for the remaining couple, the local partner came in person, but the remote partner had to be called separately due to scheduling. The Bedtime Window hardware was shipped by mail to the participants who could not pick it up personally."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 559.5852661132812,
+        "y1": 317.5902404785156,
+        "y2": 400.49798583984375
+      },
+      "text": "The participants then used Bedtime Window for the period of 4 weeks. The instructions in the information sheet were minimal: to leave the device on 24/7 in the bedroom as an ambient display (being free to cover it or turn away if it made the user feel uncomfortable), and to have fun with the device or just live with it for a while. Participants were allowed to move the device around if they felt their daily schedules did not leave them any interesting common time to take advantage of the system."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 559.7130126953125,
+        "y1": 405.26123046875,
+        "y2": 477.2099914550781
+      },
+      "text": "After the first week, we sent an e-mail to check with participants whether everything was working and to give them an opportunity to ask questions and voice their concerns and/or impressions. After the full 4 weeks, devices were collected and exit surveys and interviews were conducted, this time with each participant separately, in case they would like to share experiences or feelings that they wouldn’t like their partner to hear."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.20068359375,
+        "y1": 481.9732360839844,
+        "y2": 532.0050048828125
+      },
+      "text": "Inspired by one of the couples sharing photos they took of the device during the study, we sent another e-mail around to check if any other couple had taken any photos of the system in-situ that they would be willing to share (they were not instructed to do so during the study)."
+    }],
+    "title": {
+      "page": 3,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 148.69625854492188,
+        "y1": 664.880126953125,
+        "y2": 671.7310180664062
+      },
+      "text": "5 STUDY DESIGN"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 3,
+      "region": {
+        "x1": 317.6409912109375,
+        "x2": 559.7191772460938,
+        "y1": 580.6041870117188,
+        "y2": 708.9550170898438
+      },
+      "text": "All five couples (10 participants aged 23-46, median 27) were recruited from a university in the UK, with the prerequisites of being in a relationship but currently living separately; not sharing their bedrooms with other people; and having previously lived together. All couples were heterosexual, though this was not a prerequisite. Two of the couples had remote partners in mainland Europe (France and Germany), others were separated across the UK. Despite these requirements, it later transpired that the eldest couple (C5) had not lived together before. Since these partners were in their forties, we found it valuable to keep them in the study nevertheless, however, their views on privacy might be skewed by this difference. To refer to participants in this paper, we use the notation (e.g.) C4M for the"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 294.046875,
+        "y1": 266.8602600097656,
+        "y2": 284.0150146484375
+      },
+      "text": "fourth couple, male participant. See Table 1 for more demographic details on participants."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.5567321777344,
+        "y1": 294.7452392578125,
+        "y2": 388.61199951171875
+      },
+      "text": "5.1.1 Data. We gathered data through initial and exit surveys and interviews, feedback entered through the system, and photos the couples were willing to share. The semi-structured interviews were transcribed and analyzed using thematic analysis. Telemetry from the device was also recorded (screen touches, built-in accelerometer etc.), but in order to avoid biasing communication between the partners, we deliberately did not record the inking absolute coordinates, only the amount and type of ink they used. We explained to couples that this prevented us reconstructing the actual ink messages sent."
+    }],
+    "title": {
+      "page": 3,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 402.67498779296875,
+        "y1": 566.2501220703125,
+        "y2": 573.1010131835938
+      },
+      "text": "5.1 Participants"
+    }
+  }, {
+    "paragraphs": [],
+    "title": {
+      "page": 4,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 117.15803527832031,
+        "y1": 403.4200744628906,
+        "y2": 410.27099609375
+      },
+      "text": "6 RESULTS"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 4,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 294.0472717285156,
+        "y1": 433.4652404785156,
+        "y2": 472.5369873046875
+      },
+      "text": "Overall, participants used and enjoyed the system. Analysis of the data gave us insights into communication between partners in LDRs, as well as learnings regarding the individual features of the system."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 294.21923828125,
+        "y1": 483.2682189941406,
+        "y2": 522.3399658203125
+      },
+      "text": "6.1.1 Usage. All participants kept using the system actively for the whole duration of the study, except for some periods where the participants were not at home (for an overview, see Figure 2). As the data shows, everyone used the device for at least 4 weeks, with"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.2024536132812,
+        "y1": 266.8602600097656,
+        "y2": 284.0150146484375
+      },
+      "text": "the exception of C1M, who was travelling for the last week of the study."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 317.6860046386719,
+        "x2": 559.5819091796875,
+        "y1": 288.7782287597656,
+        "y2": 327.8500061035156
+      },
+      "text": "During recruitment, participant C1F expressed a concern that she would use the system for a bit as it was a novelty and then stop. That did not turn out to be the case as she recollected during the final interview."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 342.0320129394531,
+        "x2": 534.7830810546875,
+        "y1": 336.7082214355469,
+        "y2": 410.2650146484375
+      },
+      "text": "“Yeah I liked it more than I thought actually. I liked the fact that it’s taking pictures every 5 seconds and the drawing was fun, so I think I liked it more than I thought I would, and we used it mostly in the evening, like coming home fromwork to say ‘hi’ and have some interaction and then the same in the morning before work, that’s the time, yeah.” C1F"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 317.4079895019531,
+        "x2": 558.8753662109375,
+        "y1": 417.51422119140625,
+        "y2": 522.3399658203125
+      },
+      "text": "Four of the five couples reported keeping the device always or mostly in their bedroom. Both C1M and C4M said that they would occasionally move it out when they stayed home during the day as “it’s kind of nice to see the other person working rather than it being pointed at the empty bed” (C4M). Couple C5 experimented with other locations more, as they kept missing each other at the bed, but eventually concluded that “it worked better in the bedroom” (C5F). All couples reported using the device mostly in the mornings and evenings, hence we believe our device successfully targeted the bedtime sharing scenario."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 294.0470886230469,
+        "y1": 229.08424377441406,
+        "y2": 257.197998046875
+      },
+      "text": "6.1.2 Reception. Seven of the ten participants viewed the system positively and would recommend it to other people in LDR (see Figure 3)."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 78.20700073242188,
+        "x2": 270.6513671875,
+        "y1": 264.8052062988281,
+        "y2": 341.20599365234375
+      },
+      "text": "“I am really enjoying it - it is a much nicer way to say goodnight and good morning to [my partner], as opposed to using Facebook messenger.” C4M “I think it was mostly nice device, I enjoyed having it, now that we don’t have it anymore, I was telling [my partner] it would have been nice if it was still here” C1M"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.031982421875,
+        "y1": 347.2052307128906,
+        "y2": 375.3190002441406
+      },
+      "text": "One couple, as already suggested by the responses in Figure 3, disagreed. They felt that the way their relationship works did not really benefit from the device."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 78.20700073242188,
+        "x2": 269.6383056640625,
+        "y1": 382.9262390136719,
+        "y2": 467.4420166015625
+      },
+      "text": "“I don’t like being in a long-distance relationship, I’d rather be close to [my partner] but I am not, I don’t feel like I needmore ways to be close to [her]. I think being in a long-distance relationship will always be difficult and with phones and the internet and messaging and ringing and video chat, there are enough tools out there to make the distance bearable and I don’t, didn’t need another device.” C3M"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.57400131225586,
+        "x2": 295.5587158203125,
+        "y1": 473.44122314453125,
+        "y2": 512.5140380859375
+      },
+      "text": "He strongly disagreed with recommending the device to other couples in the exit questionnaire. However, at the end of his interview, when asked whether there is anything he would like to add, he said he would like to revise that answer:"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 77.875,
+        "x2": 269.6352844238281,
+        "y1": 520.1212158203125,
+        "y2": 593.677978515625
+      },
+      "text": "“[. . .] maybe I was thinking too much about myself rather than other relationships when I answered the question [. . .] one of my friends who was in a LDR I did know that they would like fall asleep on Skype with each other, that was few years gone, so I guess if I had known about this at the time, I would mentioned it to him.” C3M"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.5635986328125,
+        "y1": 599.6771850585938,
+        "y2": 682.5859985351562
+      },
+      "text": "The oldest couple (C5) reported some mixed feelings. While they really enjoyed the inking aspect of the system, they felt negatively towards the picture sharing. Feeling negatively towards picture sharing was explained in terms of being self-conscious and associations with surveillance. Both of these were explained in part as being “a generational thing”. Indeed, none of the younger participants had any problems with picture sharing. Despite this unease, the oldest couple also missed the system:"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 77.875,
+        "x2": 269.6361083984375,
+        "y1": 690.1931762695312,
+        "y2": 707.3469848632812
+      },
+      "text": "“both [my partner] and I have remarked that in the weeks after the study, we both missed having the"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 342.364013671875,
+        "x2": 533.79052734375,
+        "y1": 229.08424377441406,
+        "y2": 247.84698486328125
+      },
+      "text": "device, in spite of the reservations that each of us had held during the study period.” C5M"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.1982421875,
+        "y1": 254.7702178955078,
+        "y2": 271.92498779296875
+      },
+      "text": "The feedback from participants suggests that the system was enjoyable for most of the couples in our study."
+    }],
+    "title": {
+      "page": 4,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 140.001708984375,
+        "y1": 419.111083984375,
+        "y2": 425.9620056152344
+      },
+      "text": "6.1 Engagement"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 5,
+      "region": {
+        "x1": 317.6860046386719,
+        "x2": 559.19091796875,
+        "y1": 302.5202331542969,
+        "y2": 352.5509948730469
+      },
+      "text": "The slow photo stream was a novel experience for all participants, but its reception was divisive. One couple didn’t like it, feeling “we could just be on the phone instead” (C3F) and comparing it to online video experiences. C5F was frustrated “that it wasn’t smooth, that it was a still, and then another still, and then another”."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.3767700195312,
+        "y1": 357.3142395019531,
+        "y2": 374.468994140625
+      },
+      "text": "On the other hand, others saw this feature as an opportunity for play:"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 342.0320129394531,
+        "x2": 534.7832641601562,
+        "y1": 383.000244140625,
+        "y2": 482.24200439453125
+      },
+      "text": "“it adds an element of fun, because if you are having a very interactive session, you have a chance to think what you are doing and you can have fun with it, like making some funny faces, or you can kind of put your head really close and then move away, just really silly, silly games.” C1F “[at the initial interview] I was like ‘maybe a video would be nicer’ but actually I think there are nice things about the pictures” C1M"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 559.7131958007812,
+        "y1": 489.16522216796875,
+        "y2": 550.155029296875
+      },
+      "text": "Figure 4 shows results from the exit questionnaire asking whether participants would prefer the two familiar alternatives (i.e. video and photos). Note that they haven’t experienced these conditions during this study, but we expected the partners, especially in LDR, to have a reasonable experience of video calls and sharing photos."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 558.2031860351562,
+        "y1": 554.918212890625,
+        "y2": 593.990966796875
+      },
+      "text": "Half of the participants suggested they would either like to be able to adjust the interval between the photos, possibly the same way they could for the ink duration, or to make a photo last until the other person sees it as a part of a message they left."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.203857421875,
+        "y1": 598.7542114257812,
+        "y2": 637.8270263671875
+      },
+      "text": "Two participants mentioned a direct effect of the photo stream on privacy. When discussing the negative privacy implications, C5F suggested video would actually be worse. C4F felt the photo stream provided a balance between privacy and sharing:"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 342.0320129394531,
+        "x2": 534.7833862304688,
+        "y1": 646.357177734375,
+        "y2": 708.9550170898438
+      },
+      "text": "“I liked it actually, because video feels quite awkward, because you can see everything they do all the time, whereas 5 seconds is like a moment where you know they can’t see you, it doesn’t matter if you wanna like go and get something or I don’t know, it feel[s] a bit more private but also sharing, which is nice.” C4F"
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.029541015625,
+        "y1": 216.7852325439453,
+        "y2": 255.85797119140625
+      },
+      "text": "Another two participants also expressed the lessened tensions the photo stream provides compared to traditional video connection, suggesting it might be more appropriate for always-on peripheral systems:"
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 78.20700073242188,
+        "x2": 270.6513366699219,
+        "y1": 264.2922058105469,
+        "y2": 308.64300537109375
+      },
+      "text": "“I think with the normal video maybe you feel you have to pay attention all the time” C4M “you don’t feel maybe the pressure like the video” C1M"
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 295.55938720703125,
+        "y1": 315.47021484375,
+        "y2": 398.37799072265625
+      },
+      "text": "Nevertheless, the system managed to preserve the sense of remote presence. For 3 couples, the feeling of remote presence was an important part of being in an LDR, and those couples reported that the system made them feel present at their partner’s place as well as the other way around. The remaining two couples who did not find the feeling very important also reported experiencing it to a lesser amount, see Figure 5 for details. The feeling of being present was left to each participant’s interpretation."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.5566711425781,
+        "y1": 403.1412353515625,
+        "y2": 486.04998779296875
+      },
+      "text": "We saw that participants did not agree on whether they preferred photos, photo stream or always-on video. Advantages included additional playfulness, lower attention demands supporting peripheral use and increased sense of privacy compared to video, while still supporting sharing and remote presence. Negative feedback suggested the photo stream to be either too slow or too fast. One option for a future system would be to enable users to adjust the frame rate anywhere from still photos to full video."
+    }],
+    "title": {
+      "page": 5,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 435.87152099609375,
+        "y1": 288.16607666015625,
+        "y2": 295.0169982910156
+      },
+      "text": "6.2 Slow Photo Stream"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 6,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 294.0487365722656,
+        "y1": 516.545166015625,
+        "y2": 544.6580200195312
+      },
+      "text": "Bedtime Window is the first system to deploy situated inking in the bedroom environment. Shared inking was the most important feature to the participants (9 out of 10 marked it as important, 8 of"
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.3695068359375,
+        "y1": 216.7852325439453,
+        "y2": 266.8170166015625
+      },
+      "text": "these as very important), even more so than visual contact (regular picture sharing was important to 7 participants). As we shall discuss below, we found the inking to be a personal, versatile method of communication appropriate in bedrooms, providing affordances that are not well supported by existing technologies."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.3724975585938,
+        "y1": 278.9162292480469,
+        "y2": 317.9880065917969
+      },
+      "text": "6.3.1 Personal. Four participants explicitly stated the inking felt more personal than texting, pointing out that the messages and/or drawings were handwritten by a real person, especially as seeing each other’s handwriting is becoming less common."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 342.364013671875,
+        "x2": 534.7769775390625,
+        "y1": 326.45623779296875,
+        "y2": 414.677001953125
+      },
+      "text": "“it’s not like the usual kissie face you send, so it’s not like press a button, enter, goodnight, it’s a bit more personal” C2M “it was nice to have a picture or a little handwritten, you know that’s the nice thing, handwritten, and it’s not typed, so we both really liked that [. . .] because it’s more personal, it’s part of somebody that used his hands to do it” C5F"
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.7210693359375,
+        "y1": 421.5372314453125,
+        "y2": 473.1759948730469
+      },
+      "text": "Committing to handcraft a message or draw a painting was perceived as caring about the partner. Sometimes, inking and messaging behavior differed in unexpected ways (“[he] put more kisses that he would do normally on messenger, which was interesting, I don’t know why, but he just did” C4F)."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.7203979492188,
+        "y1": 483.6682434082031,
+        "y2": 544.6580200195312
+      },
+      "text": "6.3.2 Versatile. Inking is a medium of communication that it is inherently versatile, supporting both text in any language and freeform use . Participants engaged in various modalities of communication, from asynchronous, where one person was drawing to leave a message (85% of sessions), to turn taking, where both partners were present and drawing to each other but never at the"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 294.27374267578125,
+        "y1": 322.4892272949219,
+        "y2": 361.56201171875
+      },
+      "text": "same time (10%, “we just like.. take turns to see what each of [us] was drawing” C3M), to fully synchronous where both partners were drawing at the same time (5%).1 Such versatility was provided by the ink disappearing at the user-specified speed."
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 52.8390007019043,
+        "x2": 295.4278564453125,
+        "y1": 366.3252258300781,
+        "y2": 558.822021484375
+      },
+      "text": "In addition to those varying modalities of use, participants also used ink for many different purposes. Among those reported and demonstrated by screenshots or photos were conversation (“sometimes we talked actually by writing” C4F), organization (“We might have left messages like phone call tonight, question mark, 8pm, question mark” C5M), relationship maintenance (“small love words or like hearts, [. . .] usually not very long messages, but like just to say ‘hello’ or ‘miss you’ or something like that” C1M), play (guess a word, rock paper scissors and others) and art (“I drew random stuff – a pineapple, a ghost, a dinosaur. . . [no connection. . .] it was just a nice picture, just a dinosaur with the speech bubble saying ‘hello’ – it sounds really silly, but. . . that’s kind of joy, apparently.” C5M). Some participants also took advantage of the situated nature of the device, by either tracing a scene on the screen, or drawing picture frames through which the photos could be seen, for examples see Figure 6. Other purposes might have been utilized too, but as noted above, inking was not recorded in this study except when a screenshot was deliberately shared with us, so we rely on participants’ reports."
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 295.55609130859375,
+        "y1": 569.3961791992188,
+        "y2": 707.3469848632812
+      },
+      "text": "6.3.3 New Affordances. To our knowledge, Bedtime Window is the first system whose main method of personal communication was inking on a shared, non-layered surface, where new strokes cover the previous ones, regardless of which party produced them. Moreover, the real-time and disappearing nature of the ink opened new ways of interaction between people. The communication flow builds on what is already on the screen, sometimes even before it is finished. Participants were overwriting, overdrawing or otherwise intervening with what their partner was inking in a way that exchanging messages does not allow. 1For statistical purposes, any session containing at least two consecutive seconds in which both partners draw was counted as synchronous, and a “session” was defined as groups of occurrences of inking with less than a 2 minute gap."
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 342.364013671875,
+        "x2": 535.3114624023438,
+        "y1": 322.4892272949219,
+        "y2": 416.1650085449219
+      },
+      "text": "“sometimes we’d adopt things to each other’s drawing, or wrote over each other” C1M “sometimes if you paint and I think this color does not fit here I just draw over the other color” C2M “I’d cross out things that she wrote or sometimes trying guess what she is going to write – so she is writing a word – [and] trying to finish it or deliberately change it so that it’s wrong.” C4M"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.5333862304688,
+        "y1": 423.9012145996094,
+        "y2": 484.8909912109375
+      },
+      "text": "Another unique aspect of the real-time shared space is that it allows to participants to create something together in a way that other means of communication usually do not. People call each other or text each other, and while it is certainly possible to draw to each other, as many participants did, it’s also possible to draw together."
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 342.364013671875,
+        "x2": 534.7808837890625,
+        "y1": 494.2352294921875,
+        "y2": 537.8880004882812
+      },
+      "text": "“It’s a beautiful thing, you can create something – that’s quite nice – together” C2M “we have drawn something together” C2F on many occasions"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 342.364013671875,
+        "x2": 533.7919921875,
+        "y1": 547.231201171875,
+        "y2": 565.9929809570312
+      },
+      "text": "“I just find it quite funny trying to guess what it was that we were drawing” C4M (emphasis ours)"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.7203369140625,
+        "y1": 573.7291870117188,
+        "y2": 612.801025390625
+      },
+      "text": "In other words, while other common ways of communication enforce turn-taking, inking in Bedtime Window allowed simultaneous collaboration in which both partners can participate at the same time."
+    }],
+    "title": {
+      "page": 6,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 111.9107894897461,
+        "y1": 502.1910705566406,
+        "y2": 509.0419921875
+      },
+      "text": "6.3 Inking"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 7,
+      "region": {
+        "x1": 317.6860046386719,
+        "x2": 558.3692016601562,
+        "y1": 644.2412109375,
+        "y2": 705.2310180664062
+      },
+      "text": "The study showed that technology situated in bedrooms can provide value to people without being too intrusive. 7 out of 10 participants agreed that falling asleep and waking up together are important moments in a relationship. Six people found it valuable seeing their partner during that time and the same six people felt comfortable sharing this time with their partners, see Figure 7"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 77.875,
+        "x2": 270.65264892578125,
+        "y1": 249.79920959472656,
+        "y2": 350.1800231933594
+      },
+      "text": "“I like the part that you can see when your partner, you can go to sleep with him and wake up, and you can see when he is home or not and what he is doing” C2F “That time when you are in bed before you sleep, like I wouldn’t really watch him after he’d fallen asleep, but it was more nice when we were both getting ready for bed, maybe sitting in bed for a bit and then sleeping, this period was nice.” C1F"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 294.04705810546875,
+        "y1": 358.2422180175781,
+        "y2": 397.31500244140625
+      },
+      "text": "One couple even tried to synchronize the time they wake up. On the other hand, the couple who liked Bedtime Window the least didn’t think it was important to share bedtime and their schedules did not let them try the experience either."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 78.20700073242188,
+        "x2": 271.1487731933594,
+        "y1": 406.9842224121094,
+        "y2": 529.2839965820312
+      },
+      "text": "“I think I started waking up a bit later than I’d try to, because he wakes up later, so if I wake up and he is asleep, I’d be more inclined to just stay in bed rather than normally I get up straight away” C4F “We didn’t really used it very much for [sharing bedtime], I think he probably goes to bed later and gets up later than me as well, and I get up really early, so I think we weren’t really on the right schedules to try that very much, but I feel like that, when he is not in the room, I am not that bothered about, trying to recreate it.” C3F"
     }],
     "title": {
       "page": 7,
       "region": {
         "x1": 317.9549865722656,
-        "x2": 439.5933837890625,
-        "y1": 202.3399200439453,
-        "y2": 208.76605224609375
+        "x2": 490.2969055175781,
+        "y1": 629.8870849609375,
+        "y2": 636.7379760742188
       },
-      "text": "Deliberation with sketches"
+      "text": "6.4 Appropriateness in Bedrooms"
     }
   }, {
     "paragraphs": [{
-      "page": 10,
-      "region": {
-        "x1": 52.672000885009766,
-        "x2": 295.7410888671875,
-        "y1": 191.37265014648438,
-        "y2": 676.4630126953125
-      },
-      "text": "The core features of the conversations excerpted in Section 4 are negotiation and an exploration of what participants find problematic and the strategies to deal with these problems. Both groups of participants moved away from initial negative reaction naturally and relatively quickly, drawing on their experience and interactions with present technologies, products and services. The discussions concentrated on particular aspects of their experience with technologies, involving questions about their levels of agency, control, the beneficiaries that are invisible to them, and the knock-on effects of these arrangements. Participants moved from a position of rejecting the designs to one of reflective and open discussions about the issues underpinning the speculative hairdryers. This demonstrates the success of the combination of design, drama and deliberation in engaging the public to explore possible consequences of the complex technologies involved in autonomous distributed energy systems. The contribution of drama to speculative design and public engagement is the narrative and enactment of human feelings towards aspects of these technologies. Such feelings serve to convey a sense of the problem without formally defining or framing the problem for participants, which is one of the factors undermining meaningful public engagement [33]. The narrative and sensation conveyed by drama make the unfamiliar technologies and abstract concepts or issues underlying the deployment of these technologies relevant to people who are not experts in these areas. Deliberation exposed participants to the rational aspect and exchange of their empirical experience with technologies. This rational engagement led them to explore and define what they find problematic about ownership and control in relation to algorithmic capabilities (GigBliss Balance), gigeconomy (GigBliss Plus) and third-party beneficiaries (GigBliss Auto). The four-step process of deliberation in this research helped to engage people in problem definition, which serves the objective of critical design as defined by Dunne and Raby [20], as well as problem solving. However, unlike “affirmative” design [20], problem-solving in the deliberative process focuses more on how people think these problems are best addressed given their resources and capabilities rather than on industry or business solutions."
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 53.43000030517578,
-        "x2": 294.0584411621094,
-        "y1": 681.5335083007812,
-        "y2": 712.3289794921875
-      },
-      "text": "The participants’ exchange of ideas regarding what would work for them show that the solution brainstorming and resolution phases of deliberation can move the emotional"
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 317.656005859375,
-        "x2": 559.890625,
-        "y1": 95.73056030273438,
-        "y2": 186.301025390625
-      },
-      "text": "reaction provoked by critical design towards a discussion of how to address what brought about these negative reactions in the first place. This result demonstrates that deliberation can support critical design to achieve its societal aim, empowering people to contribute toward features they anticipated. This is particularly important in the context of distributed energy systems that touch sensitive aspects of access to basic resources."
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 317.656005859375,
-        "x2": 559.8906860351562,
-        "y1": 200.79689025878906,
-        "y2": 329.76300048828125
-      },
-      "text": "Articulating the desired human experience with autonomous technologies The initial responses from participants were characterized by distrust due in part to the invisibility of the processing of information. Distrust also resulted from the perceived lack of human empathy in the automated decisions based on algorithmic data processing and/or profiling taking place quietly in the background. Participants appeared more receptive to digitally mediated relationships with service providers and third-party beneficiaries that have degrees of emotional intelligence."
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 317.5870056152344,
-        "x2": 559.8946533203125,
-        "y1": 334.8345642089844,
-        "y2": 712.3289794921875
-      },
-      "text": "Analysis of the transcript of participant deliberation shows that control and ownership are interdependent and a running thread across all the discussions prompted by the dramatic sketches. The interdependency between control and ownership is most prominent in the discussion about algorithmic capabilities underpinning the dramatic sketch featuring GigBliss Balance. Here control manifests in forms of on-demand usage of the device and access to electricity. Participants are most anxious about having access to basic necessities such as electricity managed by technologies that operate quietly in the background and in ways that they cannot understand because if something goes wrong, they would not easily be able to fix it. Participants were most nervous about the absence of options to override automated decisions and, in line with previous research [2], they were more receptive to delegating control to technologies when they could negotiate the level of delegation. Participants were most satisfied with the level of control offered by GigBliss Plus, its included resources, access to resources and values. However, they were concerned that only economically affluent people would be able to afford the resources required to generate and trade electricity for profit, ultimately resulting in an unequal energy distribution and price manipulation. Such a situation would be the opposite of the ideals to expand opportunities for people to generate electricity and trade it for profit. Worse still, participants were concerned that this transaction model would reinforce the gap between the resource-rich and the resource-poor. In exploring approaches to address issues of a free market energy economy, most participants seemed keen on economic regulation. They were also concerned that people would constantly check when the best time to trade is, drawing a"
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.001953125,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 387 Page 11"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 53.499000549316406,
-        "x2": 295.7337646484375,
-        "y1": 95.73056030273438,
-        "y2": 401.4939880371094
-      },
-      "text": "parallel between people’s behaviour with their phones and social media. In this context, participants admitted that exercising self-control was not an easy task, which implies that people need help to disconnect. The absence of control over the subsidised device and access to energy featured in the GigBliss Auto generated the strongest negative emotional reaction. Participants were clear in their responses that they would not exchange control for access. Here, the desired control manifests in forms of transparency regarding the actual beneficiaries, ownership (e.g. those who are profiting from people’s compromising of the convenience of on-demand access), clarity in terms of use and real choice. Participants drew a parallel between the model of access to electricity coded in GigBliss Auto and the tiered model of access to a gym. The similarity between the two models of regulation is the restriction of access. The difference, however, are that the hours during which access is allowed are not clearly detailed in the terms of use for GigBliss Auto and that opting out could result in no access to electricity at all. These differences triggered strong resistance. However, participants became more receptive to the idea of delegating control over access to third parties on the condition that the terms of access are clear and consistent and they could say ‘no’ to the terms of access that they did not want, or deemed unfair, without being excluded from the service."
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 53.43000030517578,
-        "x2": 295.7427978515625,
-        "y1": 406.5655822753906,
-        "y2": 712.3289794921875
-      },
-      "text": "The aspects of delegated autonomy that participants found problematic and the propositions that reduced participants’ aversion to various limits of their control implied that a technological design that rules out opportunities to negotiate is likely to face strong resistance. Participants’ responses demonstrated that their ultimate concern is that any design and use of technology would leave them little room for negotiation to achieve an acceptable compromise. In exploring approaches to maintain or make available abilities to negotiate, take back control and meaningfully exercise such choices, participants ranked transparency of business purposes and technology as top priorities. Participants’ responses also showed that they value the ability to opt in or out and choose from various models of access and service provision without being excluded or trapped in exploitative deals. That said, participants clearly stated that they did not want to be overwhelmed with information and choices to constantly process either. Aware of the limits of individual agency and autonomy, participants also considered governance mechanisms that could shape technology design and deployment that are consistent with their values for negotiation, choice, transparency and fair terms of use. Participants were open to both binding and non-binding governance mechanisms, whichever best minimised exploitation. Some of the mechanisms considered included standards, certification logos and product labelling"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.8912963867188,
-        "y1": 95.73056030273438,
-        "y2": 162.3909912109375
-      },
-      "text": "that build consumer trust in the autonomous distributed technologies. Given the high level of agency observed in participants’ articulation of values and preferences, governance mechanisms that empower participants to meaningfully exercise choice without resulting in information and conscious choice fatigue are likely to be favoured."
-    }],
-    "title": {
-      "page": 10,
+      "page": 8,
       "region": {
         "x1": 53.79800033569336,
-        "x2": 241.87954711914062,
-        "y1": 149.9868927001953,
-        "y2": 183.31304931640625
+        "x2": 294.0470275878906,
+        "y1": 559.4552001953125,
+        "y2": 576.6099853515625
       },
-      "text": "5 DISCUSSION Design, drama and deliberation: enabling meaningful public engagement"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 11,
-      "region": {
-        "x1": 317.656005859375,
-        "x2": 559.8980102539062,
-        "y1": 191.37258911132812,
-        "y2": 652.552978515625
-      },
-      "text": "The flow of deliberation, the articulation and rationalisation of what participants found problematic and approaches to address these challenges, all highlight the potential for the combination of speculative design, drama and deliberation in engaging the public with critical issues. The match between the socio-economic issues explored by each hairdryer and the issues participants focused their attention on in subsequent deliberations demonstrated the potential for design and drama to prompt reflective responses. The parallel that participants drew, for example, between the stock exchange and the GigBliss Plus in terms of purpose of use or between dependence on smartphones and dependence that technologies that provide means of profit could cultivate, highlighted the potential of drama in connecting participants’ experience with unfamiliar aspects of technologies. This experience sharing served as a departure point for participants to examine why they felt the way they did âĂŞ reflecting on their experience. The four steps of deliberation helped guide participants’ thinking about the sensational aspect of their experience with technology, moving them from a negative reaction toward collective problem-solving. The combination of speculative design, drama and deliberation offers an alternative to engage the public with complex technology development and relevant policies. The design-based dramatised deliberation provides insights into participants’ values and preferences for autonomous distributed technologies. These insights contribute to design the societal and civic values that are often overwhelmed by economic values, underpinning the focus of affirmative design on market and innovation. These societal and civic values are deduced from participants’ expressions of function, sensibility and rationality of human experience. The basis from which insights are drawn can be generalised because others who are exposed to a similar experience are likely able to relate to these insights. Given the potential of this method, we propose it as a contribution to the existing literature in HCI on distributed energy systems as well as to the ongoing debate on emerging technologies and their implications for society."
-    }],
-    "title": {
-      "page": 11,
+      "text": "Overall, we saw Bedtime Window having a positive impact on relationships, providing connections that are not easily achievable"
+    }, {
+      "page": 8,
       "region": {
         "x1": 317.9549865722656,
-        "x2": 399.6416320800781,
-        "y1": 176.88685607910156,
-        "y2": 183.31298828125
+        "x2": 558.2042236328125,
+        "y1": 249.79920959472656,
+        "y2": 266.9530029296875
       },
-      "text": "6 CONCLUSION"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 11,
-      "region": {
-        "x1": 317.656005859375,
-        "x2": 559.8992919921875,
-        "y1": 681.5335083007812,
-        "y2": 712.3289794921875
-      },
-      "text": "The GigBliss hairdryers were commissioned for the #Blockchain4EU project by the EU Policy Lab of the Joint Research Centre, European Commission. Involvement of actors was"
+      "text": "using other technology, as confirmed by the exit survey questions described in Figure 8"
     }, {
-      "page": 11,
+      "page": 8,
       "region": {
-        "x1": 54.0,
-        "x2": 558.0020141601562,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
+        "x1": 317.62298583984375,
+        "x2": 558.2042236328125,
+        "y1": 271.7162170410156,
+        "y2": 299.8299865722656
       },
-      "text": "Paper 387 Page 12"
+      "text": "Committing to handcrafting a message or drawing a painting was perceived as caring between partners, and the system increased the feeling of care, connection and intimacy."
     }, {
-      "page": 12,
+      "page": 8,
       "region": {
-        "x1": 53.43000030517578,
-        "x2": 295.5809631347656,
-        "y1": 95.73056030273438,
-        "y2": 198.25701904296875
+        "x1": 342.364013671875,
+        "x2": 535.3114013671875,
+        "y1": 306.8872375488281,
+        "y2": 371.7799987792969
       },
-      "text": "made possible by the Challenge Investment Fund granted by the University of Edinburgh, and the deliberation sessions were supported by the Engineering and Physical Sciences Research Council project PETRAS (EPN02334X1). We thank Katherine Snow, Linda Ma, Rory Gianni, Joe Revans and Chris Chong for their help with the design, development and production of the prototypes at various stages of the project. We also would like to thank the talented actors, and all participants that contributed to the deliberation sessions."
-    }],
-    "title": {
-      "page": 11,
+      "text": "“He came across as more caring and affectionate in the drawings” C4F “It definitely has [the showing care] effect, the intimacy effective, that was a surprise, it was a pleasant surprise, to see that, it did add a dimension to a relationship.” C5M"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 317.7309875488281,
+        "x2": 559.7151489257812,
+        "y1": 377.2292175292969,
+        "y2": 405.3429870605469
+      },
+      "text": "Ordinary daily activities that are not worth having explicit conversations about become part of LDR again and participants found value in seeing them, in agreement with the results of Baishya [57]."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 342.364013671875,
+        "x2": 534.776123046875,
+        "y1": 412.4012145996094,
+        "y2": 496.9159851074219
+      },
+      "text": "“The whole morning routine and evening routine of getting ready for work or getting changed and stuff is something that’s not important enough to talk about, but then when you see it, it’s kind of, I don’t know, it definitely increases the connection, like, I don’t know it’s just knowing what each other is doing is just nice I guess, it’s more like being in the same place, kind of.” C4M"
+    }, {
+      "page": 8,
       "region": {
         "x1": 317.9549865722656,
-        "x2": 440.7888488769531,
-        "y1": 667.0478515625,
-        "y2": 673.4739990234375
+        "x2": 558.43603515625,
+        "y1": 502.3662414550781,
+        "y2": 554.0050048828125
       },
-      "text": "7 ACKNOWLEDGMENTS"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 12,
-      "region": {
-        "x1": 57.50400161743164,
-        "x2": 294.2523193359375,
-        "y1": 226.62274169921875,
-        "y2": 232.1300048828125
-      },
-      "text": "[1] Nurzhan Zhumabekuly Aitzhan and Davor Svetinovic. 2018. Security"
+      "text": "The situated nature of the window leverages one of the key aspects of a collocated relationship – providing a means of being together even when explicit interaction is short and sparse or even absent (“because if you are together, you wouldn’t constantly be having a conversation 100% of the time” C4M)."
     }, {
-      "page": 12,
+      "page": 8,
+      "region": {
+        "x1": 342.364013671875,
+        "x2": 533.793212890625,
+        "y1": 559.4552001953125,
+        "y2": 576.6099853515625
+      },
+      "text": "“Sometimes we would see each other and that was nice, briefly, and we knew that we were both sort of"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 78.20700073242188,
+        "x2": 269.6376647949219,
+        "y1": 87.45320129394531,
+        "y2": 106.2149658203125
+      },
+      "text": "on our way to work, so we did give a wave and smile and a picture” C5F"
+    }, {
+      "page": 9,
       "region": {
         "x1": 53.79800033569336,
-        "x2": 295.3889465332031,
-        "y1": 236.584716796875,
-        "y2": 710.3359985351562
+        "x2": 294.2149658203125,
+        "y1": 111.89521789550781,
+        "y2": 129.04998779296875
       },
-      "text": "and privacy in decentralized energy trading through multi-signatures, blockchain and anonymous messaging streams. IEEE Transactions on Dependable and Secure Computing 15, 5 (2018), 840–852. [2] Alper T. Alan, Enrico Costanza, Sarvapali D. Ramchurn, Joel Fischer, Tom Rodden, and Nicholas R. Jennings. 2016. Tariff Agent: Interacting with a Future Smart Energy System at Home. ACM Trans. Comput.Hum. Interact. 23, 4, Article 25 (Aug. 2016), 28 pages. https://doi.org/ 10.1145/2943770 [3] James Auger. 2013. Speculative design: crafting the speculation. Digital Creativity 24, 1 (2013), 11–35. [4] James Auger, Julian Hanna, and Enrique Encinas. 2017. Reconstrained Design: Confronting Oblique Design Constraints. In Design + Power. Nordes, Oslo. [5] Jeffrey Bardzell and Shaowen Bardzell. 2013. What is \"critical\" about critical design?. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI ’13). ACM, New York, NY, USA, 3297–3306. https://doi.org/10.1145/2470654.2466451 [6] Julian Bleecker. 2009. Design Fiction: A short essay on design, science, fact and fiction. http://drbfw5wfjlxon.cloudfront.net/writing/ DesignFiction_WebEdition.pdf. Online, Last accessed: 19.01.2018. [7] Mark Blythe. 2014. Research through design fiction: narrative in real and imaginary abstracts. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems. ACM, 703–712. [8] Mark Blythe, Kristina Andersen, Rachel Clarke, and PeterWright. 2016. Anti-solutionist strategies: Seriously silly design fiction. In Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems. ACM, 4968–4978. [9] Mark Blythe, Jamie Steane, Jenny Roe, and Caroline Oliver. 2015. Solutionism, the game: design fictions for positive aging. In Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems. ACM, 3849–3858. [10] Andy Boucher, David Cameron, and Nadine Jarvis. 2012. Power to the People: Dynamic Energy Management Through Communal Cooperation. In Proceedings of the Designing Interactive Systems Conference (DIS ’12). ACM, New York, NY, USA, 612–620. https://doi.org/10.1145/ 2317956.2318048 [11] Pam Briggs, Mark Blythe, John Vines, Stephen Lindsay, Paul Dunphy, James Nicholson, David Green, Jim Kitson, Andrew Monk, and Patrick Olivier. 2012. Invisible Design: Exploring Insights and Ideas Through Ambiguous Film Scenarios. In Proceedings of the Designing Interactive Systems Conference (DIS ’12). ACM, New York, NY, USA, 534–543. https://doi.org/10.1145/2317956.2318036 [12] Richard Buchanan. 1992. Wicked problems in design thinking. Design issues 8, 2 (1992), 5–21. [13] T. Chang, M. Alizadeh, and A. Scaglione. 2013. Real-Time Power Balancing Via Decentralized Coordinated Home Energy Scheduling. IEEE Transactions on Smart Grid 4, 3 (Sept 2013), 1490–1504. https: //doi.org/10.1109/TSG.2013.2250532"
+      "text": "Participants felt the Bedtime Window made them feel closer compared to other existing technologies they were using."
     }, {
-      "page": 12,
+      "page": 9,
       "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.549560546875,
-        "y1": 97.10771942138672,
-        "y2": 710.3359985351562
+        "x1": 77.875,
+        "x2": 270.62640380859375,
+        "y1": 136.3372344970703,
+        "y2": 214.94195556640625
       },
-      "text": "[14] David Chatting. 2014. Speculation by Improvisation. In DIS 2014 Workshop on Human-Computer Improvisation. [15] Stephen Coleman, Kruakae Pothong, and Sarah Weston. 2018. Dramatizing Deliberation: A method for encouraging young people to think about their rights. Journal of Public Deliberation 14, 1 (2018), 2. [16] Stephen Coleman, Anna Przybylska, and Yves Sintomer. 2015. Deliberation and Democracy: innovative processes and institutions. Peter Lang. [17] Enrico Costanza, Joel E. Fischer, James A. Colley, Tom Rodden, Sarvapali D. Ramchurn, and Nicholas R. Jennings. 2014. Doing the Laundry with Agents: A Field Trial of a Future Smart Energy System in the Home. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI ’14). ACM, New York, NY, USA, 813–822. https://doi.org/10.1145/2556288.2557167 [18] Tawanna Dillahunt, Jennifer Mankoff, Eric Paulos, and Susan Fussell. 2009. It’s Not All About \"Green\": Energy Use in Low-income Communities. In Proceedings of the 11th International Conference on Ubiquitous Computing (UbiComp ’09). ACM, New York, NY, USA, 255–264. https://doi.org/10.1145/1620545.1620583 [19] John S Dryzek. 2009. Democratization as deliberative capacity building. Comparative political studies 42, 11 (2009), 1379–1402. [20] Anthony Dunne and Fiona Raby. 2001. Design Noir: The Secret Life of Electronic Objects (1 ed.). Birkhaeuser Basel. http://www.worldcat. org/isbn/3764365668 [21] A. Dunne and F. Raby. 2007. Design for Debate. http://www. dunneandraby.co.uk/content/bydandr/36/0. Online, Last accessed: 09.09.2014. [22] A. Dunne and F. Raby. 2013. Speculative Everything: Design, Fiction, and Social Dreaming. MIT Press. http://books.google.co.uk/books? id=9gQyAgAAQBAJ [23] Chris Elsden, David Chatting, Abigail C Durrant, Andrew Garbett, Bettina Nissen, John Vines, and David S Kirk. 2017. On speculative enactments. In Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems. ACM, 5386–5399. [24] Frank Fischer and Herbert Gottweis. 2013. The argumentative turn in public policy revisited: twenty years later. Critical Policy Studies 7, 4 (2013), 425–433. [25] Vincenzo Giordano and Gianluca Fulli. 2012. A business case for Smart Grid technologies: A systemic perspective. Energy Policy 40 (2012), 252–259. [26] Maarten Hajer, Maarten A Hajer, and Hendrik Wagenaar. 2003. Deliberative policy analysis: understanding governance in the network society. Cambridge University Press. [27] Willett Kempton and Jasna TomiÄĞ. 2005. Vehicle-to-grid power fundamentals: Calculating capacity and net revenue. Journal of Power Sources 144, 1 (2005), 268 – 279. https://doi.org/10.1016/j.jpowsour. 2004.12.025 [28] Tobie Kerridge. 2009. Does speculative design contribute to public engagement of science and technology?. https://www.gold.ac.uk/media/Does%20Speculative%20Design% 20Contribute%20to%20Public%20Engagement%20of.pdf. In Proceedings of Multiple Ways to Design Research. Online, Last accessed: 19.01.2018. [29] Joseph Lindley, Dhruv Sharma, and Robert Potts. 2015. Operationalizing design fiction with anticipatory ethnography. In Ethnographic Praxis in Industry Conference Proceedings, Vol. 2015. Wiley Online Library, 58–71. [30] Jane Mansbridge, James Bohman, Simone Chambers, David Estlund, Andreas Føllesdal, Archon Fung, Cristina Lafont, Bernard Manin, and José Luis Martí. 2010. The place of self-interest and the role of power in deliberative democracy. Journal of political philosophy 18, 1 (2010), 64–100."
+      "text": "“It helps you also feel sometimes that you’re near to the other person, more than social media” C1M “I feel more connected to my partner, I feel more like he would be close to me rather than text him and then [it’s] over” C2F “we were just thinking about each other slightly more, wondered what they were doing” C3F"
     }, {
-      "page": 12,
+      "page": 9,
       "region": {
-        "x1": 54.0,
-        "x2": 558.001953125,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
+        "x1": 53.79800033569336,
+        "x2": 294.2120666503906,
+        "y1": 220.62220764160156,
+        "y2": 259.6939697265625
       },
-      "text": "Paper 387 Page 13"
+      "text": "While one couple did not feel they need yet another way to be in touch in their relationship as we discussed in 6.1.2, all the other couples felt that Bedtime Window did help them to be closer, learn about each other and create shared memories."
     }, {
-      "page": 13,
+      "page": 9,
+      "region": {
+        "x1": 78.20700073242188,
+        "x2": 271.1561279296875,
+        "y1": 266.9812316894531,
+        "y2": 307.6619873046875
+      },
+      "text": "“I think we are always in touch, you know, like nowadays would have all the technologies and WhatsApp and everything, we’re always in touch, but it’s a different way to be in touch.” C1M"
+    }],
+    "title": {
+      "page": 8,
+      "region": {
+        "x1": 53.798004150390625,
+        "x2": 142.20535278320312,
+        "y1": 545.1011352539062,
+        "y2": 551.9520263671875
+      },
+      "text": "6.5 Relationship"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 9,
+      "region": {
+        "x1": 53.36800003051758,
+        "x2": 295.5565185546875,
+        "y1": 337.8812255859375,
+        "y2": 431.7489929199219
+      },
+      "text": "We deployed Bedtime Window, a system for connecting remote couples during bedtime, to the bedrooms of 5 couples in LDR, for a field study of 4 weeks. The design of the system builds on previous research done on always-on systems and into LDRs, and includes the new experiences of a slow photo stream and shared inking space to address many of the recommendations and suggestions made in prior work. Through the deployment of Bedtime Window, we explored the feasibility of having a full-screen, always-on interactive device in the bedroom."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 294.2167053222656,
+        "y1": 436.5122375488281,
+        "y2": 552.2969970703125
+      },
+      "text": "We found that all but one couple considered being together when falling asleep and waking up to be important moments in a relationship, yet very few efforts are exploring this space. The same couples indicated that the system has connected them in a way that other technologies have not, that it had a positive effect on their relationship and that they would recommend Bedtime Window to other couples in LDR. The remaining couple did not feel they need to be connected during bedtime, neither that they need any more ways to connect in general. Every couple is different, and each has their own needs and expectations that a particular design might or might not meet."
+    }],
+    "title": {
+      "page": 9,
       "region": {
         "x1": 53.79798889160156,
-        "x2": 295.386962890625,
-        "y1": 97.10771942138672,
-        "y2": 351.6809997558594
+        "x2": 134.54713439941406,
+        "y1": 323.528076171875,
+        "y2": 330.3789978027344
       },
-      "text": "[31] Sarah Manski. 2017. Building the blockchain world: Technological commonwealth or just more of the same? Strategic Change 26, 5 (2017), 511–522. [32] Arne Meeuw, Sandro Schopfer, Benjamin Ryder, and Felix Wortmann. 2018. LokalPower: Enabling Local Energy Markets with User-Driven Engagement. In Extended Abstracts of the 2018 CHI Conference on Human Factors in Computing Systems (CHI EA ’18). ACM, New York, NY, USA, Article LBW613, 6 pages. https://doi.org/10.1145/3170427. 3188610 [33] Mike Michael. 2012. âĂĲWhat are we busy doing?âĂİ Engaging the idiot. Science, Technology, & Human Values 37, 5 (2012), 528–554. [34] A.Molderink, V. Bakker, M. G. C. Bosman, J. L. Hurink, andG. J. M. Smit. 2010. Management and Control of Domestic Smart Grid Technology. IEEE Transactions on Smart Grid 1, 2 (Sept 2010), 109–119. https: //doi.org/10.1109/TSG.2010.2055904 [35] John Parkinson and Jane Mansbridge. 2012. Deliberative systems: deliberative democracy at the large scale. Cambridge University Press. [36] Lara S. G. Piccolo, Cecília Baranauskas, and Rodolfo Azevedo. 2017. A socially inspired energy feedback technology: challenges in a developing scenario. AI & SOCIETY 32, 3 (01 Aug 2017), 383–399. https://doi.org/10.1007/s00146-016-0653-8 [37] James Pierce and Eric Paulos. 2012. Beyond Energy Monitors: Interaction, Energy, and Emerging Energy Systems. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI ’12). ACM, New York, NY, USA, 665–674. https://doi.org/10.1145/2207676. 2207771"
-    }, {
-      "page": 13,
+      "text": "7 DISCUSSION"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 9,
       "region": {
-        "x1": 317.95501708984375,
-        "x2": 559.0741577148438,
-        "y1": 97.10771942138672,
-        "y2": 152.427978515625
+        "x1": 53.36800003051758,
+        "x2": 295.556640625,
+        "y1": 581.6002197265625,
+        "y2": 675.4669799804688
       },
-      "text": "[38] James Pierce, Phoebe Sengers, Tad Hirsch, Tom Jenkins, William Gaver, and Carl DiSalvo. 2015. Expanding and refining design and criticality in HCI. In Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems. ACM, 2083–2092. [39] Horst WJ Rittel. 1988. The reasoning of designers. IGP. [40] Will Simm, Maria Angela Ferrario, Adrian Friday, Peter Newman,"
+      "text": "We were able to reproduce several findings from previous work on always-on video channels, such as increased awareness of and connection to the remote partner, and increased thinking of and interacting with each other without the feeling of obligation to call [31]. Notably, we have been able to do so without having an alwayson video channel, suggesting that always-on video is not critical to achieve these design goals, saving consumption of both bandwidth and power as well as addressing privacy concerns associated with being constantly monitored."
     }, {
-      "page": 13,
-      "region": {
-        "x1": 317.95501708984375,
-        "x2": 559.5447998046875,
-        "y1": 156.88372802734375,
-        "y2": 331.7560119628906
-      },
-      "text": "Stephen Forshaw, Mike Hazas, and Alan Dix. 2015. Tiree Energy Pulse: Exploring Renewable Energy Forecasts on the Edge of the Grid. In Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems (CHI ’15). ACM, New York, NY, USA, 1965–1974. https://doi.org/10.1145/2702123.2702285 [41] Jocelyn Spence, David M Frohlich, and Stuart Andrews. 2013. Performative experience design. In CHI’13 Extended Abstracts on Human Factors in Computing Systems. ACM, 2049–2058. [42] Jürg Steiner. 2012. The foundations of deliberative democracy: Empirical research and normative implications. Cambridge University Press. [43] Bruce Sterling. 2012. Sci-Fi Writer Bruce Sterling Explains the Intriguing New Concept of Design Fiction. http://www.slate.com/blogs/ future_tense/2012/03/02/bruce_sterling_on_design_fictions_.html. Online, Last accessed: 19.01.2018. [44] Robyn Taylor, Jocelyn Spence, Brendan Walker, Bettina Nissen, and Peter Wright. 2017. Performing research: Four contributions to HCI. In Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems. ACM, 4825–4837."
-    }, {
-      "page": 13,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.001953125,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 387 Page 14"
-    }],
-    "title": {
-      "page": 12,
+      "page": 9,
       "region": {
         "x1": 53.79800033569336,
-        "x2": 116.56490325927734,
-        "y1": 212.75184631347656,
-        "y2": 219.177978515625
+        "x2": 295.5619812011719,
+        "y1": 680.230224609375,
+        "y2": 697.385009765625
+      },
+      "text": "Moreover, the photo stream gave a sense of freedom from obligations to communicate via the device, as participants didn’t feel"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.7138061523438,
+        "y1": 87.45320129394531,
+        "y2": 159.4019775390625
+      },
+      "text": "pressured to pay full attention to each other and to give up their time to focus solely on the interaction with their partner compared to regular calls. Many mundane and daily activities are not worth talking about but are still nice to perceive and share, and sharing these seemingly unimportant moments is a fundamental part of living together with someone. As one of our participants pointed out, people don’t constantly talk to each other when cohabiting either."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 317.5249938964844,
+        "x2": 559.7202758789062,
+        "y1": 164.1652374267578,
+        "y2": 225.156005859375
+      },
+      "text": "One negatively perceived quality of an always-on video connection highlighted in previous work is that it can take away topics for discussion when it comes to regular calls between partners [57]. With the slow photo stream and no audio, none of our participants reported such issues. On the contrary, we had reports of people using the device to complement audio calls."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.7164916992188,
+        "y1": 229.91920471191406,
+        "y2": 334.7449951171875
+      },
+      "text": "While the slow photo stream proved to be a promising compromise between users’ privacy and feeling of remote presence, participants also expressed the desire to sometimes retain photos they have staged for their partners until they see them, as well as for more video-like sessions. One participant suggested the ability to control the duration of a photo the same way the ink could be set to disappear after various intervals. This suggests that users would benefit from being able to adjust the lifetime or interval between photos in a photo stream on the go, anywhere from ‘stopped’ to the ‘video’ state."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.5015869140625,
+        "y1": 339.50823974609375,
+        "y2": 367.6210021972656
+      },
+      "text": "An indicator showing when a photo is going to be taken allowed some participants to playfully stage their photos and clearly marks the window when users can expect a window of complete privacy."
+    }],
+    "title": {
+      "page": 9,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 171.71446228027344,
+        "y1": 567.24609375,
+        "y2": 574.0969848632812
+      },
+      "text": "7.1 Slow Photo Stream"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 9,
+      "region": {
+        "x1": 317.6860046386719,
+        "x2": 558.5333251953125,
+        "y1": 406.2572326660156,
+        "y2": 478.2070007324219
+      },
+      "text": "The core communication channel, real-time disappearing inking on a shared surface (i.e. where last stroke wins), proved to be an enjoyable and very versatile experience, allowing participants to communicate, play and create together, and enabling them to leave messages and drawings for later as well as synchronously draw at the same time, in any language and writing script, expressing personal involvement and care."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 559.7195434570312,
+        "y1": 482.97021484375,
+        "y2": 609.7139892578125
+      },
+      "text": "We have seen the ability to send handwritten messages come and go in commercial software, but that covers only a fraction of the affordances of inking. Sharing one inking space in real-time opens space for conversation, creativity and play. Ishii presented the metaphor of drawing from two sides of a glass, resulting in separated ink layers [65]. In Bedtime Window, the strokes are overlaid on a single layer, providing a new, unique experience without a corresponding physical equivalent, leading to inking meta-interactions where users alter, overwrite, annotate or decorate ink as it is appearing. This is comparable to typed-chat in which participants see messages as they are being typed (e.g. [66]), except that in this case users can actually interfere with each other’s writing."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 317.7309875488281,
+        "x2": 559.7161865234375,
+        "y1": 614.4761962890625,
+        "y2": 697.385009765625
+      },
+      "text": "In addition to traditional inking properties such as stroke width and color, we introduced a ‘decay time’ property, defining an individual stroke’s behavior over time, effectively making all the ink continuously disappearing as soon as it is written. Similar to the photo stream, while disappearing ink supported conversation flow and extra playfulness, users suggested it would have been desirable to have an option to keep the inking visible until the other partner sees it."
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 294.5638122558594,
+        "y1": 87.45320129394531,
+        "y2": 170.36102294921875
+      },
+      "text": "Some participants spent a lot of time drawing unexpectedly complex and ink-heavy content and employed their own measures to ensure their creation is preserved, such as taking picture of the device with their camera. Despite valuing ephemerality of the system for sharing mundane tasks, everyday drawings and just being together, inking is inherently time consuming and cannot be as easily reproduced as usual text messages or photos, suggesting that a way to save drawings would have been welcomed by users."
+    }],
+    "title": {
+      "page": 9,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 376.0677490234375,
+        "y1": 391.9040832519531,
+        "y2": 398.7550048828125
+      },
+      "text": "7.2 Inking"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 10,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 294.27886962890625,
+        "y1": 208.00123596191406,
+        "y2": 247.072998046875
+      },
+      "text": "Undoubtedly the learnings from Bedtime Window are limited by the circumstances of our participants, who were at most 1 hour of time zone difference apart, all in western Europe, and who have experienced the system for 4 weeks only."
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.0347900390625,
+        "y1": 251.83619689941406,
+        "y2": 290.90899658203125
+      },
+      "text": "We did not stratify our participants by length of relationship, sexual orientation, cultural background or time zone differences, and we did not have enough older participants or couples with children to allow specific conclusions for those groups."
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 53.57400131225586,
+        "x2": 295.427978515625,
+        "y1": 295.6722412109375,
+        "y2": 411.4570007324219
+      },
+      "text": "Our work has introduced new experience paradigms and many questions remain yet to be answered. We showed that always-on video is unnecessary to achieve many of the common goals of connecting partners in LDR. Bedtime Window used an interval of 5 seconds between photos, but how much of the continuity can be removed without affecting the design goals is not known. In a similar way, the intervals by which ink disappeared were restricted, and the optimal duration for maximizing communication flow needs to be determined. We can also imagine this property to be automatically determined or adjusted by the system on the fly, as people communicate."
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.55670166015625,
+        "y1": 416.22021484375,
+        "y2": 488.16900634765625
+      },
+      "text": "Being cautious about affecting the content of inking exchange between partners in an intimate space, we decided not to record inking content in this study, only the amount and properties of ink used. However, we learned that real-time shared inking brings metainteractions and new elements driving communication dynamics, topics that have not yet been systematized or described in the field and that we look forward to exploring in future works."
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 295.5628967285156,
+        "y1": 492.9322204589844,
+        "y2": 597.7579956054688
+      },
+      "text": "Finally, many of the same underlying requirements found in the domain of remote relationships that we have addressed with Bedtime Window are also present in other domains, in a world where human contact is increasingly computer-mediated. In domains like remote healthcare, remote education, social services, or elder care, similar needs to balance privacy with interactivity and the feeling of connectedness exists. We therefore hope that the technologies we have developed and the lessons learned in our study will be of relevance to those domains, and to enable future work in those areas."
+    }],
+    "title": {
+      "page": 10,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 223.0745086669922,
+        "y1": 193.64712524414062,
+        "y2": 200.498046875
+      },
+      "text": "7.3 Limitations and Future Work"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 10,
+      "region": {
+        "x1": 53.36800003051758,
+        "x2": 295.0347900390625,
+        "y1": 635.398193359375,
+        "y2": 707.3469848632812
+      },
+      "text": "We have designed an always-on interactive system that allows couples in LDRs to share bedtime, and deployed it into bedrooms of 5 couples. Building on learnings from previous work, we introduced two new experiences: a slow photo stream, which we found to balance feelings of privacy and remote presence with a reduced pressure to communicate; and a shared, real-time inking surface, which brings new ways to communicate and the ability to create"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.2000732421875,
+        "y1": 87.45320129394531,
+        "y2": 104.60797119140625
+      },
+      "text": "something together. We look forward for these results to be used in new applications and contexts."
+    }],
+    "title": {
+      "page": 10,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 141.57261657714844,
+        "y1": 621.0441284179688,
+        "y2": 627.89501953125
+      },
+      "text": "8 CONCLUSION"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 10,
+      "region": {
+        "x1": 317.5249938964844,
+        "x2": 558.2034912109375,
+        "y1": 139.2592315673828,
+        "y2": 167.37200927734375
+      },
+      "text": "We are grateful to our participants, and to our anonymous reviewers for their valuable feedback. This work was supported by Microsoft Research through its PhD Scholarship Programme."
+    }],
+    "title": {
+      "page": 10,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 435.5114440917969,
+        "y1": 124.90506744384766,
+        "y2": 131.7559814453125
+      },
+      "text": "ACKNOWLEDGMENTS"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 10,
+      "region": {
+        "x1": 321.197998046875,
+        "x2": 558.9695434570312,
+        "y1": 200.4110870361328,
+        "y2": 205.22998046875
+      },
+      "text": "[1] WBA Research, “2013 International Bedroom Poll,” National Sleep Foundation,"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 321.197998046875,
+        "x2": 558.3357543945312,
+        "y1": 208.38209533691406,
+        "y2": 221.1710205078125
+      },
+      "text": "Washington, 2013. [2] C. Neustaedter and S. Greenberg, “Intimacy in Long-Distance Relationships over"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 321.1980285644531,
+        "x2": 558.2035522460938,
+        "y1": 224.3220977783203,
+        "y2": 237.11102294921875
+      },
+      "text": "Video Chat,” in CHI’12, Austin, 2012. [3] Statistic Brain, “Long Distance Relationship Statistics – Statistic Brain,” Statistic"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.3831176757812,
+        "y1": 240.26210021972656,
+        "y2": 707.3469848632812
+      },
+      "text": "Brain Research Institute, 14 September 2017. [Online]. Available: https://www. statisticbrain.com/long-distance-relationship-statistics/. [Accessed 19 August 2018]. [4] W.-C. Chien and M. Hassenzahl, “Technology-Mediated Relationship Maintenance in Romantic Long-Distance Relationships: An Autoethnographical Research through Design,” Humann-Computer Interaction, vol. 00, pp. 1-48, 2017. [5] M. Hassenzahl, S. Heidecker, K. Eckoldt, S. Diefenbach and U. Hillmann, “All You Need is Love: Current Strategies of Mediating Intimate Relationships through Technology,” ACM Transactions on Computer-Human Interaction, vol. 19, no. 4, pp. 30:1-19, 2012. [6] A. J. Merolla, “Relational Maintenance and Noncopresence Reconsidered: Conceptualizing Geopgrahic Separation in Close Relationships,” Communication Theory, vol. 20, no. 2, pp. 169-193, 2010. [7] M. C. Pistole and A. Roberts, “Measuring Long-Distance Romantic Relationships: A Validity Study,” Measurement and Evaluation in Counselling and Development, vol. 44, no. 2, pp. 63-76, 2011. [8] D. J. Canary and L. Stafford, “Maintaining Relationships through Strategic and Routine Interaction,” in Communication and Relational Maintenance, San Diego, Academic Press, Inc, 1994, pp. 3-22. [9] F. ’. Mueller, F. Vetere, M. R. Gibbs, J. Kjeldskov, S. Pedell and S. Howard, “Hug Over a Distance,” in Extended abstracts of CHI 05, Portland, 2005. [10] F. Gemperle, C. DiSalvo, J. Forlizzi and W. Yonkers, “The Hug: a New Form for Communication,” in Proceedings of the 2003 conference on Designing for user experiences, San Francisco, 2003. [11] D. Kontaris, D. Harrison, E. -. E. Patsoule, S. Zhuang and A. Slade, “Feelybean: Communication Touch Over Distance,” in CHI ’12 Extended Abstracts on Human Factors in Computing Systems, Austin, 2012. [12] S. Singhal, C. Neustaedter, A. N. Antle and B. Matkin, “Flex-N-Feel: Emotive Gloves for Physical Touch Over Distance,” in Companion of the 2017 ACM Conference on Computer Supported Cooperative Work and Social Computing, Portland, 2017. [13] H. A. Samani, R. Parsani, L. T. Rodriguez, E. Saadatian, K. H. Dissanayake and A. D. Cheok, “Kissenger: Design of a Kiss Transmission Device,” in Proceedings of the Designing Interactive Systems Conference, Newcastle, 2012. [14] E. Saadatian, H. Samani, R. Parsani, A. V. Pandey, J. Li, L. Tejada, A. D. Cheok and R. Nakatsu, “Mediating intimacy in long-distance relationships using kiss messaging,” Int. J. Human-Computer Studies, vol. 72, no. 10-11, pp. 736-746, 2014. [15] J. Werner, R. Wettach and E. Hornecker, “United-Pulse: Feeling Your Partner’s Pulse,” in Proceedings of the 10th international conference on Human computer interaction with mobile devices and services, Amsterdam, 2008. [16] C.-H. J. Lee and H. Chung, “Lover’s cups: connecting you and your love one,” in ACM SIGGRAPH 2006 Research posters, Boston, 2006. [17] R. Pan, S. Singhal, B. E. Riecke, E. Cramer and C. Neustaedter, “\"MyEyes\": The Design and Evaluation of First Person View Video Streaming for Long-Distance Couples,” in Proceedings of the 2017 Conference on Designing Interactive Systems , Edinburgh, 2017. [18] R. Kowalski, S. Loehmann and D. Hausen, “cubble: A Multi-Device Hybrid Approach Supporting Communication in Long-Distance Relationships,” in Proceedings of the 7th International Conference on Tangible, Embedded and Embodied Interaction , Barcelona, 2013. [19] Y. R. Joi, T. B. Jeong, J. H. Kim, K. H. Park, T. Lee and J. D. Cho, “WearLove: Affective Communication via Wearable Device with Gamification,” in Proceedings of the 2015 Annual Symposium on Computer-Human Interaction in Play, London, 2015. [20] J. ’. Kaye, “I Just Clicked To Say I Love You: Rich Evaluations of Minimal Communication,” in CHI ’06 Extended Abstracts on Human Factors in Computing Systems , Montreal, 2006. [21] R. S. Pujol and H. Umemuro, “Productive Love Promotion via Affective Technology: An Approach Based on Social Psychology and Philosophy,” Human"
+    }, {
+      "page": 11,
+      "region": {
+        "x1": 53.79798889160156,
+        "x2": 295.226318359375,
+        "y1": 88.83009338378906,
+        "y2": 643.5870361328125
+      },
+      "text": "Technology: An Interdisciplinary Journal on Humans in ICT Environments, vol. 6, no. 2, pp. 191-211, 2010. [22] E. Myodo, J. Xu, K. Tasaka, H. Yanagishara and S. Sakazawa, “Issues and Solutions to Informal Communication in Working from Home Using a Telepresence Robot,” ITE Transactions on MEdia Technology and Applications, vol. 6, no. 1, pp. 30-45, 2018. [23] S. Harrison, Ed., Media Space 20+ Years of Mediated Life, London: Springer-Verlag, 2009. [24] C. Pang, A. Fogrhani, E. Oduor, C. Neustaedter, I. Walker and D. Robinson, “Reactions to Mixed-Context Always-On Video for Connecting Close Personal and Work Contacts,” Simon Fraser University, 2014. [25] J. S. Lee, S. Liang, S. Park and C. Yan, “Hi Grandpa!: A communication Tool Connecting Grandparents and Grandchildren Living Apart,” in Proceedings of the 17th International Conference on Human-Computer Interaction with Mobile Devices and Services Adjunct, Copenhagen, 2015. [26] J. Lundell, M. Morris and S. Intille, “Home technologies to keep elders connected,” in CHI ’04 Extended Abstracts on Human Factors in Computing Systems , Vienna, 2004. [27] I. Keller, W. v. d. Hoog and P. J. Stappers, “Gust of me: reconnecting mother and son,” IEEE Pervasive Computing, vol. 3, no. 1, pp. 22-27, 2004. [28] J. Farny, M. Jennex, R. Olsen and M. Rodriguez, “Anchor: connecting sailors to home,” in CHI ’12 Extended Abstracts on Human Factors in Computing Systems , Austin, 2012. [29] S. P. Wyche and M. Chetty, “\"I want to imagine how that place looks\": designing technologies to support connectivity between africans living abroad and home,” in Proceedings of the SIGCHI Conference on Human Factors in Computing Systems , Paris, 2013. [30] C. Neustaedter, S. Harrison and S. Abigail, Eds., Connecting Families, London: Springer-Verlag, 2013. [31] T. K. Judge, C. Neustaedter and A. F. Kurtz, “The Family Window: The Design and Evaluation of a Domestic Media Space,” in CHI 2010, Atlanta, 2010. [32] T. K. Judge, C. Neustaedter, S. Harrison and A. Blose, “Family portals: connecting families through a multifamily media space,” in Proceedings of the SIGCHI Conference on Human Factors in Computing Systems, Vancouver, 2011. [33] E. Oduor and C. Neustaedter, “The family room: a multi-camera, multi-display family media space,” in Proceedings of the companion publication of the 17th ACM conference on Computer supported cooperative , Baltimore, 2014. [34] C. Neustaedter, C. Pang, A. Forghani, E. Oduor, S. Hillman, T. K. Judge, M. Massimi and S. Greenberg, “SharingDomestic Life through Long-TermVideo Connections,” ACM Transactions on Computer-Human Interaction, vol. 22, no. 1, pp. 3:1-3:29, 2015. [35] D. Wan, “Magic Wardrobe: Situated Shopping from your own Bedroom,” Personal Technologies, no. 4, pp. 234-237, 2000. [36] W. Odom, J. Zimmerman, J. forlizzi, H. Choi and S. Meier, “Investigating the prsence, form and behavior of virtual poseessions in the context of a teen bedroom,” in Proceedings of the SIGCHI Conferece on Human Factors in Computing Systems, Austin, 2012. [37] C. Dodge, “The Bed: A Medium for Intimate Communication,” in CHI ’97 Extended Abstracts on Human Factors in Computer Systems, Atlanta, 1997. [38] E. Goodman and M. Misilim, “The Sensing Beds,” in Proceedings of UbiComp 2003 Workshop, Seattle, 2003. [39] T. Scherini, P. Melo, T. v. Craenendonck, W. Zou and M. Kaptein, “Enhancing the Sleeping Quality of Partners Living Apart,” in Proceedings of the 8th ACM Conference on Designing Interactive Systems, Aarhus, 2010. [40] D. Gooch and L. Watts, “SleepyWhispers: Sharing Goodnights within Distant Relationships,” in Adjunct Proceedings of the 25th Annual ACM Symposium on User Interface Software and Technology, Cambridge, 2012. [41] E. K. Choe, S. Consolvo, J. Jung, B. Harrison and J. A. Kientz, “Living in a glass house: a survey of private moments in the home,” in Proceedings of the 13th international conference on Ubiquitous computing, Beijing, 2011. [42] D. Hindus, S. D.Mainwaring, N. Leduc, A. E. Hagström andO. Bayley, “Casablanca: Designing Social Communication Devices for the Home,” in Proceedings of the SIGCHI Conference on Human Factors in Computing Systems, Seattle, 2001. [43] C. Neustaedter, S. Greenberg and M. Boyle, “Blur Filtration Fails to Preserve Privacy for Home-Based Video Conferencing,” ACM Transactions on ComputerHuman Interaction, vol. 13, no. 1, pp. 1-36, 2006. [44] Y. Heshmat, C. Neustaedter and B. DeBrincat, “The Autobiographical Design and Long Term Usage of an Always-On Video Recording System for the Home,” in Proceedings of the 2017 Conference on Designing Interactive Systems, Edinburgh, 2017."
+    }, {
+      "page": 11,
+      "region": {
+        "x1": 317.9549560546875,
+        "x2": 559.3811645507812,
+        "y1": 88.83009338378906,
+        "y2": 641.927001953125
+      },
+      "text": "[45] M. Boyle and S. Greenberg, “The Language of Privacy: Learning fromVideoMedia Space Analysis and Design,” ACM Transactions on Computer-Human Intearction, vol. 12, no. 2, pp. 328-370, 2005. [46] C. J. Sutherland, A. Luxton-Reilly and B. Plimmer, “Freeform digital ink annotations in electroninc documents: A systematic mapping study,” Computers & Graphics, vol. 55, pp. 1-20, 2015. [47] A. Sellen, R. Harper, R. Eardley, S. Izadi, T. Regan, A. S. Taylor and K. R. Wood, “HomeNote: Supporting Situated Messaging in the Home,” in Proceedings of the 2006 20th anniversary conference on Computer supported cooperative work, Banff, 2006. [48] S. E. Lindley, R. Harper and A. Sellen, “Designing a Technological Playground: A Field Study of the Emergence of Play in Household Messaging,” in Proceedings of the SIGCHI Conference on Human Factors in Computing Systems, Atlanta, 2010. [49] J. C. Tang and S. L. Minneman, “VideoDraw: A Video Interface for Collaborative Drawing,” in Proceedings of the SIGCHI Conference on Human Factors in Computing Systems, Seattle, 1990. [50] J. C. Tang and S. L. Minneman, “VideoDraw: A Video Interface for Collaborative Drawing,” ACM Transactions on Information Systems, vol. 9, no. 2, pp. 170-184, 1991. [51] H. Ishii and M. Kobayashi, “ClearBoard: A Seamless Medium for Shared Drawing and Conversation with Eye Contact,” in Proceedings of the SIGCHI Conference on Human Fcators in Computing Systems, Monterey, 1992. [52] H. Ishii, M. Kobayashi and J. Grudin, “Integration of inter-personal space and shared workspace: ClearBoard design and experiments,” in Proceedings of the 1992 ACM conference on Computer-supported cooperative work, Toronto, 1992. [53] H. Ishii, M. Kobayashi and J. Grudin, “Integration of interpersonal space and shared workspace: ClearBoard design and experiments,” ACM Transactions on Information Systems, vol. 11, no. 4, pp. 349-375, 1993. [54] P. Wellner, “Interacting with Paper on the DigitalDesk,” Communications of the ACM, vol. 36, no. 7, pp. 87-96, 1993. [55] A. D. Wilson and D. C. Robbins, “PlayTogether: Playing Games across Multiple Interactive Tabletops,” in IUI Workshop on Tangible Play: Research and Design for Tangible and Tabletop Games, Honolulu, 2007. [56] S. Greenberg and C. Neustaedter, “Shared Living, Experiences, and Intimacy over Video Chat in Long Distance Relationships,” in Connecting Families: The Impact of New Communication Tehcnologies on Domestic Life, London, Springer-Verlag, 2013, pp. 37-53. [57] U. Baishya, “In Your Eyes: Anytime, Anywhere Video and Audio Streaming for Couples,” in CSCW, Portland, 2017. [58] D. Kirk, A. Sellen and X. Cao, “Home Video Communication: Mediating ’Closeness’,” in Proceedings of the 2010 ACM conference on Computer supported cooperative work, Savannah, 2010. [59] S. Kim, J. A. Kientz, S. N. Patel and G. D. Abowd, “Are You Sleeping? Sharing Portrayed Sleeping Status withing a Social Network,” in Proceedings of the 2008 ACM Conference on Computer supported cooperative work, San Diego, 2008. [60] H. Hutchinson,W.Mackay, B.Westerlund, B. B. Bederson, A. Druin, C. Plaisant, M. Beaudouin-Lafon, S. Conversy, H. Evans, H. Hansen, N. Roussel and B. Eiderbäck, “Technology Probes: Inspiring Design for and with Families,” in Proceedings of the SIGCHI Conference on Human Factors in Computing Systems, Ft. Lauderdale, 2003. [61] J. Kučera, J. Scott, N. Chen, P. Olivier and S. Hodges, “Towards Calm Displays: Matching Ambient Illumination in Bedrooms,” Proceedings of the ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies, vol. 1, no. 2, June 2017. [62] J. Kučera, J. Scott, S. Lindley and P. Olivier, “BedtimeWindow: A System Enabling Sharing of Bedtime for Long-Distance Couples,” in Adjunct Proceedings of the 2019 ACM International Joint Conference on Pervasive and Ubiquitous Computing and Proceedings of the 2019 ACM International Symposium onWearable Computers, London, 2019. [63] C. Neustaedter and P. Sengers, “Autobiographical Design in HCI Research: Designing and Learning through Use-It-Yourself,” in DIS, Newcastle, 2012. [64] M. Prasad A, M. Selvaraj and S. Madhvanath, “Peer-to-peer ink messaging across heterogeneous devices and platforms,” in COMPUTE ’08 Proceedings of the 1st Bangalore Annual Compute Conference, Bangalore, 2008. [65] H. Ishii, M. Kobayashi and K. Arita, “Iterative design of seamless collaboration media,” Communicationcs of the ACM, vol. 37, no. 8, 1994. [66] M. Glass, K. Bryant, J. H. Kim and M. Desjarlais, “Come let us chat together: simultaneous typed-chat in computer-supported collaborative dialogue,” Journal of Computing Sciences in Colleges, vol. 31, no. 2, pp. 96-105, 2015. [67] T. Salmela, A. Colley and J. Häkkilä, “Together in Bed? Couples’ Mobile Technology Use in Bed,” in Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems, Glasgow, 2019."
+    }],
+    "title": {
+      "page": 10,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 387.3695983886719,
+        "y1": 187.67007446289062,
+        "y2": 194.52099609375
       },
       "text": "REFERENCES"
     }
