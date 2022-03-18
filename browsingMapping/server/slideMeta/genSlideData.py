@@ -9,7 +9,7 @@ datasetFile = "../videoDataset/chi2021/dataset_chi2021.csv"
 
 paperDataPath = "../videoDataset/chi2021/papers_chi2021/"
 subtitleDataPath = "../videoDataset/chi2021/subtitles_chi2021/"
-videoDataPath = "../videoDataset/chi2021/video_chi2021/"
+videoDataPath = "../videoDataset/chi2021/videos_chi2021/"
 
 processPaperFlag = True
 processSubtitleFlag = True
@@ -138,6 +138,9 @@ for index, row in dataFile.iterrows() :
     print(index, title, paper, video, subtitle, videoURL)
     print("cp " + videoDataPath + video + " ./video.mp4")
 
+    if index <= 258 :
+        continue
+
     valid_presentation_index.append(index)
 
     if flag == 0 :
@@ -170,7 +173,11 @@ for index, row in dataFile.iterrows() :
                 os.chdir('../browsingMapping/server/slideMeta')
 
             if not os.path.exists("./slideImages/grobidResult.json") :
-                article_dict = scipdf.parse_pdf_to_dict('./slideImages/paper.pdf')  # return dictionary
+                try :
+                    article_dict = scipdf.parse_pdf_to_dict('./slideImages/paper.pdf')  # return dictionary
+                except :
+                    continue
+
                 paper_grobid = open("./slideImages/grobidResult.json", "w")
                 paper_grobid.write(json.dumps(article_dict))
                 paper_grobid.close()
@@ -215,8 +222,8 @@ for index, row in dataFile.iterrows() :
         os.system("rm -rf ./slideData/" + str(index))
         os.system("mv slideImages slideData/" + str(index))
     
-    if index >= 20 :
-        break
+#    if index >= 10 :
+#        break
 
 _f = open("./slideData/summary.json", "w")
 

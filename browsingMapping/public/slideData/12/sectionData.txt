@@ -2,134 +2,128 @@ CCS CONCEPTS
 KEYWORDS
 ACM Reference Format:
 ACM Reference Format:
+ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-2 RELATED WORK
-2.1 Thermal Comfort and Gender
-2.1 Thermal Comfort and Gender
-2.1 Thermal Comfort and Gender
-2.1 Thermal Comfort and Gender
-2.2 Gender and Interaction Design For Thermal Comfort
-2.2 Gender and Interaction Design For Thermal Comfort
-2.2 Gender and Interaction Design For Thermal Comfort
-2.2 Gender and Interaction Design For Thermal Comfort
-2.2 Gender and Interaction Design For Thermal Comfort
-2.2 Gender and Interaction Design For Thermal Comfort
-2.2 Gender and Interaction Design For Thermal Comfort
-2.3 Empathy in Design
-2.3 Empathy in Design
-2.3 Empathy in Design
-2.3 Empathy in Design
-2.3 Empathy in Design
-2.3 Empathy in Design
-3 METHODS AND PARTICIPANTS
-3 METHODS AND PARTICIPANTS
-3.1 Recruiting Participants
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-3.2 Workshop Design And Delivery
-3.2 Workshop Design And Delivery
-3.2 Workshop Design And Delivery
-3.2 Workshop Design And Delivery
-3.2 Workshop Design And Delivery
-3.2 Workshop Design And Delivery
-3.2 Workshop Design And Delivery
-3.2 Workshop Design And Delivery
-3.2 Workshop Design And Delivery
-3.2 Workshop Design And Delivery
-3.2 Workshop Design And Delivery
-3.2 Workshop Design And Delivery
-3.3 Workshop Facilitators
-4 RESULTS AND DISCUSSION
-4 RESULTS AND DISCUSSION
-4 RESULTS AND DISCUSSION
-4.1 Specifc and Individual Thermal Comfort Needs
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-4.2 Agency and Control
-4.2 Agency and Control
-4.2 Agency and Control
-4.2 Agency and Control
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-4.3 Empathy and the Needs of Others
-4.3 Empathy and the Needs of Others
-4.3 Empathy and the Needs of Others
-4.3 Empathy and the Needs of Others
-4.3 Empathy and the Needs of Others
-4.3 Empathy and the Needs of Others
-4.3 Empathy and the Needs of Others
-4.3 Empathy and the Needs of Others
-4.3 Empathy and the Needs of Others
-4.4 Improved Data And Hi Tech/Low Tech Options
-4.4 Improved Data And Hi Tech/Low Tech Options
-4.4 Improved Data And Hi Tech/Low Tech Options
-4.4 Improved Data And Hi Tech/Low Tech Options
-4.4 Improved Data And Hi Tech/Low Tech Options
-4.4 Improved Data And Hi Tech/Low Tech Options
-4.4 Improved Data And Hi Tech/Low Tech Options
-4.4 Improved Data And Hi Tech/Low Tech Options
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-5 HCI DESIGN, POLICIES AND THERMAL COMFORT
-5.1 Technology and Interface Design
-5.1 Technology and Interface Design
-5.1 Technology and Interface Design
-5.1 Technology and Interface Design
-5.1 Technology and Interface Design
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-CHI ’21, May 08–13, 2021, Yokohama, Japan Kathy New et al.
-5.2 Buildings and Workplace Practices
-5.2 Buildings and Workplace Practices
-5.2 Buildings and Workplace Practices
-5.2 Buildings and Workplace Practices
-5.2 Buildings and Workplace Practices
-5.2 Buildings and Workplace Practices
-5.3 Opportunities for HCI to Engage With The Broader Policy Landscape
-5.3 Opportunities for HCI to Engage With The Broader Policy Landscape
-5.3 Opportunities for HCI to Engage With The Broader Policy Landscape
-5.3 Opportunities for HCI to Engage With The Broader Policy Landscape
-5.3 Opportunities for HCI to Engage With The Broader Policy Landscape
-6 CONCLUSIONS
-6 CONCLUSIONS
-6 CONCLUSIONS
-6 CONCLUSIONS
-6 CONCLUSIONS
-6 CONCLUSIONS
-ACKNOWLEDGMENTS
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+Technology Overuse
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+3 CHARACTERIZING DIGITAL WELLBEING APPS
+Method
+Method
+Method
+Method
+Findings
+Findings
+Findings
+Findings
+Findings
+4 REVIEWS’ ANALYSIS
+Method
+Method
+Method
+Method
+Method
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+5 DIGITAL WELLBEING IN THE WILD
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+6 DISCUSSION
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Self Monitoring vs. Habit Formation
+Self Monitoring vs. Habit Formation
+Self Monitoring vs. Habit Formation
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+7 LIMITATIONS
+7 LIMITATIONS
+8 CONCLUSIONS AND FUTURE WORK
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
 REFERENCES
 REFERENCES
 REFERENCES

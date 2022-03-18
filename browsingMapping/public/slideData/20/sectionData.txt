@@ -1,3 +1,8 @@
+CCS CONCEPTS
+KEYWORDS
+ACM Reference Format:
+ACM Reference Format:
+ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
@@ -6,118 +11,114 @@
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-1 INTRODUCTION
-1 INTRODUCTION
-1 INTRODUCTION
-1 INTRODUCTION
-1 INTRODUCTION
-1 INTRODUCTION
-2 BACKGROUND & RELATED WORK
-2.1 User Identifcation and Authentication
-2.1 User Identifcation and Authentication
-2.1 User Identifcation and Authentication
-2.1 User Identifcation and Authentication
-2.1 User Identifcation and Authentication
-2.1 User Identifcation and Authentication
-2.1 User Identifcation and Authentication
-2.2 Common Uses of Phone Numbers
-2.2 Common Uses of Phone Numbers
-2.2 Common Uses of Phone Numbers
-2.2 Common Uses of Phone Numbers
-2.2 Common Uses of Phone Numbers
-2.2 Common Uses of Phone Numbers
-3 STUDY DESIGN
-3 STUDY DESIGN
-3 STUDY DESIGN
-3 STUDY DESIGN
-3 STUDY DESIGN
-3 STUDY DESIGN
-3 STUDY DESIGN
-3.1 Experience Prompts
-3.1 Experience Prompts
-3.1 Experience Prompts
-3.1 Experience Prompts
-3.1 Experience Prompts
-3.1 Experience Prompts
-3.1 Experience Prompts
-3.2 Limitations
-3.2 Limitations
-3.2 Limitations
-4 RESULTS
-4 RESULTS
-4.1 Participants’ Phone Number Use
-4.1 Participants’ Phone Number Use
-4.1 Participants’ Phone Number Use
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.2 Negative Experiences
-4.3 Reported Consequences
-4.3 Reported Consequences
-4.3 Reported Consequences
-4.3 Reported Consequences
-4.3 Reported Consequences
-4.3 Reported Consequences
-4.3 Reported Consequences
-4.3 Reported Consequences
-4.3 Reported Consequences
-4.3 Reported Consequences
-4.4 Behavioral Changes
-4.4 Behavioral Changes
-4.4 Behavioral Changes
-4.4 Behavioral Changes
-I said wrong number. She called back and then got annoyed at me,
-I said wrong number. She called back and then got annoyed at me,
-I said wrong number. She called back and then got annoyed at me,
-I said wrong number. She called back and then got annoyed at me,
-I said wrong number. She called back and then got annoyed at me,
-I said wrong number. She called back and then got annoyed at me,
-I said wrong number. She called back and then got annoyed at me,
-I need to update a lot info that associated with this phone number, it’s kind of troublesome so I haven’t changed it yet.”
-I need to update a lot info that associated with this phone number, it’s kind of troublesome so I haven’t changed it yet.”
-5 DISCUSSION
-5.1 Issues from Faulty Assumptions about Phone Numbers
-5.1 Issues from Faulty Assumptions about Phone Numbers
-5.1 Issues from Faulty Assumptions about Phone Numbers
-5.1 Issues from Faulty Assumptions about Phone Numbers
-5.1 Issues from Faulty Assumptions about Phone Numbers
-5.2 A Public Number Becomes Private
-5.2 A Public Number Becomes Private
-5.3 Disclosing Phone Numbers Should be Optional
-5.3 Disclosing Phone Numbers Should be Optional
-5.3 Disclosing Phone Numbers Should be Optional
-5.4 Phone Numbers are a Risky Authentication Method
-5.4 Phone Numbers are a Risky Authentication Method
-5.4 Phone Numbers are a Risky Authentication Method
-5.5 Mitigate Efects of Phone Number Recycling
-5.5 Mitigate Efects of Phone Number Recycling
-5.5 Mitigate Efects of Phone Number Recycling
-5.5 Mitigate Efects of Phone Number Recycling
-5.5 Mitigate Efects of Phone Number Recycling
-5.6 Enable Contextualized Use of Phone Numbers
-5.6 Enable Contextualized Use of Phone Numbers
-5.6 Enable Contextualized Use of Phone Numbers
-5.6 Enable Contextualized Use of Phone Numbers
-5.6 Enable Contextualized Use of Phone Numbers
-6 CONCLUSION
-6 CONCLUSION
-ACKNOWLEDGMENTS
+Technology Overuse
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+3 CHARACTERIZING DIGITAL WELLBEING APPS
+Method
+Method
+Method
+Method
+Findings
+Findings
+Findings
+Findings
+Findings
+4 REVIEWS’ ANALYSIS
+Method
+Method
+Method
+Method
+Method
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+5 DIGITAL WELLBEING IN THE WILD
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+6 DISCUSSION
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Self Monitoring vs. Habit Formation
+Self Monitoring vs. Habit Formation
+Self Monitoring vs. Habit Formation
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+7 LIMITATIONS
+7 LIMITATIONS
+8 CONCLUSIONS AND FUTURE WORK
 REFERENCES
 REFERENCES
 REFERENCES
@@ -128,26 +129,4 @@ REFERENCES
 REFERENCES
 REFERENCES
 REFERENCES
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
-A SURVEY QUESTIONS
+REFERENCES

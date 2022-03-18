@@ -1,3 +1,8 @@
+CCS CONCEPTS
+KEYWORDS
+ACM Reference Format:
+ACM Reference Format:
+ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
@@ -6,140 +11,120 @@
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-1 INTRODUCTION
-1 INTRODUCTION
-2 PREVIOUS WORK: MACHINE LEARNING METHODS FOR ADAPTIVE INTERFACES
-2.1 Rules, heuristics, and logic
-2.2 Machine learning
-2.2 Machine learning
-2.3 Bandit systems and Bayesian optimisation
-2.3 Bandit systems and Bayesian optimisation
-2.4 Reinforcement learning
-2.4 Reinforcement learning
-2.4 Reinforcement learning
-2.4 Reinforcement learning
-3 PROBLEM FORMULATION
-3 PROBLEM FORMULATION
-3 PROBLEM FORMULATION
-3 PROBLEM FORMULATION
-3 PROBLEM FORMULATION
-3 PROBLEM FORMULATION
-3 PROBLEM FORMULATION
-3 PROBLEM FORMULATION
-3 PROBLEM FORMULATION
-3 PROBLEM FORMULATION
-4 METHOD: DEEP MODEL-BASED REINFORCEMENT LEARNING
-4 METHOD: DEEP MODEL-BASED REINFORCEMENT LEARNING
-4 METHOD: DEEP MODEL-BASED REINFORCEMENT LEARNING
-4.1 Planning with MCTS
-4.1 Planning with MCTS
-4.1 Planning with MCTS
-4.1 Planning with MCTS
-4.1 Planning with MCTS
-4.1 Planning with MCTS
-4.1 Planning with MCTS
-4.1 Planning with MCTS
-4.1 Planning with MCTS
-4.1 Planning with MCTS
-4.1 Planning with MCTS
-4.1 Planning with MCTS
-4.1 Planning with MCTS
-4.1 Planning with MCTS
-4.1 Planning with MCTS
-4.2 Value Estimation with Deep Neural Networks
-4.2 Value Estimation with Deep Neural Networks
-4.3 Applications in Adaptive Interfaces
-4.3 Applications in Adaptive Interfaces
-4.3 Applications in Adaptive Interfaces
-5 APPLICATION: ADAPTIVE MENUS
-5.1 Problem Defnition
-5.1 Problem Defnition
-5.1 Problem Defnition
-5.1 Problem Defnition
-5.1 Problem Defnition
-5.1 Problem Defnition
-5.1 Problem Defnition
-5.1 Problem Defnition
-5.1 Problem Defnition
-5.1 Problem Defnition
-5.1 Problem Defnition
-5.1 Problem Defnition
-5.1 Problem Defnition
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.2 Models for Simulating Menu Search
-5.3 Neural Network for Rewards Estimation
-5.3 Neural Network for Rewards Estimation
-5.3 Neural Network for Rewards Estimation
-5.3 Neural Network for Rewards Estimation
-6 EVALUATION
-6.1 Technical Evaluation
-6.1 Technical Evaluation
-6.1 Technical Evaluation
-6.1.1 Tasks.
-6.1.1 Tasks.
-6.1.1 Tasks.
-6.1.1 Tasks.
-6.1.1 Tasks.
-6.1.1 Tasks.
-6.1.1 Tasks.
-6.1.1 Tasks.
-6.1.1 Tasks.
-6.1.1 Tasks.
-6.2 Empirical Evaluation
-6.2 Empirical Evaluation
-6.2 Empirical Evaluation
-6.2 Empirical Evaluation
-6.2 Empirical Evaluation
-6.2 Empirical Evaluation
-6.2 Empirical Evaluation
-6.2 Empirical Evaluation
-6.2 Empirical Evaluation
-6.2 Empirical Evaluation
-6.2.6 Qantitative Results.
-6.2.6 Qantitative Results.
-6.2.6 Qantitative Results.
-6.2.6 Qantitative Results.
-6.3 Summary
-7 CONCLUSION
-7 CONCLUSION
-7 CONCLUSION
-7 CONCLUSION
-7 CONCLUSION
-7 CONCLUSION
-8 OPEN SCIENCE
-ACKNOWLEDGMENTS
-ACKNOWLEDGMENTS
+Technology Overuse
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+3 CHARACTERIZING DIGITAL WELLBEING APPS
+Method
+Method
+Method
+Method
+Findings
+Findings
+Findings
+Findings
+Findings
+4 REVIEWS’ ANALYSIS
+Method
+Method
+Method
+Method
+Method
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+5 DIGITAL WELLBEING IN THE WILD
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+6 DISCUSSION
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Self Monitoring vs. Habit Formation
+Self Monitoring vs. Habit Formation
+Self Monitoring vs. Habit Formation
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+7 LIMITATIONS
+7 LIMITATIONS
+8 CONCLUSIONS AND FUTURE WORK
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
 REFERENCES
 REFERENCES
 REFERENCES
