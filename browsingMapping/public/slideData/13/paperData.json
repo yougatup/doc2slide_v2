@@ -2,113 +2,304 @@
   "abstractText": {
     "page": 0,
     "region": {
-      "x1": 53.439998626708984,
-      "x2": 295.7105407714844,
-      "y1": 279.0429992675781,
-      "y2": 503.6499938964844
+      "x1": 53.36800003051758,
+      "x2": 295.5574951171875,
+      "y1": 476.65008544921875,
+      "y2": 606.7879638671875
     },
-    "text": "ABSTRACT Voice recording is a challenging task with many pitfalls due to sub-par recording environments, mistakes in recording setup, microphone quality, etc. Newcomers to voice recording often have difficulty recording their voice, leading to recordings with low sound quality. Many amateur recordings of poor quality have two key problems: too much reverberation (echo), and too much background noise (e.g. fans, electronics, street noise). We present VoiceAssist, a system that helps inexperienced users produce high quality recordings by providing real-time visual feedback on audio quality. We integrate modern audio quality measures into an interactive human-machine feedback loop, so that the audio quality can be maximized at capture-time. We demonstrate the utility of this feedback for improving the recording quality with a user study. When presented with visual feedback about recording quality, users produced recordings that were strongly preferred by thirdparty listeners, when compared to recordings made without this feedback."
+    "text": "ABSTRACT Worlds-in-Miniature (WiMs) are interactive worlds within a world and combine the advantages of an input space, a cartographic map, and an overview+detail interface. They have been used across the extended virtuality spectrum for a variety of applications. Building on an analysis of examples of WiMs from the research literature we contribute a design space for WiMs based on seven design dimensions. Further, we expand upon existing defnitions of WiMs to provide a defnition that applies across the extended reality spectrum. We identify the design dimensions of size-scope-scale, abstraction, geometry, reference frame, links, multiples, and virtuality. Using our framework we describe existing Worlds-in-Miniature from the"
   },
   "figures": [{
-    "caption": "Figure 2: An early iteration of VoiceAssist, using a time-series representation. Users in a small pilot study stated in interviews that it was difficult to record a prepared text and monitor the feedback due to its active visual footprint. In response to these reports, we eliminated the time-series representation, replacing it with simple colored boxes.",
+    "caption": "Figure 5: WiMs with increasing Abstraction: (a) a perfect recreation of the virtual room [34], (b) a digital recreation of a real building [45], (c) a physical copy of a real space [40], (d) geometric simplifcation of a room, objects are reduced to just cubes [4], (e) a satellite image that has undergone cartographic generalisation to look like amap [30], (f) a building that has been reduced to just areas [9], (g) a building that has been reduced to just lines in a wireframe [21]. Images reused with permission.",
     "captionBoundary": {
-      "x1": 53.79800033569336,
-      "x2": 294.0330810546875,
-      "y1": 210.0966339111328,
-      "y2": 270.72393798828125
+      "x1": 53.52008056640625,
+      "x2": 559.2966918945312,
+      "y1": 324.2510986328125,
+      "y2": 362.7528076171875
     },
     "figType": "Figure",
-    "imageText": [],
-    "name": "2",
-    "page": 2,
+    "imageText": ["e", "f", "g", "a", "b", "c", "d", "Cartographic", "Generalization", "Just", "Areas", "Just", "Lines", "Geometric", "Simpli", "cation", "Physical", "Copy", "Digital", "Recreation", "Perfect", "Recreation"],
+    "name": "5",
+    "page": 5,
     "regionBoundary": {
       "x1": 53.0,
-      "x2": 295.0,
-      "y1": 92.0,
-      "y2": 197.0
+      "x2": 558.0,
+      "y1": 85.0,
+      "y2": 307.1362609863281
     }
   }, {
-    "caption": "Table 1: The number of listeners preferring either the first recording an individual made or the second recording that person made. In the control condition the standard interface is used for both recordings. In the test condition VoiceAssist was used for the second recording.",
+    "caption": "Figure 6: WiMs with various Geometries: (a) a WiM clipped to the object of interest [30], (b) a WiM clipped to a cylinder [46], (c) a WiM clipped to a work table [7], (d) a WiM with disjoint geometry, the roof of the building is separated to reduce occlusion [9], (e) a WiM that extends infnitely [26], (f) a 3D map that is deformable [32]. Images reused with permission.",
     "captionBoundary": {
-      "x1": 317.65899658203125,
-      "x2": 559.6784057617188,
-      "y1": 132.54859924316406,
-      "y2": 182.2169189453125
+      "x1": 53.331787109375,
+      "x2": 559.2877807617188,
+      "y1": 565.3580932617188,
+      "y2": 592.9028930664062
+    },
+    "figType": "Figure",
+    "imageText": ["d", "e", "f", "a", "b", "c", "Disjoint", "In", "nite", "Deformed", "Clipped", "to", "Workspace", "Clipped", "to", "Simple", "Shape", "Clipped", "to", "Focus"],
+    "name": "6",
+    "page": 5,
+    "regionBoundary": {
+      "x1": 53.0,
+      "x2": 558.0,
+      "y1": 378.0,
+      "y2": 548.476806640625
+    }
+  }, {
+    "caption": "Table 1: Dimensions used in our three example WiMs. Critical dimensions for each are indicated in bold.",
+    "captionBoundary": {
+      "x1": 93.91000366210938,
+      "x2": 517.7966918945312,
+      "y1": 575.8831176757812,
+      "y2": 581.5140380859375
     },
     "figType": "Table",
-    "imageText": ["1st", "recording", "2nd", "recording", "Control", "61", "62", "Test", "30", "96"],
+    "imageText": ["Links", "Highlighting", "None", "None", "Multiples", "None", "None", "Small", "Multiples", "Virtuality", "Headset", "AR", "Headset", "AR", "Handheld", "AR", "Abstraction", "Physical", "Copy", "Cartographic", "Generalization", "Carto.", "Generalization", "Geometry", "Clip", "to", "Focus", "Disjoint", "&", "Clip", "to", "Focus", "Clip", "to", "Simple", "Shape/Focus", "Ref.", "Frame", "Free", "Referent", "Viewer’s", "Body", "Viewer", "Size", "Large", "Large", "Large", "&", "Moderate", "Scope", "Building", "Block", "City", "&", "Floor", "Dimension", "Example", "#1", "(Shared", "Spatial", "Highlights)", "Example", "#2", "(Body", "Based", "WiM)", "Example", "#3", "(Overview", "+", "Detail)"],
     "name": "1",
-    "page": 4,
+    "page": 10,
     "regionBoundary": {
-      "x1": 353.0,
-      "x2": 523.0,
-      "y1": 92.0,
-      "y2": 130.0
+      "x1": 75.0,
+      "x2": 537.0,
+      "y1": 597.0,
+      "y2": 706.0
     }
   }, {
-    "caption": "Figure 1: VoiceAssist, a system that displays visual feedback on audio quality in order to help users create high-quality voice recordings. We display two quality measures, which are indicated by a color gradient ranging from red (poor quality) to green, (high quality). In this recording, there is little background noise but the room acoustics are poor. The user can make adjustments and respond to the visual feedback to improve audio quality.",
+    "caption": "Figure 18: Example #1: Shared Spatial Highlighting. In the fgure a viewer is pointing at the roof of a WiM of the completed building and it is highlighted. The roof is also highlighted in the construction site, despite not being built yet.",
     "captionBoundary": {
-      "x1": 53.79800033569336,
-      "x2": 295.5213928222656,
-      "y1": 208.9005889892578,
-      "y2": 291.44488525390625
+      "x1": 317.9548645019531,
+      "x2": 559.8056640625,
+      "y1": 247.42408752441406,
+      "y2": 285.9258728027344
     },
     "figType": "Figure",
     "imageText": [],
-    "name": "1",
-    "page": 1,
+    "name": "18",
+    "page": 10,
+    "regionBoundary": {
+      "x1": 336.0,
+      "x2": 538.0,
+      "y1": 96.0,
+      "y2": 234.0
+    }
+  }, {
+    "caption": "Figure 7: WiMs with Reference frames ranging from very viewer-centric reference frames to world-centric reference frames: (a) a WiM that is placed on the viewers wrist [22], (b) a WiM that sits in the top right of the viewers view [48], (c) a WiM that sits on a handheld clipboard [44], (d) a WiM that sits on a hand held device [29], (e) a WiM that is embedded in a physical model [40], (f) a WiM that hovers above the object it represents [45], (g) a WiM that has no reference frame [26]. Images reused with permission.",
+    "captionBoundary": {
+      "x1": 53.4482421875,
+      "x2": 559.3505249023438,
+      "y1": 330.7080993652344,
+      "y2": 380.166748046875
+    },
+    "figType": "Figure",
+    "imageText": ["a", "e", "f", "g", "b", "c", "d", "Purposebuilt", "Workspace", "Scene", "Free", "Reference", "Extrapersonal", "Viewer", "HandheldToken", "Device", "Face", "Peripersonal", "Viewer", "Bodypart", "Pericutaneous"],
+    "name": "7",
+    "page": 6,
     "regionBoundary": {
       "x1": 53.0,
-      "x2": 295.0,
-      "y1": 92.0,
-      "y2": 196.0
+      "x2": 559.0,
+      "y1": 83.0,
+      "y2": 317.0
     }
   }, {
-    "caption": "Figure 3: A traditional recording interface. The top graph indicates amplitude as measured by the microphone over time.",
+    "caption": "Table 2: Table of applications for each survey WiM. WiMs designed for more than one application are highlighted in both.",
     "captionBoundary": {
-      "x1": 317.9549865722656,
-      "x2": 559.6784057617188,
-      "y1": 142.8065948486328,
-      "y2": 159.59796142578125
+      "x1": 58.61399841308594,
+      "x2": 553.0932006835938,
+      "y1": 87.64412689208984,
+      "y2": 93.2750244140625
+    },
+    "figType": "Table",
+    "imageText": ["LaViola", "2001", "Bell", "2003", "Staford", "2006", "Hollerer", "2001", "Pausch", "1995", "Muiloni", "2012", "Kalkusch", "2002", "Bonsch", "2016", "Elvins", "1998", "Chittaro", "2005", "Li", "2006", "Bell", "2002", "Wingrave", "2006", "Bluf", "2019", "Seo", "2016", "Ssin", "2019", "Nam", "2019", "Gazcon", "2018", "Drey", "2018", "Tatzgern", "2015", "Veas", "2012", "Cofey", "2011", "Trueba", "2009", "Bruder", "2009", "Wayfnding", "Collaboration", "Visualisation", "Navigation", "Control", "Space", "Meta"],
+    "name": "2",
+    "page": 12,
+    "regionBoundary": {
+      "x1": 119.0,
+      "x2": 493.0,
+      "y1": 108.0,
+      "y2": 272.0
+    }
+  }, {
+    "caption": "Figure 8: Several examples of Links on WiMs: (a) a view frustum showing the viewer’s position and orientation in the scene [34], (b) a slicing plane controlling the viewable space [11], (c) a god hand indicating where a viewer is pointing in the environment [43], (d) leader lines connecting components of the replica to their real twin [45], (e) labels identifying components of the WiM [26]. Images reused with permission.",
+    "captionBoundary": {
+      "x1": 53.519989013671875,
+      "x2": 559.8079223632812,
+      "y1": 194.1441192626953,
+      "y2": 232.64593505859375
+    },
+    "figType": "Figure",
+    "imageText": ["a", "b", "c", "d", "e", "View", "Frustums", "View", "Planes", "God", "hands", "Leader", "Lines", "Labels"],
+    "name": "8",
+    "page": 7,
+    "regionBoundary": {
+      "x1": 53.0,
+      "x2": 556.0,
+      "y1": 85.0,
+      "y2": 177.1964111328125
+    }
+  }, {
+    "caption": "Figure 9: Examples WiMs with Multiples: (a) a recursive WiM, a smaller copy of the replica is embedded within the replica [5] (the red god hand and the grabbed building are replicated in the WiM), (b) a WiM with small multiples, each multiple shows the environment from a diferent angle [45]. Images reused with permission.",
+    "captionBoundary": {
+      "x1": 53.519989013671875,
+      "x2": 558.2029418945312,
+      "y1": 402.006103515625,
+      "y2": 429.5508728027344
+    },
+    "figType": "Figure",
+    "imageText": ["a", "b", "Recursive", "Small", "Multiples"],
+    "name": "9",
+    "page": 7,
+    "regionBoundary": {
+      "x1": 82.0,
+      "x2": 519.0,
+      "y1": 247.0,
+      "y2": 384.7084655761719
+    }
+  }, {
+    "caption": "Figure 10: WiMs along various degrees of virtuality: (a) headset VR [5], (b) cave VR [12], (c) desktop VR [6], (d) headset AR [46], (e) projected AR [24], (f) handheld AR [29]. Images reused with permission.",
+    "captionBoundary": {
+      "x1": 53.520050048828125,
+      "x2": 559.296630859375,
+      "y1": 547.3790893554688,
+      "y2": 563.9669189453125
+    },
+    "figType": "Figure",
+    "imageText": ["a", "b", "c", "d", "e", "f", "Headset", "VR", "Cave", "VR", "Desktop", "VR", "Projected", "AR", "Handheld", "ARHeadset", "AR"],
+    "name": "10",
+    "page": 7,
+    "regionBoundary": {
+      "x1": 53.0,
+      "x2": 558.176513671875,
+      "y1": 446.0,
+      "y2": 530.8126220703125
+    }
+  }, {
+    "caption": "Figure 2: A comparison of the 25 papers we coded. The top bar shows each paper we coded. The left column shows our design dimensions and their possible values. Bars at the right show the total number of papers with each value.",
+    "captionBoundary": {
+      "x1": 53.79800033569336,
+      "x2": 558.2029418945312,
+      "y1": 658.9730834960938,
+      "y2": 675.5609130859375
+    },
+    "figType": "Figure",
+    "imageText": ["V", "Size", "ep", "oc", "S", "no", "it", "ca", "rt", "sb", "A", "yr", "te", "mo", "e", "G", "e", "ma", "rF", "e", "cn", "er", "ef", "eR", "Links", "el", "pit", "lu", "M", "s", "ut", "ri", "yti", "la", "Handheld", "AR", "x", "x", "x", "x", "x", "x", "Projected", "AR", "Headset", "AR", "Desktop", "VR", "Headset", "VR", "x", "Cave", "VR", "None", "Recursive", "Mul�ples", "Small", "Mul�ples", "None", "Labels", "Leader", "Lines", "Godhands", "View", "Frustum", "x", "View", "Planes", "Free", "Referent", "Scene", "Purpose-built", "Workzone", "Device", "Face", "Handheld", "Token", "Viewer", "Viewer", "Bodypart", "Deformed", "Disjoint", "Inﬁnite", "Clipped", "to", "Workspace", "Clipped", "to", "Focus", "x", "Clipped", "to", "Simple", "Shape", "Just", "Lines", "Just", "Areas", "Cartographic", "Generaliza�on", "Geometric", "Simplﬁcia�on", "Physical", "Copy", "Perfect", "Recrea�on", "x", "Digital", "Recrea�on", "Planetary+", "City", "Country", "Block", "Large", "Building", "Small", "Building", "Room", "x", "Floor", "Object", "Huge", "Very", "Large", "Large", "Small", "x", "Moderate", "Ssin", "2019", "Very", "Small", "Pausch", "1995", "Elvins", "1998", "Hollerer", "2001", "LaViola", "2001", "Bell", "2002", "Kalkusch", "2002", "Bell", "2003", "Chi�aro", "2005", "Li", "2006", "Staﬀord", "2006", "Wingrave", "2006", "Bruder", "2009", "Trueba", "2009", "Coﬀey", "2011", "Coﬀey", "2011", "(2)", "Mulloni", "2012", "Veas", "2012", "Tatzgern", "2015", "Bonsch", "2016", "Seo", "2016", "Drey", "2018", "Gazcon", "2018", "Bluﬀ", "2019", "Nam", "2019"],
+    "name": "2",
+    "page": 3,
+    "regionBoundary": {
+      "x1": 106.0,
+      "x2": 505.0,
+      "y1": 84.0,
+      "y2": 645.0
+    }
+  }, {
+    "caption": "Figure 19: Example #2. Body Based WiM: In the fgure a viewer has a WiM spread across their body. Buildings that are close to them are on their arms, while distant ones are on their legs.",
+    "captionBoundary": {
+      "x1": 53.56486511230469,
+      "x2": 294.043701171875,
+      "y1": 247.3991241455078,
+      "y2": 285.9009094238281
     },
     "figType": "Figure",
     "imageText": [],
-    "name": "3",
-    "page": 3,
+    "name": "19",
+    "page": 11,
     "regionBoundary": {
-      "x1": 317.0,
+      "x1": 71.0,
+      "x2": 274.0,
+      "y1": 83.0,
+      "y2": 234.0
+    }
+  }, {
+    "caption": "Figure 20: Example # 3: Overview Replica + Detail Replica. On the left side of the phone is a replica of the entire mountain region. On the Right side is another smaller replica that is showing just the trail segment the viewer is on. Blue pins show the viewers position, and the red pin shows their destination.",
+    "captionBoundary": {
+      "x1": 317.95709228515625,
+      "x2": 559.807861328125,
+      "y1": 248.5004425048828,
+      "y2": 308.9161071777344
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "20",
+    "page": 11,
+    "regionBoundary": {
+      "x1": 336.0,
+      "x2": 538.0,
+      "y1": 83.0,
+      "y2": 235.0
+    }
+  }, {
+    "caption": "Figure 4: WiMs increasing in Scope: (a) a WiM that shows a single object [11], (b) a WiM that shows a single room [34], (c) a WiM that shows one foor of a building [6], (d) a WiM that shows an entire building [21], (e) a WiM that shows a city block [49], (f) a WiM that shows a city-sized natural park [18], (g) a WiM that shows a country [30], (h) a WiM showing a star system [26]. Images reused with permission.",
+    "captionBoundary": {
+      "x1": 53.34063720703125,
+      "x2": 559.73583984375,
+      "y1": 472.09912109375,
+      "y2": 510.600830078125
+    },
+    "figType": "Figure",
+    "imageText": ["e", "f", "g", "h", "a", "b", "c", "d", "Block", "City", "Country", "Planetary+", "Object", "Room", "Floor", "Building"],
+    "name": "4",
+    "page": 4,
+    "regionBoundary": {
+      "x1": 53.0,
       "x2": 559.0,
-      "y1": 92.0,
-      "y2": 130.0
+      "y1": 252.0,
+      "y2": 449.9284973144531
+    }
+  }, {
+    "caption": "Figure 3: WiMs increasing in Size: (a) a very small hand-sized WiM [29], (b) a small handheld WiM [11], (c) a moderate desksized WiM [49], (d) a large meeting table-sized WiM [46], (e) a very large storage closet-sized WiM [24], (f) a huge park-sized WiM [18]. Images reused with permission.",
+    "captionBoundary": {
+      "x1": 53.340667724609375,
+      "x2": 559.807861328125,
+      "y1": 204.0890655517578,
+      "y2": 231.6339111328125
+    },
+    "figType": "Figure",
+    "imageText": ["a", "b", "c", "d", "e", "f", "Huge", ">", "2", "m", "Very", "Large", "1–2", "m", "Large", "50", "cm", "–", "1", "m", "Moderate", "30–50", "cm", "Small", "10–30", "cm", "Very", "Small", "<10", "cm"],
+    "name": "3",
+    "page": 4,
+    "regionBoundary": {
+      "x1": 55.0,
+      "x2": 559.0,
+      "y1": 83.0,
+      "y2": 179.90216064453125
     }
   }],
   "sections": [{
     "paragraphs": [{
       "page": 0,
       "region": {
-        "x1": 53.27000045776367,
-        "x2": 295.705810546875,
-        "y1": 536.33203125,
-        "y2": 566.7230224609375
+        "x1": 53.31680679321289,
+        "x2": 294.1777648925781,
+        "y1": 621.4981079101562,
+        "y2": 707.3472290039062
       },
-      "text": "• Human-centered computing→ Human computer interaction (HCI); Graphical user interfaces; • Applied computing→ Sound and music computing."
+      "text": "Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for proft or commercial advantage and that copies bear this notice and the full citation on the frst page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specifc permission and/or a fee. Request permissions from permissions@acm.org. CHI ’21, May 8–13, 2021, Yokohama, Japan © 2021 Copyright held by the owner/author(s). Publication rights licensed to ACM. ACM ISBN 978-1-4503-8096-6/21/05. . . $15.00 https://doi.org/10.1145/3411764.3445098"
     }, {
       "page": 0,
       "region": {
-        "x1": 53.19300079345703,
-        "x2": 294.1761779785156,
-        "y1": 595.945068359375,
-        "y2": 712.3289794921875
+        "x1": 317.625732421875,
+        "x2": 559.1911010742188,
+        "y1": 477.64593505859375,
+        "y2": 516.3770141601562
       },
-      "text": "Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org. CHI 2019, May 4–9, 2019, Glasgow, Scotland Uk © 2019 Association for Computing Machinery. ACM ISBN 978-1-4503-5970-2/19/05. . . $15.00 https://doi.org/10.1145/3290605.3300539"
+      "text": "research literature and reveal unexplored research areas. Finally, we generate new examples of WiMs using our framework to fll some of these gaps. With our fndings, we identify opportunities that can guide future research into WiMs."
+    }]
+  }, {
+    "paragraphs": [{
+      "page": 0,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.8057250976562,
+        "y1": 556.5536499023438,
+        "y2": 574.0919189453125
+      },
+      "text": "• Human-centered computing → Visualization theory, concepts and paradigms; Visualization techniques."
     }],
     "title": {
       "page": 0,
       "region": {
-        "x1": 53.79800033569336,
-        "x2": 128.51052856445312,
-        "y1": 521.44287109375,
-        "y2": 527.8690185546875
+        "x1": 317.9549865722656,
+        "x2": 398.9768371582031,
+        "y1": 542.5851440429688,
+        "y2": 549.43603515625
       },
       "text": "CCS CONCEPTS"
     }
@@ -116,20 +307,20 @@
     "paragraphs": [{
       "page": 0,
       "region": {
-        "x1": 317.59698486328125,
-        "x2": 559.0419921875,
-        "y1": 294.4092712402344,
-        "y2": 312.3680114746094
+        "x1": 317.65899658203125,
+        "x2": 540.0618286132812,
+        "y1": 614.9959716796875,
+        "y2": 620.8510131835938
       },
-      "text": "Audio quality; active capture; feedback; interfaces; speech; voice recording; narration; creativity support tools"
+      "text": "Virtual/Augmented Reality, Meta-Analysis/Literature Survey"
     }],
     "title": {
       "page": 0,
       "region": {
-        "x1": 317.95501708984375,
-        "x2": 375.5511169433594,
-        "y1": 279.0428466796875,
-        "y2": 285.468994140625
+        "x1": 317.9549865722656,
+        "x2": 379.8205261230469,
+        "y1": 600.3021240234375,
+        "y2": 607.1530151367188
       },
       "text": "KEYWORDS"
     }
@@ -137,86 +328,89 @@
     "paragraphs": [{
       "page": 0,
       "region": {
-        "x1": 317.6319885253906,
-        "x2": 559.6868896484375,
-        "y1": 336.0099792480469,
-        "y2": 396.2070007324219
+        "x1": 317.9549865722656,
+        "x2": 559.430419921875,
+        "y1": 662.2925415039062,
+        "y2": 707.3469848632812
       },
-      "text": "Prem Seetharaman, Gautham Mysore, Bryan Pardo, Paris Smaragdis, and Celso Gomes. 2019. VoiceAssist: Guiding Users to High-Quality Voice Recordings. In CHI Conference on Human Factors in Computing Systems Proceedings (CHI 2019), May 4–9, 2019, Glasgow, Scotland Uk. ACM, New York, NY, USA, 6 pages. https: //doi.org/10.1145/3290605.3300539"
+      "text": "Kurtis Danyluk, Barrett Ens, Bernhard Jenny, and Wesley Willett. 2021. A Design Space Exploration of Worlds in Miniature. In CHI Conference on Human Factors in Computing Systems (CHI ’21), May 8–13, 2021, Yokohama, Japan. ACM, New York, NY, USA, 15 pages. https://doi.org/10.1145/3411764. 3445098"
     }],
     "title": {
       "page": 0,
       "region": {
-        "x1": 317.6319885253906,
-        "x2": 412.8418884277344,
-        "y1": 324.62060546875,
-        "y2": 330.4530029296875
+        "x1": 317.6600036621094,
+        "x2": 404.65362548828125,
+        "y1": 652.5287475585938,
+        "y2": 657.5339965820312
       },
       "text": "ACM Reference Format:"
     }
   }, {
+    "paragraphs": [],
+    "title": {
+      "page": 1,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 558.198974609375,
+        "y1": 63.2986946105957,
+        "y2": 67.34698486328125
+      },
+      "text": "CHI ’21, May 8–13, 2021, Yokohama, Japan Danyluk et al."
+    }
+  }, {
     "paragraphs": [{
-      "page": 0,
+      "page": 1,
       "region": {
-        "x1": 317.5969543457031,
-        "x2": 559.8685913085938,
-        "y1": 431.3572692871094,
-        "y2": 616.68701171875
+        "x1": 53.48400115966797,
+        "x2": 295.559814453125,
+        "y1": 101.49192810058594,
+        "y2": 195.01898193359375
       },
-      "text": "Voice recording is central to production of audio and audiovisual media, such as podcasts, educational content, film, advertisements, video essays, and radio. Newcomers to voice recording often make mistakes when recording their voice, leading to a poor recording. High recording quality is a hallmark of successful voice-based media (e.g. radio broadcast such as NPR or popular podcasts and YouTube channels). Two key problems in many amateur recordings of poor quality are bad room acoustics (reverberation), and too much background noise (e.g. fans, electronics, street noise). LibriVox - a site where volunteers record audio books - has sections in their contributor guide on avoiding \"room echo\" and \"background noise\", illustrating how common these problems are. Denoising and dereverberation of recorded speech are entire fields of study because they are such common problems in speech recordings [11, 12]."
-    }, {
-      "page": 0,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.982666015625,
-        "y1": 622.6403198242188,
-        "y2": 712.3289794921875
-      },
-      "text": "A common workflow in voice recording is to record a “take” and then apply audio enhancement tools to the recording to improve its quality (post-processing of the recording). Denoising tools are used to reduce unwanted background noise. Dereverberation tools are used to reduce the effect of a room and echos within the room. However, the output of these tools is imperfect, with noticeable distortions and artifacts on the resultant audio [19]. Therefore, to get high-quality"
-    }, {
-      "page": 0,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 309 Page 1"
+      "text": "As extended reality (XR) devices become more portable and powerful there is an opportunity for applications that have been previously limited to static desktop and laboratory spaces to move out into the world. Worlds-in-Miniature (WiMs) are one such technique that have been used for decades in the context of virtual reality (VR) as a tool for navigation and object manipulation, but which also have many promising applications in systems across the spectrum of virtuality [28]. As XR devices become less tethered to desktop computers, so too do the potential uses for WiMs."
     }, {
       "page": 1,
       "region": {
-        "x1": 53.33000183105469,
-        "x2": 295.79864501953125,
-        "y1": 326.22027587890625,
-        "y2": 451.77398681640625
+        "x1": 53.46699905395508,
+        "x2": 294.27593994140625,
+        "y1": 200.1229705810547,
+        "y2": 315.5669860839844
       },
-      "text": "voice recordings, we think it is beneficial to simply record the audio with less noise and reverberation in the first place. When a professional recording engineer and recording studio are available, the engineer provides feedback and guidance on microphone placement and recording technique, resulting in a high-quality recording with little need for denoising or dereverberation. For many applications, however, a recording engineer and studio may not be practical or readily available. People may wish to record late at night, in their home, or without prior scheduling. The nature of the project may not allow for the expense of a recording engineer and studio."
+      "text": "There is not only renewed interest, but there is also a great potential for WiMs given the appearance of AR-capable chip sets on ubiquitous handheld devices — already being used in applications like Google Maps1. Location-based games like Pokemon Go could also beneft from minimap WiMs, and outdoor hobbies like hiking can take advantage of the 3D nature of WiMs to improve viewer perception [25]. In architecture, VR walkthroughs are becoming more common [36] and WiMs have a long history as a tool for navigating virtual buildings. Now is a time to revisit prior work and learn from it, providing a more structured view of WiM design which can inform future systems."
     }, {
       "page": 1,
       "region": {
-        "x1": 53.439998626708984,
-        "x2": 295.71295166015625,
-        "y1": 457.7262878417969,
-        "y2": 678.9219970703125
+        "x1": 53.57400131225586,
+        "x2": 295.5574951171875,
+        "y1": 320.6709289550781,
+        "y2": 381.32000732421875
       },
-      "text": "VoiceAssist (Figure 1) helps inexperienced users produce high quality recordings by providing real-time visual feedback on the quality of the recording, like an expert recording engineer would. This is opposed to traditional recording software, which does not provide visual feedback on sound quality. Traditional recording software usually only provides volume or frequency information (e.g. Adobe Audition or Audacity). Our system helps the user find the “sweet spot” of the microphone1 - the optimal area within the microphone’s pickup pattern for recording. The feedback from our system simulates part of the expertise a recording engineer would bring to the recording session. Our work integrates audio quality measures directly into an interactive human-machine loop to maximize audio quality at capture-time. We demonstrate the utility of this feedback for creating high-quality voice recordings. We compare VoiceAssist (Figure 1) to a traditional recording interface (Figure 3). We show that users, when presented with visual feedback about audio quality, produce higher-quality voice recordings."
+      "text": "To better understand the design and use of WiMs, we collected and analysed 25 examples of WiMs from the research literature to derive a design space based on seven design dimensions: size-scopescale, abstraction, geometry, reference frame, links, multiples, and virtuality. We explain these dimensions in detail, and discuss how changes to individual dimensions infuence the fnal uses of a WiM."
     }, {
       "page": 1,
       "region": {
-        "x1": 53.349998474121094,
-        "x2": 229.72218322753906,
-        "y1": 705.834228515625,
-        "y2": 712.3289794921875
+        "x1": 53.57832336425781,
+        "x2": 295.55877685546875,
+        "y1": 386.4239196777344,
+        "y2": 479.95001220703125
       },
-      "text": "1https://www.voices.com/blog/microphone_sweet_spot"
+      "text": "Using these design dimensions, we compare and contrast different approaches for creating WiMs and identify the importance of specifc design choices. Based on this comparison we identify opportunities not covered by prior systems and use these to propose novel WiM designs (Figure 1). For designers, our framework highlights alternatives to traditional WiM archetypes and surfaces a variety of design choices and trade-ofs. Meanwhile, for researchers, our collection of related work can help facilitate new discussions about the value of WiMs and stimulate new designs."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.5623779296875,
+        "y1": 485.0539245605469,
+        "y2": 556.6629638671875
+      },
+      "text": "This paper makes several contributions. First, we propose an expanded defnition of WiMs that better captures their presence across the XR spectrum. Second, we identify a set of design dimensions that help describe and diferentiate the forms and features of a diverse range of WiMs. Third, we use our design space to identify gaps in the existing literature and propose example systems that illustrate potential future applications of WiMs."
     }],
     "title": {
-      "page": 0,
+      "page": 1,
       "region": {
-        "x1": 317.95501708984375,
-        "x2": 411.0592346191406,
-        "y1": 415.9898681640625,
-        "y2": 422.416015625
+        "x1": 53.79800033569336,
+        "x2": 156.52899169921875,
+        "y1": 86.7980728149414,
+        "y2": 93.64898681640625
       },
       "text": "1 INTRODUCTION"
     }
@@ -224,530 +418,1739 @@
     "paragraphs": [{
       "page": 1,
       "region": {
-        "x1": 317.5970153808594,
-        "x2": 559.8674926757812,
-        "y1": 111.0780258178711,
-        "y2": 249.06597900390625
-      },
-      "text": "Active Capture [6] is a paradigm for media production that combines capture, interaction, and processing. Active capture systems use an iteration loop between the human and the machine to improve the quality of produced media. They aim to reduce the amount of effort required to produce highquality media. These systems have been used to help people create better videos and photos by guiding them using automated quality feedback towards better framing [5, 7] or better vantage points [15]. For example, NudgeCam [3] helps users record interviews that follow good practices, such as ensuring the interviewee is framed correctly. VoiceAssist is an analogous system for improving sound quality."
-    }, {
-      "page": 1,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.8692626953125,
-        "y1": 255.01829528808594,
-        "y2": 404.4830017089844
-      },
-      "text": "Presentation Sensei [10] uses speech and image processing techniques to provide capture-time feedback on the way the person presents themselves: amount of eye contact with the camera, speech speed and pitch. Narration Coach [17] also provides feedback on a number of measures that affect speech performance quality. The feedback is focused on speech performance characteristics, such as emphasis, variety, flow, and diction. In their system, the user first records speech and then edits their recording using the feedback. The user than records the speech again, using the edited recording as a guide. The iterative process leads to a better speech performance. These systems focus on the performance quality of the text rather than the sound quality."
-    }, {
-      "page": 1,
-      "region": {
-        "x1": 317.59698486328125,
-        "x2": 561.267578125,
-        "y1": 409.9570617675781,
-        "y2": 488.16900634765625
-      },
-      "text": "Speech enhancement. Users often follow a post-processing paradigm where they record the audio and then edit the recording using audio enhancement tools such as denoisers and dereverberators. However, speech enhancement tools [1, 13, 14] either often leave behind audible artifacts or only work in a limited set of cases. We aim to help users make recordings with higher sound quality that do not need post-processing."
-    }, {
-      "page": 1,
-      "region": {
-        "x1": 317.9544982910156,
-        "x2": 559.9452514648438,
-        "y1": 493.6440734863281,
-        "y2": 619.676025390625
-      },
-      "text": "Audio quality measures. There are several automated speech audio quality measures such as PESQ [16], PEAQ [22], and STOI [21]. We use two measures in this work - the speech transmission index (STI) [8] and the signal to noise ratio (SNR) [20]. A few methods have been developed to estimate audio quality directly from speech audio without comparing it to a reference “clean” recording [18, 23, 23, 24]. None of these methods have been incorporated into a realtime recording interface. VoiceAssist integrates two of these algorithms into a system for improving recording quality at capture-time."
-    }],
-    "title": {
-      "page": 1,
-      "region": {
-        "x1": 317.95501708984375,
-        "x2": 411.9559631347656,
-        "y1": 96.18885803222656,
-        "y2": 102.614990234375
-      },
-      "text": "2 RELATEDWORK"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 1,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 558.556640625,
-        "y1": 658.5053100585938,
-        "y2": 712.3289794921875
-      },
-      "text": "Our system analyzes the audio quality of a user’s recording in real-time. It then presents feedback about audio quality to the user for them to improve their recording setup. We analyze two aspects of audio quality - the effect of the room on the recording (room acoustics, or reverberation) and the"
-    }, {
-      "page": 1,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 309 Page 2"
-    }, {
-      "page": 2,
-      "region": {
         "x1": 53.79800033569336,
-        "x2": 294.0558166503906,
-        "y1": 308.0272216796875,
-        "y2": 385.760986328125
+        "x2": 295.0286865234375,
+        "y1": 586.387939453125,
+        "y2": 679.9140014648438
       },
-      "text": "amount of background noise present in the recording (signal to noise ratio). We integrate two algorithms into VoiceAssist and modify them to work in real-time. The first is a deep learning based approach which measures the effect of the room on the recording [18]. The second is a signal processing based approach that measures the amount of background noise [20]."
-    }],
-    "title": {
+      "text": "Scale models have served as visualisation tools in many contexts throughout history because they make it possible to view, inspect, and modify environments from perspectives and scales unattainable by human viewers. For example, the Musée des Plans-Reliefs 2 in Paris, houses dozens of scale relief models, built in the feld to give Louis XIV and his military planners a clearer perspective of French cities and fortifcations. In architecture there is a long history of using scale models to better explore, situate, and communicate about the forms of future buildings [20]. For example, the architect"
+    }, {
       "page": 1,
       "region": {
-        "x1": 317.9549865722656,
-        "x2": 396.0648498535156,
-        "y1": 643.1378173828125,
-        "y2": 649.56396484375
+        "x1": 53.672000885009766,
+        "x2": 181.99583435058594,
+        "y1": 692.7178955078125,
+        "y2": 707.3469848632812
       },
-      "text": "3 VOICEASSIST"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 2,
-      "region": {
-        "x1": 53.05099868774414,
-        "x2": 295.80157470703125,
-        "y1": 419.40228271484375,
-        "y2": 485.1809997558594
-      },
-      "text": "Feedback is shown as two labeled boxes corresponding to room acoustics quality and background noise level (see Figure 1). These boxes change color on a gradient that goes from red (poor audio quality) to green (excellent audio quality). Below the two boxes is the traditional volume-based visual feedback."
+      "text": "1https://arvr.google.com/ar/ 2http://www.museedesplansreliefs.culture.fr/"
     }, {
-      "page": 2,
+      "page": 1,
       "region": {
-        "x1": 53.33000183105469,
-        "x2": 295.802001953125,
-        "y1": 491.1332702636719,
-        "y2": 652.552978515625
-      },
-      "text": "Pilot studies revealed that a simple feedback mechanism (colored box) was important. An earlier version of our interface (shown in Figure 2) used a more traditional timeseries representation to indicate audio quality. Users in the pilot study reported that monitoring the two objective metrics (room acoustics and background noise) when represented as a time-series while also reading a prepared text (a common recording scenario) was difficult. This was possibly because the time-series representation has a very active visual footprint, distracting from the task of recording a prepared text. When the time-series representation was substituted for simple colored boxes, users were able to keep track of the audio quality in their peripheral vision while still being able to focus on the text."
-    }, {
-      "page": 2,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 295.29718017578125,
-        "y1": 658.5053100585938,
-        "y2": 712.3289794921875
-      },
-      "text": "We considered other visualizations as well, such as a speed meter style visualization, reporting the raw quality numbers, and happy/sad emoji visualization. We settled on the final design because it provides intuitive situational awareness and is easily grasped with peripheral vision. Finally, we chose a"
-    }, {
-      "page": 2,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.9591064453125,
-        "y1": 96.6122817993164,
-        "y2": 114.57000732421875
-      },
-      "text": "red/green colormap which does not work for those with color blindness. This could be addressed by adjusting the colormap."
-    }],
-    "title": {
-      "page": 2,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 94.39722442626953,
-        "y1": 404.03485107421875,
-        "y2": 410.46099853515625
-      },
-      "text": "Interface"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 2,
-      "region": {
-        "x1": 317.48699951171875,
-        "x2": 558.5650024414062,
-        "y1": 144.4332733154297,
-        "y2": 317.8080139160156
-      },
-      "text": "When recording speech in a room, the sound waves reach the microphone directly and also indirectly via reflections off of the walls and other surfaces in the room. The effect that these reflections have on the recording have to do with the room acoustics. The reflections are called the indirect sound and the speech is called the direct sound. The quality of a recording is strongly influenced by the ratio between the direct and indirect sound. The size of and material of the surfaces in the room have an effect on this, as well as the relative positions of the speaker and the microphone. If the user is close to the microphone and is speaking inside the microphone’s pick-up region (e.g. into the correct side of the microphone, rather than the side or rear of the mic), the direct sound will dominate the indirect sound, resulting in better recording quality."
-    }, {
-      "page": 2,
-      "region": {
-        "x1": 317.95477294921875,
-        "x2": 559.8692626953125,
-        "y1": 323.7602844238281,
-        "y2": 497.135986328125
-      },
-      "text": "The speech transmission index (STI) measures the effect a recording environment has on a recording [2]. Specifically, it measures how the recording environment warps the modulations of speech at frequencies that are important to speech perception. STI ranges between 0 and 1, where 0 indicates that the room has distorted the speech to noise and 1 indicates that the room has no effect on the speech. STIs above .75 are considered usable for public address systems, while STIs above .95 are found in professionally recorded speech. STI measurement typically requires specialized sound sources, equipment, and access to the recording environment. Our use case requires a low-effort and real-time approach to STI measurement so that the user can find the optimal recording setup quickly. For our purposes, we need to be able to measure the STI of a recording from the voice recording in real-time."
-    }, {
-      "page": 2,
-      "region": {
-        "x1": 317.59722900390625,
-        "x2": 559.8675537109375,
-        "y1": 503.0882873535156,
-        "y2": 616.68701171875
-      },
-      "text": "We use a method for estimating STI from speech via a convolutional neural network [18]. The network is trained with a synthetic dataset of reverberant speech with known STI values for each example in the dataset. The input to the network is 1 second of reverberant speech. The output of the network is the corresponding STI for the impulse response used to produce the reverberant speech. The trained network reliably predicts the speech transmission index from reverberant speech. It is a small network with 40000 parameters, making it suitable for real-time applications."
-    }],
-    "title": {
-      "page": 2,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 423.0646667480469,
-        "y1": 129.0658721923828,
-        "y2": 135.49200439453125
-      },
-      "text": "Room acoustics quality"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 2,
-      "region": {
-        "x1": 317.59698486328125,
-        "x2": 559.8675537109375,
-        "y1": 646.55029296875,
-        "y2": 712.3289794921875
-      },
-      "text": "Audio quality can also be affected by the amount of background noise in the recording. Not turning off background noise sources (e.g. air conditioners or fans or other appliances) or placing the mic too close or pointing towards a noise source are very common mistakes for amateurs. These mistakes result in a recording with a low signal to noise ratio"
-    }, {
-      "page": 2,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 309 Page 3"
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 53.46900177001953,
-        "x2": 294.0539245605469,
-        "y1": 96.6122817993164,
+        "x1": 317.6409912109375,
+        "x2": 558.2030639648438,
+        "y1": 85.64491271972656,
         "y2": 126.5260009765625
       },
-      "text": "(SNR). The SNR is computed by dividing the power of the signal (speech) by the power of the noise. Professional voice recordings will generally have very high SNR."
+      "text": "Antoni Gaudí3 famously made 1:25 and 1:10 scale plaster models of his designs to better understand their form4. As such, it comes as little surprise that scale models have also made their way into virtual environments, where their construction is signifcantly easier."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.2037353515625,
+        "y1": 131.6289520263672,
+        "y2": 148.4429931640625
+      },
+      "text": "Worlds-in-Miniature were frst introduced in the context of VR by Stoakley et al. [44] who defned them as:"
+    }],
+    "title": {
+      "page": 1,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 148.44534301757812,
+        "y1": 571.693115234375,
+        "y2": 578.5440063476562
+      },
+      "text": "2 BACKGROUND"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 1,
+      "region": {
+        "x1": 353.82098388671875,
+        "x2": 523.2362670898438,
+        "y1": 169.13973999023438,
+        "y2": 262.2130126953125
+      },
+      "text": "immersive head tracked display with a hand-held miniature copy of the virtual environment. In addition to the frst-person perspective ofered by a virtual reality system, a World in Miniature ofers a second dynamic viewport onto the virtual environment. Objects may be directly manipulated either through the immersive viewport or through the three-dimensional viewport ofered by the WIM."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 317.6860046386719,
+        "x2": 559.7178955078125,
+        "y1": 270.7239074707031,
+        "y2": 309.4549865722656
+      },
+      "text": "This represents the intended use of the original system as an interaction metaphor designed for object manipulation, but it limits WiMs to VR and object manipulation. More recently Cofey et al. [11] defned WiMs as such:"
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 352.82501220703125,
+        "x2": 523.3125610351562,
+        "y1": 319.1927490234375,
+        "y2": 368.4309997558594
+      },
+      "text": "The core WiM concept is to provide a small (e.g. handheld) model of the virtual environment that can act as both a map and an interaction space as the user explores the large-scale environment — essentially a world within a world."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 317.6860046386719,
+        "x2": 559.1868896484375,
+        "y1": 376.94091796875,
+        "y2": 426.6319885253906
+      },
+      "text": "This defnition acknowledges that WiMs are used as a generic interaction space, and more than just an object manipulation tool, but fails to acknowledge that WiMs feature at a variety of sizes, and in mediums beyond just VR. To capture these systems we propose a more inclusive defnition:"
+    }],
+    "title": {
+      "page": 1,
+      "region": {
+        "x1": 353.8210144042969,
+        "x2": 522.3397216796875,
+        "y1": 158.18075561523438,
+        "y2": 163.5830078125
+      },
+      "text": "A user interface technique which augments an"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 1,
+      "region": {
+        "x1": 353.8210144042969,
+        "x2": 522.3363647460938,
+        "y1": 458.2867431640625,
+        "y2": 474.64801025390625
+      },
+      "text": "interaction or virtual feedback — an interactive world within a world."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 317.52386474609375,
+        "x2": 559.7203369140625,
+        "y1": 483.158935546875,
+        "y2": 675.3150024414062
+      },
+      "text": "This defnition encompasses WiMs’ use as a tool for object manipulation in VR [44] as well as examples that transcend object manipulation in VR and include interactions, such as navigation and IoT control. This includes example WiMs created by researchers like Kalkusch et al. [22], who created an augmented reality (AR) WiM that sat on the viewer’s wrist, like a watch, and was used for indoor path fnding. Mulloni et al.[29], meanwhile, used AR miniatures to support indoor navigation by giving turn-by-turn navigation instructions at key “info” points. Seo et al. [40] combined both physical models and handheld AR to create WiMs that functioned as a smart home controller. In these cases the WiM is no longer just an object manipulation technique, the replica has instead been turned into an interaction space where operations on the replica are refected in the environment they represent, and changes to the outside environment are refected in the WiM. Some of this has made its way to commercial applications — in 2019 Google added AR support to their Maps application and featured many of the interactions explored by Mulloni et al. [29], using a"
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 317.8290100097656,
+        "x2": 493.33013916015625,
+        "y1": 692.7178955078125,
+        "y2": 707.3469848632812
+      },
+      "text": "3https://sagradafamilia.org/en/antoni-gaudi 4https://blog.sagradafamilia.org/en/the-trades/model-makers/"
+    }],
+    "title": {
+      "page": 1,
+      "region": {
+        "x1": 353.8210144042969,
+        "x2": 523.2345581054688,
+        "y1": 436.3687438964844,
+        "y2": 452.7300109863281
+      },
+      "text": "A World-in-Miniature is a scale replica of an environment that is linked to the original space via"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 2,
+      "region": {
+        "x1": 53.36800003051758,
+        "x2": 294.04974365234375,
+        "y1": 87.79393005371094,
+        "y2": 104.60797119140625
+      },
+      "text": "WiM to support navigation between points of interest and placing AR navigation cues into the environment at these locations."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 53.48400115966797,
+        "x2": 295.5634765625,
+        "y1": 109.71195983886719,
+        "y2": 192.27899169921875
+      },
+      "text": "Beyond creating WiMs for diferent applications and in new spaces, there has also been a broader efort to improving the replica component of WiMs. To name just a few examples, Wingrave et al. [49] created a WiM that could be dynamically scrolled and scaled to better support large scale environments. Trueba, Andujar, and Argelaguet [47] automatically reduced occlusion in WiMs by dynamically exploding buildings [1]. Bonsch, Freitag, and Kuhlen [6] explore the automatic generation of WiMs in realistic environments."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.5596008300781,
+        "y1": 197.38291931152344,
+        "y2": 323.7860107421875
+      },
+      "text": "As WiMs often function as 3D maps themselves, their designs have also drawn considerable inspiration from the 3D mapping literature. For example, the interactive exploded views demonstrated by Niederauer et al. [31] were later used by Chittaro et al. [9] in their WiM to allow viewers to disassemble buildings by foors. Additionally, guidelines for generalisation like those written by Shea and McMaster [41] are just as relevant for designing WiMs as they are in the space of digital cartography. Further, more recent literature such as the fexible multi-scale deformations demonstrated by Pasewaldt et al. [33] allow viewers to bend and distort a 3D map and allow viewers to view a single WiM from multiple angles and resolutions."
+    }],
+    "title": {
+      "page": 2,
+      "region": {
+        "x1": 53.582000732421875,
+        "x2": 558.1990966796875,
+        "y1": 63.2986946105957,
+        "y2": 67.34698486328125
+      },
+      "text": "A Design Space Exploration of Worlds in Miniature CHI ’21, May 8–13, 2021, Yokohama, Japan"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 2,
+      "region": {
+        "x1": 53.36800003051758,
+        "x2": 295.5588684082031,
+        "y1": 361.76593017578125,
+        "y2": 510.0870056152344
+      },
+      "text": "We set out to derive a descriptive, comparative, and generative [2] design framework for WiMs — inspired by previous frameworks which have provided terminology for visualisation systems [37], helped organise existing systems [35], and envision new systems [16]. To best identify our fnal dimensions we frst collected papers that contained systems that the authors identifed as WiMs. We collected papers by performing a reverse citation search on the original WiM paper [44], followed by a tree search on collected papers that identifed themselves as containing a WiM. We chose to stop collecting new papers when this process saturated and stopped identifying new papers that contained a WiM, or a system like a WiM. These papers formed the core 25 papers that we based our design dimensions on. While this set is not exhaustive, we believe that it represents a broad representative sample of the space."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.5574645996094,
+        "y1": 515.1909790039062,
+        "y2": 707.3469848632812
+      },
+      "text": "From this set of papers we derived our framework through open coding. Initially, the frst author individually coded a small set of papers using a web-based whiteboard tool. All of the coauthors then reviewed these codes, which were adjusted based on group consensus to establish a basis for coding. The frst author then coded the remainder of the papers based on that standard. The other coauthors periodically verifed these groupings to ensure consistency throughout the process. Based on the coding results, we frst identifed 23 potential design dimensions, then refned the fnal set by combining orthogonal dimensions, consolidating similar ones, and scoping our dimensions to just those that describe the form of the replica. Based on this process we combined inter-dependant dimensions like size, scale, and scope. We also generalised overly specifc dimensions into a more general form. While we had originally considered some interactions with WiMs, we decided to remove them from our design dimensions after acknowledging that the set of possible interactions with WiMs is a broad enough topic to merit a design space of its own. Using our fnal set of dimensions we then"
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.4381103515625,
+        "y1": 87.79393005371094,
+        "y2": 137.4840087890625
+      },
+      "text": "re-coded the WiMs from each of the original papers. A summary of this coding can be seen in Figure 2. Finally, after categorising and comparing the papers, we performed a general morphological analysis [38] to identify gaps within our paper set that present opportunities for new WiM designs."
+    }],
+    "title": {
+      "page": 2,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 155.77626037597656,
+        "y1": 347.07208251953125,
+        "y2": 353.9230041503906
+      },
+      "text": "3 METHODOLOGY"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 2,
+      "region": {
+        "x1": 317.5249938964844,
+        "x2": 559.7216186523438,
+        "y1": 175.46495056152344,
+        "y2": 247.072998046875
+      },
+      "text": "We identifed eight dimensions (size, scope, abstraction, geometry, reference frame, links, multiples, and virtuality) which together characterise the design of WiMs (Figure 1, Figure 2). Because of the tight interrelation between size and scope we consider them together, along with the associated notion of scale. Although other possible design dimensions likely exist, we found that this set captured much of the diversity present in the current research literature."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 559.5817260742188,
+        "y1": 252.1769256591797,
+        "y2": 389.53900146484375
+      },
+      "text": "Size-Scope-Scale encompasses three interdependent properties of a WiM. Size describes the physical dimensions of the miniature replica itself. For example, a replica that can be held in a viewer’s hands may be 30 cm in diameter (Figure 3). Scope describes how much of the world is represented by the replica. For example, the replica could show just a single object, or it could show an entire city (Figure 4). Scale describes the relationship between the size of the model and the space it represents. These relationships are connected — if one is changed, at least one other must also change. For example, if the size of the replica increases from 1 × 1 m to 3 × 3 m the scale would either need to be 3 times larger, the scope would need to encompass more objects, or some combination of the two."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 317.6860046386719,
+        "x2": 559.7189331054688,
+        "y1": 394.6429138183594,
+        "y2": 553.9229736328125
+      },
+      "text": "Examples of WiMs exist at a wide variety of sizes, scales, and scopes. One of the smallest is the WiM bounded by a phone made by Mulloni et al. [29] (Figure 3a) measuring only a couple of centimetres across. Most common is a small handheld size; this is the size of the original WiM [44] and is shared by many modern examples, including those developed by Cofey et al. [11] (Figure 3b). At the other end of the spectrum, the WiMs in Gazcón et al.’s ARGeo tool [18] (Figure 3f) exist as an overlay on top of the real visible environment, making the replica efectively hundreds of meters across. The scope of what is contained within a WiM is similarly broad; slice WiM [11, 12] (Figure 4a) was designed for exploring single objects, and was used to navigate within a heart. On the other hand, Li et al.’s large-scale astrophysical environment [26] (Figure 4h) includes WiMs which operate at a galactic scope, and allow viewers to traverse between stars."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 559.7203979492188,
+        "y1": 559.0269775390625,
+        "y2": 630.635009765625
+      },
+      "text": "Abstraction describes how the replica has been transformed compared to the space it references. There are many diferent abstraction operations that can be performed on a WiM. However, within the papers we surveyed we noted authors creating digital copies of the real world, cartographically generalising , geometrically simplifying, and reducing the scene to just areas or lines to render simplifed versions of the original space (Figure 5)."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 317.6860046386719,
+        "x2": 559.7149047851562,
+        "y1": 635.7389526367188,
+        "y2": 707.3469848632812
+      },
+      "text": "Within VR it was common for the WiM to be a perfect digital copy of the environment it represented, often relying on the exact same models (as with the miniature rooms used by Pausch et al. [34] (Figure 5a). In AR a digital copy of the real environment was often used instead. In these cases, real world features are typically recreated as a digital model either manually or via automated techniques like photogrammetry. An example of this is the models of famous"
     }, {
       "page": 3,
       "region": {
-        "x1": 53.33000183105469,
-        "x2": 295.80078125,
-        "y1": 132.4783172607422,
-        "y2": 210.2120361328125
+        "x1": 53.79800033569336,
+        "x2": 558.198974609375,
+        "y1": 63.2986946105957,
+        "y2": 67.34698486328125
       },
-      "text": "To measure the signal to noise ratio, we first need to identify which parts of the recording are speech and which are noise. We use a state-of-the-art voice activity detector provided in the WebRTC [9] package to do this. We run the voice activity detector on the recording and segment the parts that are speech and those that are noise. We then compute the volume of the speech and the noise to estimate the SNR."
+      "text": "CHI ’21, May 8–13, 2021, Yokohama, Japan Danyluk et al."
     }],
     "title": {
       "page": 2,
       "region": {
         "x1": 317.9549865722656,
-        "x2": 399.8708190917969,
-        "y1": 631.182861328125,
-        "y2": 637.6090087890625
+        "x2": 444.9805908203125,
+        "y1": 160.77005004882812,
+        "y2": 167.6209716796875
       },
-      "text": "Background noise"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 3,
-      "region": {
-        "x1": 53.48899841308594,
-        "x2": 295.80206298828125,
-        "y1": 240.07432556152344,
-        "y2": 425.4049987792969
-      },
-      "text": "The front-end records the audio and sends it to the back-end in real-time. The back-end keeps a buffer of 5 seconds of audio that is sent to it by the front-end. The back-end then analyzes the buffer whenever queried by the front-end and returns the speech transmission index, as measured using the deep learning model described in Section 3, and the signal to noise ratio, as measured by the method described in Section 3. If there is no vocal activity detected in the last second of the buffer (the most recent second recorded by the user), the backend does not compute either quality measure, and instead reports that there is no vocal activity. The front-end then ceases visual feedback by greying out the boxes. The output of the back-end system is smoothed with median filtering to reduce the impact of outliers on user behavior. The user must maintain high sound quality over a considerable period of time."
-    }],
-    "title": {
-      "page": 3,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 151.13653564453125,
-        "y1": 224.70692443847656,
-        "y2": 231.133056640625
-      },
-      "text": "Putting it all together"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 3,
-      "region": {
-        "x1": 53.439998626708984,
-        "x2": 295.70684814453125,
-        "y1": 455.26727294921875,
-        "y2": 616.68701171875
-      },
-      "text": "The purpose of our study was to see if the visual feedback about room acoustics and background noise provided by VoiceAssist encouraged the user to make the kind of adjustments that result in higher audio quality. We had participants record themselves speaking aloud a written passage. Participants were first provided a traditional interface (comparable to Audacity, Adobe Audition) that provided visual feedback only for volume, (see Figure 3). They recorded the passage using the traditional recording interface. Participants were then either provided VoiceAssist (the test condition) or the traditional interface again (the control condition). We then had two sets of people evaluate the quality of the resulting recordings: those who made the recordings, and a set of third-party listeners."
-    }],
-    "title": {
-      "page": 3,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 169.01016235351562,
-        "y1": 439.89984130859375,
-        "y2": 446.32598876953125
-      },
-      "text": "4 USER STUDY DESIGN"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 3,
-      "region": {
-        "x1": 53.48899841308594,
-        "x2": 295.7881164550781,
-        "y1": 646.55029296875,
-        "y2": 712.3289794921875
-      },
-      "text": "23 participants were recruited from nearby student and employee populations for our user study. Participants were fluent English speakers with no hearing loss or language function impairment. The control condition had 6 men and 5 women. The test condition had 6 men and 6 women. There were two locations for recording. Participants in location 1 recorded in a"
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 317.64593505859375,
-        "x2": 559.958984375,
-        "y1": 218.12632751464844,
-        "y2": 391.50201416015625
-      },
-      "text": "sound isolation booth. Participants in location 2 recorded in an empty office. All recordings were done on a Blue Yeti microphone (a popular choice for voice recording) with a cardioid pickup pattern. The participants monitored their recording over headphones. In both locations, if a participant sat down and recorded without making any adjustments to the environment or the microphone placement, they would produce a recording of low quality. Only by making adjustments to the environment could they achieve high recording quality. The adjustments suggested in Figure 1 for improving audio quality was communicated to the users in both conditions prior to the study. Users had the opportunity to improve audio quality with the same suggestions (e.g. adjust recording position, reorient microphone around, point away from noise) in both conditions."
-    }],
-    "title": {
-      "page": 3,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 157.11431884765625,
-        "y1": 631.182861328125,
-        "y2": 637.6090087890625
-      },
-      "text": "Recruitment and setup"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 3,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.60009765625,
-        "y1": 430.4482727050781,
-        "y2": 448.4070129394531
-      },
-      "text": "Participants were provided headphones and placed before a computer, next to the microphone. Participants were asked to:"
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 317.5969543457031,
-        "x2": 558.21533203125,
-        "y1": 454.81329345703125,
-        "y2": 640.5980224609375
-      },
-      "text": "(1) Familiarize yourself with the text to be recorded. (2) Record the text with the baseline interface. (3) Listen to the entire recording and rate its quality. (4) Experiment with the second interface. (5) Record the same text again. (6) Listen to the entire recording and rate its quality. Participants in the control condition were given the baseline interface at both steps 2 and 4. Those in the test condition were given the baseline interface at step 2 and VoiceAssist at step 4. This allowed us to distinguish between the effect of the feedback provided from the system and the effect of simply learning to make a better recording when given time to experiment, listen to the first recording, and repeat the procedure. They were then asked to judge the recording on overall quality, room acoustics quality, and background noise quality with instructions:"
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 558.8757934570312,
-        "y1": 646.55029296875,
-        "y2": 712.3289794921875
-      },
-      "text": "“Rate the quality of the audio using the sliders below. Focus on characteristics such as the amount of reverberation (echos) or background noise in the recording, rather than the quality of the narration itself. For example, a recording with an error in the narration would still be good if the words are all easy to hear, with little reverberation or background noise.”"
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 309 Page 4"
-    }],
-    "title": {
-      "page": 3,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 364.5220642089844,
-        "y1": 415.08087158203125,
-        "y2": 421.50701904296875
-      },
-      "text": "Procedure"
+      "text": "4 DESIGN DIMENSIONS"
     }
   }, {
     "paragraphs": [{
       "page": 4,
       "region": {
         "x1": 53.79800033569336,
-        "x2": 295.70660400390625,
-        "y1": 111.55631256103516,
-        "y2": 249.06597900390625
+        "x2": 295.0279541015625,
+        "y1": 532.9459838867188,
+        "y2": 560.718994140625
       },
-      "text": "Each participant made two recordings of the same text. The participants in the control condition make the recording using the same baseline interface twice, while the participants in the test condition make the recording first with the baseline interface and then with our interface. We analyze these pairs of recordings to see if there was improvement between the first and second recording. We do not compare recordings across participants to eliminate confounding variables, such as recording location. We measured the effectiveness of the feedback in improving audio quality of the resulting recording in three ways: audio quality measures (STI and SNR), thirdparty listener preference, and self-reported satisfaction."
-    }],
-    "title": {
-      "page": 4,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 174.44993591308594,
-        "y1": 96.18885803222656,
-        "y2": 102.614990234375
-      },
-      "text": "5 USER STUDY RESULTS"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 4,
-      "region": {
-        "x1": 53.33000183105469,
-        "x2": 295.7093811035156,
-        "y1": 283.41229248046875,
-        "y2": 504.6080017089844
-      },
-      "text": "We want to determine whether users actually respond to the visual feedback in VoiceAssist, and whether the user would have made the appropriate adjustments even without visual feedback. We computed the speech transmission index and the signal to noise ratio on each pair of recordings using the same system that provided visual feedback to the user. We use the Wilcoxon signed-rank test to establish significance, with N = 23, for each pair of recordings. For STI, we found that participants in the control condition had no significant difference between the two recordings (p-value of .15). Participants in the test condition did have a significant difference between the two recordings (p-value of .03), with an average improvement of .03 in STI. For SNR, we found that participants in the control condition had no significant difference (p-value of .15) between the two recordings. However, participants in the test condition did have a significant difference between the two recordings (p-value of .02), with an average improvement of 2.3 dB in signal to noise ratio. We find that users improve quality only when there is visual feedback."
-    }],
-    "title": {
-      "page": 4,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 160.44198608398438,
-        "y1": 268.04486083984375,
-        "y2": 274.47100830078125
-      },
-      "text": "Audio quality measures"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 4,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 295.7895812988281,
-        "y1": 538.9533081054688,
-        "y2": 616.68701171875
-      },
-      "text": "STI and SNR improve significantly with visual feedback on audio quality. To see whether this improvement matters to real listeners, we used the Crowdsourced Audio Quality Evaluation toolkit [4] (CAQE) to run a pairwise audio comparison experiment. We recruited 50 listeners from Mechanical Turk. Listeners passed inclusion criteria - at least 1000 tasks completed with 97% approval rating and passing a hearing test."
+      "text": "buildings used by Tatzgern et al. [45] (Figure 5b). A few examples, like the smart home controller made by Seo et al. [40] (Figure 5c) even involved small physical reproductions of the environment."
     }, {
       "page": 4,
       "region": {
-        "x1": 53.439998626708984,
-        "x2": 295.7971496582031,
-        "y1": 622.6403198242188,
-        "y2": 712.3289794921875
+        "x1": 52.78499984741211,
+        "x2": 295.56005859375,
+        "y1": 565.8229370117188,
+        "y2": 703.1849975585938
       },
-      "text": "Listeners were trained using three speech recordings of varying quality with instructions on how they should be rated. One recording was from a professional recording booth and was considered high quality. The other two were in a noisy office and a bedroom, and were considered low quality. Listeners were further instructed to focus on the recording quality (room acoustic quality and background noise amount) rather than the performance of the text. Each listener was given 5"
+      "text": "To reduce clutter and complexity, many systems have used geometric simplifcation for removing and simplifying details in the replica. For instance, the WiM used by Bell et al. [4] (Figure 5d) simplifes most large objects into cubes. In other cases, cartographic generalisation operations can be employed to make replicas more “map-like”. Most commonly this involves simplifying elements of the replica into points, lines, and areas and adjusting their relative visual prominence [27]. Some systems, like Nam et al.’s World-inWedges [30] (Figure 5e) only lightly abstract the WiM. However, more extreme cases may remove almost all content, as in Chittaro et al.’s builing cross-sections [9] (Figure 5f), which excises almost all geometry except for open areas, and Höllerer et al.’s replicas [21] (Figure 5g) which represent spaces using minimalist wireframes."
     }, {
       "page": 4,
       "region": {
-        "x1": 317.64599609375,
-        "x2": 559.9550170898438,
-        "y1": 224.20030212402344,
-        "y2": 278.02398681640625
+        "x1": 317.6860046386719,
+        "x2": 559.7181396484375,
+        "y1": 532.9459838867188,
+        "y2": 670.3079833984375
       },
-      "text": "pairs, drawn randomly from the 23 pairs produced by our user study participants. A pair consists of the two recordings made by the same individual in either the control or test condition. The order of stimuli was random for each comparison. We collected 249 pairwise comparisons from 50 listeners."
+      "text": "Geometry describes how the replica is shaped, and is particularly relevant for replicas of large spaces that need to be clipped in order to remain a manageable size, as well as those with many fne details. When the extent of the replica needs to be constrained to a given size, prior systems have employed a variety of approaches including clipping the replica using simple shapes like cylinders or spheres. More complex geometries, like clipping the replica to the boundaries of a building or a room in the model, or to the extent of the current workspace, are also possible. Additionally, non-Euclidean, or disjoint geometry can be used to create efects like exploded building views [31] and curved geometries can be used to create deformations like those demonstrated by Pasewaldt, Trapp, and Döllner [32]."
     }, {
       "page": 4,
       "region": {
-        "x1": 317.5969543457031,
-        "x2": 559.9590454101562,
-        "y1": 283.9762878417969,
-        "y2": 385.6210021972656
+        "x1": 317.5249938964844,
+        "x2": 558.7437133789062,
+        "y1": 675.4119262695312,
+        "y2": 703.1849975585938
       },
-      "text": "Table 1 shows the listener preference for recordings in the control and test conditions. For recordings made in the control condition, where both recordings made with the baseline interface, there was no preference between the recordings. For recordings made in the test condition, where the second recording was made with VoiceAssist, over three times as many listeners prefer the second recording. This indicates VoiceAssist helps users create recordings that are preferred by third-party listeners."
+      "text": "Most WiMs in the collected papers featured simple continuous geometry. Closely clipped WiMs like Nam et al.’s [30] (Figure 6a) Worlds-in-Wedges are shaped to only show the object of interest to"
     }],
     "title": {
       "page": 4,
       "region": {
-        "x1": 53.79800033569336,
-        "x2": 194.1766815185547,
-        "y1": 523.5858154296875,
-        "y2": 530.011962890625
+        "x1": 53.582000732421875,
+        "x2": 558.1990966796875,
+        "y1": 63.2986946105957,
+        "y2": 67.34698486328125
       },
-      "text": "Third-party listener preference"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 4,
-      "region": {
-        "x1": 317.64599609375,
-        "x2": 559.9591064453125,
-        "y1": 417.4422912597656,
-        "y2": 578.863037109375
-      },
-      "text": "Those who performed the recordings were asked to listen to their own recording and judge the audio quality of it on three quality scales immediately after the recording was made. These quality scales were “overall quality”, “room acoustics quality”, and “background noise quality”. We found no statistical differences between the self-reported quality evaluation in the first recording and the second recording across all three quality measures for all of our pairs of recordings. This result contrasts with both the objective evaluation and the thirdparty evaluation, which both show the visual feedback creates a noticeable effect on the recording quality. This may indicate that inexperienced people who record audio may not always perceive recording quality differences that are detectable both by objective measures and by third-party listeners."
-    }],
-    "title": {
-      "page": 4,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 428.38494873046875,
-        "y1": 402.0748596191406,
-        "y2": 408.5010070800781
-      },
-      "text": "Self-reported evaluation"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 4,
-      "region": {
-        "x1": 317.59698486328125,
-        "x2": 559.8690185546875,
-        "y1": 610.684326171875,
-        "y2": 712.3289794921875
-      },
-      "text": "Making high-quality voice recordings is difficult. Newcomers to voice recording often make mistakes in setup and environment, leading to a poor recording. We have presented VoiceAssist, a system that provides real-time visual feedback about audio quality at capture-time. With the feedback VoiceAssist provides, we found users were able to improve audio quality at capture-time, as measured by third-party listeners and audio quality measures. VoiceAssist lowers the barrier to entry to creating high quality voice recordings."
-    }, {
-      "page": 4,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 309 Page 5"
-    }],
-    "title": {
-      "page": 4,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 399.6416320800781,
-        "y1": 595.31689453125,
-        "y2": 601.7430419921875
-      },
-      "text": "6 CONCLUSION"
+      "text": "A Design Space Exploration of Worlds in Miniature CHI ’21, May 8–13, 2021, Yokohama, Japan"
     }
   }, {
     "paragraphs": [{
       "page": 5,
       "region": {
-        "x1": 57.78300094604492,
-        "x2": 295.3673400878906,
-        "y1": 110.76509094238281,
-        "y2": 115.5670166015625
+        "x1": 53.46699905395508,
+        "x2": 558.5348510742188,
+        "y1": 615.2459716796875,
+        "y2": 697.81298828125
       },
-      "text": "[1] Michael Berouti, Richard Schwartz, and John Makhoul. 1979. En-"
-    }, {
-      "page": 5,
-      "region": {
-        "x1": 53.797996520996094,
-        "x2": 295.4403076171875,
-        "y1": 120.72706604003906,
-        "y2": 514.072021484375
-      },
-      "text": "hancement of speech corrupted by acoustic noise. In Acoustics, Speech, and Signal Processing, IEEE International Conference on ICASSP’79., Vol. 4. IEEE, 208–211. [2] JS Bradley, R Reich, and SG Norcross. 1999. A just noticeable difference in C 50 for speech. Applied Acoustics 58, 2 (1999), 99–108. [3] Scott Carter, John Adcock, John Doherty, and Stacy Branham. 2010. NudgeCam: Toward targeted, higher quality media capture. In Proceedings of the 18th ACM international conference on Multimedia. ACM, 615–618. [4] Mark Cartwright, Bryan Pardo, Gautham J Mysore, and Matt Hoffman. 2016. Fast and easy crowdsourced perceptual audio evaluation. In Acoustics, Speech and Signal Processing (ICASSP), 2016 IEEE International Conference on. IEEE, 619–623. [5] Ana Ramírez Chang and Marc Davis. 2005. Designing systems that direct human action. In CHI’05 Extended Abstracts on Human Factors in Computing Systems. ACM, 1260–1263. [6] Marc Davis. 2003. Active capture: integrating human-computer interaction and computer vision/audition to automate media capture. In Multimedia and Expo, 2003. ICME’03. Proceedings. 2003 International Conference on, Vol. 2. IEEE, II–185. [7] Jeffrey Heer, Nathaniel S Good, Ana Ramirez, Marc Davis, and Jennifer Mankoff. 2004. Presiding over accidents: system direction of human action. In Proceedings of the SIGCHI Conference on human factors in computing systems. ACM, 463–470. [8] T Houtgast and H JMi Steeneken. 1973. The modulation transfer function in room acoustics as a predictor of speech intelligibility. Acta Acustica United With Acustica 28, 1 (1973), 66–73. [9] Alan B Johnston and Daniel C Burnett. 2012. WebRTC: APIs and RTCWEB protocols of the HTML5 real-time web. Digital Codex LLC. [10] Kazutaka Kurihara, Masataka Goto, Jun Ogata, Yosuke Matsusaka, and Takeo Igarashi. 2007. Presentation sensei: a presentation training system using speech and image processing. In Proceedings of the 9th international conference on Multimodal interfaces. ACM, 358–365. [11] Philipos C Loizou. 2007. Speech enhancement: theory and practice. CRC press. [12] Patrick A Naylor and Nikolay D Gaubitch. 2010. Speech dereverberation. Springer Science & Business Media. [13] Santiago Pascual, Antonio Bonafonte, and Joan Serra. 2017. SEGAN: Speech enhancement generative adversarial network. arXiv preprint arXiv:1703.09452 (2017)."
-    }, {
-      "page": 5,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.5947875976562,
-        "y1": 97.81306457519531,
-        "y2": 509.3580017089844
-      },
-      "text": "[14] Cyril Plapous, Claude Marro, and Pascal Scalart. 2006. Improved signalto-noise ratio estimation for speech enhancement. IEEE Transactions on Audio, Speech, and Language Processing 14, 6 (2006), 2098–2108. [15] Yogesh Singh Rawat and Mohan S Kankanhalli. 2017. Clicksmart: A context-aware viewpoint recommendation system for mobile photography. IEEE Transactions on Circuits and Systems for Video Technology 27, 1 (2017), 149–158. [16] Antony W Rix, John G Beerends, Michael P Hollier, and Andries P Hekstra. 2001. Perceptual evaluation of speech quality (PESQ)-a new method for speech quality assessment of telephone networks and codecs. In Acoustics, Speech, and Signal Processing, 2001. Proceedings. (ICASSP’01), Vol. 2. IEEE, 749–752. [17] Steve Rubin, Floraine Berthouzoz, Gautham J Mysore, and Maneesh Agrawala. 2015. Capture-time feedback for recording scripted narration. In Proceedings of the 28th Annual ACM Symposium on User Interface Software & Technology. ACM, 191–199. [18] Prem Seetharaman, Gautham Mysore, Paris Smaragdis, and Bryan Pardo. 2018. Blind Estimation of the Speech Transmission Index for Speech Quality Prediction. In IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 2018. [19] Mike Senior. 2018. How can I remove background noise from a voice recording? (Oct 2018). https://www.soundonsound.com/soundadvice/q-how-can-i-remove-background-noise-voice-recording. [20] Jongseo Sohn, Nam Soo Kim, and Wonyong Sung. 1999. A statistical model-based voice activity detection. IEEE signal processing letters 6, 1 (1999), 1–3. [21] Cees H Taal, Richard C Hendriks, Richard Heusdens, and Jesper Jensen. 2010. A short-time objective intelligibility measure for time-frequency weighted noisy speech. In Acoustics Speech and Signal Processing (ICASSP), 2010 IEEE International Conference on. IEEE, 4214–4217. [22] Thilo Thiede, William C Treurniet, Roland Bitto, Christian Schmidmer, Thomas Sporer, John G Beerends, and Catherine Colomes. 2000. PEAQ-The ITU standard for objective measurement of perceived audio quality. Journal of the Audio Engineering Society 48, 1/2 (2000), 3–29. [23] Masashi Unoki, Kyohei Sasaki, Ryota Miyauchi, Masato Akagi, and Nam Soo Kim. 2013. Blind method of estimating speech transmission index from reverberant speech signals. In Signal Processing Conference (EUSIPCO), 2013 Proceedings of the 21st European. IEEE, 1–5. [24] Xiong Xiao, Shengkui Zhao, Xionghu Zhong, Douglas L Jones, Eng Siong Chng, and Haizhou Li. 2015. Learning to Estimate Reverberation Time in Noisy and Reverberant Rooms. In Sixteenth Annual Conference of the International Speech Communication Association."
-    }, {
-      "page": 5,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 309 Page 6"
+      "text": "the viewer — in this case their WiM is constrained to just show the was for authors to create WiMs with discontinuous, or irregular country, and not adjacent details like neighbouring countries. Other geometries. Chittaro et al.’s [9] (Figure 6d) BreakAway Map shows authors limited the WiM to a simple shape, for example the WiM how disjoint geometry can be used to separate a building into parts created by Drey [46] (Figure 6b) is rounded as though it is contained to reduce occlusions by automatically splitting the building apart within a cylinder or sphere. It was also common for authors to by foor. Li et al.’s [26] (Figure 6e) Scalable WIM is not bounded bound their WiM to the dimensions of their work space (either at all, expanding infnitely into the scene. While not actually a real or virtual). For example, Arch-Explore by Bruder et al. [7] WiM, Pasewaldt et al. [32] (Figure 6f) create a deformable map (Figure 6c) is constrained by the table it is placed on. Less common that can be bent like a continuous rubber sheet — illustrating how"
     }],
     "title": {
       "page": 5,
       "region": {
         "x1": 53.79800033569336,
-        "x2": 116.56490325927734,
-        "y1": 96.18885803222656,
-        "y2": 102.614990234375
+        "x2": 558.198974609375,
+        "y1": 63.2986946105957,
+        "y2": 67.34698486328125
+      },
+      "text": "CHI ’21, May 8–13, 2021, Yokohama, Japan Danyluk et al."
+    }
+  }, {
+    "paragraphs": [{
+      "page": 6,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 294.0461120605469,
+        "y1": 402.513916015625,
+        "y2": 419.3280029296875
+      },
+      "text": "deforming WiMs could allow viewers to view spaces from multiple perspectives at once."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.0302734375,
+        "y1": 424.4319152832031,
+        "y2": 539.8759765625
+      },
+      "text": "Reference Frame describes where the replica is positioned and how it is oriented. For instance, it was common to align the WiM based on the physical work table or zone that the WiM was situated in. While we observed that in most cases the reference frame for position was also the reference frame for orientation, this wasn’t always the case. For example, the WiM made by Bell et al. [4] based the horizontal rotation of the WiM on the surrounding room, but determined its position from the viewer. Additionally, some systems, like GeoGate [42], had several reference frames. GeoGate used a handheld token for position, but was oriented with respect to the tabletop environment."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 295.562255859375,
+        "y1": 544.97998046875,
+        "y2": 704.259033203125
+      },
+      "text": "When coding our sample papers we organised them based on the viewer’s proximal space [8]. WiMs in a viewers pericutaneous space are directly on their body, such as the WiM created by Kalkusch et al. [22] (Figure 7a) that showed a map of the foor on the viewer’s wrist, like a watch. WiMs in the peripersonal space arrange themselves based on the viewer’s position, but aren’t directly attached to the viewer — for instance, the city map made by Veas et al. [48] (Figure 7b) always sat in the top right of the viewer’s view in a heads-up display, the WiM made by Stoakley et al. [44] (Figure 7c) sat on a clipboard carried by the viewer, and the foor map made by Mulloni et al. [29] (Figure 7d) was shown on the face of a mobile phone. Finally, WiMs in the viewer’s extrapersonal space are positioned without reference to the viewer — Seo et al.’s [40] (Figure 7e) smart home controller was positioned based on a physical model, Tatzgern et al.’s [45] (Figure 7f) building explorer aligned"
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.3743896484375,
+        "y1": 402.513916015625,
+        "y2": 430.2869873046875
+      },
+      "text": "their WiM with the building the WiM is a replica of, and the solar system explorer by Li et al. [26] (Figure 7g) had no solid reference at all, letting the WiM foat freely."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.20654296875,
+        "y1": 435.3899230957031,
+        "y2": 496.0400085449219
+      },
+      "text": "Links describe approaches that explicitly connect the replica to the environment (Figure 8). An example of a link would be a building that is highlighted in both the replica and in the environment. The most common link we found was a view frustum in the replica showing the position and orientation of the viewer. Other forms of links we observed include leader lines, and labels."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.5249938964844,
+        "x2": 559.5844116210938,
+        "y1": 501.1439208984375,
+        "y2": 682.3410034179688
+      },
+      "text": "The majority of WiMs we reviewed did not feature any links at all. Of those that did feature links there was a small variety (Figure 8). A few systems, including Pausch et al.’s 1995 work [34] (Figure 8a) superimposed view frustrums showing the position and orientation of the viewer in the replica. Several others used view planes — introduced in Cofey et al.’s Slice WIM [11] (Figure 8b) — to slice segments of the replica and control the visible area of the scene. Similarly, Staford et al. [43] (Figure 8c) used god hands (enlarged hands that appear in the environment to show where a viewer is pointing on the replica) as one of their god-like interactions. Leader lines that directly tether components of the replica to the corresponding location in the environment also appear in several systems, including Tatzgen et al.’s [45] (Figure 8d). Finally, WiMs can use text to directly identify components, as in Li et al.’s Scalable WIM [26] (Figure 8e) which labels stars in both the replica and space. While these aren’t the only possible forms that links can take, they are the ones that we observed in our set of sample papers."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.2031860351562,
+        "y1": 687.4449462890625,
+        "y2": 704.259033203125
+      },
+      "text": "Multiples characterize cases in which a WiM system includes multiple replicas instead of just one (Figure 9). This can be multiple"
+    }],
+    "title": {
+      "page": 6,
+      "region": {
+        "x1": 53.582000732421875,
+        "x2": 558.1990966796875,
+        "y1": 63.2986946105957,
+        "y2": 67.34698486328125
+      },
+      "text": "A Design Space Exploration of Worlds in Miniature CHI ’21, May 8–13, 2021, Yokohama, Japan"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 7,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.030029296875,
+        "y1": 586.30224609375,
+        "y2": 646.9580078125
+      },
+      "text": "replicas all at the same scale, showing diferent states of the WiM, or it can involve one larger, main replica with several small replicas showing subsets of the environment. Only a small minority of papers showcased multiples, but they were used for a variety of applications. The main use was to show subsets of the scene at diferent orientations or positions."
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 295.564697265625,
+        "y1": 652.0619506835938,
+        "y2": 701.7520141601562
+      },
+      "text": "We observed two types of multiples. The frst was recursive multiples, where a smaller version of the replica was embedded within the replica. This was shown by Bluf and Johnston [5] (Figure 9a) who used a camera copy of the environment to create an efectively infnitely recursive WiM using the Droste efect. The other form"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 317.6860046386719,
+        "x2": 558.4334106445312,
+        "y1": 586.3079223632812,
+        "y2": 625.0399780273438
+      },
+      "text": "of multiples we observed were small multiples, like those used by Tatzgern et al. [45] (Figure 9b) who placed replicas of the replica at diferent rotations to allow the viewer to see a building from many sides at once."
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.713134765625,
+        "y1": 630.1439819335938,
+        "y2": 668.875
+      },
+      "text": "Virtuality describes the WiM’s position within the XR spectrum [28]. While WiMs originally started as a purely VR technique, they have since expanded to include examples across the XR spectrum, including cases in which the replica itself is a physical object."
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.7156372070312,
+        "y1": 673.9789428710938,
+        "y2": 690.79296875
+      },
+      "text": "The frst WiM by Stoakley et al. [44] was created using headset VR, and many afterwards have been as well — including recent"
+    }],
+    "title": {
+      "page": 7,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 558.198974609375,
+        "y1": 63.2986946105957,
+        "y2": 67.34698486328125
+      },
+      "text": "CHI ’21, May 8–13, 2021, Yokohama, Japan Danyluk et al."
+    }
+  }, {
+    "paragraphs": [{
+      "page": 8,
+      "region": {
+        "x1": 62.861812591552734,
+        "x2": 234.7207489013672,
+        "y1": 85.70011901855469,
+        "y2": 208.08270263671875
+      },
+      "text": "Sc op e Huge Very Large Size Large Moderate Small Very Small Planetary+ Country City Block"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 75.3995590209961,
+        "x2": 99.58055114746094,
+        "y1": 204.89395141601562,
+        "y2": 209.0760498046875
+      },
+      "text": "Building"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 84.75161743164062,
+        "x2": 99.58030700683594,
+        "y1": 223.76394653320312,
+        "y2": 227.946044921875
+      },
+      "text": "Floor"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 82.36492919921875,
+        "x2": 99.58039855957031,
+        "y1": 242.63479614257812,
+        "y2": 246.81689453125
+      },
+      "text": "Room"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 80.13843536376953,
+        "x2": 99.5799560546875,
+        "y1": 261.5045471191406,
+        "y2": 265.6866455078125
+      },
+      "text": "Object"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 179.91415405273438,
+        "x2": 184.5038299560547,
+        "y1": 185.26290893554688,
+        "y2": 190.639892578125
+      },
+      "text": "2"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 131.65951538085938,
+        "x2": 136.24917602539062,
+        "y1": 223.02511596679688,
+        "y2": 228.402099609375
+      },
+      "text": "2"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 179.91290283203125,
+        "x2": 184.50257873535156,
+        "y1": 204.28274536132812,
+        "y2": 209.65972900390625
+      },
+      "text": "2"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 228.1687774658203,
+        "x2": 232.75845336914062,
+        "y1": 223.02511596679688,
+        "y2": 228.402099609375
+      },
+      "text": "2"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 204.0407257080078,
+        "x2": 208.63040161132812,
+        "y1": 242.02328491210938,
+        "y2": 247.4002685546875
+      },
+      "text": "2"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 204.0407257080078,
+        "x2": 208.63040161132812,
+        "y1": 260.8930969238281,
+        "y2": 266.27008056640625
+      },
+      "text": "2"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 204.0407257080078,
+        "x2": 208.63040161132812,
+        "y1": 204.28274536132812,
+        "y2": 209.65972900390625
+      },
+      "text": "3"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 315.1410217285156,
+        "x2": 315.19537353515625,
+        "y1": 209.46310424804688,
+        "y2": 227.99603271484375
+      },
+      "text": "Re fe"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 315.08746337890625,
+        "x2": 315.1370849609375,
+        "y1": 191.44461059570312,
+        "y2": 210.28173828125
+      },
+      "text": "re nc"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 315.0428771972656,
+        "x2": 315.0898132324219,
+        "y1": 176.44113159179688,
+        "y2": 193.050537109375
+      },
+      "text": "e Fr"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 314.99615478515625,
+        "x2": 315.0470886230469,
+        "y1": 160.72189331054688,
+        "y2": 178.6822509765625
+      },
+      "text": "am e"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 372.07421875,
+        "x2": 407.2558898925781,
+        "y1": 93.27413940429688,
+        "y2": 116.74822998046875
+      },
+      "text": "Huge Very Large"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 424.7229309082031,
+        "x2": 440.86279296875,
+        "y1": 85.72740173339844,
+        "y2": 91.2698974609375
+      },
+      "text": "Size"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 419.98760986328125,
+        "x2": 503.76727294921875,
+        "y1": 93.53262329101562,
+        "y2": 118.0621337890625
+      },
+      "text": "Large Moderate Small Very Small"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 329.0989990234375,
+        "x2": 367.4754638671875,
+        "y1": 127.88296508789062,
+        "y2": 132.0650634765625
+      },
+      "text": "Free Referent"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 350.0928649902344,
+        "x2": 367.475341796875,
+        "y1": 146.75448608398438,
+        "y2": 150.93658447265625
+      },
+      "text": "Scene"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 328.0207214355469,
+        "x2": 367.47503662109375,
+        "y1": 160.65408325195312,
+        "y2": 173.18646240234375
+      },
+      "text": "Purpose-built Workzone"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 333.3231201171875,
+        "x2": 367.4750671386719,
+        "y1": 184.74356079101562,
+        "y2": 188.9256591796875
+      },
+      "text": "Device Face"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 320.2967224121094,
+        "x2": 367.47503662109375,
+        "y1": 203.61361694335938,
+        "y2": 207.79571533203125
+      },
+      "text": "Handheld Token"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 347.7756042480469,
+        "x2": 367.4753112792969,
+        "y1": 222.48367309570312,
+        "y2": 226.665771484375
+      },
+      "text": "Viewer"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 319.4200744628906,
+        "x2": 367.47589111328125,
+        "y1": 241.35415649414062,
+        "y2": 245.5362548828125
+      },
+      "text": "Viewer Bodypart"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 448.9907531738281,
+        "x2": 453.5804443359375,
+        "y1": 127.27201080322266,
+        "y2": 132.64898681640625
+      },
+      "text": "2"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 473.1190185546875,
+        "x2": 477.70867919921875,
+        "y1": 164.21798706054688,
+        "y2": 169.594970703125
+      },
+      "text": "2"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 473.1190185546875,
+        "x2": 477.70867919921875,
+        "y1": 127.27201080322266,
+        "y2": 132.64898681640625
+      },
+      "text": "2"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 400.73638916015625,
+        "x2": 405.3260498046875,
+        "y1": 164.21798706054688,
+        "y2": 169.594970703125
+      },
+      "text": "3"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 91.9530029296875,
+        "x2": 267.8468933105469,
+        "y1": 310.5111083984375,
+        "y2": 316.1419982910156
+      },
+      "text": "Figure 11: Papers ordered by Size and Scope"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 53.50199890136719,
+        "x2": 295.55816650390625,
+        "y1": 338.4809265136719,
+        "y2": 388.1719970703125
+      },
+      "text": "implementations such as Bluf and Johnston’s [5] (Figure 10a). However, examples exist for a variety of other platforms including Cave VR [12] (Figure 10b), desktop VR [6] (Figure 10c), headset AR [46] (Figure 10d), projected AR [24] (Figure 10e), and handheld AR [29] (Figure 10f) systems."
+    }],
+    "title": {
+      "page": 8,
+      "region": {
+        "x1": 53.582000732421875,
+        "x2": 558.1990966796875,
+        "y1": 63.2986946105957,
+        "y2": 67.34698486328125
+      },
+      "text": "A Design Space Exploration of Worlds in Miniature CHI ’21, May 8–13, 2021, Yokohama, Japan"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 8,
+      "region": {
+        "x1": 53.36800003051758,
+        "x2": 295.5580139160156,
+        "y1": 449.43792724609375,
+        "y2": 499.12799072265625
+      },
+      "text": "We observed a number of relationships between the various dimensions, as well as gaps in the literature for both individual dimensions and combinations of dimensions. Here we identify some of these patterns and gaps, and we will later look more closely at potential applications that fll these gaps."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 295.5574645996094,
+        "y1": 504.23193359375,
+        "y2": 707.3469848632812
+      },
+      "text": "Size vs. Scope. While we have identifed size, scale, and scope as a set of interdependent dimensions, there is a strong positive correlation between the size of a WiM, and its scope — with developers typically using larger WiMs to represent larger and more complex regions (Figure 11). By contrast, the set of systems we examined contain no examples of small or very small WiMs whose scope showed anything larger than a single building. Surprisingly we also saw no examples of large WiMs whose scope was smaller than the foor of a building, although the interactive virtual globes in tools like Google Earth VR [23] clearly demonstrate the value of this combination. While in most cases it is practical to pair large sizes with broad scopes there may be opportunities where straying from these pattern can be benefcial. As a temporary, or transitional state, having a large WiM with a small scope could be used to highlight an object of interest, such as greatly expanding the sign for a bus stop in the replica as the viewer gets within viewing distance of the actual sign. As another example, if many small multiples of individual small WiMs with broad scopes are used together, the size of each can be controlled with a focus + context operation like"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 321.3349914550781,
+        "x2": 542.8681640625,
+        "y1": 310.4831237792969,
+        "y2": 316.114013671875
+      },
+      "text": "Figure 12: Papers ordered by Size and Reference Frame"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.1983642578125,
+        "y1": 338.4809265136719,
+        "y2": 355.2950134277344
+      },
+      "text": "a fsh eye menu [3], magnifying the WiM in active use, but keeping the other smaller WiMs in view."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 317.5249938964844,
+        "x2": 559.5808715820312,
+        "y1": 360.39892578125,
+        "y2": 574.4730224609375
+      },
+      "text": "Size vs. Reference Frame. There is a common relationship between the size of a WiM, and the reference frame it has been given (Figure 12). A WiM with a reference frame that is close to, or a part of the body (pericutaneous, peripersonal) is more likely to also be small. While a WiM with a reference frame that is a part of the environment, or the environment itself (extrapersonal), is more likely to be large. Both of these can be explained from a practical standpoint, a WiM that is several meters in diameter would be unwieldy when placed on a viewers wrist. Further, if a WiM that was only a few centimetres in diameter was placed on a boardroom table many meters wide there would be a large amount of wasted space. However, these impracticalities can be overcome. For example, Tatzgern et al. [45] explore a small WiM that has an extrapersonal reference frame by physically distancing the replica from the reference frame — while the referent is large, its apparent size is comparable to the WiM. At the other end of the spectrum, a large WiM can be placed within a viewer’s personal space by distributing it around their body — for instance, by projecting it in a torus around their torso, or distributing it across their limbs (which we explore in subsection 6.2)."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 317.9549560546875,
+        "x2": 559.5843505859375,
+        "y1": 579.5769653320312,
+        "y2": 705.97998046875
+      },
+      "text": "Size vs. Geometry. We observed that in most cases small WiMs are tightly bounded, often clipped to just the object of interest itself (Figure 13). In contrast, larger WiMs are often bounded by a feature of the environment (such as a work table). Although WiMs at all sizes are bounded by simple shapes. At the extreme end, any unbounded WiM showing a large area or object will consume considerable space — as it has no solid boundary to constrain it. However, even when considering a large WiM it can be benefcial to restrict the geometry to just the object of interest. For example, for a team collaborating around a WiM of a to-be-built building, reducing the WiM to just the building of interest could help manage occlusion from multiple vantage points."
+    }],
+    "title": {
+      "page": 8,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 242.39453125,
+        "y1": 408.840087890625,
+        "y2": 441.5892028808594
+      },
+      "text": "5 TRENDS AND GAPS IN CURRENT WORLDS-IN-MINIATURE IMPLEMENTATIONS"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 9,
+      "region": {
+        "x1": 62.83607482910156,
+        "x2": 242.6005859375,
+        "y1": 87.62944030761719,
+        "y2": 190.04840087890625
+      },
+      "text": "G eo m et ry Huge Very Large Size Large Moderate Small Very Small Disjoint In nite Clipped to Workspace"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 66.47833251953125,
+        "x2": 105.99600219726562,
+        "y1": 182.86972045898438,
+        "y2": 195.402099609375
+      },
+      "text": "Clipped to Simple Shape"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 74.32759094238281,
+        "x2": 105.99600219726562,
+        "y1": 201.74026489257812,
+        "y2": 214.27264404296875
+      },
+      "text": "Clipped to Focus"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 139.57427978515625,
+        "x2": 144.1639404296875,
+        "y1": 186.43362426757812,
+        "y2": 191.81060791015625
+      },
+      "text": "2"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 139.5745391845703,
+        "x2": 144.16419982910156,
+        "y1": 167.31454467773438,
+        "y2": 172.6915283203125
+      },
+      "text": "2"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 187.82891845703125,
+        "x2": 192.41859436035156,
+        "y1": 186.43362426757812,
+        "y2": 191.81060791015625
+      },
+      "text": "2"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 187.82891845703125,
+        "x2": 240.67396545410156,
+        "y1": 205.30361938476562,
+        "y2": 210.681396484375
+      },
+      "text": "263"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 83.23699951171875,
+        "x2": 276.5615234375,
+        "y1": 284.03912353515625,
+        "y2": 289.6700134277344
+      },
+      "text": "Figure 13: Papers ordered by Size and Geometry"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 315.26593017578125,
+        "x2": 315.3179016113281,
+        "y1": 198.4615478515625,
+        "y2": 215.795654296875
+      },
+      "text": "Vi rt"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 315.2110595703125,
+        "x2": 315.2717590332031,
+        "y1": 180.00274658203125,
+        "y2": 200.76092529296875
+      },
+      "text": "ua lit"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 315.20098876953125,
+        "x2": 315.21514892578125,
+        "y1": 176.6151123046875,
+        "y2": 182.256591796875
+      },
+      "text": "y"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 353.8369140625,
+        "x2": 398.37506103515625,
+        "y1": 106.21041107177734,
+        "y2": 129.4783935546875
+      },
+      "text": "Just Lines Just Areas"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 410.06732177734375,
+        "x2": 457.5762634277344,
+        "y1": 85.73660278320312,
+        "y2": 91.37811279296875
+      },
+      "text": "Abstraction"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 386.9214782714844,
+        "x2": 496.60516357421875,
+        "y1": 93.79988861083984,
+        "y2": 129.09674072265625
+      },
+      "text": "Cartographic Generalisation Geometric Simpli cation PhysicalCopy Digital Recreation"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 323.9635925292969,
+        "x2": 357.8835144042969,
+        "y1": 141.77206420898438,
+        "y2": 146.02886962890625
+      },
+      "text": "Headset AR"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 319.1329345703125,
+        "x2": 357.88336181640625,
+        "y1": 160.97970581054688,
+        "y2": 165.23651123046875
+      },
+      "text": "Handheld AR"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 320.0679016113281,
+        "x2": 357.8826904296875,
+        "y1": 179.37716674804688,
+        "y2": 183.63397216796875
+      },
+      "text": "Projected AR"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 324.2326354980469,
+        "x2": 357.8826904296875,
+        "y1": 198.29476928710938,
+        "y2": 202.55157470703125
+      },
+      "text": "Desktop VR"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 334.5733642578125,
+        "x2": 357.88311767578125,
+        "y1": 219.10763549804688,
+        "y2": 223.36444091796875
+      },
+      "text": "Cave VR"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 324.60064697265625,
+        "x2": 357.88311767578125,
+        "y1": 237.80642700195312,
+        "y2": 242.063232421875
+      },
+      "text": "Headset VR"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 367.17974853515625,
+        "x2": 371.8514099121094,
+        "y1": 141.14964294433594,
+        "y2": 146.6226806640625
+      },
+      "text": "2"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 489.9727783203125,
+        "x2": 494.64447021484375,
+        "y1": 197.6731414794922,
+        "y2": 203.14617919921875
+      },
+      "text": "2"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 391.7383728027344,
+        "x2": 396.4100341796875,
+        "y1": 160.3578338623047,
+        "y2": 165.83087158203125
+      },
+      "text": "3"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 492.15557861328125,
+        "x2": 520.3670654296875,
+        "y1": 105.7568588256836,
+        "y2": 129.6885986328125
+      },
+      "text": "Perfect Recreation"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 513.7293090820312,
+        "x2": 518.4010009765625,
+        "y1": 218.4860076904297,
+        "y2": 223.95904541015625
+      },
+      "text": "2"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 440.8548583984375,
+        "x2": 518.4007568359375,
+        "y1": 237.18748474121094,
+        "y2": 242.6605224609375
+      },
+      "text": "2 5"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 319.8380126953125,
+        "x2": 544.3657836914062,
+        "y1": 285.9681091308594,
+        "y2": 291.5989990234375
+      },
+      "text": "Figure 14: Papers ordered by Abstraction and Virtuality"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 222.49720764160156,
+        "x2": 274.9124755859375,
+        "y1": 335.5958557128906,
+        "y2": 341.11566162109375
+      },
+      "text": "View Frustum"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 222.49720764160156,
+        "x2": 267.73028564453125,
+        "y1": 353.7625732421875,
+        "y2": 359.2823791503906
+      },
+      "text": "View Planes"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 222.49720764160156,
+        "x2": 261.9992370605469,
+        "y1": 371.9292907714844,
+        "y2": 377.4490966796875
+      },
+      "text": "Godhands"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 222.49720764160156,
+        "x2": 270.2651672363281,
+        "y1": 390.0959777832031,
+        "y2": 395.61578369140625
+      },
+      "text": "Leader Lines"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 222.49720764160156,
+        "x2": 246.84500122070312,
+        "y1": 408.2626953125,
+        "y2": 413.7825012207031
+      },
+      "text": "Labels"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 222.49720764160156,
+        "x2": 243.23553466796875,
+        "y1": 425.80487060546875,
+        "y2": 431.3246765136719
+      },
+      "text": "None"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 222.50474548339844,
+        "x2": 250.4402618408203,
+        "y1": 316.54351806640625,
+        "y2": 324.57135009765625
+      },
+      "text": "Links"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 342.6456604003906,
+        "x2": 352.059814453125,
+        "y1": 408.27215576171875,
+        "y2": 413.78668212890625
+      },
+      "text": "16"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 390.9998779296875,
+        "x2": 449.2839660644531,
+        "y1": 331.5735168457031,
+        "y2": 373.4267272949219
+      },
+      "text": "Small Multiples Recursive Multiples None"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 390.99664306640625,
+        "x2": 436.3766784667969,
+        "y1": 315.46875,
+        "y2": 322.8327941894531
+      },
+      "text": "Multiples"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 545.3731079101562,
+        "x2": 554.7872924804688,
+        "y1": 355.5843811035156,
+        "y2": 361.0989074707031
+      },
+      "text": "21"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 55.81414031982422,
+        "x2": 119.13127136230469,
+        "y1": 335.40155029296875,
+        "y2": 340.9213562011719
+      },
+      "text": "Viewer Bodypart"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 55.81414031982422,
+        "x2": 81.98963165283203,
+        "y1": 353.5682678222656,
+        "y2": 359.08807373046875
+      },
+      "text": "Viewer"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 55.81414031982422,
+        "x2": 118.93840026855469,
+        "y1": 371.7349548339844,
+        "y2": 377.2547607421875
+      },
+      "text": "Handheld Token"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 55.81414031982422,
+        "x2": 101.31356811523438,
+        "y1": 389.90167236328125,
+        "y2": 395.4214782714844
+      },
+      "text": "Device Face"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 55.81414031982422,
+        "x2": 148.43862915039062,
+        "y1": 408.0683898925781,
+        "y2": 413.58819580078125
+      },
+      "text": "Purpose-built Workzone"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 55.81414031982422,
+        "x2": 78.69243621826172,
+        "y1": 426.2350769042969,
+        "y2": 431.7548828125
+      },
+      "text": "Scene"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 55.81414031982422,
+        "x2": 106.92522430419922,
+        "y1": 443.7772521972656,
+        "y2": 449.29705810546875
+      },
+      "text": "Free Referent"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 55.793495178222656,
+        "x2": 147.7688751220703,
+        "y1": 316.51220703125,
+        "y2": 324.5160217285156
+      },
+      "text": "Reference Frame"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 220.25025939941406,
+        "y1": 468.17010498046875,
+        "y2": 484.7579345703125
+      },
+      "text": "Figure 15: WiM counts by Reference Frame"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 229.4139404296875,
+        "x2": 546.8604736328125,
+        "y1": 468.1969909667969,
+        "y2": 473.827880859375
+      },
+      "text": "Figure 16: WiMs counts by Link type Figure 17: WiMs counts by Multiples"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 53.50199890136719,
+        "x2": 295.4277648925781,
+        "y1": 512.0809936523438,
+        "y2": 671.3599853515625
+      },
+      "text": "Abstraction vs. Virtuality. WiMs made for VR tend to feature less abstraction than those made for AR (Figure 14). We suspect that this has more to do with the current capabilities of the respective technologies than a practical relationship between the dimensions. It is currently much easier to create a replica that is a perfect or near perfect copy of the environment in VR than it is in AR. However, as technologies like photogrammetry improve, and as AR headset technology matures and becomes more powerful this gap is likely to close. With the ability to easily create realistic views of real places, applications like third person bird’s eye views [17] will likely become more realistic outside of VR. On the fip side, while VR instances of WiMs are currently able to feature replicas that are perfect recreations of the VR environment, simplifed or generalised replicas can still help viewers focus on the most important features of the replica [41]."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 53.589935302734375,
+        "x2": 294.0487365722656,
+        "y1": 676.4639282226562,
+        "y2": 704.23291015625
+      },
+      "text": "Links. Links are a heavily underrepresented dimension, with 16 out of 25 of the WiMs we reviewed not featuring any explicit links between the replica and the space (Figure 16). Further, the"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 559.5859985351562,
+        "y1": 512.0809936523438,
+        "y2": 638.4830322265625
+      },
+      "text": "variety of links that we did observe was not extensive — including only view frustums, view planes, god hands, leader lines, and labels. The sparsity of examples indicates that there remain many exciting opportunities in this space. One medium which already features a wide variety of links is video games [13] and many examples of linking and pointing techniques from this domain seem likely to work well with WiMs. These include approaches like diegetic cues, which are common in video games and could provide simple and semantically meaningful links between WiMs and environments. For example, a WiM of a city street could turn on the streetlamps along the viewer’s path to unobtrusively show their progress in the real space."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 317.62274169921875,
+        "x2": 559.7155151367188,
+        "y1": 643.5869750976562,
+        "y2": 704.2349243164062
+      },
+      "text": "Multiples. Similarly, multiples are another heavily underrepresented dimension with only 4 out of the 25 papers we reviewed featuring them (Figure 17). These few examples we saw focused on showing either multiple views of the same building from diferent orientations [45] or location based subsets [14]. However, given the widespread and successful use of small multiples techniques in data"
+    }],
+    "title": {
+      "page": 9,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 558.198974609375,
+        "y1": 63.2986946105957,
+        "y2": 67.34698486328125
+      },
+      "text": "CHI ’21, May 8–13, 2021, Yokohama, Japan Danyluk et al."
+    }
+  }, {
+    "paragraphs": [{
+      "page": 10,
+      "region": {
+        "x1": 53.57400131225586,
+        "x2": 294.0464172363281,
+        "y1": 87.79393005371094,
+        "y2": 126.5260009765625
+      },
+      "text": "visualization tools, there are likely many more exciting possibilities for WiMs that use multiples. For example, a large single replica combined with small multiples [15] of it could be used to show the history of a viewer’s interaction with a WiM."
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.5596008300781,
+        "y1": 131.6289520263672,
+        "y2": 203.23797607421875
+      },
+      "text": "Reference Frame. While WiMs of all sorts featured extrapersonal reference frames, very few utilised peripersonal or pericutaneous reference frames (Figure 15). Those few that did tended to be used with small, tightly scoped, or tightly clipped WiMs. There exists ample space to explore WiMs that sit within the viewer’s personal space, along many dimensions (as noted above in Size vs. Reference Frame)."
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 295.5628356933594,
+        "y1": 208.3419647216797,
+        "y2": 312.824951171875
+      },
+      "text": "Other. Interestingly, several pairs of dimensions in our framework did not show any obvious relationship to one another. Abstraction and geometry were one such pair — during the process of abstraction the available geometry of the WiM may also be reduced. For example, if a WiM has been cartographically generalised to only include the roads of a scene, then the geometry will appear to be clipped to the focus (in this case the roads) even if the chosen geometry is actually less restrictive. Conversely, a WiM showing a building that is bounded to a short cylinder will appear as though the roof has been abstracted away."
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 53.50199890136719,
+        "x2": 295.5646667480469,
+        "y1": 317.9309387207031,
+        "y2": 400.49798583984375
+      },
+      "text": "Another pair that displayed only a loose connection was geometry and virtuality. The means used to create the virtual environment infuences the possible geometry of a WiM. For example, due to the limited projection space it is more difcult to create an infnite WiM by using projected AR then it would be to create an infnite WiM using headset VR. However, many of the examples of simplifed geometry we observe refected historical technical limitations of XR devices rather than contemporary ones."
+    }],
+    "title": {
+      "page": 10,
+      "region": {
+        "x1": 53.582000732421875,
+        "x2": 558.1990966796875,
+        "y1": 63.2986946105957,
+        "y2": 67.34698486328125
+      },
+      "text": "A Design Space Exploration of Worlds in Miniature CHI ’21, May 8–13, 2021, Yokohama, Japan"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 10,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 294.0500183105469,
+        "y1": 446.4839172363281,
+        "y2": 496.17401123046875
+      },
+      "text": "To help demonstrate the generative utility of our framework, in this section we illustrate several novel WiMs described as a function of our design dimensions. In section 5 we identifed a number of gaps present within the papers we reviewed. We ft our proposed WiMs within those gaps, addressing unique design challenges."
+    }],
+    "title": {
+      "page": 10,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 199.2926788330078,
+        "y1": 418.83807373046875,
+        "y2": 438.6380920410156
+      },
+      "text": "6 ENVISIONING FUTURE WORLDS-IN-MINIATURE"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 10,
+      "region": {
+        "x1": 53.36800003051758,
+        "x2": 295.03118896484375,
+        "y1": 529.2089233398438,
+        "y2": 556.9810180664062
+      },
+      "text": "When analysing the trends and gaps within current WiMs we noted that the majority of WiMs don’t feature links. To help fll that gap, we propose a WiM that uses highlighting in a way that would"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 559.5848999023438,
+        "y1": 320.98992919921875,
+        "y2": 502.18701171875
+      },
+      "text": "be difcult without a WiM (Table 1). In this example the WiM features an architectural model of a building that is still under construction. At the construction site the replica can be used to highlight components of the unfnished building. When a viewer selects a piece of the building on the replica, the corresponding component of the building in the environment is also highlighted. In circumstances where a component is not shared between the two (such as a part of the building that is not built yet, or a detail of the building too small to be added to the model) the area where that component would be is instead highlighted. In Figure 18 a viewer is selecting the roof at the top of the replica, in the background they can see the roof being highlighted on a AR overlay of the building. By using these shared spatial highlights a viewer can get an idea of the footprint of a building on-site during construction. For example, when preparing marketing material for the new building, a Realtor could use the highlights to determine what pieces of the skyline will be visible once the building is complete."
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.7178955078125,
+        "y1": 507.2909240722656,
+        "y2": 556.9810180664062
+      },
+      "text": "This example was inspired by the use of scale models in architecture [20]. As a result, our choices for many of the design dimensions (including size, scope, abstraction, and geometry) refect the conventions and properties of the physical models produced by architecture frms. For the reference frame, we chose free referent,"
+    }],
+    "title": {
+      "page": 10,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 267.5181579589844,
+        "y1": 514.5140991210938,
+        "y2": 521.364990234375
+      },
+      "text": "6.1 Example #1: Shared Spatial Highlights"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 11,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.5582275390625,
+        "y1": 340.700927734375,
+        "y2": 412.30999755859375
+      },
+      "text": "refecting the fact that scale building models can be used at a variety of locations both at a building site or (more frequently) at the design studio and don’t require a specifc spatial relationship with the building. Finally, we imagined this example as a headset AR application, which would allow the viewer to use both hands to interact with the model and with other tools, and could support deployment in construction settings."
+    }],
+    "title": {
+      "page": 11,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 558.198974609375,
+        "y1": 63.2986946105957,
+        "y2": 67.34698486328125
+      },
+      "text": "CHI ’21, May 8–13, 2021, Yokohama, Japan Danyluk et al."
+    }
+  }, {
+    "paragraphs": [{
+      "page": 11,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 295.5606994628906,
+        "y1": 449.43792724609375,
+        "y2": 707.3469848632812
+      },
+      "text": "In the existing literature, we noted the absence WiMs that were both pericutaneous and had a large size (Table 1). To examine this unique combination, we propose a system that takes advantage of the viewer’s entire body to host a large WiM (Figure 19). In this example the buildings of a college campus are spread across the viewer’s body. Buildings that are close to the viewer are placed on parts of their body that are easy to reference (like their forearms) whereas buildings that are far away are placed on less reachable, but still visible parts of their body (like their shins). Buildings behind or otherwise outside the viewer’s feld of vision are likewise shifted to less-visible locations on the body (such as their calves) where they can be seen peripherally. This approach cartographically generalises important landmarks including prominent buildings using an approach similar to the automatic tourist maps proposed by Grabler et al. [19], highlighting the most important features of the campus and de-emphasising the spaces in between them. By viewing the WiM with a headset AR device the viewer could easily reference buildings in their immediate vicinity, while maintaining a peripheral knowledge of the entire campus. This could be particularly useful while the viewer is walking, allowing them to use their body’s sense of proprioception [8] to reference the replica. Such an approach could also be useful in crowded spaces, ftting tightly to the viewer’s body when most large AR objects would be occluded or intersected by the surrounding environment."
+    }],
+    "title": {
+      "page": 11,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 225.6818084716797,
+        "y1": 434.7430725097656,
+        "y2": 441.593994140625
+      },
+      "text": "6.2 Example #2: Body Based WiM"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 11,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 559.72265625,
+        "y1": 356.8109130859375,
+        "y2": 548.968017578125
+      },
+      "text": "Our analysis also highlighted a shortage of WiMs that incorporated multiples (Table 1). To prompt the development of more systems that incorporate multiple simultaneous WiMS, we propose an interface that uses multiples to show a mountain hike at two levels of detail (Figure 20) in the style of a traditional overview+detail visualisation [10]. In this example, the system includes two multiples, each showing the same hiking route. The large multiple on the left side of the screen (Figure 20) shows the entire mountain that is being hiked, while the smaller multiple on the right side of the screen (Figure 20) is clipped to focus on just the current trail segment. This pairing would allow viewers to simultaneously see their progress up the mountain as well as a more detailed bird’s eye view of the portion of the hike that they are immediately concerned with. Mobile AR might appropriate for this application as a phone or other device could be easily stowed by the viewer during more physically involved portions of their hike. Finally, this WiM uses the viewer as its reference frame so that it is available throughout the hike."
+    }],
+    "title": {
+      "page": 11,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 543.5552978515625,
+        "y1": 342.1170654296875,
+        "y2": 348.9679870605469
+      },
+      "text": "6.3 Example #3: Overview + Detail Multiples"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 11,
+      "region": {
+        "x1": 317.954833984375,
+        "x2": 559.71240234375,
+        "y1": 580.9449462890625,
+        "y2": 652.552978515625
+      },
+      "text": "In addition to our specifc example WiMs, we provide more general advice on choosing dimensions for a WiM based on application domain, based on our observations from prior work. We observed 5 distinct application domains amongst the WiMs we coded — wayfnding, collaboration, visualisation, navigation, and control space (Table 2) — and discuss two important dimensions to consider for each application domain."
+    }, {
+      "page": 11,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.2064819335938,
+        "y1": 657.6569213867188,
+        "y2": 707.3469848632812
+      },
+      "text": "Wayfnding: In a wayfnding application the WiM serves as an overview that viewers use to identify and follow paths between locations. Because wayfnding tools typically need to move through space along with the viewer, WiMs designed for this purpose are likely to lend themselves to pericutaneous or peripersonal reference"
+    }],
+    "title": {
+      "page": 11,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 541.6133422851562,
+        "y1": 566.2501220703125,
+        "y2": 573.1010131835938
+      },
+      "text": "6.4 WiM Opportunities by Application Area"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 12,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.4268493652344,
+        "y1": 292.95391845703125,
+        "y2": 309.76800537109375
+      },
+      "text": "frames. Similarly, they may beneft from small sizes and constrained scopes that reduce overlap with and occlusion of the environment."
+    }, {
+      "page": 12,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.4256896972656,
+        "y1": 314.8719177246094,
+        "y2": 375.5220031738281
+      },
+      "text": "Collaboration: In applications that use collaborative WiMs, multiple viewers may examine or interact with the same replica simultaneously. As a result, we expect that larger replicas with extrapersonal reference frames will usually be preferable. Further, clipping the geometry to a focus area or simple shape can allow multiple viewers to more freely move and interact around the WiM."
+    }, {
+      "page": 12,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 295.5560302734375,
+        "y1": 380.62591552734375,
+        "y2": 452.2340087890625
+      },
+      "text": "Visualisation: The visualization applications we observed cover a wide range of data types, visual encodings, and contexts of use, making general guidance for these systems difcult. However, the widespread use of techniques like small multiples [15] and brushingand-linking [39] in visualisation more broadly strongly suggests the value of incorporating multiples and links in WiM systems intended to support data exploration and analysis."
+    }, {
+      "page": 12,
+      "region": {
+        "x1": 53.79795837402344,
+        "x2": 295.5554504394531,
+        "y1": 457.3379211425781,
+        "y2": 528.946044921875
+      },
+      "text": "Navigation: WiMs designed for navigation allow viewers to change their position in the full-sized (typically virtual) environment by using the miniature replica. A key concern is ensuring that the scale of the replica allows for precise pointing [49]. In addition, non-euclidean or distorted geometries that enable viewers to navigate to occluded areas, including building interiors [9], may be advantageous."
+    }, {
+      "page": 12,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 295.42236328125,
+        "y1": 534.0499877929688,
+        "y2": 616.6179809570312
+      },
+      "text": "Control Space: A WiM designed as a control space enables the viewer to control elements of their environment using the replica. If the replica and environment difer considerably in scale it can be useful to use abstraction to increase the size or visibility of interactive elements, or to simplify away non-interactive ones. As with navigation, geometries that reduce occlusion can increase viewers’ ability to access and interact with more of the control space at once."
+    }],
+    "title": {
+      "page": 12,
+      "region": {
+        "x1": 53.582000732421875,
+        "x2": 558.1990966796875,
+        "y1": 63.2986946105957,
+        "y2": 67.34698486328125
+      },
+      "text": "A Design Space Exploration of Worlds in Miniature CHI ’21, May 8–13, 2021, Yokohama, Japan"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 12,
+      "region": {
+        "x1": 53.36800003051758,
+        "x2": 295.02874755859375,
+        "y1": 646.6979370117188,
+        "y2": 707.3469848632812
+      },
+      "text": "Worlds-in-Miniature represent a promising and extremely relevant area for XR research, and one which is well-positioned to build on approaches from a variety of related felds. Not only are WiMs one of the earliest interaction metaphors introduced for virtual reality, they also share many properties with the kinds of overview+detail interfaces frequently used in data visualisation. Because they often"
+    }, {
+      "page": 12,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.536376953125,
+        "y1": 292.95391845703125,
+        "y2": 331.6860046386719
+      },
+      "text": "take the forms of maps and terrain models, they also have the potential to draw on recent advances in digital cartography. At the same time, the vast space of diferent WiM designs suggests new uses in a wide variety of diferent application areas."
+    }, {
+      "page": 12,
+      "region": {
+        "x1": 317.5249938964844,
+        "x2": 559.7218627929688,
+        "y1": 336.7899169921875,
+        "y2": 594.7000122070312
+      },
+      "text": "Our framework for describing WiM systems showcases the diversity of past approaches, but also highlights just how much of the design space remains unexamined. Many of these unexplored points, including the examples in section 6 refect promising opportunities for near-term research and design. Others highlight challenges both in our current tools and technology. For example, varying the level of abstraction in WiMs still represents a challenge in both VR and AR, and most conceptual abstraction (and even much of the visual abstraction) used in current systems is still handled manually by designers. Meanwhile, creating truly realistic WiMs remains challenging because current platforms lack both the data and processing power necessary to create high-fdelity representations of most scenes. This is especially challenging for augmented- and mixed-reality applications, given the host of challenges associated with capturing, rendering, and updating visually accurate and up-to-date representations of physical environments. However, rapidly maturing photogrammetry and real-time scene reconstruction approaches mean that realistic live WiMs of real-world spaces will likely be possible in the near future. Parallel advances in XR headsets and related display technologies will also make using these WiMs in real-world environments increasingly practical. With that in mind, exploring new WiM designs, interactions, and application areas represents a rich area for research both now and for the foreseeable future."
+    }],
+    "title": {
+      "page": 12,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 141.57261657714844,
+        "y1": 632.0031127929688,
+        "y2": 638.85400390625
+      },
+      "text": "7 CONCLUSION"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 12,
+      "region": {
+        "x1": 317.6211242675781,
+        "x2": 558.2031860351562,
+        "y1": 657.6569213867188,
+        "y2": 707.3469848632812
+      },
+      "text": "This research was undertaken, in part, thanks to funding from the Canada Research Chairs Program. Thank you to all of our colleagues who helped provide examples of WiMs in the research literature, in popular media, and around the world, and who granted permission to reproduce their fgures."
+    }],
+    "title": {
+      "page": 12,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 435.5114440917969,
+        "y1": 642.9620971679688,
+        "y2": 649.81298828125
+      },
+      "text": "ACKNOWLEDGMENTS"
+    }
+  }, {
+    "paragraphs": [],
+    "title": {
+      "page": 13,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 558.198974609375,
+        "y1": 63.2986946105957,
+        "y2": 67.34698486328125
+      },
+      "text": "CHI ’21, May 8–13, 2021, Yokohama, Japan Danyluk et al."
+    }
+  }, {
+    "paragraphs": [{
+      "page": 13,
+      "region": {
+        "x1": 57.04100036621094,
+        "x2": 294.04278564453125,
+        "y1": 99.80511474609375,
+        "y2": 104.3590087890625
+      },
+      "text": "[1] C. Andújar, P. Vázquez, and M. Fairén. 2004. Way-Finder: guided"
+    }, {
+      "page": 13,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.2294616699219,
+        "y1": 107.77618408203125,
+        "y2": 708.427001953125
+      },
+      "text": "tours through complex walkthrough models. Computer Graphics Forum 23, 3 (2004), 499–508. https://doi.org/10.1111/j.1467-8659.2004. 00781.x _eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1111/j.14678659.2004.00781.x. [2] Michel Beaudouin-Lafon. 2004. Designing interaction, not interfaces. In Proceedings of the working conference on Advanced visual interfaces (AVI ’04). Association for Computing Machinery, New York, NY, USA, 15–22. https://doi.org/10.1145/ 989863.989865 [3] Benjamin B. Bederson. 2000. Fisheye Menus. Association for Computing Machinery, San Diego, CA, USA. 217–225 pages. [4] Blaine Bell, Tobias Höllerer, and Steven Feiner. 2002. An annotated situationawareness aid for augmented reality. In Proceedings of the 15th annual ACM symposium on User interface software and technology - UIST ’02. ACM Press, New York, New York, USA, 213–216. https://doi.org/10.1145/571985.572017 [5] Andrew Bluf and Andrew Johnston. 2019. Don’t Panic: Recursive Interactions in a Miniature Metaworld. In The 17th International Conference on Virtual-Reality Continuum and its Applications in Industry. ACM, Brisbane QLD Australia, 1–9. https://doi.org/10.1145/3359997.3365682 [6] Andrea Bonsch, Sebastian Freitag, and Torsten W. Kuhlen. 2016. Automatic generation of world in miniatures for realistic architectural immersive virtual environments. In 2016 IEEE Virtual Reality (VR). IEEE, Greenville, SC, USA, 155– 156. https://doi.org/10.1109/VR.2016.7504700 ISSN: 2375-5334. [7] Gerd Bruder, Frank Steinicke, and Klaus H. Hinrichs. 2009. Arch-Explore: A natural user interface for immersive architectural walkthroughs. In 2009 IEEE Symposium on 3D User Interfaces. IEEE, Lafayette, Louisiana, US, 75–82. https: //doi.org/10.1109/3DUI.2009.4811208 [8] Xiang ’Anthony’ Chen, Nicolai Marquardt, Anthony Tang, Sebastian Boring, and Saul Greenberg. 2012. Extending a mobile device’s interaction space through body-centric interaction. In Proceedings of the 14th international conference on Human-computer interaction with mobile devices and services (MobileHCI ’12). Association for Computing Machinery, New York, NY, USA, 151–160. https: //doi.org/10.1145/2371574.2371599 [9] L. Chittaro, V.K. Gatla, and S. Venkataraman. 2005. The Interactive 3D BreakAway Map: a navigation and examination aid for multi-foor 3D worlds. In 2005 International Conference on Cyberworlds (CW’05). IEEE, Singapore, Singapore, 8 pp.–66. https://doi.org/10.1109/CW.2005.88 [10] Andy Cockburn, Amy Karlson, and Benjamin B. Bederson. 2008. A review of overview+detail, zooming, and focus+context interfaces. Comput. Surveys 41, 1 (Dec. 2008), 1–31. https://doi.org/10.1145/1456650.1456652 [11] Dane Cofey, Nicholas Malbraaten, Trung Le, Iman Borazjani, Fotis Sotiropoulos, and Daniel F. Keefe. 2011. Slice WIM: a multi-surface, multi-touch interface for overview+detail exploration of volume datasets in virtual reality. In Symposium on Interactive 3D Graphics and Games (I3D ’11). Association for Computing Machinery, New York, NY, USA, 191–198. https://doi.org/10.1145/1944745.1944777 [12] Dane Cofey, Nicholas Malbraaten, Trung Bao Le, Iman Borazjani, Fotis Sotiropoulos, Arthur G. Erdman, and Daniel F. Keefe. 2011. Interactive Slice WIM: Navigating and Interrogating Volume Data Sets Using a Multisurface, Multitouch VR Interface. IEEE Transactions on Visualization and Computer Graphics 18, 10 (Oct. 2011), 1614–1626. https://doi.org/10.1109/TVCG.2011.283 [13] Kody R. Dillman, Terrance Tin Hoi Mok, Anthony Tang, Lora Oehlberg, and Alex Mitchell. 2018. A Visual Interaction Cue Framework from Video Game Environments for Augmented Reality. In Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems (CHI ’18). Association for Computing Machinery, New York, NY, USA, 1–12. https://doi.org/10.1145/3173574.3173714 [14] T Todd Elvins, David R Nadeau, Rina Schul, and David Kirsh. 1998. Worldlets: 3D thumbnails for 3D browsing. In Proceedings of the SIGCHI Conference on Human Factors in Computing systems. Association for Computing Machinery, Los Angeles, CA, USA, 163–170. [15] Stef van den Elzen and Jarke J. van Wijk. 2013. Small Multiples, Large Singles: A New Approach for Visual Data Exploration. Computer Graphics Forum 32, 3pt2 (2013), 191–200. https://doi.org/10.1111/cgf.12106 _eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1111/cgf.12106. [16] Barrett Ens, Juan David Hincapié-Ramos, and Pourang Irani. 2014. Ethereal planes: a design framework for 2D information space in 3D mixed reality environments. In Proceedings of the 2nd ACM symposium on Spatial user interaction (SUI ’14). Association for Computing Machinery, New York, NY, USA, 2–12. https://doi. org/10.1145/2659766.2659769 [17] Shinji Fukatsu, Yoshifumi Kitamura, Toshihiro Masaki, and Fumio Kishino. 1998. Intuitive Control of Bird’s Eye Overview Images for Navigation in an Enormous Virtual Environment. In Proceedings of the ACM Symposium on Virtual Reality Software and Technology (VRST ’98). ACM, New York, NY, USA, 67–76. https: //doi.org/10.1145/293701.293710 [18] Nicolás F. Gazcón, Juan M. Trippel Nagel, Ernesto A. Bjerg, and Silvia M. Castro. 2018. Fieldwork in Geosciences assisted by ARGeo: A mobile Augmented Reality system. Computers & Geosciences 121 (Dec. 2018), 30–38. https://doi.org/10.1016/ j.cageo.2018.09.004"
+    }, {
+      "page": 13,
+      "region": {
+        "x1": 317.95458984375,
+        "x2": 559.3837890625,
+        "y1": 89.0950927734375,
+        "y2": 707.3469848632812
+      },
+      "text": "[19] Floraine Grabler, Maneesh Agrawala, Robert W. Sumner, and Mark Pauly. 2008. Automatic generation of tourist maps. ACM Transactions on Graphics 27, 3 (Aug. 2008), 1–11. https://doi.org/10.1145/1360612.1360699 [20] Carmen Hull and Wesley Willett. 2017. Building with Data: Architectural Models as Inspiration for Data Physicalization. In Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems (CHI ’17). Association for Computing Machinery, New York, NY, USA, 1217–1264. https://doi.org/10.1145/3025453. 3025850 [21] Tobias Höllerer, Steven Feiner, Drexel Hallaway, Blaine Bell, Marco Lanzagorta, Dennis Brown, Simon Julier, Yohan Baillot, and Lawrence Rosenblum. 2001. User interface management techniques for collaborative mobile augmented reality. Computers & Graphics 25, 5 (Oct. 2001), 799–810. https://doi.org/10.1016/S00978493(01)00122-4 [22] M. Kalkusch, T. Lidy, N. Knapp, G. Reitmayr, H. Kaufmann, and D. Schmalstieg. 2002. Structured visual markers for indoor pathfnding. In The First IEEE International Workshop Agumented Reality Toolkit,. IEEE, Darmstadt, Germany, Germany, 8 pp.–. https://doi.org/10.1109/ART.2002.1107018 [23] Dominik P. Käser, Evan Parker, Adam Glazier, Mike Podwal, Matt Seegmiller, Chun-Po Wang, Per Karlsson, Nadav Ashkenazi, Joanna Kim, Andre Le, Matthias Bühlmann, and Joshua Moshier. 2017. The Making of Google Earth VR. In ACM SIGGRAPH 2017 Talks (Los Angeles, California) (SIGGRAPH ’17). Association for Computing Machinery, New York, NY, USA, Article 63, 2 pages. https: //doi.org/10.1145/3084363.3085094 [24] Joseph J. LaViola, Daniel Acevedo Feliz, Daniel F. Keefe, and Robert C. Zeleznik. 2001. Hands-free multi-scale navigation in virtual environments. In Proceedings of the 2001 symposium on Interactive 3D graphics (I3D ’01). Association for Computing Machinery, New York, NY, USA, 9–15. https://doi.org/10.1145/364338.364339 [25] Nico Li, Wesley Willett, Ehud Sharlin, and Mario Costa Sousa. 2017. Visibility perception and dynamic viewsheds for topographic maps and models. In Proceedings of the 5th Symposium on Spatial User Interaction - SUI ’17. ACM Press, Brighton, United Kingdom, United Kingdom, 39–47. https://doi.org/10.1145/ 3131277.3132178 [26] Yinggang Li, Chi-wing Fu, and Andrew Hanson. 2006. Scalable WIM: Efective Exploration in Large-scale Astrophysical Environments. IEEE Transactions on Visualization and Computer Graphics 12, 5 (Sept. 2006), 1005–1012. https://doi.org/10.1109/TVCG.2006.176 Conference Name: IEEE Transactions on Visualization and Computer Graphics. [27] Steve Manson. 2017. Mapping, Society, and Technology. University of Minnesota Libraries Publishing, Minneapolis ,Minnesota, USA. https://open.umn.edu/ opentextbooks/textbooks/mapping-society-and-technology [28] Paul Milgram and Fumio Kishino. 1994. A Taxonomy of Mixed Reality Visual Displays. IEICE Trans. Information Systems vol. E77-D, no. 12 (1994), 1321–1329. [29] Alessandro Mulloni, Hartmut Seichter, and Dieter Schmalstieg. 2012. Indoor navigation with mixed reality world-in-miniature views and sparse localization on mobile devices. In Proceedings of the International Working Conference on Advanced Visual Interfaces (AVI ’12). Association for Computing Machinery, New York, NY, USA, 212–215. https://doi.org/10.1145/2254556.2254595 [30] Jung Who Nam, Krista McCullough, Joshua Tveite, Maria Molina Espinosa, Charles H. Perry, Barry T. Wilson, and Daniel F. Keefe. 2019. Worlds-inWedges: Combining Worlds-in-Miniature and Portals to Support Comparative Immersive Visualization of Forestry Data. In 2019 IEEE Conference on Virtual Reality and 3D User Interfaces (VR). IEEE, Osaka, Japan, 747–755. https: //doi.org/10.1109/VR.2019.8797871 ISSN: 2642-5254. [31] Christopher Niederauer, Mike Houston, Maneesh Agrawala, and Greg Humphreys. 2003. Non-invasive interactive visualization of dynamic architectural environments. In Proceedings of the 2003 symposium on Interactive 3D graphics (I3D ’03). Association for Computing Machinery, New York, NY, USA, 55–58. https://doi.org/10.1145/641480.641493 [32] Sebastian Pasewaldt, Amir Semmo, Matthias Trapp, and Jürgen Döllner. 2014. Multi-perspective 3D panoramas. International Journal of Geographical Information Science 28, 10 (2014), 2030–2051. https://doi. org/10.1080/13658816.2014.922686 Publisher: Taylor & Francis _eprint: https://doi.org/10.1080/13658816.2014.922686. [33] Sebastian Pasewaldt, Matthias Trapp, and Jürgen Döllner. 2011. Multiscale visualization of 3D geovirtual environments using view-dependent multi-perspective views. Journal of WSCG 19 (2011), 111–118. http://dspace5.zcu.cz/handle/11025/ 1245 Accepted: 2013-02-13T13:26:25Z Publisher: Václav Skala - UNION Agency. [34] Randy Pausch, Tommy Burnette, Dan Brockway, and Michael E Weiblen. 1995. Navigation and Locomotion in Virtual Worlds via Flight into Hand-held Miniatures. In Proceedings of the 22Nd Annual Conference on Computer Graphics and Interactive Techniques (SIGGRAPH ’95). ACM, 399–400. https://doi.org/10.1145/ 218380.218495 [35] C. Plaisant, D. Carr, and B. Shneiderman. 1995. Image-browser taxonomy and guidelines for designers. IEEE Software 12, 2 (March 1995), 21–32. https://doi. org/10.1109/52.368260 Conference Name: IEEE Software. [36] M. E. Portman, A. Natapov, and D. Fisher-Gewirtzman. 2015. To go where no man has gone before: Virtual reality in architecture, landscape architecture and environmental planning. Computers, Environment and Urban Systems 54 (Nov."
+    }, {
+      "page": 14,
+      "region": {
+        "x1": 53.582000732421875,
+        "x2": 199.9690704345703,
+        "y1": 63.2986946105957,
+        "y2": 67.34698486328125
+      },
+      "text": "A Design Space Exploration of Worlds in Miniature"
+    }, {
+      "page": 14,
+      "region": {
+        "x1": 53.798187255859375,
+        "x2": 294.2259826660156,
+        "y1": 89.0982666015625,
+        "y2": 101.62322998046875
+      },
+      "text": "2015), 376–384. https://doi.org/10.1016/j.compenvurbsys.2015.05.001 [37] Blaine A. Price, Ronald M. Baecker, and Ian S. Small. 1993. A Principled Taxonomy"
+    }, {
+      "page": 14,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.2199401855469,
+        "y1": 105.03509521484375,
+        "y2": 292.9020080566406
+      },
+      "text": "of Software Visualization. Journal of Visual Languages & Computing 4, 3 (Sept. 1993), 211–266. https://doi.org/10.1006/jvlc.1993.1015 [38] Tom Ritchey. 1998. General morphological analysis. In 16th euro conference on operational analysis, Vol. 41. [39] Jonathan C Roberts. 2007. State of the art: Coordinated & multiple views in exploratory visualization. In Fifth International Conference on Coordinated and Multiple Views in Exploratory Visualization (CMV 2007). IEEE, 61–71. https: //doi.org/10.1109/CMV.2007.20 [40] Dong Woo Seo, Hyun Kim, Jae Sung Kim, and Jae Yeol Lee. 2016. Hybrid realitybased user experience and evaluation of a context-aware smart home. Computers in Industry 76 (Feb. 2016), 11–23. https://doi.org/10.1016/j.compind.2015.11.003 [41] K Stuart Shea and Robert B McMaster. 1989. Cartographic generalization in a digital environment: When and how to generalize. In Proceedings Auto-Carto 9. Citeseer. [42] Seung Youb Ssin, James A. Walsh, Ross T. Smith, Andrew Cunningham, and Bruce H. Thomas. 2019. GeoGate: Correlating Geo-Temporal Datasets Using an Augmented Reality Space-Time Cube and Tangible Interactions. In 2019 IEEE Conference on Virtual Reality and 3D User Interfaces (VR). IEEE, 210–219. https: //doi.org/10.1109/VR.2019.8797812 ISSN: 2642-5254. [43] Aaron Staford, Wayne Piekarski, and Bruce H. Thomas. 2006. Implementation of god-like interaction techniques for supporting collaboration between outdoor AR and indoor tabletop users. In 2006 IEEE/ACM International Symposium on Mixed and Augmented Reality. IEEE, 165–172. https://doi.org/10.1109/ISMAR. 2006.297809"
+    }, {
+      "page": 14,
+      "region": {
+        "x1": 435.3724670410156,
+        "x2": 558.201904296875,
+        "y1": 63.30009841918945,
+        "y2": 67.348388671875
+      },
+      "text": "CHI ’21, May 8–13, 2021, Yokohama, Japan"
+    }, {
+      "page": 14,
+      "region": {
+        "x1": 317.95458984375,
+        "x2": 559.3801879882812,
+        "y1": 89.0950927734375,
+        "y2": 284.9320068359375
+      },
+      "text": "[44] Richard Stoakley, Matthew J Conway, and Randy Pausch. 1995. Virtual Reality on a WIM: Interactive Worlds in Miniature. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI ’95). ACM Press/Addison-Wesley Publishing Co., New York, NY, USA, 265–272. https://doi.org/10.1145/223904. 223938 [45] Markus Tatzgern, Raphael Grasset, Eduardo Veas, Denis Kalkofen, Hartmut Seichter, and Dieter Schmalstieg. 2015. Exploring real world points of interest: Design and evaluation of object-centric exploration techniques for augmented reality. Pervasive and Mobile Computing 18 (April 2015), 55–70. https://doi.org/ 10.1016/j.pmcj.2014.08.010 [46] Drey Tobias. 2018. Data Visualisation using Augmented Reality with a Focus set on Head Mounted Displays and Collaborative Tasks. International Symposium on NDT in Aerospace 10 (2018), 1–9. [47] Ramón Trueba, Carlos Andujar, and Ferran Argelaguet. 2009. Complexity and Occlusion Management for the World-in-Miniature Metaphor. In Smart Graphics, Andreas Butz, Brian Fisher, Marc Christie, Antonio Krüger, Patrick Olivier, and Roberto Therón (Eds.). Springer Berlin Heidelberg, Berlin, Heidelberg, 155–166. [48] Eduardo Veas, Raphael Grasset, Ernst Kruijf, and Dieter Schmalstieg. 2012. Extended Overview Techniques for Outdoor Augmented Reality. IEEE Transactions on Visualization and Computer Graphics 18, 4 (April 2012), 565–572. https://doi.org/10.1109/TVCG.2012.44 Conference Name: IEEE Transactions on Visualization and Computer Graphics. [49] C A Wingrave, Y Haciahmetoglu, and D A Bowman. 2006. Overcoming World in Miniature Limitations by a Scaled and Scrolling WIM. In 3D User Interfaces, 2006. 3DUI 2006. IEEE Symposium on, Vol. 2006. IEEE, 11–16."
+    }],
+    "title": {
+      "page": 13,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 123.21257781982422,
+        "y1": 86.7980728149414,
+        "y2": 93.64898681640625
       },
       "text": "REFERENCES"
     }

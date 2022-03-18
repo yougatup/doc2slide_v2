@@ -1,6 +1,8 @@
 var MAX_ELEMENTS_PER_SLIDE = 4;
 var SLIDES_PER_MIN = 2;
 
+var curMouseDown = 0;
+
 // var API_URL= 'https://server.hyungyu.com:5713/'
 var API_URL= 'http://localhost:8010/proxy/'
 var rowSelected = false;
@@ -242,14 +244,16 @@ function getOutlineDiv(outline, slides) {
 function getSlideThumbnail(presentationIndex, outline, slides) {
 	var result = '';
 
+	var idx = examplePresentations[presentationIndex].index;
+
 	for(var i=0;i<outline.length;i++) {
 		result = result + "<div class='examplePresentationSlideThumbnailOutlineSegment' segmentIndex='" + i + "' style='background-color: " + outline[i].colorCode + "'> ";
 
 		for(var j=outline[i].startSlideIndex;j<(i >= outline.length-1 ? slides.length : outline[i+1].startSlideIndex);j++) {
-			result = result + "<div class='examplePresentationSlideThumbnailImageDiv'> " + 
+			result = result + "<div class='examplePresentationSlideThumbnailImageDiv' presentationIndex='" + presentationIndex + "' thumbnailIndex='" + j + "'> " + 
 				"<div class='examplePresentationSlideThumbnailNumber'>" + j + "</div>" +
 				"<img class='examplePresentationSlideThumbnailImage' " + 
-				"src='http://localhost:8000/slideThumbnail/" + presentationIndex + "/images/" + j + ".jpg'> </img>" + 
+				"src='http://localhost:8000/slideThumbnail/" + idx  + "/images/" + j + ".jpg'> </img>" + 
 				"<div class='examplePresentationSlideThumbnailLabel'> " + 
 					getDurationString((slides[j].endTime - slides[j].startTime) / 60) + 
 				"</div>" + 
@@ -262,23 +266,138 @@ function getSlideThumbnail(presentationIndex, outline, slides) {
 	return "<div class='examplePresentationSlideThumbnailDiv folded'> " + result + "</div>";
 }
 
-function getScriptDiv(slides) {
+function showAllScript(presentationIndex) {
 	var result = '';
+	var slides = examplePresentations[presentationIndex].slideInfo;
+	var codes = {};
+
+	for(var i=0;i<examplePresentations[presentationIndex].outline.length;i++) {
+		var start = parseInt(examplePresentations[presentationIndex].outline[i].startSlideIndex);
+		var end = parseInt(examplePresentations[presentationIndex].outline[i].endSlideIndex);
+
+		for(var j=start;j<=end;j++) {
+			codes[j] = examplePresentations[presentationIndex].outline[i].colorCode;
+		}
+	}
+
+	console.log(codes);
 
 	for(var i=0;i<slides.length;i++) {
 		result = result + "<div class='examplePresentationScriptInstance' index='" + i + "'>" +
-							"<div class='examplePresentationScriptHeader'>"  +
+							"<div class='examplePresentationScriptHeader' style='background-color: " + (i in codes ? codes[i] : '') + "'>" +
 								"<div class='examplePresentationScriptHeaderInside'>" + i + "</div>" + 
 							"</div>" + 
 							"<div class='examplePresentationScriptBody'>" + slides[i].script + "</div>" +  
 					  	  "</div>"
 	}
 
-	return "<div class='examplePresentationScriptDiv folded'>" + result + "</div>";
+	var examplePresentationObj = $(".examplePresentationInstance[index='" + presentationIndex + "']")
+	var scriptObj = examplePresentationObj.find(".examplePresentationScriptDiv");
+	
+	$(scriptObj).html(result);
+}
+
+function showScript(presentationIndex, thumbnailIndex, scrollFlag) {
+	var examplePresentationObj = $(".examplePresentationInstance[index='" + presentationIndex + "']")
+	var scriptObj = examplePresentationObj.find(".examplePresentationScriptDiv");
+
+	/*
+	$(scriptObj).html("<div class='examplePresentationScriptInstance' index='" + thumbnailIndex + "'>" +
+							"<div class='examplePresentationScriptHeader'>"  +
+								"<div class='examplePresentationScriptHeaderInside'>" + thumbnailIndex + "</div>" + 
+							"</div>" + 
+							"<div class='examplePresentationScriptBody'>" + examplePresentations[presentationIndex].slideInfo[thumbnailIndex].script + "</div>" +  
+							"</div>")
+
+							*/
+
+	if (scrollFlag) {
+		$(".examplePresentationScriptDiv[index='" + presentationIndex + "']").scrollTop(
+			$(".examplePresentationScriptInstance[index='" + thumbnailIndex + "']").position().top -
+			$(".examplePresentationScriptInstance[index='0']").position().top
+		);
+	}
+
+	// $(scriptObj).show();
+}
+
+function getScriptDiv(presentationIndex, slides) {
+	var result = '';
+
+	var codes = {};
+
+	for(var i=0;i<examplePresentations[presentationIndex].outline.length;i++) {
+		var start = parseInt(examplePresentations[presentationIndex].outline[i].startSlideIndex);
+		var end = parseInt(examplePresentations[presentationIndex].outline[i].endSlideIndex);
+
+		for(var j=start;j<=end;j++) {
+			codes[j] = examplePresentations[presentationIndex].outline[i].colorCode;
+		}
+	}
+
+	for(var i=0;i<slides.length;i++) {
+		result = result + "<div class='examplePresentationScriptInstance' index='" + i + "'>" +
+							"<div class='examplePresentationScriptHeader' style='background-color: " + (i in codes ? codes[i] : '') + "'>" +
+								"<div class='examplePresentationScriptHeaderInside'>" + i + "</div>" + 
+							"</div>" + 
+							"<div class='examplePresentationScriptBody'>" + slides[i].script + "</div>" +  
+					  	  "</div>"
+	}
+
+	return "<div class='examplePresentationScriptDiv folded' index='" + presentationIndex + "'>" + result + "</div>";
 }
 
 function getFoldingBtn(index) {
 	return "<div class='examplePresentationFoldingBtn unfold' index='" + index + "'> </div>"
+}
+
+function getThumbnailZoom(index) {
+	return "<div class='examplePresentationZoomDiv folded' index='" + index + "'> " + 
+		   "</div>"
+}
+
+function showZoomImageOnExample(presentationIndex, slideIndex, scrollFlag) {
+	var idx = examplePresentations[presentationIndex].index;
+
+	$(".examplePresentationZoomDiv[index='" + presentationIndex + "']").html(
+		"<img class='examplePresentationZoomImage' src='http://localhost:8000/slideThumbnail/" + idx + "/images/" + slideIndex + ".jpg'> </img>"
+	)
+
+	$(".examplePresentationZoomDiv[index='" + presentationIndex + "']").show();
+
+	showScript(presentationIndex, slideIndex, scrollFlag);
+
+	if(!scrollFlag) {
+		var pObj = $(".examplePresentationSlideThumbnailImageDiv[presentationIndex='" + presentationIndex + "'][thumbnailIndex='" + slideIndex + "']");
+		var sObj = pObj.parent().parent();
+
+		console.log($(sObj));
+		console.log($(pObj).position());
+		console.log($(".examplePresentationSlideThumbnailImageDiv[presentationIndex='" + presentationIndex + "'][thumbnailIndex='1']").position().left);
+
+		sObj.scrollLeft(
+			$(pObj).position().left -
+			$(".examplePresentationSlideThumbnailImageDiv[presentationIndex='" + presentationIndex + "'][thumbnailIndex='1']").position().left - 
+			($("#examplePresentationDiv").width() / 2) + 
+			$(pObj).width() / 2
+		)
+	}
+}
+
+function hideScript(presentationIndex) {
+	console.log(presentationIndex);
+	$(".examplePresentationScriptDiv[index='" + presentationIndex + "']").hide();
+}
+
+function hideZoomImageOnExample(presentationIndex) {
+	console.log("??");
+	console.log($(".examplePresentationZoomDiv[index='" + presentationIndex + "']"));
+
+	$(".examplePresentationZoomDiv[index='" + presentationIndex + "']").hide();
+
+	// hideScript(presentationIndex);
+
+	// showAllScript(presentationIndex);
 }
 
 function updateExamplePresentation() {
@@ -291,12 +410,13 @@ function updateExamplePresentation() {
 
 	for(var i=0;i<examplePresentations.length;i++) {
 		resultHtml = resultHtml + 
-				"<div class='examplePresentationInstance' index='" + i + "'> " + 
+				"<div class='examplePresentationInstance folded' index='" + i + "'> " + 
 					"<div class='examplePresentationInstanceTitle'>" + examplePresentations[i].title + "</div>" + 
 					getKeywordDiv(examplePresentations[i].keywords) + 
 					getOutlineDiv(examplePresentations[i].outline, examplePresentations[i].slideInfo) + 
-					getSlideThumbnail(examplePresentations[i].index, examplePresentations[i].outline, examplePresentations[i].slideInfo) + 
-					getScriptDiv(examplePresentations[i].slideInfo) + 
+					getSlideThumbnail(i, examplePresentations[i].outline, examplePresentations[i].slideInfo) + 
+					getThumbnailZoom(i) + 
+					getScriptDiv(i, examplePresentations[i].slideInfo) + 
 					getFoldingBtn(i) + 
 				"</div>"
 	}
@@ -830,7 +950,7 @@ async function createSlide(presentationIDToAdapt, contents, layoutSlideID, style
 
 async function initializeDB() {
 	var presentationList = [
-		0, 4, 6,
+		4, 6,
             7,
 	];
 
@@ -7543,7 +7663,9 @@ function updateOutlineSegments() {
 
 		"<div class='outlineSegmentElement " + (outlineStructure[i].status == "need_name" ? "outlineSegmentElementWaiting" : "") + "' " + 
 			 "index='" + i + "'> " + 
-				parseInt(outlineStructure[i].duration) + ":" + parseInt((outlineStructure[i].duration - parseInt(outlineStructure[i].duration)) * 60) + 
+			 "<div class='outlineSegmentElementDuration'> " + 
+			 	getDurationString(outlineStructure[i].duration) + 
+			 "</div>" + 
 				( outlineStructure[i].status == "okay" ? 
 			 		"<div class='outlineSegmentElementSlideIndex'>" + 
 			 			"Slide " + outlineStructure[i].endSlideIndex + 
@@ -7577,6 +7699,32 @@ function updateOutlineSegments() {
 	issueEvent("root_highlightSlideThumbnail", {outlineStructure: outlineStructure})
 
 	selectSegment(selectedOutlineIndex);
+
+	$(".outlineSegmentElement").resizable({
+		handles: 'e',
+		resize: function(e, ui) {
+			var target = $(e.target)
+
+			var totalWidth = $("#outlineSegments").width();
+
+			var segmentIndex = parseInt($(target).attr("index"));
+			var targetWidth = $(target).width();
+
+			var labelObj = $(".outlineSegmentLabelElement[index='" + segmentIndex + "']")
+
+			$(labelObj).width(targetWidth);
+
+			var duration = targetWidth / totalWidth * curPresentationDuration;
+
+			$(target).find(".outlineSegmentElementDuration").html(getDurationString(duration));
+
+			outlineStructure[segmentIndex].duration = duration;
+			outlineStructure[segmentIndex].endX = outlineStructure[segmentIndex].startX + targetWidth;
+		},
+		stop: function(e, ui) {
+			updateOutlineSegments();
+		}
+	}); 
 
 	$("#outlineSegments").sortable({
 		items: $(".outlineSegmentElement"),
@@ -7706,6 +7854,83 @@ function selectSegment(index, locateFlag) {
 }
 
 $(document).ready(function() {
+	document.body.onmousedown = function() { 
+  	++curMouseDown;
+	}
+	document.body.onmouseup = function() {
+  	--curMouseDown;
+	}
+
+	$(document).on("mouseover", ".examplePresentationSlideThumbnailImage", function(e) {
+		var obj = $(e.target).parent();
+		
+		var presentationIndex = $(obj).attr("presentationIndex");
+		var slideIndex = $(obj).attr("thumbnailIndex");
+
+		showZoomImageOnExample(presentationIndex, slideIndex, true);
+	})
+
+	$(document).on("click", ".examplePresentationScriptHeader", function(e) {
+		console.log(e.target);
+
+		var presentationIndex = parseInt($(e.target).parent().parent().parent().attr("index"));
+		var thumbnailIndex = parseInt($(e.target).html());
+
+		console.log(presentationIndex, thumbnailIndex);
+
+		selectSlideThumbnail(presentationIndex, thumbnailIndex, false);
+	})
+
+	$(document).on("mouseleave", ".examplePresentationSlideThumbnailImage", function(e) {
+		var obj = $(e.target).parent();
+		
+		var presentationIndex = $(obj).attr("presentationIndex");
+		var slideIndex = $(obj).attr("thumbnailIndex");
+
+		var clickedObj = $(this).parent().parent().parent().find(".thumbnailClicked");
+
+		console.log($(clickedObj));
+
+		if ($(clickedObj).length > 0) {
+			clickedObj = $(clickedObj).parent();
+
+			var pIndex = $(clickedObj).attr("presentationIndex");
+			var sIndex = $(clickedObj).attr("thumbnailIndex");
+
+			showZoomImageOnExample(pIndex, sIndex, true);
+		}
+		else hideZoomImageOnExample(presentationIndex);
+	})
+
+	function selectSlideThumbnail(presentationIndex, slideIndex, scrollFlag) {
+		var obj = $(".examplePresentationSlideThumbnailImageDiv[presentationIndex='" + presentationIndex + "'][thumbnailIndex='" + slideIndex + "']");
+
+		$(obj).parent().parent().find(".examplePresentationSlideThumbnailImage").removeClass("thumbnailClicked");
+
+		showZoomImageOnExample(presentationIndex, slideIndex, scrollFlag);
+
+		$(obj).find(".examplePresentationSlideThumbnailImage").addClass("thumbnailClicked");
+	}
+
+	$(document).on("click", ".examplePresentationSlideThumbnailImage", function(e) {
+		var obj = $(e.target).parent();
+		
+		var presentationIndex = $(obj).attr("presentationIndex");
+		var slideIndex = $(obj).attr("thumbnailIndex");
+
+		/*
+		if($(this).hasClass("thumbnailClicked")) {
+			$(this).removeClass("thumbnailClicked");
+
+			hideZoomImageOnExample(presentationIndex);
+		}
+		else {
+		}
+		*/
+
+		selectSlideThumbnail(presentationIndex, slideIndex, true);
+	})
+
 	$(document).on("click", ".examplePresentationFoldingBtn", function(e) {
 		var idx = parseInt($(this).attr("index"));
 
@@ -7714,15 +7939,19 @@ $(document).ready(function() {
 		var presentationInstanceObj = $(".examplePresentationInstance[index='" + idx + "']");
 
 		if($(presentationInstanceObj).hasClass("folded")) {
+			selectSlideThumbnail(idx, 1, true);
+
 			$(presentationInstanceObj).removeClass("folded").addClass("unfolded");
 			$(presentationInstanceObj).find(".examplePresentationSlideThumbnailDiv").removeClass("folded").addClass("unfolded");
 			$(presentationInstanceObj).find(".examplePresentationScriptDiv").removeClass("folded").addClass("unfolded");
+			$(presentationInstanceObj).find(".examplePresentationZoomDiv").removeClass("folded").addClass("unfolded");
 			$(presentationInstanceObj).find(".examplePresentationFoldingBtn").removeClass("unfold").addClass("fold");
 		}
 		else {
 			$(presentationInstanceObj).removeClass("unfolded").addClass("folded");
 			$(presentationInstanceObj).find(".examplePresentationSlideThumbnailDiv").removeClass("unfolded").addClass("folded");
 			$(presentationInstanceObj).find(".examplePresentationScriptDiv").removeClass("unfolded").addClass("folded");
+			$(presentationInstanceObj).find(".examplePresentationZoomDiv").removeClass("unfolded").addClass("folded");
 			$(presentationInstanceObj).find(".examplePresentationFoldingBtn").removeClass("fold").addClass("unfold");
 		}
 	})
@@ -7782,7 +8011,18 @@ $(document).ready(function() {
 		updateMessageBox();
 	})
 
+	$(document).on("mouseover", "#outlineSegmentEvent", function(e) {
+		if (curMouseDown <= 0) {
+			$("#outlineSegmentEventLeft").show();
+			$("#outlineSegmentLabelTemp").show();
+		}
+		$(".outlineSegmentHovered").removeClass("outlineSegmentHovered");
+	})
+
 	$(document).on("mouseleave", "#outlineSegmentEvent", function(e) {
+		$("#outlineSegmentEventLeft").hide();
+		$("#outlineSegmentLabelTemp").hide();
+
 		$(".outlineSegmentHovered").removeClass("outlineSegmentHovered");
 	})
 	
@@ -7911,16 +8151,21 @@ $(document).ready(function() {
 	})
 
 	$(document).on("mousemove", "#outlineSegmentEvent", function(e) {
-		var relX = e.pageX - $(this).offset().left;
-		var relY = e.pageY - $(this).offset().top;
+		if (curMouseDown <= 0) {
+			$("#outlineSegmentEventLeft").show();
+			$("#outlineSegmentLabelTemp").show();
 
-		var totalWidth = $("#outlineSegmentDiv").width();
+			var relX = e.pageX - $(this).offset().left;
+			var relY = e.pageY - $(this).offset().top;
 
-		relX = Math.max(Math.min(relX, totalWidth), 0);
+			var totalWidth = $("#outlineSegmentDiv").width();
 
-		var p = relX / totalWidth;
+			relX = Math.max(Math.min(relX, totalWidth), 0);
 
-		handleOutlineEvent(relX, p);
+			var p = relX / totalWidth;
+
+			handleOutlineEvent(relX, p);
+		}
 	});
 
 	$(document).on("input", "#outlineTimeInput", function(e) {

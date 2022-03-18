@@ -1,112 +1,118 @@
-CCS CONCEPTS
-KEYWORDS
-ACM Reference Format:
-ACM Reference Format:
-ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-2 BACKGROUND Autonomous distributed energy systems
-2 BACKGROUND Autonomous distributed energy systems
-2 BACKGROUND Autonomous distributed energy systems
-2 BACKGROUND Autonomous distributed energy systems
-Related work
-Related work
-Related work
-Related work
-3 PROBLEMATISING THE INVISIBLE
-3 PROBLEMATISING THE INVISIBLE
-3 PROBLEMATISING THE INVISIBLE
-3 PROBLEMATISING THE INVISIBLE
-3 PROBLEMATISING THE INVISIBLE
-3 PROBLEMATISING THE INVISIBLE
-Designing the critique
-Designing the critique
-Designing the critique
-Designing the critique
-Designing the critique
-Designing the critique
-Designing the critique
-Designing the critique
-Designing the critique
-Designing the critique
-Dramatising the critique
-Dramatising the critique
-Dramatising the critique
-Dramatising the critique
-Dramatising the critique
-Dramatising the critique
-Dramatising the critique
-Dramatising the critique
-4 FUSING DESIGN, DRAMA AND DELIBERATION
-4 FUSING DESIGN, DRAMA AND DELIBERATION
-4 FUSING DESIGN, DRAMA AND DELIBERATION
-4 FUSING DESIGN, DRAMA AND DELIBERATION
-4 FUSING DESIGN, DRAMA AND DELIBERATION
-Introductory improvisation
-Introductory improvisation
-Introductory improvisation
-Introductory improvisation
-Introductory improvisation
-Introductory improvisation
-Introductory improvisation
-Introductory improvisation
-Introductory improvisation
-Introductory improvisation
-Introductory improvisation
-Introductory improvisation
-Introductory improvisation
-Introductory improvisation
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-Deliberation with sketches
-5 DISCUSSION Design, drama and deliberation: enabling meaningful public engagement
-5 DISCUSSION Design, drama and deliberation: enabling meaningful public engagement
-5 DISCUSSION Design, drama and deliberation: enabling meaningful public engagement
-5 DISCUSSION Design, drama and deliberation: enabling meaningful public engagement
-5 DISCUSSION Design, drama and deliberation: enabling meaningful public engagement
-5 DISCUSSION Design, drama and deliberation: enabling meaningful public engagement
-5 DISCUSSION Design, drama and deliberation: enabling meaningful public engagement
-5 DISCUSSION Design, drama and deliberation: enabling meaningful public engagement
-5 DISCUSSION Design, drama and deliberation: enabling meaningful public engagement
-6 CONCLUSION
-7 ACKNOWLEDGMENTS
-7 ACKNOWLEDGMENTS
-7 ACKNOWLEDGMENTS
-REFERENCES
-REFERENCES
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+2.1 Long-Distance Relationships
+2.1 Long-Distance Relationships
+2.1 Long-Distance Relationships
+2.1 Long-Distance Relationships
+2.2 Always-On Channels
+2.2 Always-On Channels
+2.3 Bedrooms
+2.4 Privacy
+2.4 Privacy
+2.5 Inking
+2.5 Inking
+3 MOTIVATION AND RESEARCH AIMS
+3 MOTIVATION AND RESEARCH AIMS
+3 MOTIVATION AND RESEARCH AIMS
+3 MOTIVATION AND RESEARCH AIMS
+4 SYSTEM DESIGN
+4 SYSTEM DESIGN
+4 SYSTEM DESIGN
+4 SYSTEM DESIGN
+4 SYSTEM DESIGN
+5 STUDY DESIGN
+5 STUDY DESIGN
+5 STUDY DESIGN
+5 STUDY DESIGN
+5 STUDY DESIGN
+5 STUDY DESIGN
+5 STUDY DESIGN
+5.1 Participants
+5.1 Participants
+5.1 Participants
+6.1 Engagement
+6.1 Engagement
+6.1 Engagement
+6.1 Engagement
+6.1 Engagement
+6.1 Engagement
+6.1 Engagement
+6.1 Engagement
+6.1 Engagement
+6.1 Engagement
+6.1 Engagement
+6.1 Engagement
+6.1 Engagement
+6.1 Engagement
+6.1 Engagement
+6.1 Engagement
+6.2 Slow Photo Stream
+6.2 Slow Photo Stream
+6.2 Slow Photo Stream
+6.2 Slow Photo Stream
+6.2 Slow Photo Stream
+6.2 Slow Photo Stream
+6.2 Slow Photo Stream
+6.2 Slow Photo Stream
+6.2 Slow Photo Stream
+6.2 Slow Photo Stream
+6.2 Slow Photo Stream
+6.3 Inking
+6.3 Inking
+6.3 Inking
+6.3 Inking
+6.3 Inking
+6.3 Inking
+6.3 Inking
+6.3 Inking
+6.3 Inking
+6.3 Inking
+6.3 Inking
+6.3 Inking
+6.3 Inking
+6.3 Inking
+6.4 Appropriateness in Bedrooms
+6.4 Appropriateness in Bedrooms
+6.4 Appropriateness in Bedrooms
+6.4 Appropriateness in Bedrooms
+6.5 Relationship
+6.5 Relationship
+6.5 Relationship
+6.5 Relationship
+6.5 Relationship
+6.5 Relationship
+6.5 Relationship
+6.5 Relationship
+6.5 Relationship
+6.5 Relationship
+6.5 Relationship
+6.5 Relationship
+6.5 Relationship
+7 DISCUSSION
+7 DISCUSSION
+7.1 Slow Photo Stream
+7.1 Slow Photo Stream
+7.1 Slow Photo Stream
+7.1 Slow Photo Stream
+7.1 Slow Photo Stream
+7.1 Slow Photo Stream
+7.2 Inking
+7.2 Inking
+7.2 Inking
+7.2 Inking
+7.3 Limitations and Future Work
+7.3 Limitations and Future Work
+7.3 Limitations and Future Work
+7.3 Limitations and Future Work
+7.3 Limitations and Future Work
+8 CONCLUSION
+8 CONCLUSION
+ACKNOWLEDGMENTS
 REFERENCES
 REFERENCES
 REFERENCES
