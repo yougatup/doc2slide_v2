@@ -1,0 +1,78 @@
+CCS CONCEPTS
+KEYWORDS
+ACM Reference Format:
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+2 BACKGROUND AND RELATEDWORK
+2 BACKGROUND AND RELATEDWORK
+2 BACKGROUND AND RELATEDWORK
+2 BACKGROUND AND RELATEDWORK
+2 BACKGROUND AND RELATEDWORK
+3 SPRINGLETS
+Actuation Mechanism and Design Factors
+Actuation Mechanism and Design Factors
+Actuation Mechanism and Design Factors
+Actuation Mechanism and Design Factors
+Actuation Mechanism and Design Factors
+Actuation Mechanism and Design Factors
+Actuation Mechanism and Design Factors
+Actuation Mechanism and Design Factors
+Actuation Mechanism and Design Factors
+Fabrication
+Fabrication
+Fabrication
+Fabrication
+Fabrication
+Fabrication
+Fabrication
+Implementation
+Implementation
+Implementation
+Implementation
+Implementation
+Implementation
+Implementation
+Implementation
+Implementation
+4 EVALUATION
+4 EVALUATION
+4 EVALUATION
+4 EVALUATION
+4 EVALUATION
+4 EVALUATION
+4 EVALUATION
+4 EVALUATION
+4 EVALUATION
+Results
+Results
+Results
+Results
+Discussion
+Discussion
+Discussion
+Discussion
+Discussion
+Discussion
+5 APPLICATIONS
+5 APPLICATIONS
+5 APPLICATIONS
+5 APPLICATIONS
+5 APPLICATIONS
+6 LIMITATIONS AND FUTUREWORK
+6 LIMITATIONS AND FUTUREWORK
+7 CONCLUSION
+ACKNOWLEDGMENTS
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES

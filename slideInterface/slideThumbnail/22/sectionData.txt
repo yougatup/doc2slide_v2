@@ -1,0 +1,147 @@
+CCS CONCEPTS
+CCS CONCEPTS
+KEYWORDS
+ACM Reference Format:
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+2 OUR APPROACH: PREEMPTIVE ACTION
+2 OUR APPROACH: PREEMPTIVE ACTION
+3 RELATEDWORK
+Sense of agency
+Sense of agency
+Sense of agency
+Sense of agency
+Sense of agency
+Sense of agency
+Sense of agency
+Sense of agency
+Sense of agency
+Sense of agency
+Sense of agency
+Sense of agency
+Haptic actuation systems
+Haptic actuation systems
+Electrical Muscle Stimulation
+Electrical Muscle Stimulation
+Electrical Muscle Stimulation
+Electrical Muscle Stimulation
+Electrical Muscle Stimulation
+4 USER STUDY 1: MEASURING AGENCY IN PREEMPTIVE HAPTIC SYSTEMS
+Apparatus
+Apparatus
+Apparatus
+Apparatus
+Apparatus
+Apparatus
+Apparatus
+Apparatus
+Apparatus
+Apparatus
+Apparatus
+Task
+Task
+Task
+Procedure
+Participants
+Participants
+Results
+Results
+Results
+Results
+Results
+Results
+Results
+Results
+Results
+Results
+Results
+Results
+Results
+Results
+Results
+Results
+Qualitative results
+5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
+5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
+5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
+5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
+5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
+5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
+5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
+5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
+5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
+6 USER STUDY 2: USING OUR MODEL TO OPTIMIZE FOR BOTH AGENCY AND REACTION TIME
+6 USER STUDY 2: USING OUR MODEL TO OPTIMIZE FOR BOTH AGENCY AND REACTION TIME
+Hypotheses
+Hypotheses
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Interface conditions
+Experimental design
+Participants
+Results
+Results
+Results
+Results
+Results
+Results
+Results
+Results
+Results
+Results
+7 LIMITATIONS OF OUR STUDY DESIGNS
+7 LIMITATIONS OF OUR STUDY DESIGNS
+7 LIMITATIONS OF OUR STUDY DESIGNS
+7 LIMITATIONS OF OUR STUDY DESIGNS
+7 LIMITATIONS OF OUR STUDY DESIGNS
+7 LIMITATIONS OF OUR STUDY DESIGNS
+8 DEMONSTRATING HOW TO APPLY OUR FINDINGS
+8 DEMONSTRATING HOW TO APPLY OUR FINDINGS
+8 DEMONSTRATING HOW TO APPLY OUR FINDINGS
+8 DEMONSTRATING HOW TO APPLY OUR FINDINGS
+8 DEMONSTRATING HOW TO APPLY OUR FINDINGS
+8 DEMONSTRATING HOW TO APPLY OUR FINDINGS
+8 DEMONSTRATING HOW TO APPLY OUR FINDINGS
+9 GROUNDING OUR RESULTS IN THE LITERATURE
+9 GROUNDING OUR RESULTS IN THE LITERATURE
+9 GROUNDING OUR RESULTS IN THE LITERATURE
+9 GROUNDING OUR RESULTS IN THE LITERATURE
+9 GROUNDING OUR RESULTS IN THE LITERATURE
+10 OUTLOOK AND FURTHER IMPLICATIONS
+10 OUTLOOK AND FURTHER IMPLICATIONS
+11 CONCLUSIONS
+11 CONCLUSIONS
+11 CONCLUSIONS
+ACKNOWLEDGMENTS
+ACKNOWLEDGMENTS
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES

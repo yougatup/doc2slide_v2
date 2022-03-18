@@ -1,0 +1,74 @@
+CCS CONCEPTS
+ACM Reference Format:
+ACM Reference Format:
+1 INTRODUCTION
+1 INTRODUCTION
+2 RELATEDWORK
+Perception
+Perception
+Perception
+Perception
+Perception
+Perception
+Animated Scatterplots
+Animated Scatterplots
+Animated Scatterplots
+Animated Scatterplots
+3 SALIENCY
+3 SALIENCY
+3 SALIENCY
+4 EXPERIMENTAL DESIGN
+4 EXPERIMENTAL DESIGN
+4 EXPERIMENTAL DESIGN
+4 EXPERIMENTAL DESIGN
+4 EXPERIMENTAL DESIGN
+Stimuli
+Stimuli
+Stimuli
+Stimuli
+Stimuli
+Stimuli
+Procedure
+Procedure
+Procedure
+5 EXPERIMENT RESULTS
+Channel Contributions
+Channel Contributions
+Channel Contributions
+Channel Contributions
+Channel Contributions
+Channel Contributions
+Channel Contributions
+Channel Contributions
+Channel Contributions
+Channel Contributions
+Which features mislead?
+Which features mislead?
+Which features mislead?
+Which features mislead?
+Which features mislead?
+Which features mislead?
+Which features mislead?
+Which features mislead?
+Replays
+Replays
+Replays
+Replays
+6 DISCUSSION
+6 DISCUSSION
+7 LIMITATIONS
+7 LIMITATIONS
+7 LIMITATIONS
+7 LIMITATIONS
+8 CONCLUSION
+8 CONCLUSION
+ACKNOWLEDGEMENTS
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
