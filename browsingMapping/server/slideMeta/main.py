@@ -125,13 +125,9 @@ class Main:
         mask, mask_rects = None, []
 
         if os.path.isfile(th_path) is False or self.use_stored_mask is False:
-            acc_frame = None
-            if os.path.isfile(acc_frame_path):
-                acc_frame = cv2.imread(acc_frame_path, cv2.IMREAD_GRAYSCALE)
-            else:
-                acc_frame = self.detection.get_acc_frame(cv2.VideoCapture(
-                    self.vidpath
-                ))
+            acc_frame = self.detection.get_acc_frame(cv2.VideoCapture(
+                self.vidpath
+            ))
             mask, mask_rects = self.detection.mask_talking_head(acc_frame)
             self.save_mask(mask_rects, mask.shape[0], mask.shape[1]) 
         else:
