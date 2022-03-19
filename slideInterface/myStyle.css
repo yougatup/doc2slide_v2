@@ -1,3 +1,6 @@
+html {
+	font-family: Arial,Helvetica,sans-serif
+}
 body {
 padding: 0px;
 margin: 0px;
@@ -2248,6 +2251,10 @@ width: 100%;
 	  position: relative;
   }
 
+  #outlineSegmentEventLeft {
+	border-right: 5px solid #ff7777;
+  }
+  /*
   #outlineSegmentEvent:hover #outlineSegmentEventLeft{
 	  display: block;
 	  border-right: 5px solid #ff7777;
@@ -2256,6 +2263,7 @@ width: 100%;
   #outlineSegmentEvent:hover #outlineSegmentLabelTemp {
 	  display: block;
   }
+  */
 
   #outlineSegmentEventLeft {
 	  height: calc(100% - 12px);
@@ -2406,6 +2414,7 @@ width: 100%;
 	  padding-left: 0px;
 	  overflow: auto;
 	  height: 100%;
+	  padding-right: 0px;
   }
 
   #examplePresentationListDivTitle {
@@ -2417,18 +2426,43 @@ width: 100%;
 
   #examplePresentationListBody {
 	  width: 100%;
-	  height: calc(100% - 100px);
-	  overflow: auto;
+	  height: 100%;
+	  padding-right: 5px;
+	  box-sizing: border-box;
+	  overflow-y: auto;
+	  overflow-x: hidden;
   }
+  /*
+  #examplePresentationListBody::-webkit-scrollbar {
+	display: none;
+  }
+  */
+#examplePresentationListBody::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+#examplePresentationListBody::-webkit-scrollbar:vertical {
+    width: 11px;
+}
+
+#examplePresentationListBody::-webkit-scrollbar:horizontal {
+    height: 11px;
+}
+
+#examplePresentationListBody::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 2px solid white; /* should match background, can't be transparent */
+    background-color: rgba(0, 0, 0, .5);
+}
 
   .examplePresentationInstance {
 	  padding-bottom: 10px;
-	  border-bottom: 1px solid black;
+	  border-bottom: 3px solid gray;
   }
 
   .examplePresentationInstanceTitle {
 	  margin-top: 20px;
-	  font-size: 18px;
+	  font-size: 20px;
 	  margin-bottom: 5px;
   }
 
@@ -2459,42 +2493,82 @@ width: 100%;
   
 
   .examplePresentationSlideThumbnailOutlineSegment {
-	  display: inline-block;
 	  margin-left: 5px;
 	  margin-right: 5px;
-	  border-radius: 10px;
-	  height: 120px;
+	  width: 180px;
   }
 
   .examplePresentationSlideThumbnailImageDiv {
-	  display: inline-block;
-	  width: 100px;
-	  height: 80px;
+	  width: 180px;
+	  height: 100px;
+	  position: relative;
+	  object-fit: contain;
   }
 
   .examplePresentationSlideThumbnailDiv {
 	  margin-top: 10px;
-	  overflow-x: auto;
-	  white-space: nowrap;
+	  padding-bottom: 10px;
+	  height: 600px;
+	  overflow-y: auto;
+	  overflow-x: hidden;
+	  display: inline-block;
+	  width: 200px;
   }
 
+.examplePresentationSlideThumbnailDiv::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.examplePresentationSlideThumbnailDiv::-webkit-scrollbar:vertical {
+    width: 11px;
+}
+
+.examplePresentationSlideThumbnailDiv::-webkit-scrollbar:horizontal {
+    height: 11px;
+}
+
+.examplePresentationSlideThumbnailDiv::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 2px solid white; /* should match background, can't be transparent */
+    background-color: rgba(0, 0, 0, .5);
+}
+
+
+  /*
   .examplePresentationSlideThumbnailDiv::-webkit-scrollbar {
 	display: none;
   }
+  */
 
   .examplePresentationScriptDiv {
 	  overflow: auto;
 	  height: 200px;
-	  width: 100%;
+	  width: calc(100% - 20px);
 	  margin-top: 10px;
-	  border-radius: 10px;
+	  margin-left: 10px;
+	  margin-right: 10px;
 	  background-color: #dddddd;
-	  border: 1px solid black;
+	  border: 1px solid gray;
   }
 
-  .examplePresentationScriptDiv::-webkit-scrollbar {
-	display: none;
-  }
+.examplePresentationScriptDiv::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.examplePresentationScriptDiv::-webkit-scrollbar:vertical {
+    width: 11px;
+}
+
+.examplePresentationScriptDiv::-webkit-scrollbar:horizontal {
+    height: 11px;
+}
+
+.examplePresentationScriptDiv::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 2px solid lightgray; /* should match background, can't be transparent */
+    background-color: rgba(0, 0, 0, .5);
+}
+
 
 
 
@@ -2513,7 +2587,7 @@ width: 100%;
 	  font-size: 13px;
 	  border-radius: 20px;
 	  position: relative;
-	  background-color: #ffecbd;
+	  cursor: pointer;
   }
 
   .examplePresentationScriptHeaderInside {
@@ -2550,6 +2624,7 @@ width: 100%;
 
   .examplePresentationOutlineSegmentLabelDiv {
 	  height: 15px;
+	  position: relative;
   }
 
   .examplePresentationSlideThumbnailLabel {
@@ -2559,18 +2634,26 @@ width: 100%;
 
   .examplePresentationDuration {
 	  position: absolute;
-	  right: 10px;
+	  right: 0px;
+	  top: -40px;
 	  font-size: 14px;
   }
 
 
   .examplePresentationSlideThumbnailImage {
-	  height: 100%;
-	  width: 100%;
+	  height: calc(100% - 10px);
+	  width: calc(100% - 40px);
+	  cursor: pointer;
+	  object-fit: cover;
+	  margin-top: 5px;
+	  margin-left: 29px;
+	  border-radius: 8px;
+	  border: 1px solid gray;
+	  box-sizing: border-box;
   }
 
   .examplePresentationSlideThumbnailImage:hover {
-	  border: 2px solid red;
+	  border: 2px solid gray;
 	  box-sizing: border-box;
   }
 
@@ -2582,13 +2665,12 @@ width: 100%;
 	  cursor: pointer;
   }
 
-
-  .examplePresentationScriptDiv.folded, .examplePresentationSlideThumbnailDiv.folded {
-	  display: none;
+  .examplePresentationFoldDiv.folded, .examplePresentationSlideThumbnailDiv.folded {
+	  display: none !important;
   }
 
-  .examplePresentationScriptDiv.unfolded, .examplePresentationSlideThumbnailDiv.unfolded {
-	  display: block;
+  .examplePresentationFoldDiv.unfolded {
+	  display: block !important;
   }
 
   .examplePresentationFoldingBtn.unfold {
@@ -2601,7 +2683,58 @@ width: 100%;
 	  background-size: cover;
   }
 
+  .examplePresentationSlideThumbnailNumber {
+	  text-align: right;
+	  font-size: 11px;
+	  display: inline-block;
+	  top: 6px;
+	  position: absolute;
+	  width: 12px;
+	  left: 14px;
+  }
 
-  .examplePresentationThumbnailNumber {
-	  text-align: center;
+  .examplePresentationZoomDiv {
+	  height: 380px;
+	  width: calc(100% - 20px);
+	  margin: 10px;
+	  display: none;
+	  margin-top: 5px;
+	  margin-bottom: 5px;
+  }
+
+  .examplePresentationZoomImage {
+	  height: 100%;
+	  width: 90%;
+	  margin-left: 5%;
+	  object-fit: cover;
+  }
+  
+  .examplePresentationSlideThumbnailImage.thumbnailClicked {
+	  border: 2px solid #e79912;
+	  box-sizing: border-box;
+  }
+
+  .examplePresentationSlideThumbnailImageDiv.thumbnailClicked {
+	  background-color: #fdf5e0;
+  }
+
+  .outlineSegmentElementDuration {
+	  display: inline-block;
+  }
+
+  .examplePresentationPreviewDiv {
+	  width: calc(100% - 200px);
+	  display: inline-block;
+	  height: 600px;
+  }
+
+
+  .examplePresentationFoldDiv {
+	  margin-top: 10px;
+  }
+
+  .examplePresentationSlideThumbnailColorLabel {
+	  width: 10px;
+	  height: 100%;
+	  display: inline-block;
   }

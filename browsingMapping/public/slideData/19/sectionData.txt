@@ -2,59 +2,123 @@ CCS CONCEPTS
 KEYWORDS
 ACM Reference Format:
 ACM Reference Format:
+ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-2 RELATEDWORK
-2 RELATEDWORK
-2 RELATEDWORK
-2 RELATEDWORK
-3 PILOT STUDY
-3 PILOT STUDY
-3 PILOT STUDY
-3 PILOT STUDY
-4 EXPERIMENTAL EVALUATION
-Participants
-Participants
-Participants
-Devices
-Devices
-Devices
-Devices
-Devices
-Devices
-Devices
-Devices
-Procedure
-Procedure
-Procedure
-Measures
-Measures
-Measures
-Hypotheses
-5 RESULTS
-5 RESULTS
-NASA Task Load Index
-Participant Preference
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+Technology Overuse
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+3 CHARACTERIZING DIGITAL WELLBEING APPS
+Method
+Method
+Method
+Method
+Findings
+Findings
+Findings
+Findings
+Findings
+4 REVIEWS’ ANALYSIS
+Method
+Method
+Method
+Method
+Method
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+5 DIGITAL WELLBEING IN THE WILD
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
 6 DISCUSSION
-6 DISCUSSION
-6 DISCUSSION
-6 DISCUSSION
-6 DISCUSSION
-6 DISCUSSION
-6 DISCUSSION
-6 DISCUSSION
-Synthesis of Time and Errors: An Outline of Future Work
-Synthesis of Time and Errors: An Outline of Future Work
-Synthesis of Time and Errors: An Outline of Future Work
-Synthesis of Time and Errors: An Outline of Future Work
-Synthesis of Time and Errors: An Outline of Future Work
-Synthesis of Time and Errors: An Outline of Future Work
-Synthesis of Time and Errors: An Outline of Future Work
-Synthesis of Time and Errors: An Outline of Future Work
-Synthesis of Time and Errors: An Outline of Future Work
-7 CONCLUSION
-ACKNOWLEDGEMENTS
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Self Monitoring vs. Habit Formation
+Self Monitoring vs. Habit Formation
+Self Monitoring vs. Habit Formation
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+7 LIMITATIONS
+7 LIMITATIONS
+8 CONCLUSIONS AND FUTURE WORK
 REFERENCES
 REFERENCES
 REFERENCES

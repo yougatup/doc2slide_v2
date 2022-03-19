@@ -8,79 +8,121 @@ ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-2 RELATEDWORK Engaging in Ethical Practice
-2 RELATEDWORK Engaging in Ethical Practice
-2 RELATEDWORK Engaging in Ethical Practice
-2 RELATEDWORK Engaging in Ethical Practice
-Value Sensitive Design and Related Methods
-Value Sensitive Design and Related Methods
-Value Sensitive Design and Related Methods
-Value Sensitive Design and Related Methods
-Value Sensitive Design and Related Methods
-Value Sensitive Design and Related Methods
-3 OUR APPROACH
-3 OUR APPROACH
-Participants
-Participants
-Lab Protocol Design
-Lab Protocol Design
-Lab Protocol Design
-Lab Protocol Design
-Lab Protocol Design
-Lab Protocol Design
-Lab Protocol Design
-Data Analysis
-Data Analysis
-Data Analysis
-Data Analysis
-Data Analysis
-Data Analysis
-4 RESULTS
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-LP1: Manipulation for a “Good Cause”
-5 DISCUSSION AND IMPLICATIONS
-5 DISCUSSION AND IMPLICATIONS
-5 DISCUSSION AND IMPLICATIONS
-5 DISCUSSION AND IMPLICATIONS
-Evaluating Positionality and Stakeholder Values
-Evaluating Positionality and Stakeholder Values
-Evaluating Positionality and Stakeholder Values
-Expanding Situated Knowledge of Pragmatist Ethics-in-Use
-Expanding Situated Knowledge of Pragmatist Ethics-in-Use
-Expanding Situated Knowledge of Pragmatist Ethics-in-Use
-Expanding Situated Knowledge of Pragmatist Ethics-in-Use
-6 FUTUREWORK
-7 CONCLUSION
-ACKNOWLEDGMENTS
-ACKNOWLEDGMENTS
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+Technology Overuse
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+3 CHARACTERIZING DIGITAL WELLBEING APPS
+Method
+Method
+Method
+Method
+Findings
+Findings
+Findings
+Findings
+Findings
+4 REVIEWS’ ANALYSIS
+Method
+Method
+Method
+Method
+Method
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+5 DIGITAL WELLBEING IN THE WILD
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+6 DISCUSSION
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Self Monitoring vs. Habit Formation
+Self Monitoring vs. Habit Formation
+Self Monitoring vs. Habit Formation
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+7 LIMITATIONS
+7 LIMITATIONS
+8 CONCLUSIONS AND FUTURE WORK
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
 REFERENCES
 REFERENCES
 REFERENCES

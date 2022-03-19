@@ -2,113 +2,194 @@
   "abstractText": {
     "page": 0,
     "region": {
-      "x1": 53.439998626708984,
-      "x2": 295.7105407714844,
-      "y1": 279.0429992675781,
-      "y2": 503.6499938964844
+      "x1": 53.45000076293945,
+      "x2": 295.7298889160156,
+      "y1": 210.36788940429688,
+      "y2": 423.0199890136719
     },
-    "text": "ABSTRACT Voice recording is a challenging task with many pitfalls due to sub-par recording environments, mistakes in recording setup, microphone quality, etc. Newcomers to voice recording often have difficulty recording their voice, leading to recordings with low sound quality. Many amateur recordings of poor quality have two key problems: too much reverberation (echo), and too much background noise (e.g. fans, electronics, street noise). We present VoiceAssist, a system that helps inexperienced users produce high quality recordings by providing real-time visual feedback on audio quality. We integrate modern audio quality measures into an interactive human-machine feedback loop, so that the audio quality can be maximized at capture-time. We demonstrate the utility of this feedback for improving the recording quality with a user study. When presented with visual feedback about recording quality, users produced recordings that were strongly preferred by thirdparty listeners, when compared to recordings made without this feedback."
+    "text": "ABSTRACT As smartphone use increases dramatically, so do studies about technology overuse. Many diferent mobile apps for breaking “smartphone addiction” and achieving “digital wellbeing” are available. However, it is still not clear whether and how such solutions work. Which functionality do they have? Are they efective and appreciated? Do they have a relevant impact on users’ behavior? To answer these questions, (i) we reviewed the features of 42 digital wellbeing apps, (ii) we performed a thematic analysis on 1,128 user reviews of such apps, and (iii) we conducted a 3-week-long in-the-wild study of Socialize, an app that includes the most common digital wellbeing features, with 38 participants. We discovered that digital wellbeing apps are appreciated and useful for some specifc situations. However, they do not promote the formation of new habits and they are perceived as not restrictive enough, thus not efectively helping users to change their behavior with smartphones."
   },
   "figures": [{
-    "caption": "Figure 2: An early iteration of VoiceAssist, using a time-series representation. Users in a small pilot study stated in interviews that it was difficult to record a prepared text and monitor the feedback due to its active visual footprint. In response to these reports, we eliminated the time-series representation, replacing it with simple colored boxes.",
+    "caption": "Table 3: The features implemented in Socialize.",
     "captionBoundary": {
-      "x1": 53.79800033569336,
-      "x2": 294.0330810546875,
-      "y1": 210.0966339111328,
-      "y2": 270.72393798828125
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "2",
-    "page": 2,
-    "regionBoundary": {
-      "x1": 53.0,
-      "x2": 295.0,
-      "y1": 92.0,
-      "y2": 197.0
-    }
-  }, {
-    "caption": "Table 1: The number of listeners preferring either the first recording an individual made or the second recording that person made. In the control condition the standard interface is used for both recordings. In the test condition VoiceAssist was used for the second recording.",
-    "captionBoundary": {
-      "x1": 317.65899658203125,
-      "x2": 559.6784057617188,
-      "y1": 132.54859924316406,
-      "y2": 182.2169189453125
+      "x1": 78.16619873046875,
+      "x2": 269.3836364746094,
+      "y1": 577.358642578125,
+      "y2": 582.99853515625
     },
     "figType": "Table",
-    "imageText": ["1st", "recording", "2nd", "recording", "Control", "61", "62", "Test", "30", "96"],
-    "name": "1",
-    "page": 4,
+    "imageText": ["Category", "Features", "Tracking", "Phone", "Unlocks,", "Phone", "Time,", "App", "Time,", "App", "Checking", "Data", "Presentation", "Phone", "Summary,", "App", "Summary,", "Charts,", "Daily/Widget", "Recap", "Phone", "Interven-", "tions", "Phone", "Timers,", "Phone", "Blockers,", "Take", "a", "Break", "App", "Interventions", "App", "Timers,", "App", "Blockers", "Extra", "Features", "Contextual-Based", "Interventions"],
+    "name": "3",
+    "page": 6,
     "regionBoundary": {
-      "x1": 353.0,
-      "x2": 523.0,
-      "y1": 92.0,
-      "y2": 130.0
+      "x1": 57.0,
+      "x2": 291.0,
+      "y1": 473.0,
+      "y2": 575.0
     }
   }, {
-    "caption": "Figure 1: VoiceAssist, a system that displays visual feedback on audio quality in order to help users create high-quality voice recordings. We display two quality measures, which are indicated by a color gradient ranging from red (poor quality) to green, (high quality). In this recording, there is little background noise but the room acoustics are poor. The user can make adjustments and respond to the visual feedback to improve audio quality.",
+    "caption": "Figure 4: Changes in app executions and used apps over the duration of the study. The long vertical line indicates the start of the Intervention Phase.",
+    "captionBoundary": {
+      "x1": 53.79901123046875,
+      "x2": 558.203857421875,
+      "y1": 266.0572204589844,
+      "y2": 282.6540222167969
+    },
+    "figType": "Figure",
+    "imageText": ["(a)", "App", "Executions", "(b)", "Used", "Apps"],
+    "name": "4",
+    "page": 9,
+    "regionBoundary": {
+      "x1": 94.0,
+      "x2": 518.0,
+      "y1": 102.0,
+      "y2": 248.77899169921875
+    }
+  }, {
+    "caption": "Table 1: Features ofered by digital wellbeing apps (N=42).",
+    "captionBoundary": {
+      "x1": 321.31915283203125,
+      "x2": 554.5443725585938,
+      "y1": 413.64984130859375,
+      "y2": 419.2897033691406
+    },
+    "figType": "Table",
+    "imageText": ["App", "Interven-", "tions", "App", "Timers,", "App", "Blockers,", "Noti-", "fcation", "Blockers", "Extra", "Features", "Motivational", "Quotes,", "Rewards,", "Automatic", "Interventions", "s", "Phone", "Interven-", "tions", "Phone", "Timers,", "Phone", "Blockers,", "Take", "a", "Break,", "Redesign", "UI", "ti", "on", "In", "te", "rv", "en", "Phone", "Summary,", "App", "Summary,", "Charts,", "Daily/Widget", "Recap,", "So-", "cial", "Comparison", "Time,", "App", "Checking", "Data", "Presenta-", "tion", "it", "or", "in", "g", "Tracking", "Phone", "Unlocks,", "Phone", "Time,", "App", "M", "on", "Se", "lf", "Category", "Features"],
+    "name": "1",
+    "page": 2,
+    "regionBoundary": {
+      "x1": 323.0,
+      "x2": 553.0,
+      "y1": 277.0,
+      "y2": 411.0
+    }
+  }, {
+    "caption": "Table 4: Independent t-test with Bonferroni correction for the collected metrics in the Collection Phase (CP) and Intervention Phase (IP). Gray cells indicate statistically significant diferences (p < 0.05).",
+    "captionBoundary": {
+      "x1": 317.6588134765625,
+      "x2": 559.805419921875,
+      "y1": 507.4979553222656,
+      "y2": 546.008544921875
+    },
+    "figType": "Table",
+    "imageText": ["SAS-SV", "3.04", "(0.97)", "2.92", "(0.78)", "1.000", "(0.51)", "GSE", "3.01", "(0.21)", "3.07", "(0.24)", "1.000", "(0.62)", "Usage", "(min)", "233.59", "(114.16)", "196.50", "(124.72)", ".000", "(3.96)", "Unlocks", "121.84", "(66.64)", "116.64", "(77.78)", "1.000", "(0.92)", "App", "Exec.", "630.66", "(269.33)", "581.67", "(276.06)", ".223", "(2.09)", "Used", "Apps", "23.86", "(6.41)", "22.39", "(7.17)", ".003", "(2.84)", "Metric", "CP", "-", "M", "(SD)", "IP", "-", "M", "(SD)", "p", "(t)"],
+    "name": "4",
+    "page": 7,
+    "regionBoundary": {
+      "x1": 325.0,
+      "x2": 556.0,
+      "y1": 417.0,
+      "y2": 505.0
+    }
+  }, {
+    "caption": "Figure 2: User interface of Socialize.",
+    "captionBoundary": {
+      "x1": 233.5653076171875,
+      "x2": 378.4266052246094,
+      "y1": 333.291259765625,
+      "y2": 338.9311218261719
+    },
+    "figType": "Figure",
+    "imageText": ["(a)", "Main", "Dashboard", "(b)", "Phone-Level", "Details", "(c)", "App-Level", "Details", "(d)", "App-Timer", "Exceeded"],
+    "name": "2",
+    "page": 7,
+    "regionBoundary": {
+      "x1": 74.0,
+      "x2": 538.0,
+      "y1": 102.0,
+      "y2": 316.01300048828125
+    }
+  }, {
+    "caption": "Figure 1: Distribution of features ofered by digital wellbeing apps (N=42).",
     "captionBoundary": {
       "x1": 53.79800033569336,
-      "x2": 295.5213928222656,
-      "y1": 208.9005889892578,
-      "y2": 291.44488525390625
+      "x2": 295.6487731933594,
+      "y1": 308.72113037109375,
+      "y2": 325.31793212890625
     },
     "figType": "Figure",
     "imageText": [],
     "name": "1",
-    "page": 1,
+    "page": 3,
     "regionBoundary": {
       "x1": 53.0,
       "x2": 295.0,
-      "y1": 92.0,
-      "y2": 196.0
+      "y1": 134.0,
+      "y2": 295.0
     }
   }, {
-    "caption": "Figure 3: A traditional recording interface. The top graph indicates amplitude as measured by the microphone over time.",
+    "caption": "Table 5: Study results about interventions. The table reports how many interventions have been defned, how many times interventions were triggered, and how many times interventions were respected, snoozed, or deleted.",
     "captionBoundary": {
-      "x1": 317.9549865722656,
-      "x2": 559.6784057617188,
-      "y1": 142.8065948486328,
-      "y2": 159.59796142578125
+      "x1": 317.6591796875,
+      "x2": 559.8058471679688,
+      "y1": 380.72296142578125,
+      "y2": 419.233642578125
     },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "3",
-    "page": 3,
+    "figType": "Table",
+    "imageText": ["Phone", "Timers", "6", "91", "2", "89", "3", "App", "Timers", "11", "0", "-", "-", "4", "Phone", "Blockers", "7", "5", "0", "5", "7", "App", "Blockers", "Phone", "Breaks", "16", "1", "245", "1", "115", "0", "130", "-", "16", "-", "Interventions", "#", "Trigger", "Respected", "Snoozed", "Del"],
+    "name": "5",
+    "page": 8,
     "regionBoundary": {
       "x1": 317.0,
       "x2": 559.0,
-      "y1": 92.0,
-      "y2": 130.0
+      "y1": 301.0,
+      "y2": 378.0
+    }
+  }, {
+    "caption": "Figure 3: Changes in smartphone usage time and smartphone unlocks over the duration of the study. The long vertical line indicates the start of the Intervention Phase.",
+    "captionBoundary": {
+      "x1": 53.798919677734375,
+      "x2": 558.2037963867188,
+      "y1": 266.0572204589844,
+      "y2": 282.6540222167969
+    },
+    "figType": "Figure",
+    "imageText": ["(a)", "Daily", "Usage", "Time", "(b)", "Daily", "Unlocks"],
+    "name": "3",
+    "page": 8,
+    "regionBoundary": {
+      "x1": 94.0,
+      "x2": 518.0,
+      "y1": 102.0,
+      "y2": 248.77899169921875
+    }
+  }, {
+    "caption": "Table 2: Codes used in the review analysis.",
+    "captionBoundary": {
+      "x1": 87.9011001586914,
+      "x2": 259.6524353027344,
+      "y1": 437.6998596191406,
+      "y2": 443.3397216796875
+    },
+    "figType": "Table",
+    "imageText": ["Insufciently", "Re-", "strictive", "Bypassable,", "Permissive,", "Ignorable,", "Unre-", "strictive", "Privacy", "Invasive", "Privacy,", "Irritating,", "Intrusive", "d", "Generic", "Dislik-", "ing", "&", "Usability", "Issues", "Performance,", "Design", "Flaws,", "Bugs,", "Price", "D", "is", "li", "ke", "Control", "Un-", "healthy", "Be-", "haviours", "Impulse", "Control,", "Productivity,", "Focus,", "Awareness,", "Unplug,", "Break", "Habits,", "Time", "Management,", "Addiction,", "Self-", "Monitoring", "Statistics,", "Timers", "&", "Blockers,", "Rewards", "&", "Motivation,", "Metaphor", "&", "Gamifcation,", "Restrictive", "Generic", "Liking", "&", "Proposed", "Im-", "provements", "Good", "Idea,", "Useful,", "Accurate,", "Easy", "To", "Use,", "Feeling", "Better,", "Add", "Features,", "De-", "tailing,", "Other", "Devices", "Use", "Cases", "Studying,", "Working,", "Sleeping,", "Parental", "Control,", "Free", "Time", "Preferred", "Fea-", "tures", "d", "Li", "ke", "Main", "Themes", "Codes"],
+    "name": "2",
+    "page": 4,
+    "regionBoundary": {
+      "x1": 53.0,
+      "x2": 297.0,
+      "y1": 225.0,
+      "y2": 435.0
     }
   }],
   "sections": [{
     "paragraphs": [{
       "page": 0,
       "region": {
-        "x1": 53.27000045776367,
-        "x2": 295.705810546875,
-        "y1": 536.33203125,
-        "y2": 566.7230224609375
+        "x1": 53.793670654296875,
+        "x2": 295.5744934082031,
+        "y1": 454.2724609375,
+        "y2": 472.74310302734375
       },
-      "text": "• Human-centered computing→ Human computer interaction (HCI); Graphical user interfaces; • Applied computing→ Sound and music computing."
-    }, {
-      "page": 0,
-      "region": {
-        "x1": 53.19300079345703,
-        "x2": 294.1761779785156,
-        "y1": 595.945068359375,
-        "y2": 712.3289794921875
-      },
-      "text": "Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org. CHI 2019, May 4–9, 2019, Glasgow, Scotland Uk © 2019 Association for Computing Machinery. ACM ISBN 978-1-4503-5970-2/19/05. . . $15.00 https://doi.org/10.1145/3290605.3300539"
+      "text": "• Human-centered computing → Smartphones; Empirical studies in ubiquitous and mobile computing; Field studies."
     }],
     "title": {
       "page": 0,
       "region": {
         "x1": 53.79800033569336,
-        "x2": 128.51052856445312,
-        "y1": 521.44287109375,
-        "y2": 527.8690185546875
+        "x2": 128.5075225830078,
+        "y1": 439.4184265136719,
+        "y2": 445.84429931640625
       },
       "text": "CCS CONCEPTS"
     }
@@ -116,20 +197,20 @@
     "paragraphs": [{
       "page": 0,
       "region": {
-        "x1": 317.59698486328125,
-        "x2": 559.0419921875,
-        "y1": 294.4092712402344,
-        "y2": 312.3680114746094
+        "x1": 53.79800033569336,
+        "x2": 295.1446533203125,
+        "y1": 503.9954528808594,
+        "y2": 522.4660034179688
       },
-      "text": "Audio quality; active capture; feedback; interfaces; speech; voice recording; narration; creativity support tools"
+      "text": "Smartphone Addiction, Digital Wellbeing, Self-Monitoring, Habit Formation"
     }],
     "title": {
       "page": 0,
       "region": {
-        "x1": 317.95501708984375,
-        "x2": 375.5511169433594,
-        "y1": 279.0428466796875,
-        "y2": 285.468994140625
+        "x1": 53.79800033569336,
+        "x2": 111.39179229736328,
+        "y1": 489.14111328125,
+        "y2": 495.5669860839844
       },
       "text": "KEYWORDS"
     }
@@ -137,20 +218,38 @@
     "paragraphs": [{
       "page": 0,
       "region": {
-        "x1": 317.6319885253906,
-        "x2": 559.6868896484375,
-        "y1": 336.0099792480469,
-        "y2": 396.2070007324219
+        "x1": 53.48400115966797,
+        "x2": 294.94366455078125,
+        "y1": 546.698974609375,
+        "y2": 574.4810180664062
       },
-      "text": "Prem Seetharaman, Gautham Mysore, Bryan Pardo, Paris Smaragdis, and Celso Gomes. 2019. VoiceAssist: Guiding Users to High-Quality Voice Recordings. In CHI Conference on Human Factors in Computing Systems Proceedings (CHI 2019), May 4–9, 2019, Glasgow, Scotland Uk. ACM, New York, NY, USA, 6 pages. https: //doi.org/10.1145/3290605.3300539"
+      "text": "Alberto Monge Rofarello and Luigi De Russis. 2019. The Race Towards Digital Wellbeing: Issues and Opportunities. In CHI Conference on Human Factors in Computing Systems Proceedings (CHI"
+    }, {
+      "page": 0,
+      "region": {
+        "x1": 53.24806213378906,
+        "x2": 294.19573974609375,
+        "y1": 595.5345458984375,
+        "y2": 712.3290405273438
+      },
+      "text": "Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for proft or commercial advantage and that copies bear this notice and the full citation on the frst page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specifc permission and/or a fee. Request permissions from permissions@acm.org. CHI 2019, May 4–9, 2019, Glasgow, Scotland UK © 2019 Association for Computing Machinery. ACM ISBN 978-1-4503-5970-2/19/05. . . $15.00 https://doi.org/10.1145/3290605.3300616"
+    }, {
+      "page": 0,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.1924438476562,
+        "y1": 210.9299774169922,
+        "y2": 227.75299072265625
+      },
+      "text": "2019), May 4–9, 2019, Glasgow, Scotland UK. ACM, New York, NY, USA, 14 pages. https://doi.org/10.1145/3290605.3300616"
     }],
     "title": {
       "page": 0,
       "region": {
-        "x1": 317.6319885253906,
-        "x2": 412.8418884277344,
-        "y1": 324.62060546875,
-        "y2": 330.4530029296875
+        "x1": 53.465999603271484,
+        "x2": 151.33424377441406,
+        "y1": 535.965087890625,
+        "y2": 541.60498046875
       },
       "text": "ACM Reference Format:"
     }
@@ -158,65 +257,83 @@
     "paragraphs": [{
       "page": 0,
       "region": {
-        "x1": 317.5969543457031,
-        "x2": 559.8685913085938,
-        "y1": 431.3572692871094,
-        "y2": 616.68701171875
+        "x1": 317.656005859375,
+        "x2": 559.88623046875,
+        "y1": 258.3604431152344,
+        "y2": 515.9339599609375
       },
-      "text": "Voice recording is central to production of audio and audiovisual media, such as podcasts, educational content, film, advertisements, video essays, and radio. Newcomers to voice recording often make mistakes when recording their voice, leading to a poor recording. High recording quality is a hallmark of successful voice-based media (e.g. radio broadcast such as NPR or popular podcasts and YouTube channels). Two key problems in many amateur recordings of poor quality are bad room acoustics (reverberation), and too much background noise (e.g. fans, electronics, street noise). LibriVox - a site where volunteers record audio books - has sections in their contributor guide on avoiding \"room echo\" and \"background noise\", illustrating how common these problems are. Denoising and dereverberation of recorded speech are entire fields of study because they are such common problems in speech recordings [11, 12]."
+      "text": "Smartphones have become an integral part of our daily lives. Through smartphones, users can nowadays perform many diferent tasks such as browsing the web, reading emails, and using social networks. As smartphone use increases dramatically [39], however, so do studies about the negative impact of overusing technology. Smartphones, in particular, have been found to be a source of distraction [3], and their excessive use can be a problem for mental health [27] and social interaction [31]. Furthermore, smartphones serve as a gateway for a variety of mobile applications that can result in addictive behaviors [11], e.g., constantly checking social networks. As a consequence, HCI researchers started to pay more attention to the feld of intentional “non-use” of technology [5, 40, 48], and the term “smartphone addiction” has gained interest both in the literature and in mainstream media [29]. Many diferent mobile apps can currently be used as tools for changing users’ behavior with smartphones, and even Google and Apple recently announced new tools for monitoring, understanding, and limiting technology use in their operating systems, with the aim of promoting a more conscious use of the smartphone. Google, in particular, summarized its commitment with the term “digital wellbeing”:"
     }, {
       "page": 0,
       "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.982666015625,
-        "y1": 622.6403198242188,
+        "x1": 342.364013671875,
+        "x2": 534.792236328125,
+        "y1": 524.4425659179688,
+        "y2": 566.31103515625
+      },
+      "text": "“We’re committed to giving everyone the tools they need to develop their own sense of digital wellbeing. So that life, not the technology in it, stays front and center.” [1]"
+    }, {
+      "page": 0,
+      "region": {
+        "x1": 317.6095275878906,
+        "x2": 563.5379638671875,
+        "y1": 574.3064575195312,
+        "y2": 664.5079956054688
+      },
+      "text": "Despite the growing popularity, contemporary digital wellbeing apps have not been extensively evaluated by researchers, yet, and it is still not clear how efective they are. Which functionality do they have? Are they efective and appreciated? Do they have a relevant impact on users’ behavior? Answering these questions is fundamental to improve our knowledge of the problem and to design better digital wellbeing solutions."
+    }, {
+      "page": 0,
+      "region": {
+        "x1": 317.5870056152344,
+        "x2": 559.8906860351562,
+        "y1": 669.9474487304688,
         "y2": 712.3289794921875
       },
-      "text": "A common workflow in voice recording is to record a “take” and then apply audio enhancement tools to the recording to improve its quality (post-processing of the recording). Denoising tools are used to reduce unwanted background noise. Dereverberation tools are used to reduce the effect of a room and echos within the room. However, the output of these tools is imperfect, with noticeable distortions and artifacts on the resultant audio [19]. Therefore, to get high-quality"
+      "text": "In this paper, we report on the results of 3 diferent studies with the aim of providing an overall perspective of contemporary mobile apps for digital wellbeing, and identifying possible issues and opportunities to improve such solutions."
     }, {
       "page": 0,
       "region": {
         "x1": 54.0,
-        "x2": 558.0009765625,
+        "x2": 558.001953125,
         "y1": 750.914794921875,
         "y2": 756.7197875976562
       },
-      "text": "Paper 309 Page 1"
+      "text": "Paper 386 Page 1"
     }, {
       "page": 1,
       "region": {
-        "x1": 53.33000183105469,
-        "x2": 295.79864501953125,
-        "y1": 326.22027587890625,
-        "y2": 451.77398681640625
+        "x1": 53.43000030517578,
+        "x2": 510.71148681640625,
+        "y1": 96.09944915771484,
+        "y2": 305.8529968261719
       },
-      "text": "voice recordings, we think it is beneficial to simply record the audio with less noise and reverberation in the first place. When a professional recording engineer and recording studio are available, the engineer provides feedback and guidance on microphone placement and recording technique, resulting in a high-quality recording with little need for denoising or dereverberation. For many applications, however, a recording engineer and studio may not be practical or readily available. People may wish to record late at night, in their home, or without prior scheduling. The nature of the project may not allow for the expense of a recording engineer and studio."
+      "text": "First, we conducted a functionality review of the 42 most 2 RELATED WORK AND BACKGROUND popular digital wellbeing apps available in the Google Play Store1, by highlighting which features are more common, and how such apps support a more conscious use of technology. Second, we extracted 1,128 reviews left by users for these 42 apps, and we conducted a thematic analysis to gain insight about the users’ experience with digital wellbeing apps and their features. Third, we designed and implemented Socialize, our own digital wellbeing app, by integrating the most common digital wellbeing features extracted during our functionality review. We conducted a three-week in-thewild study of Socialize with 38 participants. Our aim was to gain a quantitative insight into the fndings stemming from the frst 2 qualitative studies, thus assessing whether the features that contemporary digital wellbeing solutions share are efective for changing behavior and promoting a more conscious use of the smartphone. The main contribution of our work is threefold:"
     }, {
       "page": 1,
       "region": {
-        "x1": 53.439998626708984,
-        "x2": 295.71295166015625,
-        "y1": 457.7262878417969,
-        "y2": 678.9219970703125
+        "x1": 69.2699203491211,
+        "x2": 295.73052978515625,
+        "y1": 321.5141906738281,
+        "y2": 651.6170043945312
       },
-      "text": "VoiceAssist (Figure 1) helps inexperienced users produce high quality recordings by providing real-time visual feedback on the quality of the recording, like an expert recording engineer would. This is opposed to traditional recording software, which does not provide visual feedback on sound quality. Traditional recording software usually only provides volume or frequency information (e.g. Adobe Audition or Audacity). Our system helps the user find the “sweet spot” of the microphone1 - the optimal area within the microphone’s pickup pattern for recording. The feedback from our system simulates part of the expertise a recording engineer would bring to the recording session. Our work integrates audio quality measures directly into an interactive human-machine loop to maximize audio quality at capture-time. We demonstrate the utility of this feedback for creating high-quality voice recordings. We compare VoiceAssist (Figure 1) to a traditional recording interface (Figure 3). We show that users, when presented with visual feedback about audio quality, produce higher-quality voice recordings."
+      "text": "• We highlight that contemporary digital wellbeing apps are mainly focused on supporting self-monitoring, i.e., tracking user’s behavior and receiving feedback, but are not grounded in habit formation nor social support literature. Habit formation, in particular, could play an important role in digital wellbeing apps, supporting behavior change towards a more conscious use of technology, and ensuring the long-term efects of the new behavior [26]. • Thanks to the qualitative reviews’ analysis and the quantitative data extracted from the Socialize evaluation, we show that contemporary digital wellbeing apps are liked by users and useful for some specifc use cases, but they are not sufcient for efectively changing users’ behavior with smartphones. By using self-monitoring functionality, in particular, such apps are efective for temporary breaking some unhealthy behaviors, e.g., the excessive use of social networks, but they fail in other circumstances. For example, by ofering functionality that can be easily bypassed, they do not prevent users from constantly checking their devices. • We discuss the results and we propose a series of insights to inform future works and go beyond selfmonitoring techniques. Promising areas to be explored include the design of digital wellbeing apps that support the formation of new habits and promote selfregulation through social support."
     }, {
       "page": 1,
       "region": {
-        "x1": 53.349998474121094,
-        "x2": 229.72218322753906,
-        "y1": 705.834228515625,
+        "x1": 53.65599822998047,
+        "x2": 237.90838623046875,
+        "y1": 705.3963623046875,
         "y2": 712.3289794921875
       },
-      "text": "1https://www.voices.com/blog/microphone_sweet_spot"
+      "text": "1https://play.google.com/, last visited on August 24, 2018"
     }],
     "title": {
       "page": 0,
       "region": {
-        "x1": 317.95501708984375,
-        "x2": 411.0592346191406,
-        "y1": 415.9898681640625,
-        "y2": 422.416015625
+        "x1": 317.9549865722656,
+        "x2": 411.0555114746094,
+        "y1": 243.50613403320312,
+        "y2": 249.9320068359375
       },
       "text": "1 INTRODUCTION"
     }
@@ -224,530 +341,1310 @@
     "paragraphs": [{
       "page": 1,
       "region": {
-        "x1": 317.5970153808594,
-        "x2": 559.8674926757812,
-        "y1": 111.0780258178711,
-        "y2": 249.06597900390625
+        "x1": 317.5870056152344,
+        "x2": 559.8909912109375,
+        "y1": 125.9874496459961,
+        "y2": 646.5750122070312
       },
-      "text": "Active Capture [6] is a paradigm for media production that combines capture, interaction, and processing. Active capture systems use an iteration loop between the human and the machine to improve the quality of produced media. They aim to reduce the amount of effort required to produce highquality media. These systems have been used to help people create better videos and photos by guiding them using automated quality feedback towards better framing [5, 7] or better vantage points [15]. For example, NudgeCam [3] helps users record interviews that follow good practices, such as ensuring the interviewee is framed correctly. VoiceAssist is an analogous system for improving sound quality."
-    }, {
-      "page": 1,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.8692626953125,
-        "y1": 255.01829528808594,
-        "y2": 404.4830017089844
-      },
-      "text": "Presentation Sensei [10] uses speech and image processing techniques to provide capture-time feedback on the way the person presents themselves: amount of eye contact with the camera, speech speed and pitch. Narration Coach [17] also provides feedback on a number of measures that affect speech performance quality. The feedback is focused on speech performance characteristics, such as emphasis, variety, flow, and diction. In their system, the user first records speech and then edits their recording using the feedback. The user than records the speech again, using the edited recording as a guide. The iterative process leads to a better speech performance. These systems focus on the performance quality of the text rather than the sound quality."
-    }, {
-      "page": 1,
-      "region": {
-        "x1": 317.59698486328125,
-        "x2": 561.267578125,
-        "y1": 409.9570617675781,
-        "y2": 488.16900634765625
-      },
-      "text": "Speech enhancement. Users often follow a post-processing paradigm where they record the audio and then edit the recording using audio enhancement tools such as denoisers and dereverberators. However, speech enhancement tools [1, 13, 14] either often leave behind audible artifacts or only work in a limited set of cases. We aim to help users make recordings with higher sound quality that do not need post-processing."
-    }, {
-      "page": 1,
-      "region": {
-        "x1": 317.9544982910156,
-        "x2": 559.9452514648438,
-        "y1": 493.6440734863281,
-        "y2": 619.676025390625
-      },
-      "text": "Audio quality measures. There are several automated speech audio quality measures such as PESQ [16], PEAQ [22], and STOI [21]. We use two measures in this work - the speech transmission index (STI) [8] and the signal to noise ratio (SNR) [20]. A few methods have been developed to estimate audio quality directly from speech audio without comparing it to a reference “clean” recording [18, 23, 23, 24]. None of these methods have been incorporated into a realtime recording interface. VoiceAssist integrates two of these algorithms into a system for improving recording quality at capture-time."
+      "text": "Due to their accessibility and functionality, smartphones have become an integral part of our daily lives and their use increased dramatically in the last few years [39]. Smartphones, in particular, serve as a gateway to many diferent mobile apps and online services, giving the users a world of possibility, such as browsing the web, messaging, and checking social networks. Unfortunately, despite many advantages and increasing opportunities for social support [44], the excessive usage of smartphones and online services often exhibits negative efects on mental health [27] and social interaction [31]. Mobile device use can sometimes disrupt the introspective processes that accompany in-person social interaction [22], preventing one from understanding the psychological states of others and thereby empathizing with them [20]. This can afect the quality of face-to-face conversations [45], resulting in a shift from vertical relationships that require long-term efort and commitment, to horizontal relationships that indicate an expanded network of shallow relationships [14]. Furthermore, several studies demonstrate that smartphones are a source of distractions that interferes with daily activities and ongoing tasks such as studying, working, and driving [3, 16]. Distractions can be caused by external stimuli, e.g., notifcations, but also by internal stimuli [10], e.g., users that interrupt themselves by frequently checking emails [39]. Users that experience frequent and unpredictable external or internal interruptions, in particular, tend to feel less productive [35] and more stressed [36]. As a result, the term “smartphone addiction” has become popular in research studies [7, 11, 29]. Technology-related addictions can be classifed as behavioral addictions [8]: interactive devices induce and reinforce features that may promote addictive tendencies [33]. Even if the addiction framing may not be appropriate for widespread and everyday behaviors like mobile devices use [28], people often perceive their excessive smartphone use as problematic [23, 42], and they are willing to adopt diferent strategies to mitigate such a behavior [23]. Problematic smartphone use, in particular, can be identifed through self-reported questionnaires [6, 37] or through computational methods [30, 42]. Our work stems from the technology overuse research with the aim of exploring and understanding how contemporary solutions for changing users’ behavior with smartphones work, whether they are sufcient, and how we could improve them."
     }],
     "title": {
       "page": 1,
       "region": {
-        "x1": 317.95501708984375,
-        "x2": 411.9559631347656,
-        "y1": 96.18885803222656,
-        "y2": 102.614990234375
+        "x1": 317.9549865722656,
+        "x2": 410.7665710449219,
+        "y1": 111.13314819335938,
+        "y2": 117.55902099609375
       },
-      "text": "2 RELATEDWORK"
+      "text": "Technology Overuse"
     }
   }, {
     "paragraphs": [{
       "page": 1,
       "region": {
         "x1": 317.9549865722656,
-        "x2": 558.556640625,
-        "y1": 658.5053100585938,
-        "y2": 712.3289794921875
+        "x2": 559.3281860351562,
+        "y1": 681.9024047851562,
+        "y2": 712.3291015625
       },
-      "text": "Our system analyzes the audio quality of a user’s recording in real-time. It then presents feedback about audio quality to the user for them to improve their recording setup. We analyze two aspects of audio quality - the effect of the room on the recording (room acoustics, or reverberation) and the"
+      "text": "In response to technology overuse, HCI researchers started to pay more attention on the feld of intentional “non-use” of technology [5, 40, 48]. These works reveal that many"
     }, {
       "page": 1,
       "region": {
         "x1": 54.0,
-        "x2": 558.0009765625,
+        "x2": 558.0020141601562,
         "y1": 750.914794921875,
         "y2": 756.7197875976562
       },
-      "text": "Paper 309 Page 2"
+      "text": "Paper 386 Page 2"
     }, {
       "page": 2,
       "region": {
         "x1": 53.79800033569336,
-        "x2": 294.0558166503906,
-        "y1": 308.0272216796875,
-        "y2": 385.760986328125
+        "x2": 294.23504638671875,
+        "y1": 96.09944915771484,
+        "y2": 198.25701904296875
       },
-      "text": "amount of background noise present in the recording (signal to noise ratio). We integrate two algorithms into VoiceAssist and modify them to work in real-time. The first is a deep learning based approach which measures the effect of the room on the recording [18]. The second is a signal processing based approach that measures the amount of background noise [20]."
-    }],
-    "title": {
-      "page": 1,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 396.0648498535156,
-        "y1": 643.1378173828125,
-        "y2": 649.56396484375
-      },
-      "text": "3 VOICEASSIST"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 2,
-      "region": {
-        "x1": 53.05099868774414,
-        "x2": 295.80157470703125,
-        "y1": 419.40228271484375,
-        "y2": 485.1809997558594
-      },
-      "text": "Feedback is shown as two labeled boxes corresponding to room acoustics quality and background noise level (see Figure 1). These boxes change color on a gradient that goes from red (poor audio quality) to green (excellent audio quality). Below the two boxes is the traditional volume-based visual feedback."
+      "text": "users feel conficted about the time they spend with digital technologies [23]. In addition, many diferent mobile apps are currently available in the Google Play Store to help people limit and improve their smartphone use, e.g, QualityTime and Forest. Moreover, Google and Apple recently announced their commitment in designing technology truly helpful for everyone, with the introduction in their mobile operating systems of tools for monitoring, understanding, and limiting technology use [1]."
     }, {
       "page": 2,
       "region": {
-        "x1": 53.33000183105469,
-        "x2": 295.802001953125,
-        "y1": 491.1332702636719,
-        "y2": 652.552978515625
-      },
-      "text": "Pilot studies revealed that a simple feedback mechanism (colored box) was important. An earlier version of our interface (shown in Figure 2) used a more traditional timeseries representation to indicate audio quality. Users in the pilot study reported that monitoring the two objective metrics (room acoustics and background noise) when represented as a time-series while also reading a prepared text (a common recording scenario) was difficult. This was possibly because the time-series representation has a very active visual footprint, distracting from the task of recording a prepared text. When the time-series representation was substituted for simple colored boxes, users were able to keep track of the audio quality in their peripheral vision while still being able to focus on the text."
-    }, {
-      "page": 2,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 295.29718017578125,
-        "y1": 658.5053100585938,
+        "x1": 53.31999969482422,
+        "x2": 295.7257080078125,
+        "y1": 203.69644165039062,
         "y2": 712.3289794921875
       },
-      "text": "We considered other visualizations as well, such as a speed meter style visualization, reporting the raw quality numbers, and happy/sad emoji visualization. We settled on the final design because it provides intuitive situational awareness and is easily grasped with peripheral vision. Finally, we chose a"
+      "text": "Our understanding of how to design for self-regulation of technology use, however, is still in its early days [47]. Apps for digital wellbeing have not been extensively evaluated by researchers and it is yet not clear how efective they are. Only a limited number of previous works [9, 34] analyze commercially available tools, by focusing on productivity, mainly. Furthermore, the tools proposed in the literature against smartphone addiction are designed for evaluating specifc use cases [17, 22, 23, 32]. Hiniker et al. [17], for example, propose MyTime, an intervention app to support people in achieving goals related to smartphone non-use. With AppDetox [32], instead, users can defne simple rules to block the usage of certain apps. Ko et al. [22] developed Lock n’ LoL, a mobile app that helps students focus on their group activities by allowing group members to limit their smartphone usage together. In another mobile app, called NUGU, Ko et al. [23] demonstrate that self-regulation can be improved by leveraging social support, i.e., groups of people that limit their use together by sharing their limiting information. Despite a growing interest on the topic, previous work fails in providing a comprehensive view of existing digital wellbeing apps and their features, and open questions still remain. Little is known, for example, about whether contemporary digital wellbeing apps are capable of supporting the formation of new habits. A habit is defned as a consistent repetition of a behavior in the presence of stable contextual cues that increases the automaticity of that behavior [26]. With smartphones, habits can be defned as automated smartphone usage sessions associated with explicit contexts such as location, performed activity, and emotional state [39]. Habit formation techniques could play an important role in digital wellbeing apps, supporting behavior change and ensuring its long-term efects [26]. Such techniques, in particular, could help users in forming new habits a) that promote a meaningful smartphone use, e.g, using an educational app to learn something new in the evening, or b) that discourage smartphone use in a given situation, e.g, going for a walk in the leisure time instead of playing Candy Crush. In our work we would like to close this gap, by trying to understand issues and opportunities for this “race” towards digital wellbeing. To reach our goal, we review the most common features ofered by contemporary commercial digital"
     }, {
       "page": 2,
       "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.9591064453125,
-        "y1": 96.6122817993164,
-        "y2": 114.57000732421875
-      },
-      "text": "red/green colormap which does not work for those with color blindness. This could be addressed by adjusting the colormap."
-    }],
-    "title": {
-      "page": 2,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 94.39722442626953,
-        "y1": 404.03485107421875,
-        "y2": 410.46099853515625
-      },
-      "text": "Interface"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 2,
-      "region": {
-        "x1": 317.48699951171875,
-        "x2": 558.5650024414062,
-        "y1": 144.4332733154297,
-        "y2": 317.8080139160156
-      },
-      "text": "When recording speech in a room, the sound waves reach the microphone directly and also indirectly via reflections off of the walls and other surfaces in the room. The effect that these reflections have on the recording have to do with the room acoustics. The reflections are called the indirect sound and the speech is called the direct sound. The quality of a recording is strongly influenced by the ratio between the direct and indirect sound. The size of and material of the surfaces in the room have an effect on this, as well as the relative positions of the speaker and the microphone. If the user is close to the microphone and is speaking inside the microphone’s pick-up region (e.g. into the correct side of the microphone, rather than the side or rear of the mic), the direct sound will dominate the indirect sound, resulting in better recording quality."
-    }, {
-      "page": 2,
-      "region": {
-        "x1": 317.95477294921875,
-        "x2": 559.8692626953125,
-        "y1": 323.7602844238281,
-        "y2": 497.135986328125
-      },
-      "text": "The speech transmission index (STI) measures the effect a recording environment has on a recording [2]. Specifically, it measures how the recording environment warps the modulations of speech at frequencies that are important to speech perception. STI ranges between 0 and 1, where 0 indicates that the room has distorted the speech to noise and 1 indicates that the room has no effect on the speech. STIs above .75 are considered usable for public address systems, while STIs above .95 are found in professionally recorded speech. STI measurement typically requires specialized sound sources, equipment, and access to the recording environment. Our use case requires a low-effort and real-time approach to STI measurement so that the user can find the optimal recording setup quickly. For our purposes, we need to be able to measure the STI of a recording from the voice recording in real-time."
-    }, {
-      "page": 2,
-      "region": {
-        "x1": 317.59722900390625,
-        "x2": 559.8675537109375,
-        "y1": 503.0882873535156,
-        "y2": 616.68701171875
-      },
-      "text": "We use a method for estimating STI from speech via a convolutional neural network [18]. The network is trained with a synthetic dataset of reverberant speech with known STI values for each example in the dataset. The input to the network is 1 second of reverberant speech. The output of the network is the corresponding STI for the impulse response used to produce the reverberant speech. The trained network reliably predicts the speech transmission index from reverberant speech. It is a small network with 40000 parameters, making it suitable for real-time applications."
-    }],
-    "title": {
-      "page": 2,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 423.0646667480469,
-        "y1": 129.0658721923828,
-        "y2": 135.49200439453125
-      },
-      "text": "Room acoustics quality"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 2,
-      "region": {
-        "x1": 317.59698486328125,
-        "x2": 559.8675537109375,
-        "y1": 646.55029296875,
-        "y2": 712.3289794921875
-      },
-      "text": "Audio quality can also be affected by the amount of background noise in the recording. Not turning off background noise sources (e.g. air conditioners or fans or other appliances) or placing the mic too close or pointing towards a noise source are very common mistakes for amateurs. These mistakes result in a recording with a low signal to noise ratio"
-    }, {
-      "page": 2,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 309 Page 3"
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 53.46900177001953,
-        "x2": 294.0539245605469,
-        "y1": 96.6122817993164,
+        "x1": 317.5881652832031,
+        "x2": 559.2661743164062,
+        "y1": 96.1023178100586,
         "y2": 126.5260009765625
       },
-      "text": "(SNR). The SNR is computed by dividing the power of the signal (speech) by the power of the noise. Professional voice recordings will generally have very high SNR."
-    }, {
-      "page": 3,
+      "text": "wellbeing apps, we analyze a consistent number of users’ reviews, and we quantitatively evaluate such solutions with an in-the-wild study."
+    }],
+    "title": {
+      "page": 1,
       "region": {
-        "x1": 53.33000183105469,
-        "x2": 295.80078125,
-        "y1": 132.4783172607422,
-        "y2": 210.2120361328125
+        "x1": 317.9549865722656,
+        "x2": 473.5310363769531,
+        "y1": 667.048095703125,
+        "y2": 673.4739990234375
       },
-      "text": "To measure the signal to noise ratio, we first need to identify which parts of the recording are speech and which are noise. We use a state-of-the-art voice activity detector provided in the WebRTC [9] package to do this. We run the voice activity detector on the recording and segment the parts that are speech and those that are noise. We then compute the volume of the speech and the noise to estimate the SNR."
+      "text": "Mobile Apps for Digital Wellbeing"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 2,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.8871459960938,
+        "y1": 157.17044067382812,
+        "y2": 259.3280029296875
+      },
+      "text": "Hundreds of apps that can be classifed as “digital wellbeing assistants” can be downloaded and installed on our smartphones and tablets with a single click. Despite a growing interest in topics like smartphone addiction and technology overuse, little is known about the efectiveness or theoretical grounding of existing digital wellbeing apps. Therefore, we conducted an exploratory study to investigate which features such apps ofer, and how they support a more conscious use of technology."
     }],
     "title": {
       "page": 2,
       "region": {
         "x1": 317.9549865722656,
-        "x2": 399.8708190917969,
-        "y1": 631.182861328125,
-        "y2": 637.6090087890625
+        "x2": 552.5941772460938,
+        "y1": 142.31674194335938,
+        "y2": 148.74261474609375
       },
-      "text": "Background noise"
+      "text": "3 CHARACTERIZING DIGITAL WELLBEING APPS"
     }
   }, {
     "paragraphs": [{
-      "page": 3,
+      "page": 2,
       "region": {
-        "x1": 53.48899841308594,
-        "x2": 295.80206298828125,
-        "y1": 240.07432556152344,
-        "y2": 425.4049987792969
+        "x1": 317.47698974609375,
+        "x2": 559.8859252929688,
+        "y1": 478.66546630859375,
+        "y2": 592.7769775390625
       },
-      "text": "The front-end records the audio and sends it to the back-end in real-time. The back-end keeps a buffer of 5 seconds of audio that is sent to it by the front-end. The back-end then analyzes the buffer whenever queried by the front-end and returns the speech transmission index, as measured using the deep learning model described in Section 3, and the signal to noise ratio, as measured by the method described in Section 3. If there is no vocal activity detected in the last second of the buffer (the most recent second recorded by the user), the backend does not compute either quality measure, and instead reports that there is no vocal activity. The front-end then ceases visual feedback by greying out the boxes. The output of the back-end system is smoothed with median filtering to reduce the impact of outliers on user behavior. The user must maintain high sound quality over a considerable period of time."
-    }],
-    "title": {
-      "page": 3,
+      "text": "To defne an exhaustive and representative list of digital wellbeing apps, we searched for mobile apps in the Google Play Store by using the following keywords: “digital diet,” “smartphone addiction,” “avoid distractions,” “screen time,” “app usage tracker,” and “phone usage tracker.” The search included both free and selling apps, and was conducted in July, 2018. We decided to focus on the Google Play Store, rather than Apple’s App Store, since iOS is typically more restrictive than Android and it does not allow developers to access sensitive information such as phone usage statistics."
+    }, {
+      "page": 2,
       "region": {
-        "x1": 53.79800033569336,
-        "x2": 151.13653564453125,
-        "y1": 224.70692443847656,
-        "y2": 231.133056640625
-      },
-      "text": "Putting it all together"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 3,
-      "region": {
-        "x1": 53.439998626708984,
-        "x2": 295.70684814453125,
-        "y1": 455.26727294921875,
-        "y2": 616.68701171875
-      },
-      "text": "The purpose of our study was to see if the visual feedback about room acoustics and background noise provided by VoiceAssist encouraged the user to make the kind of adjustments that result in higher audio quality. We had participants record themselves speaking aloud a written passage. Participants were first provided a traditional interface (comparable to Audacity, Adobe Audition) that provided visual feedback only for volume, (see Figure 3). They recorded the passage using the traditional recording interface. Participants were then either provided VoiceAssist (the test condition) or the traditional interface again (the control condition). We then had two sets of people evaluate the quality of the resulting recordings: those who made the recordings, and a set of third-party listeners."
-    }],
-    "title": {
-      "page": 3,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 169.01016235351562,
-        "y1": 439.89984130859375,
-        "y2": 446.32598876953125
-      },
-      "text": "4 USER STUDY DESIGN"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 3,
-      "region": {
-        "x1": 53.48899841308594,
-        "x2": 295.7881164550781,
-        "y1": 646.55029296875,
+        "x1": 317.5870056152344,
+        "x2": 559.8870239257812,
+        "y1": 598.2164306640625,
         "y2": 712.3289794921875
       },
-      "text": "23 participants were recruited from nearby student and employee populations for our user study. Participants were fluent English speakers with no hearing loss or language function impairment. The control condition had 6 men and 5 women. The test condition had 6 men and 6 women. There were two locations for recording. Participants in location 1 recorded in a"
+      "text": "Results were scanned to identify apps specifcally designed for changing behavior and promoting a more conscious use of smarphones. Furthermore, we excluded from the results beta apps, apps with less that 1,000 downloads, and apps with less than 50 reviews. In the end, 42 apps were selected as relevant. By analyzing the descriptions of each app, we extracted a set of 19 ofered features. Other supported features such as data export or backups were also noted, but were excluded from the analysis as they were not directly related to digital wellbeing. Table 1 reports all the extracted"
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 54.0,
+        "x2": 558.001953125,
+        "y1": 750.914794921875,
+        "y2": 756.7197875976562
+      },
+      "text": "Paper 386 Page 3"
     }, {
       "page": 3,
       "region": {
-        "x1": 317.64593505859375,
-        "x2": 559.958984375,
-        "y1": 218.12632751464844,
-        "y2": 391.50201416015625
+        "x1": 53.79800033569336,
+        "x2": 294.0459899902344,
+        "y1": 96.09944915771484,
+        "y2": 114.57000732421875
       },
-      "text": "sound isolation booth. Participants in location 2 recorded in an empty office. All recordings were done on a Blue Yeti microphone (a popular choice for voice recording) with a cardioid pickup pattern. The participants monitored their recording over headphones. In both locations, if a participant sat down and recorded without making any adjustments to the environment or the microphone placement, they would produce a recording of low quality. Only by making adjustments to the environment could they achieve high recording quality. The adjustments suggested in Figure 1 for improving audio quality was communicated to the users in both conditions prior to the study. Users had the opportunity to improve audio quality with the same suggestions (e.g. adjust recording position, reorient microphone around, point away from noise) in both conditions."
+      "text": "features, while Figure 1 shows their distribution through the analyzed digital wellbeing apps."
     }],
     "title": {
-      "page": 3,
+      "page": 2,
       "region": {
-        "x1": 53.79800033569336,
-        "x2": 157.11431884765625,
-        "y1": 631.182861328125,
-        "y2": 637.6090087890625
+        "x1": 317.9549865722656,
+        "x2": 353.35211181640625,
+        "y1": 463.8111267089844,
+        "y2": 470.23699951171875
       },
-      "text": "Recruitment and setup"
+      "text": "Method"
     }
   }, {
     "paragraphs": [{
       "page": 3,
       "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.60009765625,
-        "y1": 430.4482727050781,
-        "y2": 448.4070129394531
+        "x1": 53.54899978637695,
+        "x2": 295.7252502441406,
+        "y1": 375.14947509765625,
+        "y2": 453.39599609375
       },
-      "text": "Participants were provided headphones and placed before a computer, next to the microphone. Participants were asked to:"
+      "text": "Tracking and Visualizing Data. The most popular features across all the 42 apps are related to tracking usage data and presenting them to the users. In total, 15 apps track and visualize data related to the phone, only (phone-level apps). Instead, 12 other apps are developed with the aim of monitoring the usage of other apps (app-level apps). The remaining 15 apps include both phone and app-level statistics."
     }, {
       "page": 3,
       "region": {
-        "x1": 317.5969543457031,
-        "x2": 558.21533203125,
-        "y1": 454.81329345703125,
-        "y2": 640.5980224609375
+        "x1": 53.499000549316406,
+        "x2": 295.14691162109375,
+        "y1": 458.8354797363281,
+        "y2": 596.8580322265625
       },
-      "text": "(1) Familiarize yourself with the text to be recorded. (2) Record the text with the baseline interface. (3) Listen to the entire recording and rate its quality. (4) Experiment with the second interface. (5) Record the same text again. (6) Listen to the entire recording and rate its quality. Participants in the control condition were given the baseline interface at both steps 2 and 4. Those in the test condition were given the baseline interface at step 2 and VoiceAssist at step 4. This allowed us to distinguish between the effect of the feedback provided from the system and the effect of simply learning to make a better recording when given time to experiment, listen to the first recording, and repeat the procedure. They were then asked to judge the recording on overall quality, room acoustics quality, and background noise quality with instructions:"
+      "text": "More in detail, 57% of the apps ofer a phone summary, i.e., one or more windows visualizing statistics about how long the phone has been used (phone time, 52%), or checked (unlocks, 27%). Furthermore, 50% of the apps ofer an app summary, i.e., one or more windows visualizing statistics about how long the various apps have been used (app time, 48%), or checked/opened (app checking, 15%). In visualizing data, digital wellbeing apps typically adopt charts (60%), and use home-screen widgets and daily e-mail summaries to draw user attention (daily/widget recap, 38%). Finally, they can ofer the users the possibility to compare their own statistics with other users (social comparison, 14%)."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 53.54899978637695,
+        "x2": 295.7315673828125,
+        "y1": 610.1714477539062,
+        "y2": 712.3289794921875
+      },
+      "text": "Reducing Addiction Through Interventions. Beside tracking and visualizing data, wellbeing apps also ofer various interventions to mitigate addictive usage of phone and apps. At the app-level, users can typically instantiate app timers, to be notifed when they are using an app for too long (31%); app-blockers, to block the usage of a given app (26%); or notifcation blockers, to disable notifcations (19%). Users can also instantiate phone-level timers (26%) and blockers (15%), to limit the usage of the entire phone. Furthermore, they"
     }, {
       "page": 3,
       "region": {
         "x1": 317.9549865722656,
-        "x2": 558.8757934570312,
-        "y1": 646.55029296875,
+        "x2": 559.195556640625,
+        "y1": 96.09944915771484,
+        "y2": 150.43597412109375
+      },
+      "text": "can take a break (15%) from their devices, by silencing and locking them to completely avoid distractions. As extra-features, some apps support users through motivational quotes (12%), and reward them if they succeed in some “digital wellbeing challenge” (rewards, 10%)."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.4652099609375,
+        "y1": 155.87545776367188,
+        "y2": 234.12200927734375
+      },
+      "text": "In addition to the most common features, there are some interesting but rarely adopted features. A few apps (2%) are able to instantiate automatic interventions by reasoning on user data, while other apps (2%) can be used to dynamically redesign the phone UI, e.g., to randomize the location of the most addictive apps to prevent unconscious opening and usage."
+    }],
+    "title": {
+      "page": 3,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 93.14030456542969,
+        "y1": 360.2951354980469,
+        "y2": 366.72100830078125
+      },
+      "text": "Findings"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 3,
+      "region": {
+        "x1": 317.5848693847656,
+        "x2": 559.8897094726562,
+        "y1": 266.0884704589844,
+        "y2": 344.3349914550781
+      },
+      "text": "To gain insights about the experience of users with digital wellbeing apps and their features, we conducted a second exploratory study based on online reviews of the 42 previous apps. Analyzing user reviews is a common practice to understand users’ opinion [13]. Even if reviews are often bimodal and represent extreme viewpoints [19], they provide a crowd-sourced indication of app-quality [46]."
+    }],
+    "title": {
+      "page": 3,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 430.03424072265625,
+        "y1": 251.23776245117188,
+        "y2": 257.66363525390625
+      },
+      "text": "4 REVIEWS’ ANALYSIS"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 3,
+      "region": {
+        "x1": 316.8290100097656,
+        "x2": 559.297607421875,
+        "y1": 376.30047607421875,
+        "y2": 550.18896484375
+      },
+      "text": "For each of the 42 apps selected for the frst study, we used the ParseHub2 web scraping tool to scrape the frst 50 publicly available reviews on the Google Play Store. To ensure a mix of positive, negative, new and old reviews was included, all reviews were sorted by “Helpfulness” during the data collection phase. From the results, we excluded non-English reviews. We also excluded short reviews, i.e., less than 3 words, that provided limited information, e.g.,“good app” or “doesn’t work”. In the end, our fnal dataset included 1,128 reviews posted between 2015 and 2018 with the following distribution: 3% in 2015, 8% in 2016, 25% in 2017, and 64% in 2018. On average, they are 153 characters long (SD = 96), and have a rating of 3.79 out of 5 (SD = 1.45). In total, 175 of them (16%) are anonymous, i.e., with “A Google User” as username."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.8871459960938,
+        "y1": 555.62841796875,
+        "y2": 681.6959838867188
+      },
+      "text": "We conducted a thematic content analysis to characterize the rationale for why users liked or disliked digital wellbeing apps. We leveraged a hybrid approach [12] based on inductive and deductive codes. Deductive codes were informed by the reported related work on digital wellbeing and technology overuse, while inductive codes were added upon reviewing the data. We used a multi-phase process to ensure coding reliability [18]. First, a researcher built an initial codebook by reading all the reviews in depth. Then, the researcher that created the initial codebook and another researcher coded 20 randomly selected reviews, discussed"
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 510.6715087890625,
+        "y1": 705.3963623046875,
         "y2": 712.3289794921875
       },
-      "text": "“Rate the quality of the audio using the sliders below. Focus on characteristics such as the amount of reverberation (echos) or background noise in the recording, rather than the quality of the narration itself. For example, a recording with an error in the narration would still be good if the words are all easy to hear, with little reverberation or background noise.”"
+      "text": "2https://www.parsehub.com/, last visited on August 9, 2018"
     }, {
       "page": 3,
       "region": {
         "x1": 54.0,
-        "x2": 558.0009765625,
+        "x2": 558.001953125,
         "y1": 750.914794921875,
         "y2": 756.7197875976562
       },
-      "text": "Paper 309 Page 4"
+      "text": "Paper 386 Page 4"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 53.499000549316406,
+        "x2": 295.7253112792969,
+        "y1": 96.09944915771484,
+        "y2": 210.21197509765625
+      },
+      "text": "disagreements, and refned the codebook. After the frst coding process, the same 2 researchers independently coded other 40 randomly selected reviews by reaching a consensus (Cohen’s kappa = 0.95, SD = 0.08). Finally, one researcher coded all the reviews using the refned codebook. We allowed multiple codes to apply to each review. Table 2 summarizes our fnal codebook with which we coded all the reviews. In the remainder of this section, we describe the reviews’ characteristics, and we present the themes emerging from the thematic analysis."
     }],
     "title": {
       "page": 3,
       "region": {
         "x1": 317.9549865722656,
-        "x2": 364.5220642089844,
-        "y1": 415.08087158203125,
-        "y2": 421.50701904296875
+        "x2": 353.35211181640625,
+        "y1": 361.45074462890625,
+        "y2": 367.8766174316406
       },
-      "text": "Procedure"
+      "text": "Method"
     }
   }, {
     "paragraphs": [{
       "page": 4,
       "region": {
-        "x1": 53.79800033569336,
-        "x2": 295.70660400390625,
-        "y1": 111.55631256103516,
-        "y2": 249.06597900390625
+        "x1": 53.499000549316406,
+        "x2": 295.1368713378906,
+        "y1": 498.115478515625,
+        "y2": 588.3170166015625
       },
-      "text": "Each participant made two recordings of the same text. The participants in the control condition make the recording using the same baseline interface twice, while the participants in the test condition make the recording first with the baseline interface and then with our interface. We analyze these pairs of recordings to see if there was improvement between the first and second recording. We do not compare recordings across participants to eliminate confounding variables, such as recording location. We measured the effectiveness of the feedback in improving audio quality of the resulting recording in three ways: audio quality measures (STI and SNR), thirdparty listener preference, and self-reported satisfaction."
-    }],
-    "title": {
-      "page": 4,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 174.44993591308594,
-        "y1": 96.18885803222656,
-        "y2": 102.614990234375
-      },
-      "text": "5 USER STUDY RESULTS"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 4,
-      "region": {
-        "x1": 53.33000183105469,
-        "x2": 295.7093811035156,
-        "y1": 283.41229248046875,
-        "y2": 504.6080017089844
-      },
-      "text": "We want to determine whether users actually respond to the visual feedback in VoiceAssist, and whether the user would have made the appropriate adjustments even without visual feedback. We computed the speech transmission index and the signal to noise ratio on each pair of recordings using the same system that provided visual feedback to the user. We use the Wilcoxon signed-rank test to establish significance, with N = 23, for each pair of recordings. For STI, we found that participants in the control condition had no significant difference between the two recordings (p-value of .15). Participants in the test condition did have a significant difference between the two recordings (p-value of .03), with an average improvement of .03 in STI. For SNR, we found that participants in the control condition had no significant difference (p-value of .15) between the two recordings. However, participants in the test condition did have a significant difference between the two recordings (p-value of .02), with an average improvement of 2.3 dB in signal to noise ratio. We find that users improve quality only when there is visual feedback."
-    }],
-    "title": {
-      "page": 4,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 160.44198608398438,
-        "y1": 268.04486083984375,
-        "y2": 274.47100830078125
-      },
-      "text": "Audio quality measures"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 4,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 295.7895812988281,
-        "y1": 538.9533081054688,
-        "y2": 616.68701171875
-      },
-      "text": "STI and SNR improve significantly with visual feedback on audio quality. To see whether this improvement matters to real listeners, we used the Crowdsourced Audio Quality Evaluation toolkit [4] (CAQE) to run a pairwise audio comparison experiment. We recruited 50 listeners from Mechanical Turk. Listeners passed inclusion criteria - at least 1000 tasks completed with 97% approval rating and passing a hearing test."
+      "text": "Users Are Fascinated and Propose Improvements. In terms of overall tone, the majority of the review comments are positive (N = 619, 55%), while 9% are neutral (N = 96) and 37% (N = 413) are negative. Users like the idea of having a digital wellbeing assistant (N = 67, 6%), and fnd it useful (N = 49, 4%) for breaking phone addiction. 17 reviews (2%), in particular, explicitly mention that digital wellbeing apps have the potential to make users feeling better:"
     }, {
       "page": 4,
       "region": {
-        "x1": 53.439998626708984,
-        "x2": 295.7971496582031,
-        "y1": 622.6403198242188,
+        "x1": 77.5989990234375,
+        "x2": 270.716796875,
+        "y1": 596.4995727539062,
+        "y2": 662.2780151367188
+      },
+      "text": "“I’ve been using this for three hours now. I can already tell it’s going to stay on my phone. In just the last few hours, I’ve been made aware of how often I reach for my phone and then cycle through the same fve apps looking for hits. Instant relief. (R309)”"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.1407470703125,
+        "y1": 669.9474487304688,
         "y2": 712.3289794921875
       },
-      "text": "Listeners were trained using three speech recordings of varying quality with instructions on how they should be rated. One recording was from a professional recording booth and was considered high quality. The other two were in a noisy office and a bedroom, and were considered low quality. Listeners were further instructed to focus on the recording quality (room acoustic quality and background noise amount) rather than the performance of the text. Each listener was given 5"
+      "text": "Reviews suggest that digital wellbeing apps are easy to use (N = 34, 3%), and they are the more useful the more they are accurate in tracking information such as screen time, unlocks, or time (N = 8, 1%)."
     }, {
       "page": 4,
       "region": {
-        "x1": 317.64599609375,
-        "x2": 559.9550170898438,
-        "y1": 224.20030212402344,
-        "y2": 278.02398681640625
+        "x1": 317.656005859375,
+        "x2": 558.45947265625,
+        "y1": 96.09944915771484,
+        "y2": 138.48101806640625
       },
-      "text": "pairs, drawn randomly from the 23 pairs produced by our user study participants. A pair consists of the two recordings made by the same individual in either the control or test condition. The order of stimuli was random for each comparison. We collected 249 pairwise comparisons from 50 listeners."
+      "text": "Furthermore, some users ask whether the apps are also available for other devices (N = 7, 1%). Users are also likely to propose improvements, ranging from adding new features (N = 173, 15%) to detailing existing ones (N = 19, 2%)."
     }, {
-      "page": 4,
-      "region": {
-        "x1": 317.5969543457031,
-        "x2": 559.9590454101562,
-        "y1": 283.9762878417969,
-        "y2": 385.6210021972656
-      },
-      "text": "Table 1 shows the listener preference for recordings in the control and test conditions. For recordings made in the control condition, where both recordings made with the baseline interface, there was no preference between the recordings. For recordings made in the test condition, where the second recording was made with VoiceAssist, over three times as many listeners prefer the second recording. This indicates VoiceAssist helps users create recordings that are preferred by third-party listeners."
-    }],
-    "title": {
-      "page": 4,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 194.1766815185547,
-        "y1": 523.5858154296875,
-        "y2": 530.011962890625
-      },
-      "text": "Third-party listener preference"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 4,
-      "region": {
-        "x1": 317.64599609375,
-        "x2": 559.9591064453125,
-        "y1": 417.4422912597656,
-        "y2": 578.863037109375
-      },
-      "text": "Those who performed the recordings were asked to listen to their own recording and judge the audio quality of it on three quality scales immediately after the recording was made. These quality scales were “overall quality”, “room acoustics quality”, and “background noise quality”. We found no statistical differences between the self-reported quality evaluation in the first recording and the second recording across all three quality measures for all of our pairs of recordings. This result contrasts with both the objective evaluation and the thirdparty evaluation, which both show the visual feedback creates a noticeable effect on the recording quality. This may indicate that inexperienced people who record audio may not always perceive recording quality differences that are detectable both by objective measures and by third-party listeners."
-    }],
-    "title": {
       "page": 4,
       "region": {
         "x1": 317.9549865722656,
-        "x2": 428.38494873046875,
-        "y1": 402.0748596191406,
-        "y2": 408.5010070800781
+        "x2": 558.2028198242188,
+        "y1": 143.92044067382812,
+        "y2": 162.3909912109375
       },
-      "text": "Self-reported evaluation"
-    }
-  }, {
-    "paragraphs": [{
+      "text": "Not surprisingly [11], a few reviews also point out that focusing on the phone-level, only, is not enough:"
+    }, {
       "page": 4,
       "region": {
-        "x1": 317.59698486328125,
-        "x2": 559.8690185546875,
-        "y1": 610.684326171875,
+        "x1": 342.364013671875,
+        "x2": 533.7919921875,
+        "y1": 170.90151977539062,
+        "y2": 188.8590087890625
+      },
+      "text": "“The entire phone gets locked..i just wanted to block specifc apps for specifc time.” (R67)"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.297119140625,
+        "y1": 200.72048950195312,
+        "y2": 255.0570068359375
+      },
+      "text": "Digitall Wellbeing Apps Are Useful for Many Use Cases. Users exploit digital wellbeing apps in diferent contexts and for diferent use cases. The most common tasks emerging from the reviews are studying (N = 46, 4%) and working (N = 20, 2%):"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 342.364013671875,
+        "x2": 534.8792724609375,
+        "y1": 263.5675354003906,
+        "y2": 331.90399169921875
+      },
+      "text": "“An easy way to get of from distraction during studies. A must-app for students who are addicted to social world.” (R619) “Great tool to focus and get down to your work. Made me more aware of how I am really working and how much I “think” I was working.” (R897)"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.205078125,
+        "y1": 339.9014587402344,
+        "y2": 394.2380065917969
+      },
+      "text": "Users also feel that digital wellbeing apps could be useful as parental control tools (N = 11, 1%). By installing such applications on their kids’ devices, in fact, parents could control how their kids use smartphones, limiting the usage of any dangerous or addictive application:"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 342.364013671875,
+        "x2": 533.7950439453125,
+        "y1": 402.74853515625,
+        "y2": 432.6610107421875
+      },
+      "text": "“This app is amazing. I discovered it while reading the book Glow Kids. It’s a great way to reduce screen time for yourself and your kiddos!” (R234)"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 317.9549560546875,
+        "x2": 559.8804931640625,
+        "y1": 440.6594543457031,
+        "y2": 483.04010009765625
+      },
+      "text": "Other mentioned use cases include sleeping (N = 10, 1%) and free time (N = 4, <1%). For sleeping, in particular, digital wellbeing apps provide more information than ordinary sleep-tracker apps:"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 342.364013671875,
+        "x2": 534.8787841796875,
+        "y1": 491.550537109375,
+        "y2": 533.4190063476562
+      },
+      "text": "“I use this every day to track my sleep, oddly enough (sleep apps don’t accomplish what I need). This consistently shows exactly what I need to be sure I was asleep.” (R709)"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 317.9549560546875,
+        "x2": 559.2963256835938,
+        "y1": 545.2794189453125,
+        "y2": 623.5260009765625
+      },
+      "text": "Users Like Diferent Features. For what concerns the features ofered by digital wellbeing apps, users perceive some of them as particularly important. 99 reviews (9%), in particular, mention the possibility to view statistics, while timers and blockers are mentioned in 59 reviews (5%), making them the most appreciated interventions for limiting excessive smartphone use."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.2072143554688,
+        "y1": 628.9664306640625,
+        "y2": 647.43701171875
+      },
+      "text": "As interventions, restrictive solutions are useful to control unhealthy behaviors (N = 11, 1%):"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 342.364013671875,
+        "x2": 534.8787231445312,
+        "y1": 655.9475708007812,
+        "y2": 685.8599853515625
+      },
+      "text": "“Wonderful. The strict mode feature is really strict. Really prevents you from going on an app you locked until the set time has expired.” (R274)"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.2072143554688,
+        "y1": 693.8584594726562,
         "y2": 712.3289794921875
       },
-      "text": "Making high-quality voice recordings is difficult. Newcomers to voice recording often make mistakes in setup and environment, leading to a poor recording. We have presented VoiceAssist, a system that provides real-time visual feedback about audio quality at capture-time. With the feedback VoiceAssist provides, we found users were able to improve audio quality at capture-time, as measured by third-party listeners and audio quality measures. VoiceAssist lowers the barrier to entry to creating high quality voice recordings."
+      "text": "Statistics, instead, help to identify usage patterns, and can be used as motivational tools:"
     }, {
       "page": 4,
       "region": {
         "x1": 54.0,
-        "x2": 558.0009765625,
+        "x2": 558.001953125,
         "y1": 750.914794921875,
         "y2": 756.7197875976562
       },
-      "text": "Paper 309 Page 5"
+      "text": "Paper 386 Page 5"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 78.20700073242188,
+        "x2": 269.63800048828125,
+        "y1": 96.6125259399414,
+        "y2": 126.5260009765625
+      },
+      "text": "“I greatly appreciate this app. It helps encourage me to stay of my phone, as I always want to beat my lowest record.” (R987)"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.569000244140625,
+        "x2": 295.1408996582031,
+        "y1": 135.07144165039062,
+        "y2": 189.40802001953125
+      },
+      "text": "Motivation can also come through motivational quotes, metaphors and gamifcation principles, and rewards (N = 17, 15%). By describing Forest, a mobile app in which the life of one or more trees depends on the smartphone use, a user say:"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 78.20698547363281,
+        "x2": 269.6349792480469,
+        "y1": 198.46652221679688,
+        "y2": 240.33502197265625
+      },
+      "text": "“Excellent for me, since I have a very kind heart to trees. So I wouldn’t open any other app while studying to kill that tree! Love it, thanks to the developer :)” (R71)"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.50444030761719,
+        "x2": 295.73046875,
+        "y1": 252.71743774414062,
+        "y2": 319.0090026855469
+      },
+      "text": "Users Can Control Unhealthy Behaviours. Several reviews associate digital wellbeing apps as a remedy to addictive behaviors (N = 72, 6%), and as tools for time management (N = 66, 6%). Such apps, in fact, are useful to increase productivity (N = 37, 3%), and to allow users to focus (N = 51, 5%) on their primary tasks:"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 78.20700073242188,
+        "x2": 269.6403503417969,
+        "y1": 328.0675354003906,
+        "y2": 369.9360046386719
+      },
+      "text": "“A very simple yet useful application. It helps me to track my time using smartphone and this app actually helped me to reconsider my time and spend it on other productivity task.” (R11)"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.1731262207031,
+        "y1": 378.4814758300781,
+        "y2": 408.9079895019531
+      },
+      "text": "Users, in particular, mention that they are able to “unplug” from their smartphones (N = 35, 3%), and control the impulse of constantly checking their devices (N = 33, 3%):"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 77.5989990234375,
+        "x2": 274.5196838378906,
+        "y1": 417.9665222167969,
+        "y2": 447.8789978027344
+      },
+      "text": "“Wonderful idea! Really helps in keeping me from randomly looking for something to do on my phone.” (R298)"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 298.9124450683594,
+        "y1": 456.42547607421875,
+        "y2": 498.8061218261719
+      },
+      "text": "Users also describe digital wellbeing apps as self-monitoring tools (N = 90, 8%) that can be used to discover and understand how they use their smartphone, thus increasing their awareness of potential addictive behaviors (N = 40, 4%):"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 77.5989990234375,
+        "x2": 270.37896728515625,
+        "y1": 507.8655700683594,
+        "y2": 525.822998046875
+      },
+      "text": "“Great app that gives you the inconvenient truth.” (R123)"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 294.3041687011719,
+        "y1": 534.3684692382812,
+        "y2": 564.7949829101562
+      },
+      "text": "Through self-monitoring tools, users can break unhealthy habits (N = 15, 1%), and they can learn how to use the mobile phone in a more conscious way (N = 8, 1%):"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 78.20700073242188,
+        "x2": 269.635009765625,
+        "y1": 573.8535766601562,
+        "y2": 627.677001953125
+      },
+      "text": "“I have found value in this app since installing it a few weeks ago. I am hoping that after a few months of use, I will no longer need the app to remind me to be more deliberate in the use of my phone.” (R98)"
     }],
     "title": {
       "page": 4,
       "region": {
-        "x1": 317.9549865722656,
-        "x2": 399.6416320800781,
-        "y1": 595.31689453125,
-        "y2": 601.7430419921875
+        "x1": 53.79800033569336,
+        "x2": 232.92555236816406,
+        "y1": 483.2611389160156,
+        "y2": 489.68701171875
       },
-      "text": "6 CONCLUSION"
+      "text": "Why Users Like Digital Wellbeing Apps"
     }
   }, {
     "paragraphs": [{
       "page": 5,
       "region": {
-        "x1": 57.78300094604492,
-        "x2": 295.3673400878906,
-        "y1": 110.76509094238281,
-        "y2": 115.5670166015625
+        "x1": 53.499000549316406,
+        "x2": 294.04901123046875,
+        "y1": 657.992431640625,
+        "y2": 712.3289794921875
       },
-      "text": "[1] Michael Berouti, Richard Schwartz, and John Makhoul. 1979. En-"
+      "text": "Bugs Afects Usefulness and Usability. Many negative reviews are actually reports of bugs (N = 323, 29%) or design faws (N = 39, 3%). Most of the highlighted bugs are related to an erroneous data tracking (N = 209, 19%) that afects the accuracy of the visualized statistics:"
     }, {
       "page": 5,
       "region": {
-        "x1": 53.797996520996094,
-        "x2": 295.4403076171875,
-        "y1": 120.72706604003906,
-        "y2": 514.072021484375
+        "x1": 342.364013671875,
+        "x2": 533.7947998046875,
+        "y1": 96.6125259399414,
+        "y2": 138.48101806640625
       },
-      "text": "hancement of speech corrupted by acoustic noise. In Acoustics, Speech, and Signal Processing, IEEE International Conference on ICASSP’79., Vol. 4. IEEE, 208–211. [2] JS Bradley, R Reich, and SG Norcross. 1999. A just noticeable difference in C 50 for speech. Applied Acoustics 58, 2 (1999), 99–108. [3] Scott Carter, John Adcock, John Doherty, and Stacy Branham. 2010. NudgeCam: Toward targeted, higher quality media capture. In Proceedings of the 18th ACM international conference on Multimedia. ACM, 615–618. [4] Mark Cartwright, Bryan Pardo, Gautham J Mysore, and Matt Hoffman. 2016. Fast and easy crowdsourced perceptual audio evaluation. In Acoustics, Speech and Signal Processing (ICASSP), 2016 IEEE International Conference on. IEEE, 619–623. [5] Ana Ramírez Chang and Marc Davis. 2005. Designing systems that direct human action. In CHI’05 Extended Abstracts on Human Factors in Computing Systems. ACM, 1260–1263. [6] Marc Davis. 2003. Active capture: integrating human-computer interaction and computer vision/audition to automate media capture. In Multimedia and Expo, 2003. ICME’03. Proceedings. 2003 International Conference on, Vol. 2. IEEE, II–185. [7] Jeffrey Heer, Nathaniel S Good, Ana Ramirez, Marc Davis, and Jennifer Mankoff. 2004. Presiding over accidents: system direction of human action. In Proceedings of the SIGCHI Conference on human factors in computing systems. ACM, 463–470. [8] T Houtgast and H JMi Steeneken. 1973. The modulation transfer function in room acoustics as a predictor of speech intelligibility. Acta Acustica United With Acustica 28, 1 (1973), 66–73. [9] Alan B Johnston and Daniel C Burnett. 2012. WebRTC: APIs and RTCWEB protocols of the HTML5 real-time web. Digital Codex LLC. [10] Kazutaka Kurihara, Masataka Goto, Jun Ogata, Yosuke Matsusaka, and Takeo Igarashi. 2007. Presentation sensei: a presentation training system using speech and image processing. In Proceedings of the 9th international conference on Multimodal interfaces. ACM, 358–365. [11] Philipos C Loizou. 2007. Speech enhancement: theory and practice. CRC press. [12] Patrick A Naylor and Nikolay D Gaubitch. 2010. Speech dereverberation. Springer Science & Business Media. [13] Santiago Pascual, Antonio Bonafonte, and Joan Serra. 2017. SEGAN: Speech enhancement generative adversarial network. arXiv preprint arXiv:1703.09452 (2017)."
+      "text": "“Unfortunately the app includes background time in its records. For instance, according to the app I spent over 14 hours yesterday in Messaging. I can assure you I did not! A nice idea but...”(R33)"
     }, {
       "page": 5,
       "region": {
         "x1": 317.9549865722656,
-        "x2": 559.5947875976562,
-        "y1": 97.81306457519531,
-        "y2": 509.3580017089844
+        "x2": 559.8851318359375,
+        "y1": 147.12344360351562,
+        "y2": 177.54998779296875
       },
-      "text": "[14] Cyril Plapous, Claude Marro, and Pascal Scalart. 2006. Improved signalto-noise ratio estimation for speech enhancement. IEEE Transactions on Audio, Speech, and Language Processing 14, 6 (2006), 2098–2108. [15] Yogesh Singh Rawat and Mohan S Kankanhalli. 2017. Clicksmart: A context-aware viewpoint recommendation system for mobile photography. IEEE Transactions on Circuits and Systems for Video Technology 27, 1 (2017), 149–158. [16] Antony W Rix, John G Beerends, Michael P Hollier, and Andries P Hekstra. 2001. Perceptual evaluation of speech quality (PESQ)-a new method for speech quality assessment of telephone networks and codecs. In Acoustics, Speech, and Signal Processing, 2001. Proceedings. (ICASSP’01), Vol. 2. IEEE, 749–752. [17] Steve Rubin, Floraine Berthouzoz, Gautham J Mysore, and Maneesh Agrawala. 2015. Capture-time feedback for recording scripted narration. In Proceedings of the 28th Annual ACM Symposium on User Interface Software & Technology. ACM, 191–199. [18] Prem Seetharaman, Gautham Mysore, Paris Smaragdis, and Bryan Pardo. 2018. Blind Estimation of the Speech Transmission Index for Speech Quality Prediction. In IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 2018. [19] Mike Senior. 2018. How can I remove background noise from a voice recording? (Oct 2018). https://www.soundonsound.com/soundadvice/q-how-can-i-remove-background-noise-voice-recording. [20] Jongseo Sohn, Nam Soo Kim, and Wonyong Sung. 1999. A statistical model-based voice activity detection. IEEE signal processing letters 6, 1 (1999), 1–3. [21] Cees H Taal, Richard C Hendriks, Richard Heusdens, and Jesper Jensen. 2010. A short-time objective intelligibility measure for time-frequency weighted noisy speech. In Acoustics Speech and Signal Processing (ICASSP), 2010 IEEE International Conference on. IEEE, 4214–4217. [22] Thilo Thiede, William C Treurniet, Roland Bitto, Christian Schmidmer, Thomas Sporer, John G Beerends, and Catherine Colomes. 2000. PEAQ-The ITU standard for objective measurement of perceived audio quality. Journal of the Audio Engineering Society 48, 1/2 (2000), 3–29. [23] Masashi Unoki, Kyohei Sasaki, Ryota Miyauchi, Masato Akagi, and Nam Soo Kim. 2013. Blind method of estimating speech transmission index from reverberant speech signals. In Signal Processing Conference (EUSIPCO), 2013 Proceedings of the 21st European. IEEE, 1–5. [24] Xiong Xiao, Shengkui Zhao, Xionghu Zhong, Douglas L Jones, Eng Siong Chng, and Haizhou Li. 2015. Learning to Estimate Reverberation Time in Noisy and Reverberant Rooms. In Sixteenth Annual Conference of the International Speech Communication Association."
+      "text": "Accuracy, in particular, highly afects how the users perceive the applications. With accuracy bugs, in fact, people fnd digital wellbeing apps useless:"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 341.7560119628906,
+        "x2": 534.5439453125,
+        "y1": 186.70553588867188,
+        "y2": 240.52899169921875
+      },
+      "text": "“The frst day data was precise, consistent, and illuminating. The second day provided no data whatsoever. This seems like a bug which would be fxed soon. But for now the app is useless to me.” (R983)"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.2046508789062,
+        "y1": 249.17147827148438,
+        "y2": 267.64202880859375
+      },
+      "text": "Bugs are often difcult to be detected, and design faws afect the apps’ usability:"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 342.364013671875,
+        "x2": 533.7950439453125,
+        "y1": 276.79852294921875,
+        "y2": 318.6659851074219
+      },
+      "text": "“Complicated. The apps that I want to track are not shown on the list. It basically tracks the usage of the own app. Maybe I’m terribly mistaken.. which proves the app is not intuitive.” (R54)"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 317.70599365234375,
+        "x2": 558.46630859375,
+        "y1": 327.3094787597656,
+        "y2": 393.60101318359375
+      },
+      "text": "Furthermore, 29 users (3%) complain about the price of the apps, and the diferences between the free and the paid versions. Finally, in some reviews (N = 12, 1%) user also mention that the installed apps resulted in a worsening of the devices’ performances in terms of memory and battery duration."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 317.656005859375,
+        "x2": 559.8837280273438,
+        "y1": 406.07647705078125,
+        "y2": 484.322998046875
+      },
+      "text": "Unrestrictive Solutions are Useless To Reduce Addiction. Another interesting theme that emerges from the reviews is that users want restrictive solutions, since permissive, ignorable, and unrestrictive tools are useless to reduce phone addiction (N = 11, 1%). A considerable number of users, in particular, (N = 76, 7%), point out that digital wellbeing apps are often bypassable in some ways:"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 342.364013671875,
+        "x2": 533.7952880859375,
+        "y1": 493.478515625,
+        "y2": 535.3469848632812
+      },
+      "text": "“The app is good but it is not able to stop me to open the apps I am addicted to...I can just simply uninstall this app if I want to use the restricted apps.” (R54)"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.890380859375,
+        "y1": 543.9894409179688,
+        "y2": 598.3259887695312
+      },
+      "text": "As reported for “why users like digital wellbeing apps”, restriction can be seen as an advantage: users are willing to provide any permission, and they devise “self-made” strategies to make digital wellbeing apps more difcult to be circumvented:"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 342.364013671875,
+        "x2": 534.8817749023438,
+        "y1": 607.4815673828125,
+        "y2": 673.260009765625
+      },
+      "text": "“Absolutely Fabulous Fantastic Futuristic!!! Please add mobile data and WiFi restrictions because phone without internet is too much LESS distracting. I know it’s difcult to implement. But what if I give u root permission? I think then it’s possible, right?” (R1054)"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 342.364013671875,
+        "x2": 533.7920532226562,
+        "y1": 682.41552734375,
+        "y2": 712.3289794921875
+      },
+      "text": "“The password to this app is with my wife, every third day I’m asking her to lock this is like an annoying experience.” (R679)"
     }, {
       "page": 5,
       "region": {
         "x1": 54.0,
-        "x2": 558.0009765625,
+        "x2": 558.001953125,
         "y1": 750.914794921875,
         "y2": 756.7197875976562
       },
-      "text": "Paper 309 Page 6"
+      "text": "Paper 386 Page 6"
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.5823059082031,
+        "y1": 96.09944915771484,
+        "y2": 138.48101806640625
+      },
+      "text": "Privacy is important. The last theme that emerges from a small number of reviews concerns privacy (N = 8, 1%). Sometimes, in fact, users perceive digital wellbeing apps as irritating and intrusive:"
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 77.5989990234375,
+        "x2": 276.0525207519531,
+        "y1": 147.27951049804688,
+        "y2": 203.948974609375
+      },
+      "text": "“Just another data-stealing greedy app!! Hate greedy data-stealing apps, Robbery! Deleted” (R856) “Keeps coming up when I am navigating in the car. Infuriating. Uninstall. It needs to be smarter.” (R1004)"
     }],
     "title": {
       "page": 5,
       "region": {
+        "x1": 53.79862976074219,
+        "x2": 244.96099853515625,
+        "y1": 643.138916015625,
+        "y2": 649.5648193359375
+      },
+      "text": "Why Users Dislike Digital Wellbeing Apps"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 6,
+      "region": {
+        "x1": 53.499000549316406,
+        "x2": 295.73016357421875,
+        "y1": 234.01644897460938,
+        "y2": 324.2181091308594
+      },
+      "text": "To further explore and analyze the fndings retrieved thanks to the two qualitative studies, we devised an in-the-wild study. Our aim was to quantitatively assess contemporary digital wellbeing solutions in helping users to change their behavior with the smarphone. For this purpose, we designed our own digital wellbeing app, named Socialize, by implementing some of the most common features identifed in our frst exploratory study, and we deployed it to 38 participants."
+    }],
+    "title": {
+      "page": 6,
+      "region": {
+        "x1": 53.79834747314453,
+        "x2": 235.14752197265625,
+        "y1": 219.16189575195312,
+        "y2": 225.5877685546875
+      },
+      "text": "5 DIGITAL WELLBEING IN THE WILD"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 6,
+      "region": {
+        "x1": 53.43000030517578,
+        "x2": 295.72528076171875,
+        "y1": 354.2864685058594,
+        "y2": 456.4429931640625
+      },
+      "text": "Figure 2 shows some screenshots of Socialize. We designed it as an Android application, by implementing the most common features identifed in our frst exploratory study, i.e., those available at least in 15% of the reviewed apps (see Table 3 for the list of the implemented features). Socialize works both at the phone and the app-level, by providing tools for self-monitoring as well as interventions. We excluded notifcation blockers since the Android SDK does not allow developers to directly update notifcation settings."
+    }, {
+      "page": 6,
+      "region": {
         "x1": 53.79800033569336,
-        "x2": 116.56490325927734,
-        "y1": 96.18885803222656,
-        "y2": 102.614990234375
+        "x2": 295.578857421875,
+        "y1": 622.12744140625,
+        "y2": 652.552978515625
+      },
+      "text": "Self-Monitoring. Socialize provides users with statistics both at the phone and the app-level. The application has 2 main type of windows: the main dashboard, and the detailed views."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.73016357421875,
+        "y1": 657.992431640625,
+        "y2": 712.328369140625
+      },
+      "text": "Through the main dashboard (Figure 2a), users can monitor phone-level statistics such as number of daily unlocks, number of received notifcations during the day, and total daily time spent with the device. Furthermore, the dashboard includes per-app daily information, by showing the"
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.2029418945312,
+        "y1": 96.09944915771484,
+        "y2": 114.57000732421875
+      },
+      "text": "time spent per-app, the number of times such apps have been checked, and the number of app notifcations."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.9549560546875,
+        "x2": 559.8870239257812,
+        "y1": 120.01045989990234,
+        "y2": 174.34600830078125
+      },
+      "text": "By clicking on the phone-level information, users can access a more detailed view of their smartphone usage, with hourly charts displaying time spent, unlocks, and notifcations hour by hour (Figure 2b). The same detailed view is provided also for each specifc app (Figure 2c)."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.207275390625,
+        "y1": 179.78549194335938,
+        "y2": 210.21197509765625
+      },
+      "text": "As widget recap, Socialize constantly shows a notifcation that displays some basic information, and acts as a shortcut to the main dashboard."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.656005859375,
+        "x2": 559.884765625,
+        "y1": 224.61746215820312,
+        "y2": 422.4159851074219
+      },
+      "text": "Interventions. From the detailed views, users can set up interventions both at the phone and the app-level. For limiting the usage of the entire phone, users can set up a) phone timers to be notifed when they are using the phone for too long, b) phone blockers to block the usage of the phone, and c) phone breaks to take a break from the devices by silencing and locking it. At the app-level, users can set up app timers and app-blockers. When interventions trigger, a pop-up window opens on top of any other currently used application (Figure 2d): users have the possibility to i) respect the intervention, i.e., by closing the blocked app/locking the phone; ii) snooze the intervention, i.e., by resetting the timer; or iii) delete the intervention. Beside the duration, all timers and blockers are customizable in terms of context: users can optionally specify an activity (still, walking, running, cycling, on vehicle) and a location to make the interventions valid in a given context, only."
+    }],
+    "title": {
+      "page": 6,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 93.87754821777344,
+        "y1": 339.43212890625,
+        "y2": 345.8580017089844
+      },
+      "text": "Socialize"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 6,
+      "region": {
+        "x1": 317.5870056152344,
+        "x2": 559.2965698242188,
+        "y1": 466.70947265625,
+        "y2": 604.7319946289062
+      },
+      "text": "To study Socialize in-the-wild, we uploaded it into the Google Play Store and we set up a within-subject experiments. We recruited participants by sending emails to students enrolled in diferent university courses and private messages to our social circles. In the month of July, 2018, 69 users responded to the announcement and installed Socialize. Of the 69 users, 38 (24 male and 14 female) completed the study and their data were used in our experimental analysis. Participants were on average 22.5 years old (SD = 4.46), and had diferent occupations: 5 were high school students, 18 were college students, 5 were Ph.D. students, and 10 were professional workers."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.656005859375,
+        "x2": 559.89013671875,
+        "y1": 610.1714477539062,
+        "y2": 712.3289794921875
+      },
+      "text": "The initial recruitment message described the main steps of the experiment, and contained a link to an initial questionnaire that we used to collect demographic information, and to measure a) the level of problematic smartphone use (problematic use), and b) the participants self-efcacy of selfregulation of smartphone use (self-regulation). For measuring the problematic use, we used the Short Version of the Smartphone Addiction Scale (SAS-SV [24]), a specialization of the Smartphone Addiction Scale [25] for young adults."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 54.0,
+        "x2": 558.001953125,
+        "y1": 750.914794921875,
+        "y2": 756.7197875976562
+      },
+      "text": "Paper 386 Page 7"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 53.499000549316406,
+        "x2": 295.72991943359375,
+        "y1": 360.60546875,
+        "y2": 462.76300048828125
+      },
+      "text": "The SAS-SV scale comprises 10 six-point Likert scale questions. The higher the SAS score is, the more addicted the user is to her smartphone. For measuring self-regulation we customized the Korean version of the General Self-Efcacy Scale (GSE [41]) to our context of self-regulation of smartphone use, as in [23]. Participants declared diferent scores about their perceived level of problematic use (M = 30.44, SD = 9.71, range: 17 − 55) and self-regulation (M = 30.03, SD = 4.53, range: 19 − 38)."
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 53.43000030517578,
+        "x2": 295.73016357421875,
+        "y1": 468.20245361328125,
+        "y2": 701.865966796875
+      },
+      "text": "After flling in the initial survey, we asked the participants to install Socialize from the Google Play Store. The experiment lasted three weeks for each participant. In the frst week (collection phase), Socialize ran in the background by silently logging usage data. In particular, we collected the usage time, both for the entire phone and for the diferent apps, the number of smartphone unlocks, the number of app executions, and the number of used apps. After 7 days, participants received a notifcation that alerted them about the end of the collection phase and the start of the intervention phase, i.e., 2 weeks in which participants could use all the functionality ofered by Socialize. When clicking on the notifcation, a tutorial introduced participants to the Socialize’s features. The usage data collection continued during the entire study. In the intervention phase, we also logged all the interactions of the users with Socialize, e.g., which interventions were defned, respected, snoozed, etc. At the end of the study, we asked participants to complete an exit survey. We asked them about the features they liked and disliked of Socialize, and whether they would use Socialize in the future. Furthermore,"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 317.5870056152344,
+        "x2": 558.2080688476562,
+        "y1": 360.60546875,
+        "y2": 379.07598876953125
+      },
+      "text": "we measured problematic use and self-regulation a second time. All the collected data were properly anonymized."
+    }],
+    "title": {
+      "page": 6,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 531.0550537109375,
+        "y1": 439.9003601074219,
+        "y2": 458.2813415527344
+      },
+      "text": "Socialize Evaluation: Participants, Method, and Metrics"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 7,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.8871459960938,
+        "y1": 586.2614135742188,
+        "y2": 712.3289794921875
+      },
+      "text": "Metrics Analysis. Figure 3 and Figure 4 show the daily values of the measured metrics. The fgures highlight a positive effect of Socialize on the smartphone usage time, while such an efect is less pronounced for the other 3 metrics, i.e., phone unlocks, app executions, and used apps. To better understand and analyze these fndings, we conducted a series of independent t-tests with Bonferroni correction on the collected metrics between the collection phase and the intervention phase (Table 4). The tests confrmed that the smartphone usage time decreased signifcantly (p < 0.05). Furthermore, also the number of used apps was diferent in the two phases,"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 54.0,
+        "x2": 558.001953125,
+        "y1": 750.914794921875,
+        "y2": 756.7197875976562
+      },
+      "text": "Paper 386 Page 8"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 53.43000030517578,
+        "x2": 295.7331848144531,
+        "y1": 304.3304748535156,
+        "y2": 693.4119873046875
+      },
+      "text": "with participants using signifcantly less apps in the intervention phase. As reported in Table 4, however, we did not fnd any signifcant diference in the number of app executions and phone unlocks between the collection phase and the intervention phase: even by using Socialize, participants continued to constantly check their smartphones. At the same time, we we did not fnd a signifcant diference in the self-reported questionnaires about problematic use (SAS-SV scale) and self-regulation (GSE scale) before and after the study. To further analyze whether and how Socialize impacted the smartphone use, we extracted other information from the large amount of collected data. We frst tried to understand whether there were diferences in how participants used their smartphones during the study. In particular, we analyzed the daily average number of times participants used their smartphones very frequently, i.e., with phone sessions at a distance of less than a minute, thus demonstrating a compulsive phone checking behavior. Also in this case, we did not fnd signifcant diferences: participants behaved similarly in the collection phase (M = 49.70, SD = 36.91) and in the intervention phase (M = 52.45, SD = 42.91, p > 0.05). We also tried to understand whether Socialize impacted the usage of specifc apps. For this purpose, we separately analyzed the data related to messaging apps (e.g., WhatsApp and Telegram) and social networks (e.g., Facebook and Instagram). We found that participants signifcantly reduced the time spent on social networks by using Socialize (M = 33.15, SD = 30.16) with respect to the collection phase (M = 37.97, SD = 27.99, p < 0.05). On the contrary, we did not fnd significant diferences for messaging apps (M = 26.47, SD = 35.65 in the collection phase vs. M = 25.35, SD = 32.46 in the intervention phase, p > 0.05)."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 317.70599365234375,
+        "x2": 559.8870849609375,
+        "y1": 454.75445556640625,
+        "y2": 712.3289794921875
+      },
+      "text": "Interventions Analysis. Table 5 reports the data about the usage of interventions. During the intervention phase, participants set up 41 interventions in total: 6 phone timers, 11 app timers, 7 phone blockers, 16 app blockers, and 1 phone break. Users demonstrated to prefer blockers (23) with respect to timers (17). Furthermore, intervention data suggest that participants were more interested in acting at the applevel, rather than setting interventions at the phone-level: by considering the interventions available for both levels, i.e., timers and blockers, participants set up 27 app-level interventions (67.50%), while only 13 (32.50%) were set up at the phone level. Participants, in particular, defned the majority of app-level interventions for limiting the usage of social networks: 10 of them were defned for Faceboook, 14 for Instagram. Since we found that participants signifcantly reduced the time spent on social networks during the intervention phase, we may conclude that app-level interventions are efective in limiting the usage of this type of apps. Diferences also emerged when analyzing whether interventions were respected, snoozed, or deleted. Participants deleted 3 of the 6 defned timers (50.00%) before the end of the intervention phase. The 6 timers were triggered 91 times in"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 54.0,
+        "x2": 558.001953125,
+        "y1": 750.914794921875,
+        "y2": 756.7197875976562
+      },
+      "text": "Paper 386 Page 9"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 53.50328063964844,
+        "x2": 295.5777282714844,
+        "y1": 304.3304748535156,
+        "y2": 466.26300048828125
+      },
+      "text": "total: in only 2 cases (2.19%) timers were respected, while in 89 cases (97.81%) timers were snoozed. On the contrary, only 4 app timers out of 11 (36.37%) were deleted before the end of the intervention phase, but none of them were triggered during the study. For what concerns the 7 phone blockers, participants always snoozed them (i.e., in 5 cases out of 5). The 16 app blockers, instead, were triggered 245 times: in 115 cases (46.94%) participants respected the blocker, while in 130 cases (54.06%) participants snoozed the blocker. All the phone and app blockers were deleted by the participants before the end of the collection phase. Phone breaks were the less used and considered interventions: only one participant decided to take a break from her smartphone, but she ignored it by unlocking the phone before the end of the break."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.7301330566406,
+        "y1": 484.3614807128906,
+        "y2": 574.56298828125
+      },
+      "text": "Qalitative Results. In the exit survey, all the 38 participants asserted that they would use Socialize in the future. Furthermore, by describing what they liked of Socialize, they provided feedback in line with our reviews’ analysis. Many participants (17, 44.74%), in particular, were enthusiastic of seeing their smartphone usage statistics, even if most of them were shocked to see how many time they spent on their devices. P9, for example, said:"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 78.20700073242188,
+        "x2": 269.6379699707031,
+        "y1": 589.62255859375,
+        "y2": 619.5360107421875
+      },
+      "text": "“I liked the possibility to see how much time I waste on the smarphone, but at the same time this shocked me. I could not imagine such a thing.”"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 53.436614990234375,
+        "x2": 295.7296447753906,
+        "y1": 634.0824584960938,
+        "y2": 712.3282470703125
+      },
+      "text": "Furthermore, 8 participants asserted that they used Socialize to efectively improve their smartphone usage through interventions, by limiting the time they spent on diferent apps. By describing what they disliked, a few participants (3) highlighted the high battery consumption with Socialize, while another participant asserted that Socialize impacted"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 317.47698974609375,
+        "x2": 559.8905639648438,
+        "y1": 304.32989501953125,
+        "y2": 454.3080139160156
+      },
+      "text": "the performance of her smartphone. The remaining comments were actually constructive feedback, e.g., the possibility to customize interventions for diferent times of the day. Finally, the participants’ answers confrm the necessity of improving digital wellbeing apps with more restrictive and motivational solutions, e.g., by inserting penalties when interventions are snoozed/deleted and by making the challenge of respecting interventions as a sort of game (P11). We also analyzed whether and how participants customized timers and blockers in terms of context. Surprisingly, only 9 of them (22.50%) included a contextual customization. In particular, 1 intervention was defned for a specifc location, while 8 for a specifc activity."
+    }],
+    "title": {
+      "page": 7,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 447.0802917480469,
+        "y1": 393.9999694824219,
+        "y2": 400.42584228515625
+      },
+      "text": "Socialize Evaluation: Results"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 9,
+      "region": {
+        "x1": 317.656005859375,
+        "x2": 559.8861083984375,
+        "y1": 493.116455078125,
+        "y2": 607.22900390625
+      },
+      "text": "In this section, we frst discuss the results of our three studies by highlighting that the features ofered by contemporary digital wellbeing apps are often not sufcient to efectively help users in changing their behavior with the smartphone. Then, we try to better understand such a problem by discussing to what extent digital wellbeing apps are grounded in research backgrounds such as behavior change and habit formation. Finally, we summarize the discussion by presenting suggestions to be explored in future work regarding the design of digital wellbeing solutions."
+    }],
+    "title": {
+      "page": 9,
+      "region": {
+        "x1": 317.95562744140625,
+        "x2": 393.0038757324219,
+        "y1": 478.25811767578125,
+        "y2": 484.6839904785156
+      },
+      "text": "6 DISCUSSION"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 9,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.3026123046875,
+        "y1": 646.0374145507812,
+        "y2": 712.3289794921875
+      },
+      "text": "People are making use of digital wellbeing apps and they like the idea of having a digital wellbeing assistant that alerts them in case of any addictive behavior. Despite the overall positive tone of the analyzed reviews and Socialize’s users, however, challenges still arose, and users are often aware that such solutions are sometimes not sufcient:"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 54.0,
+        "x2": 558.0040283203125,
+        "y1": 750.914794921875,
+        "y2": 756.7197875976562
+      },
+      "text": "Paper 386 Page 10"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 78.20700073242188,
+        "x2": 269.635009765625,
+        "y1": 96.6125259399414,
+        "y2": 126.5260009765625
+      },
+      "text": "“I love this app. Makes breaking my addiction to the cell phone much easier. Although I still need strong will of my own.” (R93)"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 52.672000885009766,
+        "x2": 295.7301330566406,
+        "y1": 134.30844116210938,
+        "y2": 332.10699462890625
+      },
+      "text": "Apps such as Socialize are liked by users, and can be useful to reduce the time spent on smartphones, especially for some specifc use cases. Statistics, in particular, are helpful to understand the time wasted on smartphones, and interventions are efective to limit the smartphone use, especially at the app-level: participants of our in-the-wild study, for example, signifcantly reduced the time spent on social networks by defning interventions for Facebook and Instagram. The same participants, however, rarely set up interventions, and in most of the cases they snoozed and deleted them. Thus, they continued to frequently check their smartphones, and the usage of Socialize did not change how they perceived their problematic smartphone use and their self-regulation skills. Moreover, we found many proposed improvements and suggestions for new features in the analyzed users’ reviews. Digital wellbeing apps, for instance, should be more “intelligent”, e.g., by adding context to existing interventions:"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 77.5989990234375,
+        "x2": 270.6363525390625,
+        "y1": 340.40252685546875,
+        "y2": 382.2699890136719
+      },
+      "text": "“Nice app but I’d like to see some additional features, for example if like the app to automatically detect when in a moving vehicle and activate.” (R500)"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 294.0450134277344,
+        "y1": 390.053466796875,
+        "y2": 432.4339904785156
+      },
+      "text": "Furthermore, users often ask for the possibility of setting goals, and for introducing the possibility of interacting with other users, thus confrming the need of including more social support:"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 78.20636749267578,
+        "x2": 269.6376953125,
+        "y1": 440.72784423828125,
+        "y2": 470.64300537109375
+      },
+      "text": "“Can you show avg stats of all the people? To see if you are way above the normal people in phone usage.” (R222)"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.7301330566406,
+        "y1": 478.42547607421875,
+        "y2": 628.4030151367188
+      },
+      "text": "The data collected during the in-the-wild study allowed us to further understand which features are appreciated. Participants, in particular, set up more blockers than timers, thus confrming a preference towards restrictive solutions. Furthermore, as reported for the reviews’ analysis, the inthe-wild results suggest that users are more interested in controlling specifc apps, rather than the entire phone. Finally, results show that allowing users to customize interventions in terms of performed activity and current location does not add much value: participants used the contextual customization in a limited number of cases. This seems to suggest that users consider their behaviors problematic independently of their contextual situation."
+    }],
+    "title": {
+      "page": 9,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 546.845703125,
+        "y1": 631.1790771484375,
+        "y2": 637.60498046875
+      },
+      "text": "Digital Wellbeing Features and Their Efectiveness"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 10,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 303.22271728515625,
+        "y1": 657.992431640625,
+        "y2": 712.3289794921875
+      },
+      "text": "Similarly to what happens for habit-formation mobile apps [43], our work shows that also digital wellbeing apps are mainly focused on supporting self-monitoring, i.e., tracking own behavior and receiving feedback. While self-tracking plays an important role in the behavior change process [4], it does"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 317.5870056152344,
+        "x2": 559.8892211914062,
+        "y1": 96.09944915771484,
+        "y2": 186.301025390625
+      },
+      "text": "not support the formation of new habits, and it strongly depends on the monitoring behavior: once the monitoring stops, e.g., because the app does not work or because users get bored, the behavior can revert to pre-interventions levels [21]. Habit formation could play an important role in digital wellbeing apps, by supporting behavior change towards a more conscious use of technology, and ensuring the long-term efects of the new behavior [26]."
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 317.5870056152344,
+        "x2": 559.8892211914062,
+        "y1": 191.74148559570312,
+        "y2": 580.822021484375
+      },
+      "text": "As reported in our frst study, the only, rarely adopted features that supports habit formation in contemporary digital wellbeing apps are motivational quotes and rewards, which can be seen as positive reinforcement techniques. Through such techniques, users experience the feeling of success, a fundamental aspect to strengthen new habits [2]. Satisfaction can trigger the feeling of being in control, thus motivating the users and reinforcing the need to repeat the action in the future [2]. Unfortunately, this cannot work in the long term, since the role of motivation decreases as the behavior becomes automatic [38]. Our second study confrms this fnding, showing that contemporary digital wellbeing apps are mainly designed to break existing habits, instead of developing new habits. Breaking habits, however, is frustrating, and users need to be continuously motivated in continuing the monitoring behavior to efectively use such apps. Contemporary digital wellbeing apps totally lack other fundamental aspects of the habit formation process, such as providing cues and trigger events [43]: new habits linked with some routines, e.g., turn of the phone when I am having lunch, are generally easier to remember, and each repetition reinforces that association, which increases the automaticity of the behavior [15]. In addition, despite previous studies demonstrated that social support can increase self-regulation of smartphone usage [23], existing digital wellbeing apps do not seem to be designed with a focus on promoting self-regulation through social support. The possibility of comparing statistics with other users, for example, is rarely introduced. According to the Social Cognitive Theory (SCT) [4], however, learning occurs in a social context and much of what is learned is gained through observation: through social learning, people can have better awareness of normative behaviors and can also be motivated to self-regulate."
+    }],
+    "title": {
+      "page": 10,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 217.7923583984375,
+        "y1": 643.1376953125,
+        "y2": 649.5635986328125
+      },
+      "text": "Self Monitoring vs. Habit Formation"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 10,
+      "region": {
+        "x1": 317.5870056152344,
+        "x2": 559.8882446289062,
+        "y1": 622.12744140625,
+        "y2": 712.3289794921875
+      },
+      "text": "Our fndings point to diferent promising areas that could be explored in future work regarding the design of digital wellbeing solutions. First, our results highlight that contemporary digital wellbeing apps do not support the formation of new habits, but they are mainly designed for breaking existing “unhealthy” habits through self-monitoring. We argue that digital wellbeing apps should be more grounded in habit formation research, by adopting tools and methodologies to"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 54.0,
+        "x2": 558.0040283203125,
+        "y1": 750.914794921875,
+        "y2": 756.7197875976562
+      },
+      "text": "Paper 386 Page 11"
+    }, {
+      "page": 11,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.7301330566406,
+        "y1": 96.09944915771484,
+        "y2": 174.34600830078125
+      },
+      "text": "form and make “healthy” behaviors persistent, e.g., by increasing the usage of positive reinforcement techniques [2], and by providing cues and trigger events [43]. By exploiting the contextual-awareness functionality of smartphones, for example, a digital wellbeing app could dynamically suggest new habits, e.g., “go for a walk in the evening”, to revert some existing behaviors, e.g., browsing Facebook."
+    }, {
+      "page": 11,
+      "region": {
+        "x1": 53.79798889160156,
+        "x2": 295.732666015625,
+        "y1": 179.78549194335938,
+        "y2": 652.552978515625
+      },
+      "text": "Furthermore, contemporary digital wellbeing apps rarely take into account social-supporting techniques. For example, only a limited number of apps allow users to compare their own statistics with the statistics of other users. This limitation is also highlighted by the same users, that frequently ask for introducing the possibility to interact with other users in their reviews. As in previous studies, e.g., [23], we claim that digital wellbeing apps should promote self-regulation through social support, and should be more grounded in the Social Cognitive Theory (SCT) [4]. Beside comparing statistics, many diferent solutions could be adopted. As requested by some users in our studies, users could interact through “social games”, with the possibility of setting goals, rewarding mechanism in case of success, and penalties in case of failures. Perhaps the most interesting result of our work is that users want restrictive solutions to limit their excessive smartphone use. Users feel that unrestrictive and bypassable solutions are not enough for changing their behaviors with the smartphone, and this is especially confrmed by the results of our in-the-wild study: interventions are often snoozed or deleted, and digital wellbeing apps fail in preventing addictive behaviors, e.g., the compulsive checking of the smartphone. As a result, future work in this feld should explore the adoption of restrictive interventions, difcult to be bypassed, that penalize users when they do not respect an intervention. Finally, results of our studies suggest that digital wellbeing apps should be focused at the app-level rather than phone-level, and they should provide users with accurate and explainable statistics. In line with previous work [11], indeed, participants of our in-the-wild study signifcantly set up and respected more interventions for limiting the usage of specifc apps, while users’ reviews often point out that focusing on the phone-level is not enough. Furthermore, reviews suggest that bugs, especially those related to the accuracy of the visualized statistics, highly afect the usefulness and the usability of digital wellbeing apps. Indeed, such bugs are difcult to detect, and users are often not able to distinguish if high usage data are due to an addictive behavior or an application bug."
+    }],
+    "title": {
+      "page": 10,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 462.5422668457031,
+        "y1": 607.272705078125,
+        "y2": 613.6986083984375
+      },
+      "text": "Designing for Digital Wellbeing"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 11,
+      "region": {
+        "x1": 53.43000030517578,
+        "x2": 294.0496520996094,
+        "y1": 681.9024047851562,
+        "y2": 712.3291015625
+      },
+      "text": "There are some major limitations to be considered. First, it is worth noticing that any claims arising from users’ reviews can be infuenced by the bi-modal and extreme viewpoints"
+    }, {
+      "page": 11,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.8887939453125,
+        "y1": 96.09944915771484,
+        "y2": 198.25701904296875
+      },
+      "text": "that users typically insert in their comments [19]. Furthermore, our in-the-wild study was conducted over a short time of three weeks, and involved a limited number of participants (n = 38). Moreover, the three weeks overlapped with the exam period for college students. As a result, such participants were subjected to diferent levels of work and stress. Finally, we did not take into account other forms of technology overuse regarding other devices such as tablets and personal computers."
+    }],
+    "title": {
+      "page": 11,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 132.45272827148438,
+        "y1": 667.048583984375,
+        "y2": 673.4744873046875
+      },
+      "text": "7 LIMITATIONS"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 11,
+      "region": {
+        "x1": 317.5870056152344,
+        "x2": 559.8873291015625,
+        "y1": 231.59146118164062,
+        "y2": 405.47900390625
+      },
+      "text": "Terms such as “technology overuse” and “smartphone addiction” have recently gained interest. In this paper, we have presented the results of 3 diferent studies with the aim of providing the frst overall perspective of existing mobile apps for changing users’ behavior with smartphone. Results show that despite contemporary digital wellbeing apps can be used to reduce some addictive behaviors, e.g., using social networks, the road for efectively helping users in changing their behaviors with smartphones and promoting a more conscious technology use is still long. For closing this gap, we have proposed suggestions to be explored in future work: we are currently exploring digital wellbeing solutions that are more grounded in habit formation and social support theories, with the aim of overcoming the drawbacks of pure self-monitoring techniques."
+    }],
+    "title": {
+      "page": 11,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 506.3079833984375,
+        "y1": 216.73764038085938,
+        "y2": 223.16351318359375
+      },
+      "text": "8 CONCLUSIONS AND FUTURE WORK"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 11,
+      "region": {
+        "x1": 321.6610107421875,
+        "x2": 558.717529296875,
+        "y1": 438.12457275390625,
+        "y2": 443.3370056152344
+      },
+      "text": "[1] 2018. Our commitment to Digital Wellbeing. https://wellbeing.google/"
+    }, {
+      "page": 11,
+      "region": {
+        "x1": 321.66107177734375,
+        "x2": 559.430908203125,
+        "y1": 448.0875549316406,
+        "y2": 463.26300048828125
+      },
+      "text": "Accessed: 2018-08-17. [2] Henk Aarts, Theo G.W.M. Paulussen, and Herman P Schaalma. 1997."
+    }, {
+      "page": 11,
+      "region": {
+        "x1": 321.6611328125,
+        "x2": 559.5526123046875,
+        "y1": 468.0125732421875,
+        "y2": 712.3289794921875
+      },
+      "text": "Physical exercise habit: on the conceptualization and formation of habitual health behaviours. Health education research 12 3 (1997), 363–74. https://doi.org/10.1093/her/12.3.363 [3] Morgan G. Ames. 2013. Managing Mobile Multitasking: The Culture of iPhones on Stanford Campus. In Proceedings of the 2013 Conference on Computer Supported Cooperative Work (CSCW ’13). ACM, New York, NY, USA, 1487–1498. https://doi.org/10.1145/2441776.2441945 [4] Albert Bandura. 1991. Social cognitive theory of self-regulation. Organizational Behavior and Human Decision Processes 50, 2 (1991), 248 – 287. https://doi.org/10.1016/0749-5978(91)90022-L Theories of Cognitive Self-Regulation. [5] Eric P.S. Baumer, Phil Adams, Vera D. Khovanskaya, Tony C. Liao, Madeline E. Smith, Victoria Schwanda Sosik, and Kaiton Williams. 2013. Limiting, Leaving, and (Re)Lapsing: An Exploration of Facebook Nonuse Practices and Experiences. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI ’13). ACM, New York, NY, USA, 3257–3266. https://doi.org/10.1145/2470654.2466446 [6] Adriana Bianchi and James G. Phillips. 2005. Psychological Predictors of Problem Mobile Phone Use. CyberPsychology & Behavior 8, 1 (2005), 39–51. https://doi.org/10.1089/cpb.2005.8.39 [7] Joël Billieux, Pierre Maurage, Olatz Lopez-Fernandez, Daria J. Kuss, and Mark D. Grifths. 2015. Can Disordered Mobile Phone Use Be Considered a Behavioral Addiction? An Update on Current Evidence and a Comprehensive Model for Future Research. Current Addiction Reports 2, 2 (01 Jun 2015), 156–162. https://doi.org/10.1007/s40429-015-0054-y"
+    }, {
+      "page": 11,
+      "region": {
+        "x1": 54.0,
+        "x2": 558.0039672851562,
+        "y1": 750.914794921875,
+        "y2": 756.7197875976562
+      },
+      "text": "Paper 386 Page 12"
+    }, {
+      "page": 12,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.3905334472656,
+        "y1": 97.40254211425781,
+        "y2": 710.3359985351562
+      },
+      "text": "[8] Chien Chou, Linda Condron, and John C. Belland. 2005. A Review of the Research on Internet Addiction. Educational Psychology Review 17, 4 (01 Dec 2005), 363–388. https://doi.org/10.1007/s10648-005-8138-1 [9] Emily I. M. Collins, Anna L. Cox, Jon Bird, and Cassie Cornish-Tresstail. 2014. Barriers to Engagement with a Personal Informatics Productivity Tool. In Proceedings of the 26th Australian Computer-Human Interaction Conference on Designing Futures: The Future of Design (OzCHI ’14). ACM, New York, NY, USA, 370–379. https://doi.org/10.1145/2686612.2686668 [10] Laura Dabbish, Gloria Mark, and Víctor M. González. 2011. Why Do I Keep Interrupting Myself?: Environment, Habit and Self-interruption. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI ’11). ACM, New York, NY, USA, 3127–3130. https://doi. org/10.1145/1978942.1979405 [11] Xiang Ding, Jing Xu, Guanling Chen, and Chenren Xu. 2016. Beyond Smartphone Overuse: Identifying Addictive Mobile Apps. In Proceedings of the 2016 CHI Conference Extended Abstracts on Human Factors in Computing Systems (CHI EA ’16). ACM, New York, NY, USA, 2821–2828. https://doi.org/10.1145/2851581.2892415 [12] Jennifer Fereday and Eimear Muir-Cochrane. 2006. Demonstrating Rigor Using Thematic Analysis: A Hybrid Approach of Inductive and Deductive Coding and Theme Development. International Journal of Qualitative Methods 5, 1 (2006), 80–92. https://doi.org/10.1177/ 160940690600500107 [13] Bin Fu, Jialiu Lin, Lei Li, Christos Faloutsos, Jason Hong, and Norman Sadeh. 2013. Why People Hate Your App: Making Sense of User Feedback in a Mobile App Store. In Proceedings of the 19th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (KDD ’13). ACM, New York, NY, USA, 1276–1284. https://doi.org/10. 1145/2487575.2488202 [14] Kenneth J. Gergen. 2002. The challenge of absent presence. Cambridge University Press, 227–241. https://doi.org/10.1017/CBO9780511489471. 018 [15] Peter M. Gollwitzer. 1999. Implementation Intentions : Strong Efects of Simple Plans. The American Psychologist 54, 7 (1999), 493–503. https://doi.org/10.1037/0003-066X.54.7.493 [16] Ellie Harmon and Melissa Mazmanian. 2013. Stories of the Smartphone in Everyday Discourse: Confict, Tension & Instability. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI ’13). ACM, New York, NY, USA, 1051–1060. https://doi.org/10.1145/ 2470654.2466134 [17] Alexis Hiniker, Sungsoo (Ray) Hong, Tadayoshi Kohno, and Julie A. Kientz. 2016. MyTime: Designing and Evaluating an Intervention for Smartphone Non-Use. In Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems (CHI ’16). ACM, New York, NY, USA, 4746–4757. https://doi.org/10.1145/2858036.2858403 [18] Daniel J. Hruschka, Deborah Schwartz, Daphne Cobb St.John, Erin Picone-Decaro, Richard A. Jenkins, and James W. Carey. 2004. Reliability in Coding Open-Ended Data: Lessons Learned from HIV Behavioral Research. Field Methods 16, 3 (2004), 307–331. https: //doi.org/10.1177/1525822X04266540 [19] Nan Hu, Jie Zhang, and Paul A. Pavlou. 2009. Overcoming the J-shaped Distribution of Product Reviews. Commun. ACM 52, 10 (Oct. 2009), 144–147. https://doi.org/10.1145/1562764.1562800 [20] Mary Helen Immordino-Yang, Andrea McColl, Hanna Damasio, and Antonio Damasio. 2009. Neural correlates of admiration and compassion. Proceedings of the National Academy of Sciences 106, 19 (2009), 8021–8026. https://doi.org/10.1073/pnas.0810363106 [21] Predrag Klasnja, Sunny Consolvo, and Wanda Pratt. 2011. How to Evaluate Technologies for Health Behavior Change in HCI Research. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI ’11). ACM, New York, NY, USA, 3063–3072. https://doi. org/10.1145/1978942.1979396"
+    }, {
+      "page": 12,
+      "region": {
+        "x1": 317.9550476074219,
+        "x2": 559.5521240234375,
+        "y1": 97.40345764160156,
+        "y2": 710.3359985351562
+      },
+      "text": "[22] Minsam Ko, Seungwoo Choi, Koji Yatani, and Uichin Lee. 2016. Lock N’ LoL: Group-based Limiting Assistance App to Mitigate Smartphone Distractions in Group Activities. In Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems (CHI ’16). ACM, New York, NY, USA, 998–1010. https://doi.org/10.1145/2858036.2858568 [23] Minsam Ko, Subin Yang, Joonwon Lee, Christian Heizmann, Jinyoung Jeong, Uichin Lee, Daehee Shin, Koji Yatani, Junehwa Song, and Kyong-Mee Chung. 2015. NUGU: A Group-based Intervention App for Improving Self-Regulation of Limiting Smartphone Use. In Proceedings of the 18th ACM Conference on Computer Supported Cooperative Work &#38; Social Computing (CSCW ’15). ACM, New York, NY, USA, 1235–1245. https://doi.org/10.1145/2675133.2675244 [24] Min Kwon, Dai-Jin Kim, Hyun Cho, and Soo Yang. 2014. The Smartphone Addiction Scale: Development and Validation of a Short Version for Adolescents. PLOS ONE 8, 12 (12 2014), 1–7. https://doi.org/10. 1371/journal.pone.0083558 [25] Min Kwon, Joon-Yeop Lee, Wang-Youn Won, Jae-Woo Park, Jung-Ah Min, Changtae Hahn, Xinyu Gu, Ji-Hye Choi, and Dai-Jin Kim. 2013. Development and Validation of a Smartphone Addiction Scale (SAS). PLOS ONE 8, 2 (02 2013), 1–7. https://doi.org/10.1371/journal.pone. 0056936 [26] Phillippa Lally and Benjamin Gardner. 2013. Promoting habit formation. Health Psychology Review 7, sup1 (2013), S137–S158. https: //doi.org/10.1080/17437199.2011.603640 [27] Klodiana Lanaj, Russell E. Johnson, and Christopher M. Barnes. 2014. Beginning the workday yet already depleted? Consequences of latenight smartphone use and sleep. Organizational Behavior and Human Decision Processes 124, 1 (2014), 11 – 23. https://doi.org/10.1016/j. obhdp.2014.01.001 [28] Simone Lanette, Phoebe K. Chua, Gillian Hayes, and Melissa Mazmanian. 2018. How Much is ’Too Much’?: The Role of a Smartphone Addiction Narrative in Individuals’ Experience of Use. Proc. ACM Hum.-Comput. Interact. 2, CSCW, Article 101 (Nov. 2018), 22 pages. https://doi.org/10.1145/3274370 [29] Simone Lanette and Melissa Mazmanian. 2018. The Smartphone \"Addiction\" Narrative is Compelling, but Largely Unfounded. In Extended Abstracts of the 2018 CHI Conference on Human Factors in Computing Systems (CHI EA ’18). ACM, New York, NY, USA, Article LBW023, 6 pages. https://doi.org/10.1145/3170427.3188584 [30] Uichin Lee, Joonwon Lee, Minsam Ko, Changhun Lee, Yuhwan Kim, Subin Yang, Koji Yatani, Gahgene Gweon, Kyong-Mee Chung, and Junehwa Song. 2014. Hooked on Smartphones: An Exploratory Study on Smartphone Overuse Among College Students. In Proceedings of the 32Nd Annual ACM Conference on Human Factors in Computing Systems (CHI ’14). ACM, New York, NY, USA, 2327–2336. https://doi.org/10. 1145/2556288.2557366 [31] Yu-Kang Lee, Chun-Tuan Chang, You Lin, and Zhao-Hong Cheng. 2014. The dark side of smartphone usage: Psychological traits, compulsive behavior and technostress. Computers in Human Behavior 31 (2014), 373 – 383. https://doi.org/10.1016/j.chb.2013.10.047 [32] Markus Löchtefeld, Matthias Böhmer, and Lyubomir Ganev. 2013. AppDetox: Helping Users with Mobile App Addiction. In Proceedings of the 12th International Conference on Mobile and Ubiquitous Multimedia (MUM ’13). ACM, New York, NY, USA, Article 43, 2 pages. https://doi.org/10.1145/2541831.2541870 [33] Grifths M. 1995. Technological Addictions. Clinical Psychology Forum (1995), 14–19. [34] Gloria Mark, Shamsi Iqbal, and Mary Czerwinski. 2017. How Blocking Distractions Afects Workplace Focus and Productivity. In Proceedings of the 2017 ACM International Joint Conference on Pervasive and Ubiquitous Computing and Proceedings of the 2017 ACM International Symposium on Wearable Computers (UbiComp ’17). ACM, New York,"
+    }, {
+      "page": 12,
+      "region": {
+        "x1": 54.0,
+        "x2": 558.0040283203125,
+        "y1": 750.914794921875,
+        "y2": 756.7197875976562
+      },
+      "text": "Paper 386 Page 13"
+    }, {
+      "page": 13,
+      "region": {
+        "x1": 53.79804992675781,
+        "x2": 295.2685852050781,
+        "y1": 97.40254211425781,
+        "y2": 112.5780029296875
+      },
+      "text": "NY, USA, 928–934. https://doi.org/10.1145/3123024.3124558 [35] Gloria Mark, Shamsi Iqbal, Mary Czerwinski, and Paul Johns. 2015."
+    }, {
+      "page": 13,
+      "region": {
+        "x1": 53.79804992675781,
+        "x2": 295.3905334472656,
+        "y1": 117.32820129394531,
+        "y2": 411.4570007324219
+      },
+      "text": "Focused, Aroused, but So Distractible: Temporal Perspectives on Multitasking and Communications. In Proceedings of the 18th ACM Conference on Computer Supported Cooperative Work & Social Computing (CSCW ’15). ACM, New York, NY, USA, 903–916. https: //doi.org/10.1145/2675133.2675221 [36] Gloria Mark, Yiran Wang, and Melissa Niiya. 2014. Stress and Multitasking in Everyday College Life: An Empirical Study of Online Activity. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI ’14). ACM, New York, NY, USA, 41–50. https://doi.org/10.1145/2556288.2557361 [37] Lisa J. Merlo, Amanda M. Stone, , and Alex Bibbey. 2013. Measuring Problematic Mobile Phone Use: Development and Preliminary Psychometric Properties of the PUMP Scale. Journal of Addiction 2013 (2013). https://doi.org/10.1155/2013/912807 [38] David T. Neal, Wendy Wood, Jennifer S. Labrecque, and Phillippa Lally. 2012. How do habits guide behavior? Perceived and actual triggers of habits in daily life. Journal of Experimental Social Psychology 48, 2 (2012), 492 – 498. https://doi.org/10.1016/j.jesp.2011.10.011 [39] Antti Oulasvirta, Tye Rattenbury, Lingyi Ma, and Eeva Raita. 2012. Habits make smartphone use more pervasive. Personal and Ubiquitous Computing 16, 1 (01 Jan 2012), 105–114. https://doi.org/10.1007/ s00779-011-0412-2 [40] Christine Satchell and Paul Dourish. 2009. Beyond the User: Use and Non-use in HCI. In Proceedings of the 21st Annual Conference of the Australian Computer-Human Interaction Special Interest Group: Design: Open 24/7 (OZCHI ’09). ACM, New York, NY, USA, 9–16. https: //doi.org/10.1145/1738826.1738829 [41] Ralf Schwarzer, Aristi Born, Saburo Iwawaki, Young-Min Lee, Etsuko Saito, and Xiaodong Yue. 1997. The assessment of optimistic selfbeliefs: Comparison of the Chinese, Indonesian, Japanese, and Korean"
+    }, {
+      "page": 13,
+      "region": {
+        "x1": 317.9550476074219,
+        "x2": 559.5529174804688,
+        "y1": 97.40254211425781,
+        "y2": 399.6130065917969
+      },
+      "text": "versions of the general self-efcacy scale. Psychologia 40, 1 (3 1997), 1–13. [42] Choonsung Shin and Anind K. Dey. 2013. Automatically Detecting Problematic Use of Smartphones. In Proceedings of the 2013 ACM International Joint Conference on Pervasive and Ubiquitous Computing (UbiComp ’13). ACM, New York, NY, USA, 335–344. https: //doi.org/10.1145/2493432.2493443 [43] Katarzyna Stawarz, Anna L. Cox, and Ann Blandford. 2015. Beyond Self-Tracking and Reminders: Designing Smartphone Apps That Support Habit Formation. In Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems (CHI ’15). ACM, New York, NY, USA, 2653–2662. https://doi.org/10.1145/2702123.2702230 [44] Virginia Thomas, Margarita Azmitia, and Steve Whittaker. 2016. Unplugged: Exploring the costs and benefts of constant connection. Computers in Human Behavior 63 (2016), 540 – 548. https://doi.org/10. 1016/j.chb.2016.05.078 [45] Sherry Turkle. 2011. Alone Together: Why We Expect More from Technology and Less from Each Other. Basic Books, Inc., New York, NY, USA. [46] Rajesh Vasa, Leonard Hoon, Kon Mouzakis, and Akihiro Noguchi. 2012. A Preliminary Analysis of Mobile App User Reviews. In Proceedings of the 24th Australian Computer-Human Interaction Conference (OzCHI ’12). ACM, New York, NY, USA, 241–244. https://doi.org/10.1145/ 2414536.2414577 [47] Steve Whittaker, Vaiva Kalnikaite, Victoria Hollis, and Andrew Guydish. 2016. ’Don’T Waste My Time’: Use of Time Information Improves Focus. In Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems (CHI ’16). ACM, New York, NY, USA, 1729–1738. https://doi.org/10.1145/2858036.2858193 [48] S.M.E. Wyatt. 2003. Non-users also matter: The construction of users and non-users of the Internet. Cambridge, MA: MIT Press, 67–79."
+    }, {
+      "page": 13,
+      "region": {
+        "x1": 54.0,
+        "x2": 558.0040283203125,
+        "y1": 750.914794921875,
+        "y2": 756.7197875976562
+      },
+      "text": "Paper 386 Page 14"
+    }],
+    "title": {
+      "page": 11,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 380.7193603515625,
+        "y1": 423.9596252441406,
+        "y2": 430.385498046875
       },
       "text": "REFERENCES"
     }

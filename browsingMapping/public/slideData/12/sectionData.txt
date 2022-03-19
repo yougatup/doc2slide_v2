@@ -1,6 +1,8 @@
 CCS CONCEPTS
 KEYWORDS
-KEYWORDS
+ACM Reference Format:
+ACM Reference Format:
+ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
@@ -8,84 +10,117 @@ KEYWORDS
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-2 RELATED WORK
-Trust in HCI
-Trust in HCI
-Trust in HCI
-Trust in HCI
-Bitcoins’ Blockchain Technology and Mining Protocol
-Bitcoins’ Blockchain Technology and Mining Protocol
-Bitcoins’ Blockchain Technology and Mining Protocol
-Bitcoins’ Blockchain Technology and Mining Protocol
-Security Research on Mining-related Threats
-Security Research on Mining-related Threats
-3 METHOD
-3 METHOD
-3 METHOD
-3 METHOD
-4 FINDINGS
-Motivations of Bitcoin Miners
-Motivations of Bitcoin Miners
-Motivations of Bitcoin Miners
-Lack of Regulation Regarding Taxation of Miners’ Fees.
-Blockchain’s Characteristics Impacting on Miners’ Trust
-Blockchain’s Characteristics Impacting on Miners’ Trust
-Social Organization of Mining Practice: Competitiveness
-Social Organization of Mining Practice: Competitiveness
-Social Organization of Mining Practice: Competitiveness
-Social Organization of Mining Practice: Competitiveness
-Social Organization of Mining Practice: Competitiveness
-Social Organization of Mining Practice: Competitiveness
-Social Organization of Mining Practice: Competitiveness
-Social Organization of Mining Practice: Competitiveness
-Social Organization of Mining Practice: Competitiveness
-Types of Miners
-Types of Miners
-Types of Miners
-Types of Miners
-Trust Challenges of Collaborative Mining
-Trust Challenges of Collaborative Mining
-Trust Challenges of Collaborative Mining
-Trust Challenges of Collaborative Mining
-Trust Challenges of Collaborative Mining
-Trust Challenges of Collaborative Mining
-Trust Challenges of Collaborative Mining
-Trust Challenges of Collaborative Mining
-Trust Challenges of Collaborative Mining
-Trust Challenges of Collaborative Mining
-Trust Challenges of Collaborative Mining
-Trust Challenges of Collaborative Mining
-Trust Challenges of Collaborative Mining
-Trust Challenges of Collaborative Mining
-Trust Challenges of Collaborative Mining
-Trust Challenges of Collaborative Mining
-Trust Challenges of Collaborative Mining
-Mitigating Trust Risks of Collaborative Mining
-Mitigating Trust Risks of Collaborative Mining
-Mitigating Trust Risks of Collaborative Mining
-Mitigating Trust Risks of Collaborative Mining
-Mitigating Trust Risks of Collaborative Mining
-5 THEORATICAL IMPLICATIONS
-Towards a Model of Trust among Bitcoin Miners
-Towards a Model of Trust among Bitcoin Miners
-Towards a Model of Trust among Bitcoin Miners
-Towards a Model of Trust among Bitcoin Miners
-Towards a Model of Trust among Bitcoin Miners
-Towards a Model of Trust among Bitcoin Miners
-Towards a Model of Trust among Bitcoin Miners
-The Paradox of Decentralization
-The Challenge of Unregulation
-The Challenge of Unregulation
-6 DESIGN IMPLICATIONS
-Tools for Monitoring Hash Power and Reward Distribution
-Tools for Monitoring Hash Power and Reward Distribution
-Tools for Monitoring Hash Power and Reward Distribution
-Tools for Monitoring Hash Power and Reward Distribution
-Decentralized Tools Tracking Data Centers’ Authorization and Reputation
-Tools for Developing Decentralized Pools
-Tools for Developing Decentralized Pools
-7 CONCLUSIONS
-ACKNOWLEDGMENTS
+1 INTRODUCTION
+Technology Overuse
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+Mobile Apps for Digital Wellbeing
+3 CHARACTERIZING DIGITAL WELLBEING APPS
+Method
+Method
+Method
+Method
+Findings
+Findings
+Findings
+Findings
+Findings
+4 REVIEWS’ ANALYSIS
+Method
+Method
+Method
+Method
+Method
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Like Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+Why Users Dislike Digital Wellbeing Apps
+5 DIGITAL WELLBEING IN THE WILD
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Participants, Method, and Metrics
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+Socialize Evaluation: Results
+6 DISCUSSION
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Digital Wellbeing Features and Their Efectiveness
+Self Monitoring vs. Habit Formation
+Self Monitoring vs. Habit Formation
+Self Monitoring vs. Habit Formation
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+Designing for Digital Wellbeing
+7 LIMITATIONS
+7 LIMITATIONS
+8 CONCLUSIONS AND FUTURE WORK
+REFERENCES
+REFERENCES
 REFERENCES
 REFERENCES
 REFERENCES
