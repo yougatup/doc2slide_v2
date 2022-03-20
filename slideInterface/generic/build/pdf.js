@@ -1,5 +1,5 @@
 var isInitialLoading = true;
-var paperURL = 'paperData/paper/paper.pdf';
+var paperURL = 'paperData/paper.pdf';
 var mouseDown = 0;
 var curHighlightInfo = {
 	pageNumber: -1,
@@ -15,6 +15,9 @@ var sectionParagraph = [];
 var sectionStructureSegments = [];
 var sectionStructureSegmentProcessed = [];
 var currentStatus = "NORMAL";
+
+var jsonPdfStructure = [];
+var jsonSectionStructure = [];
 
 var automaticFlag = true;
 
@@ -17878,6 +17881,8 @@ function showOutlinePopup(mode) {
     issueEvent("pdfjs_getSectionTitle", curHighlightInfo, "root_getSectionTitle").then(result => {
       var title = result.detail.title;
 
+      console.log(title);
+
       $(popupObj).css("width", "300px");
       $(popupObj).css("height", "80px");
 
@@ -17889,7 +17894,7 @@ function showOutlinePopup(mode) {
         '</div>'
       )
 
-      var myList = sectionStructure.map((elem) => { return elem.text })
+      var myList = jsonSectionStructure.map((elem) => { return elem.text })
 
       $('#outlinePopupInput').autocomplete({
         minLength: 0,
@@ -18061,18 +18066,16 @@ function readTextFile(file, filetype, type)
                 else if(type == "PDF_STRUCTURE") {
                     json = $.parseJSON(allText.join([separator = '']))
                     jsonPdfStructure = $.parseJSON(allText.join([separator = '']))
+
                     console.log(jsonPdfStructure);
 
                     for(var i=0;i<jsonPdfStructure.sections.length;i++) {
                         if(jsonPdfStructure.sections[i].title != null) {
-                            sectionStructure.push(jsonPdfStructure.sections[i].title);
-						    sectionParagraph.push(jsonPdfStructure.sections[i].paragraphs);
-			    			sectionStructureSegments.push('');
-			    			sectionStructureSegmentProcessed.push(false);
+                          if(isUpper(jsonPdfStructure.sections[i].title.text)) {
+                            jsonSectionStructure.push(jsonPdfStructure.sections[i].title)
+                          }
                         }
                     }
-                 
-                    console.log(sectionStructure);
                 }
             }
         }
@@ -18081,21 +18084,111 @@ function readTextFile(file, filetype, type)
     rawFile.send(null);
 }
 
+function isUpper(str) {
+  if (str == str.toUpperCase()) return true;
+  else return false;
+}
+
+function givePrefix(number) {
+  var temp = "00000" + number;
+
+  return temp.substring(temp.length-5);
+}
+
 $(document).ready(function() {
 
 		// if a page is rendered
-        document.addEventListener('textlayerrendered', function (e) {
+      document.addEventListener('textlayerrendered', function (e) {
+      console.log("huh?");
+
 			parseDivs(e.detail.pageNumber);
 
 			issueEvent("pdfjs_pageRendered", {
 				pageNumber: e.detail.pageNumber
 			});
 
+      if(!isInitialLoading) {
+        
+      }
+
 			if (isInitialLoading && e.detail.pageNumber === PDFViewerApplication.pagesCount) {
 				isInitialLoading = false;
-				issueEvent("pdfjs_renderFinished", null);
 
-				analyzeDocument();
+        console.log(jsonSectionStructure);
+
+        var result = {};
+
+        for(var i=0;i<jsonSectionStructure.length;i++) {
+          var pageNumber = jsonSectionStructure[i].page;
+          var pageObj = $("#viewer").find(".page[data-page-number='" + (pageNumber+1) + "']").find(".textLayer");
+
+          $(pageObj).append("<div id='tempRect__" + i + "' class='tempRect'> </div>");
+
+          // 1056 x 816
+          // 545.319, 71.9053
+
+          // Y x X
+          // 409.832, 53.929
+
+          var pageWidth = $(pageObj).width();
+          var pageHeight = $(pageObj).height();
+
+          var sizeY = 794, sizeX = 612;
+
+          var myTop = jsonSectionStructure[i].region.y1 / sizeY * pageHeight;
+          var myLeft = jsonSectionStructure[i].region.x1 / sizeX * pageWidth;
+          var myWidth = (jsonSectionStructure[i].region.x2 - jsonSectionStructure[i].region.x1) / sizeX * pageWidth;
+          var myHeight = (jsonSectionStructure[i].region.y2 - jsonSectionStructure[i].region.y1) / sizeY * pageHeight;
+
+          var boxY = myTop + (myHeight / 2);
+          var boxX = myLeft + (myWidth / 2);
+          var cnt = 0;
+
+          $(pageObj).children().each(function() {
+            var top = parseFloat($(this).css("top").substring(0, $(this).css("top").length-2));
+            var left = parseFloat($(this).css("left").substring(0, $(this).css("left").length-2));
+            var width = $(this).width();
+            var height = $(this).height();
+
+            if(top <= boxY && boxY <= top + height && 
+               left <= boxX && boxX <= left + width) {
+                 var startIndex = 987987987, endIndex = -1;
+
+                 $(this).children().each(function() {
+                   startIndex = Math.min(startIndex, parseInt($(this).attr("wordindex")))
+                   endIndex = Math.max(endIndex, parseInt($(this).attr("wordindex")))
+                 });
+
+              var key = "documentStructureRow" + givePrefix(i + 1);
+
+              result[key] = {
+                startWordIndex: startIndex,
+                endWordIndex: endIndex,
+                text: jsonSectionStructure[i].text,
+                pageNumber: jsonSectionStructure[i].page + 1
+              }
+              return;
+               }
+          })
+          
+          /*
+          $("#tempRect__" + i).css({
+            top: myTop,gg
+            left: myLeft
+          })
+
+          $("#tempRect__" + i).width(myWidth);
+          $("#tempRect__" + i).height(myHeight);
+          */
+        }
+
+        console.log(result);
+
+        issueEvent("pdfjs_renderFinished", {
+          sectionStructure: result
+        });
+
+        analyzeDocument();
             }
 
         }, true);
@@ -18142,11 +18235,13 @@ $(document).ready(function() {
       var endWordIndex = curHighlightInfo.endWordIndex;
 
       issueEvent("pdfjs_addSegment", { title: segmentTitle, 
-                                       body: text,
-                                       pageNumber: pageNumber,
-                                       startWordIndex: startWordIndex,
-                                       endWordIndex: endWordIndex,
-                                       text: text
+                                       highlightInfo: {
+                                         body: text,
+                                         pageNumber: pageNumber,
+                                         startWordIndex: startWordIndex,
+                                         endWordIndex: endWordIndex,
+                                         text: text
+                                       }
                                       }); 
     })
 
@@ -18443,8 +18538,8 @@ $(document).ready(function() {
 		});
 
 //    readTextFile("../web/paperData/paper/metadata.tei", 'xml', "TEI");
-    readTextFile("../web/paperData/paper/metadata.json", 'json', "REFERENCE_META");
-    readTextFile("../web/paperData/paper/dataOutputpaper.json", 'json', "PDF_FIGURE");
-    readTextFile("../web/paperData/paper/structurepaper.json", 'json', "PDF_STRUCTURE");
+//    readTextFile("../web/paperData/paper/metadata.json", 'json', "REFERENCE_META");
+//    readTextFile("../web/paperData/paper/dataOutputpaper.json", 'json', "PDF_FIGURE");
+    readTextFile("paperData/paperData.json", 'json', "PDF_STRUCTURE");
 });
 

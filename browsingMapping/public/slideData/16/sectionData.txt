@@ -1,128 +1,101 @@
-CCS CONCEPTS
-KEYWORDS
-ACM Reference Format:
-ACM Reference Format:
-ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-1 INTRODUCTION
-1 INTRODUCTION
-1 INTRODUCTION
-1 INTRODUCTION
-Technology Overuse
-Mobile Apps for Digital Wellbeing
-Mobile Apps for Digital Wellbeing
-Mobile Apps for Digital Wellbeing
-Mobile Apps for Digital Wellbeing
-Mobile Apps for Digital Wellbeing
-3 CHARACTERIZING DIGITAL WELLBEING APPS
-Method
-Method
-Method
-Method
-Findings
-Findings
-Findings
-Findings
-Findings
-4 REVIEWS’ ANALYSIS
-Method
-Method
-Method
-Method
-Method
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-5 DIGITAL WELLBEING IN THE WILD
-Socialize
-Socialize
-Socialize
-Socialize
-Socialize
-Socialize
-Socialize
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-6 DISCUSSION
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Self Monitoring vs. Habit Formation
-Self Monitoring vs. Habit Formation
-Self Monitoring vs. Habit Formation
-Designing for Digital Wellbeing
-Designing for Digital Wellbeing
-Designing for Digital Wellbeing
-Designing for Digital Wellbeing
-7 LIMITATIONS
-7 LIMITATIONS
-8 CONCLUSIONS AND FUTURE WORK
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
+2 COGNITIVE PROCESSING OF HEADLINES
+2 COGNITIVE PROCESSING OF HEADLINES
+2.1 Efects of Headlines in User Engagement with Content
+2.1 Efects of Headlines in User Engagement with Content
+2.1 Efects of Headlines in User Engagement with Content
+2.1 Efects of Headlines in User Engagement with Content
+2.2 The Psychology of Clickbait
+2.2 The Psychology of Clickbait
+2.2 The Psychology of Clickbait
+2.2 The Psychology of Clickbait
+3 ASSUMPTIONS OF CLICKBAIT DETECTORS AND EFFECTS ON CLASSIFICATION
+3 ASSUMPTIONS OF CLICKBAIT DETECTORS AND EFFECTS ON CLASSIFICATION
+3 ASSUMPTIONS OF CLICKBAIT DETECTORS AND EFFECTS ON CLASSIFICATION
+3 ASSUMPTIONS OF CLICKBAIT DETECTORS AND EFFECTS ON CLASSIFICATION
+3 ASSUMPTIONS OF CLICKBAIT DETECTORS AND EFFECTS ON CLASSIFICATION
+3 ASSUMPTIONS OF CLICKBAIT DETECTORS AND EFFECTS ON CLASSIFICATION
+3 ASSUMPTIONS OF CLICKBAIT DETECTORS AND EFFECTS ON CLASSIFICATION
+3 ASSUMPTIONS OF CLICKBAIT DETECTORS AND EFFECTS ON CLASSIFICATION
+4 STUDY 1 METHOD
+4 STUDY 1 METHOD
+4 STUDY 1 METHOD
+4.1 Participants
+4.2 Procedure
+4.3 Measures
+4.3 Measures
+4.3 Measures
+4.3 Measures
+5 STUDY 1 RESULTS
+5 STUDY 1 RESULTS
+5 STUDY 1 RESULTS
+5 STUDY 1 RESULTS
+5 STUDY 1 RESULTS
+5 STUDY 1 RESULTS
+5 STUDY 1 RESULTS
+5 STUDY 1 RESULTS
+5 STUDY 1 RESULTS
+5 STUDY 1 RESULTS
+5 STUDY 1 RESULTS
+5 STUDY 1 RESULTS
+5 STUDY 1 RESULTS
+6 STUDY 1 DISCUSSION
+6 STUDY 1 DISCUSSION
+6 STUDY 1 DISCUSSION
+6 STUDY 1 DISCUSSION
+6 STUDY 1 DISCUSSION
+7.1 Participants
+7.2 Procedure
+7.2 Procedure
+7.3 Measures
+7.3 Measures
+7.3 Measures
+7.3 Measures
+7.3 Measures
+7.3 Measures
+8 STUDY 2 RESULTS
+8 STUDY 2 RESULTS
+8 STUDY 2 RESULTS
+8 STUDY 2 RESULTS
+8 STUDY 2 RESULTS
+8 STUDY 2 RESULTS
+9 STUDY 2 DISCUSSION
+9 STUDY 2 DISCUSSION
+9 STUDY 2 DISCUSSION
+10 STUDY 3 METHOD
+11 STUDY 3 RESULTS
+11 STUDY 3 RESULTS
+11 STUDY 3 RESULTS
+11 STUDY 3 RESULTS
+11 STUDY 3 RESULTS
+11 STUDY 3 RESULTS
+11 STUDY 3 RESULTS
+11 STUDY 3 RESULTS
+11 STUDY 3 RESULTS
+11 STUDY 3 RESULTS
+11 STUDY 3 RESULTS
+12 STUDY 3 DISCUSSION
+12 STUDY 3 DISCUSSION
+13 SUMMARY OF FINDINGS
+13 SUMMARY OF FINDINGS
+13 SUMMARY OF FINDINGS
+13 SUMMARY OF FINDINGS
+14 GENERAL DISCUSSION
+14 GENERAL DISCUSSION
+14 GENERAL DISCUSSION
+14 GENERAL DISCUSSION
+14 GENERAL DISCUSSION
+14 GENERAL DISCUSSION
+14 GENERAL DISCUSSION
+14 GENERAL DISCUSSION
+14 GENERAL DISCUSSION
+14 GENERAL DISCUSSION
+14 GENERAL DISCUSSION
+14 GENERAL DISCUSSION
+ACKNOWLEDGMENTS
 REFERENCES
 REFERENCES
 REFERENCES

@@ -1,5 +1,3 @@
-KEYWORDS
-ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
@@ -7,40 +5,111 @@ ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-2 RELATEDWORK Silent Speech
-2 RELATEDWORK Silent Speech
-2 RELATEDWORK Silent Speech
-2 RELATEDWORK Silent Speech
-2 RELATEDWORK Silent Speech
-Interacting with Smart Devices
-3 SYSTEM ARCHITECTURE OF SOTTOVOCE
-3 SYSTEM ARCHITECTURE OF SOTTOVOCE
-3 SYSTEM ARCHITECTURE OF SOTTOVOCE
-3 SYSTEM ARCHITECTURE OF SOTTOVOCE
-3 SYSTEM ARCHITECTURE OF SOTTOVOCE
-3 SYSTEM ARCHITECTURE OF SOTTOVOCE
-3 SYSTEM ARCHITECTURE OF SOTTOVOCE
-3 SYSTEM ARCHITECTURE OF SOTTOVOCE
-3 SYSTEM ARCHITECTURE OF SOTTOVOCE
-Sound generation
-Sound generation
-Training
-Training
-Implementation Details
-Implementation Details
-4 RESULTS
-4 RESULTS
-4 RESULTS
-4 RESULTS
-5 END-TO-END EVALUATION AND OBSERVATIONS
-5 END-TO-END EVALUATION AND OBSERVATIONS
-6 DISCUSSIONS
-Continuous Ultrasonic-Wave Emission into the Body
-Cure for Vocal Cord Disabilities
-Combining with Other Modalities
-Human–AI integration
-Human–AI integration
-7 CONCLUSION
+2.1 Object Manipulation
+2.2 Fingertip Haptic Devices
+2.2 Fingertip Haptic Devices
+2.2 Fingertip Haptic Devices
+2.3 Implementation of Tactile Fingertip Feedback
+2.3 Implementation of Tactile Fingertip Feedback
+2.3 Implementation of Tactile Fingertip Feedback
+2.3 Implementation of Tactile Fingertip Feedback
+2.3 Implementation of Tactile Fingertip Feedback
+2.4 The Fingertip Puppeteer
+2.4 The Fingertip Puppeteer
+2.4 The Fingertip Puppeteer
+2.4 The Fingertip Puppeteer
+2.4 The Fingertip Puppeteer
+2.4 The Fingertip Puppeteer
+2.4 The Fingertip Puppeteer
+2.4 The Fingertip Puppeteer
+2.4 The Fingertip Puppeteer
+2.4 The Fingertip Puppeteer
+2.4 The Fingertip Puppeteer
+2.4 The Fingertip Puppeteer
+2.4 The Fingertip Puppeteer
+2.4 The Fingertip Puppeteer
+2.4 The Fingertip Puppeteer
+2.4 The Fingertip Puppeteer
+2.4 The Fingertip Puppeteer
+2.4 The Fingertip Puppeteer
+3 SYSTEM INTEGRATION
+3.1 Counterweight
+3.1 Counterweight
+3.1 Counterweight
+3.1 Counterweight
+3.2 Device Positioning
+3.3 Finger Positioning
+3.3 Finger Positioning
+3.4 Sensing and Communication
+3.4 Sensing and Communication
+3.4 Sensing and Communication
+4 HUMAN-SUBJECT STUDY
+4 HUMAN-SUBJECT STUDY
+4.1 Haptic Rendering Methods
+4.1 Haptic Rendering Methods
+4.1 Haptic Rendering Methods
+4.1 Haptic Rendering Methods
+4.1 Haptic Rendering Methods
+4.1 Haptic Rendering Methods
+4.2 Hidden Surface Task
+4.2 Hidden Surface Task
+4.2 Hidden Surface Task
+4.2 Hidden Surface Task
+4.2 Hidden Surface Task
+4.2 Hidden Surface Task
+4.2 Hidden Surface Task
+4.2 Hidden Surface Task
+4.2 Hidden Surface Task
+4.2 Hidden Surface Task
+4.3 Slider Task
+4.3 Slider Task
+4.3 Slider Task
+4.3 Slider Task
+4.3 Slider Task
+4.3 Slider Task
+4.3 Slider Task
+4.3 Slider Task
+4.3 Slider Task
+4.3 Slider Task
+4.4 Procedure
+4.4 Procedure
+4.4 Procedure
+4.4 Procedure
+4.4 Procedure
+4.4 Procedure
+5 RESULTS
+5.1 Performance Metrics
+5.1 Performance Metrics
+5.1 Performance Metrics
+5.1 Performance Metrics
+5.1 Performance Metrics
+5.2 Exploratory Motions
+5.2 Exploratory Motions
+5.2 Exploratory Motions
+5.2 Exploratory Motions
+5.2 Exploratory Motions
+5.2 Exploratory Motions
+5.2 Exploratory Motions
+5.3 Qualitative Feedback
+5.3 Qualitative Feedback
+5.3 Qualitative Feedback
+5.3 Qualitative Feedback
+5.3 Qualitative Feedback
+5.3 Qualitative Feedback
+5.3 Qualitative Feedback
+5.3 Qualitative Feedback
+5.3 Qualitative Feedback
+5.3 Qualitative Feedback
+5.3 Qualitative Feedback
+5.3 Qualitative Feedback
+5.3 Qualitative Feedback
+5.3 Qualitative Feedback
+7 LIMITATIONS AND FUTURE WORK
+7 LIMITATIONS AND FUTURE WORK
+7 LIMITATIONS AND FUTURE WORK
+7 LIMITATIONS AND FUTURE WORK
+8 CONCLUSION
+ACKNOWLEDGMENTS
 REFERENCES
 REFERENCES
 REFERENCES

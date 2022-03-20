@@ -1,70 +1,174 @@
-CCS CONCEPTS
-KEYWORDS
-KEYWORDS
-ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-2 RELATEDWORK Uses and Gratifications
-2 RELATEDWORK Uses and Gratifications
-2 RELATEDWORK Uses and Gratifications
-2 RELATEDWORK Uses and Gratifications
-2 RELATEDWORK Uses and Gratifications
-2 RELATEDWORK Uses and Gratifications
-2 RELATEDWORK Uses and Gratifications
-2 RELATEDWORK Uses and Gratifications
-2 RELATEDWORK Uses and Gratifications
-Experienced Utility
-Experienced Utility
-Experienced Utility
-Experienced Utility
-Experienced Utility
-Experienced Utility
-Experienced Utility
-Experienced Utility
-Experienced Utility
-Experienced Utility
-Experienced Utility
-Experienced Utility
-Experienced Utility
-Experienced Utility
-3 RESEARCH QUESTIONS
-3 RESEARCH QUESTIONS
-3 RESEARCH QUESTIONS
-3 RESEARCH QUESTIONS
-3 RESEARCH QUESTIONS
-3 RESEARCH QUESTIONS
-4 EXPERIMENT Participants
-4 EXPERIMENT Participants
-4 EXPERIMENT Participants
-4 EXPERIMENT Participants
-4 EXPERIMENT Participants
-Procedure
-Procedure
-Procedure
-Procedure
-5 RESULTS Descriptive Data
-5 RESULTS Descriptive Data
-5 RESULTS Descriptive Data
-5 RESULTS Descriptive Data
-5 RESULTS Descriptive Data
-5 RESULTS Descriptive Data
-5 RESULTS Descriptive Data
-5 RESULTS Descriptive Data
-RQ4: The effect of end emotional experience
-RQ4: The effect of end emotional experience
-6 DISCUSSION
-6 DISCUSSION
-6 DISCUSSION
-6 DISCUSSION
-6 DISCUSSION
-6 DISCUSSION
-7 CONCLUSIONS
-7 CONCLUSIONS
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+2.1 Crowdwork
+2.1 Crowdwork
+2.1 Crowdwork
+2.1 Crowdwork
+2.2 Demographics of Crowdworkers on AMT
+2.2 Demographics of Crowdworkers on AMT
+2.2 Demographics of Crowdworkers on AMT
+2.2 Demographics of Crowdworkers on AMT
+2.2 Demographics of Crowdworkers on AMT
+2.3 Accessibility in Crowdwork
+2.3 Accessibility in Crowdwork
+2.3 Accessibility in Crowdwork
+3 RESEARCH OBJECTIVES
+3 RESEARCH OBJECTIVES
+3 RESEARCH OBJECTIVES
+4 METHOD
+4 METHOD
+4 METHOD
+4 METHOD
+4.1 Survey 1: General Survey
+4.1 Survey 1: General Survey
+4.2 Survey 2: Focused Survey
+4.2 Survey 2: Focused Survey
+4.2 Survey 2: Focused Survey
+4.2 Survey 2: Focused Survey
+4.2 Survey 2: Focused Survey
+4.2 Survey 2: Focused Survey
+4.3 Interviews
+4.3 Interviews
+5 SURVEY 1 FINDINGS
+5.1 Age Distribution
+5.2 Gender
+5.2 Gender
+5.2 Gender
+5.2 Gender
+5.2 Gender
+5.2 Gender
+5.3 Race
+5.3 Race
+5.4 Education Level
+5.5 Employment
+5.5 Employment
+5.5 Employment
+5.6 Time Spent Working on AMT
+5.6 Time Spent Working on AMT
+5.7 Commonly Completed Tasks on AMT in
+5.7 Commonly Completed Tasks on AMT in
+5.8 Location
+6 SURVEY 2 FINDINGS
+6.1 Working on AMT
+6.2 Difculties Experienced when Completing HITs on AMT
+6.2 Difculties Experienced when Completing HITs on AMT
+6.2 Difculties Experienced when Completing HITs on AMT
+6.2 Difculties Experienced when Completing HITs on AMT
+6.2 Difculties Experienced when Completing HITs on AMT
+6.2 Difculties Experienced when Completing HITs on AMT
+6.2 Difculties Experienced when Completing HITs on AMT
+6.3 Efects of Perceived Anxiety and Depression on HIT Completion
+6.3 Efects of Perceived Anxiety and Depression on HIT Completion
+6.3 Efects of Perceived Anxiety and Depression on HIT Completion
+6.3 Efects of Perceived Anxiety and Depression on HIT Completion
+6.3 Efects of Perceived Anxiety and Depression on HIT Completion
+6.3 Efects of Perceived Anxiety and Depression on HIT Completion
+6.3 Efects of Perceived Anxiety and Depression on HIT Completion
+6.3 Efects of Perceived Anxiety and Depression on HIT Completion
+6.3 Efects of Perceived Anxiety and Depression on HIT Completion
+6.3 Efects of Perceived Anxiety and Depression on HIT Completion
+6.3 Efects of Perceived Anxiety and Depression on HIT Completion
+6.3 Efects of Perceived Anxiety and Depression on HIT Completion
+6.3 Efects of Perceived Anxiety and Depression on HIT Completion
+6.4 Relationships Between Disability Category and General Issues
+6.5 Vision Issues
+6.5 Vision Issues
+6.5 Vision Issues
+6.5 Vision Issues
+6.5 Vision Issues
+6.6 Hearing Issues
+6.6 Hearing Issues
+6.6 Hearing Issues
+6.6 Hearing Issues
+6.6 Hearing Issues
+6.7 Cognitive/Mental Issues
+6.7 Cognitive/Mental Issues
+6.8 Motor/Dexterity Issues
+6.8 Motor/Dexterity Issues
+6.9 Reading Issues
+6.9 Reading Issues
+6.9 Reading Issues
+7 INTERVIEW FINDINGS
+7.1 HITs Most Performed on AMT due to an Existing Disability
+7.1 HITs Most Performed on AMT due to an Existing Disability
+7.2 HITs Avoided on AMT due to an Existing Disability
+7.2 HITs Avoided on AMT due to an Existing Disability
+7.2 HITs Avoided on AMT due to an Existing Disability
+7.2 HITs Avoided on AMT due to an Existing Disability
+7.2 HITs Avoided on AMT due to an Existing Disability
+7.2 HITs Avoided on AMT due to an Existing Disability
+7.2 HITs Avoided on AMT due to an Existing Disability
+7.2 HITs Avoided on AMT due to an Existing Disability
+7.2 HITs Avoided on AMT due to an Existing Disability
+7.2 HITs Avoided on AMT due to an Existing Disability
+7.2 HITs Avoided on AMT due to an Existing Disability
+P4 (male, 38, cognition and reading)
+P4 (male, 38, cognition and reading)
+7.3 Qualifcations
+7.3 Qualifcations
+7.3 Qualifcations
+7.4 Time to Complete HITs
+7.4 Time to Complete HITs
+7.4 Time to Complete HITs
+7.5 Wages and Income
+7.5 Wages and Income
+7.6 Goals
+7.6 Goals
+7.7 User Interface (UI)
+7.7 User Interface (UI)
+7.7 User Interface (UI)
+7.7 User Interface (UI)
+7.7 User Interface (UI)
+7.7 User Interface (UI)
+7.7 User Interface (UI)
+7.8 Improving Accessibility in AMT
+7.8 Improving Accessibility in AMT
+7.8 Improving Accessibility in AMT
+7.8 Improving Accessibility in AMT
+7.8 Improving Accessibility in AMT
+7.8 Improving Accessibility in AMT
+7.8 Improving Accessibility in AMT
+7.8 Improving Accessibility in AMT
+7.8 Improving Accessibility in AMT
+7.8 Improving Accessibility in AMT
+7.8 Improving Accessibility in AMT
+7.8 Improving Accessibility in AMT
+35, motor)
+35, motor)
+35, motor)
+35, motor)
+8 DISCUSSION
+8.1 Demographics of AMT Workers with Disabilities
+8.1 Demographics of AMT Workers with Disabilities
+8.1 Demographics of AMT Workers with Disabilities
+8.1 Demographics of AMT Workers with Disabilities
+8.2 Accessibility Issues in AMT
+8.2 Accessibility Issues in AMT
+8.2 Accessibility Issues in AMT
+8.3 Implications for Design
+8.3 Implications for Design
+8.3 Implications for Design
+8.3 Implications for Design
+8.3 Implications for Design
+8.3 Implications for Design
+8.3 Implications for Design
+8.3 Implications for Design
+8.3 Implications for Design
+8.3 Implications for Design
+8.3 Implications for Design
+9 LIMITATIONS
+9 LIMITATIONS
+9 LIMITATIONS
+10 CONCLUSIONS
+10 CONCLUSIONS
+10 CONCLUSIONS
+10 CONCLUSIONS
 ACKNOWLEDGMENTS
-REFERENCES
-REFERENCES
-REFERENCES
 REFERENCES
 REFERENCES
 REFERENCES

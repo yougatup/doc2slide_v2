@@ -1,96 +1,145 @@
-CCS CONCEPTS
-KEYWORDS
-ACM Reference Format:
-ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-2 MAGNETIPS
-2 MAGNETIPS
-3 RELATEDWORK
-3 RELATEDWORK
-Mid-air Haptics
-Mid-air Haptics
-Mid-air Haptics
-Mid-air Haptics
-Mid-air Haptics
-Magnetic Tracking
-Magnetic Tracking
-Magnetic Tracking
-Magnetic Tracking
-4 IMPLEMENTATION
-Hardware
-Hardware
-Hardware
-Hardware
-Hardware
-Hardware
-Hardware
-Hardware
-Hardware
-Hardware
-Hardware
-Hardware
-Hardware
-Hardware
-Hardware
-Hardware
-Hardware
-5 TRACKING EVALUATION
-Tracking Accuracy
-Tracking Accuracy
-Tracking Accuracy
-Tracking Accuracy
-Tracking Accuracy
-Multiplexing Tracking With Haptics
-6 HAPTICS EVALUATION
-6 HAPTICS EVALUATION
-6 HAPTICS EVALUATION
-6 HAPTICS EVALUATION
-6 HAPTICS EVALUATION
-6 HAPTICS EVALUATION
-6 HAPTICS EVALUATION
-6 HAPTICS EVALUATION
-6 HAPTICS EVALUATION
-6 HAPTICS EVALUATION
-Results
-Results
-Results
-Results
-Results
-Variables
-Variables
-Variables
-Results
-Results
-Results
-Results
-Summary of Findings
-Summary of Findings
-Summary of Findings
-Summary of Findings
-7 APPLICATIONS
-3D Mid-air Interaction
-Behind Arm
-Behind Arm
-Back of Device
-Back of Device
-8 LIMITATIONS & FUTUREWORK
-8 LIMITATIONS & FUTUREWORK
-Coil Design and Power Usage
-Coil Design and Power Usage
-Coil Design and Power Usage
-Coil Design and Power Usage
-Coil Design and Power Usage
-Magnet Shape
-9 CONCLUSION
-9 CONCLUSION
-10 ACKNOWLEDGEMENTS
-10 ACKNOWLEDGEMENTS
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+2 PREVIOUS WORK: MACHINE LEARNING METHODS FOR ADAPTIVE INTERFACES
+2.1 Rules, heuristics, and logic
+2.2 Machine learning
+2.2 Machine learning
+2.3 Bandit systems and Bayesian optimisation
+2.3 Bandit systems and Bayesian optimisation
+2.4 Reinforcement learning
+2.4 Reinforcement learning
+2.4 Reinforcement learning
+2.4 Reinforcement learning
+3 PROBLEM FORMULATION
+3 PROBLEM FORMULATION
+3 PROBLEM FORMULATION
+3 PROBLEM FORMULATION
+3 PROBLEM FORMULATION
+3 PROBLEM FORMULATION
+3 PROBLEM FORMULATION
+3 PROBLEM FORMULATION
+3 PROBLEM FORMULATION
+3 PROBLEM FORMULATION
+4 METHOD: DEEP MODEL-BASED REINFORCEMENT LEARNING
+4 METHOD: DEEP MODEL-BASED REINFORCEMENT LEARNING
+4 METHOD: DEEP MODEL-BASED REINFORCEMENT LEARNING
+4.1 Planning with MCTS
+4.1 Planning with MCTS
+4.1 Planning with MCTS
+4.1 Planning with MCTS
+4.1 Planning with MCTS
+4.1 Planning with MCTS
+4.1 Planning with MCTS
+4.1 Planning with MCTS
+4.1 Planning with MCTS
+4.1 Planning with MCTS
+4.1 Planning with MCTS
+4.1 Planning with MCTS
+4.1 Planning with MCTS
+4.1 Planning with MCTS
+4.1 Planning with MCTS
+4.2 Value Estimation with Deep Neural Networks
+4.2 Value Estimation with Deep Neural Networks
+4.3 Applications in Adaptive Interfaces
+4.3 Applications in Adaptive Interfaces
+4.3 Applications in Adaptive Interfaces
+5 APPLICATION: ADAPTIVE MENUS
+5.1 Problem Defnition
+5.1 Problem Defnition
+5.1 Problem Defnition
+5.1 Problem Defnition
+5.1 Problem Defnition
+5.1 Problem Defnition
+5.1 Problem Defnition
+5.1 Problem Defnition
+5.1 Problem Defnition
+5.1 Problem Defnition
+5.1 Problem Defnition
+5.1 Problem Defnition
+5.1 Problem Defnition
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.2 Models for Simulating Menu Search
+5.3 Neural Network for Rewards Estimation
+5.3 Neural Network for Rewards Estimation
+5.3 Neural Network for Rewards Estimation
+5.3 Neural Network for Rewards Estimation
+6 EVALUATION
+6.1 Technical Evaluation
+6.1 Technical Evaluation
+6.1 Technical Evaluation
+6.1.1 Tasks.
+6.1.1 Tasks.
+6.1.1 Tasks.
+6.1.1 Tasks.
+6.1.1 Tasks.
+6.1.1 Tasks.
+6.1.1 Tasks.
+6.1.1 Tasks.
+6.1.1 Tasks.
+6.1.1 Tasks.
+6.2 Empirical Evaluation
+6.2 Empirical Evaluation
+6.2 Empirical Evaluation
+6.2 Empirical Evaluation
+6.2 Empirical Evaluation
+6.2 Empirical Evaluation
+6.2 Empirical Evaluation
+6.2 Empirical Evaluation
+6.2 Empirical Evaluation
+6.2 Empirical Evaluation
+6.2.6 Qantitative Results.
+6.2.6 Qantitative Results.
+6.2.6 Qantitative Results.
+6.2.6 Qantitative Results.
+6.3 Summary
+7 CONCLUSION
+7 CONCLUSION
+7 CONCLUSION
+7 CONCLUSION
+7 CONCLUSION
+7 CONCLUSION
+8 OPEN SCIENCE
+ACKNOWLEDGMENTS
+ACKNOWLEDGMENTS
 REFERENCES
 REFERENCES
 REFERENCES

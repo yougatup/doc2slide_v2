@@ -198,8 +198,8 @@
 
 						<div id="sourceTabs">
 							<ul>
-							  <li><a href="#tabs-document">Document</a></li>
-							  <li><a href="#tabs-slide">Slide</a></li>
+							  <li><a href="#tabs-document"> Source document </a></li>
+							  <li><a href="#tabs-slide"> Example presentations </a></li>
 							</ul>
 							<div id="tabs-document">
 								<iframe id='pdfjsIframe' src='./generic/web/viewer.html' frameborder='0' marginwidth='0' marginheight='0'>
@@ -208,16 +208,33 @@
 							<div id="tabs-slide">
 								<div id='slideDiv'>
 
+									<div id="examplePresentationModeSelectionDiv">
+										<div id="examplePresentationBrowsingText" class="examplePresentationModeSelectionText selected"> Example presentations </div>
+										<div id="examplePresentationBookmarkText" class="examplePresentationModeSelectionText"> Bookmarked examples </div>
+									</div>
+
+									<hr /> 
+
     								<div id="examplePresentationDiv"> 
+										<!--
     									<div id="examplePresentationSearchDiv">
     										<div id='examplePresentationSearchDivTitle'> Search presentation Videos </div>
     									</div>
+									-->
     									<div id="examplePresentationListDiv">
-    										<div id="examplePresentationListDivTitle"> Presentations </div>
     										<div id="examplePresentationListBody">
     
     										</div>
     									</div>
+										<div id="examplePresentationDetailDiv">
+
+										</div>
+										<div id="examplePresentationBookmarkDiv">
+
+										</div>
+										<div id="outlinePopup">
+
+										</div>
     								</div>
     								<!--
     								<div id='sourceSlideDiv'> 
@@ -497,7 +514,7 @@
 									<div id="outlineHeaderTitle"> Timeline </div>
 									<div id="outlineTimeInputDiv"> 
 										<span> Total time: </span>
-										<input id="outlineTimeInput"> </input>
+										<input id="outlineTimeInput" value=5> </input>
 										<span> min </span>
 									 </div>
 								</div>

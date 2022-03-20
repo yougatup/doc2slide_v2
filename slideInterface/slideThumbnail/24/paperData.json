@@ -2,1147 +2,1429 @@
   "abstractText": {
     "page": 0,
     "region": {
-      "x1": 53.79800033569336,
-      "x2": 295.74102783203125,
-      "y1": 384.1158447265625,
-      "y2": 560.9030151367188
+      "x1": 52.8120002746582,
+      "x2": 295.5605773925781,
+      "y1": 435.5420837402344,
+      "y2": 587.5989990234375
     },
-    "text": "ABSTRACT In this paper, we report three user experiments that investigate in how far the perception of a bar in a bar chart changes based on the height of its neighboring bars. We hypothesized that the perception of the very same bar, for instance, might differ when it is surrounded by the top highest vs. the top lowest bars. Our results show that such neighborhood effects exist: a target bar surrounded by high neighbor bars, is perceived to be lower as the same bar surrounded with low neighbors. Yet, the effect size of this neighborhood effect is small compared to other data-inherent effects: the judgment accuracy largely depends on the target bar rank, number of data items, and other data characteristics of the dataset. Based on the findings, we discuss design implications for perceptually optimizing bar charts."
+    "text": "ABSTRACT Visual blends are an advanced graphic design technique to seamlessly integrate two objects into one. Existing tools help novices create prototypes of blends, but it is unclear how they would improve them to be higher fdelity. To help novices, we aim to add structure to the iterative improvement process. We introduce a method for improving prototypes that uses secondary design dimensions to explore a structured design space. This method is grounded in the cognitive principles of human visual object recognition. We present VisiFit – a computational design system that uses this method to enable novice graphic designers to improve blends with computationally generated options they can select, adjust, and chain together. Our evaluation shows novices can substantially improve 76% of blends in under 4 minutes. We discuss how the method can be generalized"
   },
   "figures": [{
-    "caption": "Figure 4: Hypothesized data-inherent effects from true rank and number of data items in two baseline conditions.",
+    "caption": "Figure 6: Examples of initial and improved prototypes from the VisiFit user study. The frst column shows three blends that were deemed “improved and publishable”. The second column shows three blends that were deemed “improved but not publishable”. The third column shows two blends that were deemed “not improved and not publishable”.",
     "captionBoundary": {
-      "x1": 53.79800033569336,
-      "x2": 294.31085205078125,
-      "y1": 212.33035278320312,
-      "y2": 228.928955078125
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "4",
-    "page": 5,
-    "regionBoundary": {
-      "x1": 73.0,
-      "x2": 275.0,
-      "y1": 92.0,
-      "y2": 199.0
-    }
-  }, {
-    "caption": "Figure 2: Parallel Line Illusion. The target line on the right side in both figures has exactly the same lengths. However, when put next to a long contextual line (left figure) it is perceived shorter as it actually is. In contrast, when the contextual line is short (right side) the target line is overestimated as too long. Length contrast is at play.",
-    "captionBoundary": {
-      "x1": 317.60498046875,
-      "x2": 559.7950439453125,
-      "y1": 211.05636596679688,
-      "y2": 271.48992919921875
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "2",
-    "page": 1,
-    "regionBoundary": {
-      "x1": 337.0,
-      "x2": 539.0,
-      "y1": 92.0,
-      "y2": 198.0
-    }
-  }, {
-    "caption": "Figure 5: Model 1 predictions and regression samples (scatterplots, alpha = 0.03): Errors against true target bar ranks, indicating the influence from ranks.",
-    "captionBoundary": {
-      "x1": 53.79800033569336,
-      "x2": 295.6378479003906,
-      "y1": 269.6543884277344,
-      "y2": 297.21197509765625
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "5",
-    "page": 6,
-    "regionBoundary": {
-      "x1": 85.0,
-      "x2": 263.0,
-      "y1": 92.0,
-      "y2": 256.0
-    }
-  }, {
-    "caption": "Figure 6: Error against rank, indicating the data-inherent effects from datasets. Error means and 95% CIs are plotted for each target bar.",
-    "captionBoundary": {
-      "x1": 317.9549865722656,
-      "x2": 559.7950439453125,
-      "y1": 272.5303649902344,
-      "y2": 300.08795166015625
+      "x1": 53.4483642578125,
+      "x2": 559.807861328125,
+      "y1": 351.2541198730469,
+      "y2": 378.79888916015625
     },
     "figType": "Figure",
     "imageText": [],
     "name": "6",
-    "page": 6,
+    "page": 10,
     "regionBoundary": {
-      "x1": 317.0,
-      "x2": 571.0,
-      "y1": 92.0,
-      "y2": 259.0
+      "x1": 53.0,
+      "x2": 559.0,
+      "y1": 83.0,
+      "y2": 338.0
     }
   }, {
-    "caption": "Table 2: Coefficients of multiple cubic regression using six predictors, i.e., two polynomial components of target bar rank (Rank), linear components including number of data items (N), skewness, kurtosis, and the interaction between Rank and N (N:Rank).",
-    "captionBoundary": {
-      "x1": 317.6259765625,
-      "x2": 559.9960327148438,
-      "y1": 318.3802185058594,
-      "y2": 372.4669494628906
-    },
-    "figType": "Table",
-    "imageText": ["(Intercept)", "6.37e+00", "6.65e+00", "0.96", "0.34", "Rank3", "8.50e-05", "1.47e-05", "5.80", "5.81e-08***", "Rank2", "-1.08e-02", "1.78e-03", "-6.06", "1.71e-08***", "N", "-1.26e+00", "1.53e-01", "-8.26", "2.61e-13***", "Skewness", "-2.39e+01", "2.07e+00", "-11.53", "<", "2e-16***", "Kurtosis", "1.50e+01", "3.02e+00", "4.97", "2.31e-06***", "N:Rank", "6.41e-03", "2.47e-03", "2.59", "0.01*", "Estimate", "Std.Error", "t", "value", "Pr", "(>|t|)"],
-    "name": "2",
-    "page": 6,
-    "regionBoundary": {
-      "x1": 318.0,
-      "x2": 558.0,
-      "y1": 388.0,
-      "y2": 495.0
-    }
-  }, {
-    "caption": "Figure 8: Predictions (color encodes datasets) and regression samples (scatterplots, alpha = 0.03) for B2 sorted condition. Data-inherent effects are of smaller effect size.",
+    "caption": "Figure 1 shows two examples of the VisiBlends output and the result of novices using VisiFit to improve them in under 4 minutes. Our evaluation shows that novices can quickly and easily iterate on prototypes to create seamless and aesthetic blends.",
     "captionBoundary": {
       "x1": 317.9549865722656,
-      "x2": 559.7232666015625,
-      "y1": 269.1643981933594,
-      "y2": 296.72198486328125
+      "x2": 559.5869140625,
+      "y1": 197.0421905517578,
+      "y2": 236.114990234375
+    },
+    "figType": "Figure",
+    "imageText": ["•", "Three", "preliminary", "investigations", "into", "the", "process", "of", "improv-", "ing", "prototypes", "of", "visual", "blends:", "a", "demonstration", "of", "how", "fully", "automatic", "systems", "fail,", "an", "analysis", "of", "patterns", "used", "by", "professionals,", "and", "a", "co-design", "process", "with", "graphic", "artists.", "•", "Three", "design", "principles", "for", "a", "computational", "approach", "to", "improving", "visual", "blends.", "•", "A", "method", "of", "using", "secondary", "design", "dimensions", "to", "structure", "the", "improvement", "process.", "This", "method", "is", "grounded", "in", "the", "neuroscience", "of", "human", "visual", "object", "recognition.", "•", "VisiFit,", "a", "system", "that", "applies", "the", "method", "and", "design", "princi-", "ples", "in", "a", "pipeline", "of", "computational", "tools.", "•", "An", "evaluation", "of", "VisiFit", "showing", "that", "in", "under", "4", "minutes,", "novices", "can", "substantially", "improve", "blends", "in", "76%", "of", "cases", "and", "create", "blends", "suitable", "to", "publish", "on", "social", "media", "in", "70%", "of", "cases.", "This", "paper", "makes", "the", "following", "contributions:"],
+    "name": "1",
+    "page": 1,
+    "regionBoundary": {
+      "x1": 327.9166564941406,
+      "x2": 559.7216796875,
+      "y1": 240.8761749267578,
+      "y2": 417.11199951171875
+    }
+  }, {
+    "caption": "Figure 4: Three visual blends improved by graphic designers. For each blend, the columns show what two objects were initially blended, what the initial blend from VisiBlends produced, what secondary dimension(s) the artists improved, and the resulting improved blend.",
+    "captionBoundary": {
+      "x1": 53.79791259765625,
+      "x2": 558.453857421875,
+      "y1": 372.9311218261719,
+      "y2": 400.47589111328125
     },
     "figType": "Figure",
     "imageText": [],
-    "name": "8",
-    "page": 7,
+    "name": "4",
+    "page": 6,
     "regionBoundary": {
-      "x1": 349.0,
-      "x2": 527.0,
-      "y1": 92.0,
-      "y2": 256.0
+      "x1": 53.0,
+      "x2": 559.0,
+      "y1": 83.0,
+      "y2": 359.0
     }
   }, {
-    "caption": "Figure 7: Model 2 predictions (color encodes datasets) and regression samples (scatterplots, alpha = 0.03) for B1 random condition. Data-inherent effects are salient.",
+    "caption": "Figure 5: The fve steps of the VisiFit pipeline for improving blends. In steps 1 and 2, the user extracts the main shape of both objects and adjusts their overlap. In steps 3-5, the user blends the images. There are two options for selecting a silhouette, fve options for color blending (only four are shown), and a tool to select and re-apply internal details. Each step builds on the selected output from the previous step (indicated by a blue border.) Once the user is happy with the blend, they select it as the fnal output (indicated in a green border.)",
     "captionBoundary": {
-      "x1": 53.79800033569336,
-      "x2": 294.032958984375,
-      "y1": 269.8904113769531,
-      "y2": 297.447021484375
+      "x1": 53.7979736328125,
+      "x2": 295.57696533203125,
+      "y1": 521.7271118164062,
+      "y2": 625.970458984375
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "5",
+    "page": 7,
+    "regionBoundary": {
+      "x1": 60.0,
+      "x2": 288.0,
+      "y1": 83.0,
+      "y2": 508.0
+    }
+  }, {
+    "caption": "Figure 2: An illustration of VisiBlends workfow that helps people create prototypes for a blend representing “Visit New York this autumn.”. The VisiBlends prototypes convey the idea, but are often very rough. The goal of VisiFit is to improve these initial prototypes into seamless and aesthetic blends.",
+    "captionBoundary": {
+      "x1": 53.7979736328125,
+      "x2": 558.202880859375,
+      "y1": 492.8301086425781,
+      "y2": 520.3748779296875
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "2",
+    "page": 3,
+    "regionBoundary": {
+      "x1": 53.0,
+      "x2": 559.0,
+      "y1": 83.0,
+      "y2": 479.0
+    }
+  }, {
+    "caption": "Figure 7: Three examples of visual blends that could be turned into animated blends. Each row shows the original visual blend on the left, the reference video in the middle, and the animated blend on the right. Motion is annotated in red.",
+    "captionBoundary": {
+      "x1": 53.56489562988281,
+      "x2": 295.1376953125,
+      "y1": 459.8971252441406,
+      "y2": 509.35577392578125
     },
     "figType": "Figure",
     "imageText": [],
     "name": "7",
-    "page": 7,
-    "regionBoundary": {
-      "x1": 85.0,
-      "x2": 263.0,
-      "y1": 92.0,
-      "y2": 256.0
-    }
-  }, {
-    "caption": "Table 1: Overview of studies. Details include main results, number of participants recruited and remained after quality control, and number of tasks in each MTurk HIT.",
-    "captionBoundary": {
-      "x1": 53.46900177001953,
-      "x2": 558.4336547851562,
-      "y1": 94.7542724609375,
-      "y2": 112.97601318359375
-    },
-    "figType": "Table",
-    "imageText": ["Pilot", "1", "Neighborhood", "effects", "seem", "to", "exist;", "however,", "various", "confounds", "mask", "the", "effects.", "105", "94", "135", "Pilot", "2", "Modeling", "data-inherent", "effects", "that", "explain", "the", "confounds", "from", "study", "1.", "200", "184", "63", "(61)", "Main", "3", "With", "controlled", "confounds,", "the", "neighborhood", "effect", "is", "present", "with", "small", "effect", "size.", "283", "200", "72", "Study", "Result", "Recruited", "Used", "Tasks"],
-    "name": "1",
-    "page": 3,
+    "page": 11,
     "regionBoundary": {
       "x1": 53.0,
-      "x2": 561.0,
-      "y1": 128.0,
-      "y2": 188.0
+      "x2": 307.0,
+      "y1": 83.0,
+      "y2": 446.0
     }
   }, {
-    "caption": "Table 3: Coefficients of Model 3, extending Tab.2 with the predictor neighborhood rank (Neighbor).",
+    "caption": "Figure 3: Blends created by Fast Style Transfer (top) compared to blends produced by an artist (bottom). The FST blends fail because this problem cannot be solved with an indiscriminate, global application of one object’s style onto another. Experts take apart and blend objects in a more nuanced way, preserving relevant characteristics of each object to keep each one identifable in the fnal blend.",
     "captionBoundary": {
-      "x1": 317.6259765625,
-      "x2": 558.2125854492188,
-      "y1": 316.52923583984375,
-      "y2": 334.7509460449219
-    },
-    "figType": "Table",
-    "imageText": ["(Intercept)", "1.38e+01", "1.52e+00", "9.10", "<", "2e-16***", "Rank3", "5.95e-05", "7.18e-06", "8.28", "<", "2e-16***", "Rank2", "-7.65e-03", "6.99e-04", "-10.95", "<", "2e-16***", "N", "-5.73e-01", "5.60e-02", "-10.22", "<", "2e-16", "***", "Skewness", "-2.51e+01", "4.74e-01", "-53.08", "<", "2e-16***", "Kurtosis", "7.70e+00", "6.54e-01", "11.77", "<", "2e-16***", "Neighbor", "-1.33e-02", "2.75e-03", "-4.84", "1.31e-06***", "N:Rank", "-3.27e-03", "9.56e-04", "-3.42", "0.000629***", "Estimate", "Std.Error", "t", "value", "Pr", "(>|t|)"],
-    "name": "3",
-    "page": 8,
-    "regionBoundary": {
-      "x1": 317.0,
-      "x2": 559.0,
-      "y1": 350.0,
-      "y2": 469.0
-    }
-  }, {
-    "caption": "Figure 9: Neighborhood effects: Mean errors and CIs in two neighborhoods with all 14,400 samples from study 3.",
-    "captionBoundary": {
-      "x1": 53.79800033569336,
-      "x2": 294.0329895019531,
-      "y1": 207.37240600585938,
-      "y2": 223.97100830078125
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "9",
-    "page": 8,
-    "regionBoundary": {
-      "x1": 73.0,
-      "x2": 275.0,
-      "y1": 92.0,
-      "y2": 194.0
-    }
-  }, {
-    "caption": "Figure 10: Model 3 predictions (color encodes datasets) and regression samples (scatterplots, alpha = 0.01) showing both neighborhood effects and data-inherent effects.",
-    "captionBoundary": {
-      "x1": 317.9549865722656,
-      "x2": 558.1900634765625,
-      "y1": 269.8423767089844,
-      "y2": 297.39996337890625
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "10",
-    "page": 8,
-    "regionBoundary": {
-      "x1": 349.0,
-      "x2": 527.0,
-      "y1": 92.0,
-      "y2": 256.0
-    }
-  }, {
-    "caption": "Figure 3: CIs for means of Error. We tested nine conditions: Three target bars (25%, 50%, 75%), each tested with three neighborhoods (lowest, similar, and highest).",
-    "captionBoundary": {
-      "x1": 317.65899658203125,
-      "x2": 559.3375854492188,
-      "y1": 345.7913818359375,
-      "y2": 373.3480224609375
+      "x1": 53.797943115234375,
+      "x2": 295.6487121582031,
+      "y1": 333.1271057128906,
+      "y2": 404.4996337890625
     },
     "figType": "Figure",
     "imageText": [],
     "name": "3",
     "page": 4,
     "regionBoundary": {
-      "x1": 349.0,
-      "x2": 527.0,
-      "y1": 92.0,
-      "y2": 332.0
+      "x1": 53.0,
+      "x2": 306.0,
+      "y1": 166.0,
+      "y2": 320.0
     }
   }],
   "sections": [{
     "paragraphs": [{
       "page": 0,
       "region": {
-        "x1": 53.24800109863281,
-        "x2": 295.0179748535156,
-        "y1": 584.4166259765625,
-        "y2": 711.1740112304688
+        "x1": 53.31680679321289,
+        "x2": 294.8095703125,
+        "y1": 621.2330932617188,
+        "y2": 707.3472290039062
       },
-      "text": "Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org. CHI 2019, May 4–9, 2019, Glasgow, Scotland UK © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM. ACM ISBN 978-1-4503-5970-2/19/05. . . $15.00 https://doi.org/10.1145/3290605.3300462"
+      "text": "Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for proft or commercial advantage and that copies bear this notice and the full citation on the frst page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specifc permission and/or a fee. Request permissions from permissions@acm.org. CHI ’21, May 8–13, 2021, Yokohama, Japan © 2021 Association for Computing Machinery. ACM ISBN 978-1-4503-8096-6/21/05. . . $15.00 https://doi.org/10.1145/3411764.3445089"
+    }, {
+      "page": 0,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.7171020507812,
+        "y1": 436.1972351074219,
+        "y2": 464.3110046386719
+      },
+      "text": "to other blending problems, and how computational tools can support novices by enabling them to explore a structured design space quickly and efciently."
+    }, {
+      "page": 0,
+      "region": {
+        "x1": 317.9549560546875,
+        "x2": 558.20068359375,
+        "y1": 481.2770690917969,
+        "y2": 512.782958984375
+      },
+      "text": "CCS CONCEPTS • Human-centered computing → Interactive systems and tools."
+    }, {
+      "page": 0,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 509.54022216796875,
+        "y1": 529.7501220703125,
+        "y2": 550.2999877929688
+      },
+      "text": "KEYWORDS Computational design, Design tools, Iterative design"
+    }, {
+      "page": 0,
+      "region": {
+        "x1": 317.6600036621094,
+        "x2": 559.4303588867188,
+        "y1": 564.1857299804688,
+        "y2": 619.0050048828125
+      },
+      "text": "ACM Reference Format: Lydia B. Chilton, Ecenaz Jen Ozmen, Sam Ross, and Vivian Liu. 2021. VisiFit: Structuring Iterative Improvement for Novice Designers. In CHI Conference on Human Factors in Computing Systems (CHI ’21), May 8–13, 2021, Yokohama, Japan. ACM, New York, NY, USA, 14 pages. https://doi.org/10.1145/3411764. 3445089"
     }]
   }, {
     "paragraphs": [{
       "page": 0,
       "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.2047119140625,
-        "y1": 398.9701843261719,
-        "y2": 417.4410095214844
+        "x1": 317.9549560546875,
+        "x2": 559.5825805664062,
+        "y1": 657.316162109375,
+        "y2": 707.3469848632812
       },
-      "text": "• Human-centered computing→ Empirical studies in visualization;"
-    }],
-    "title": {
-      "page": 0,
-      "region": {
-        "x1": 317.95501708984375,
-        "x2": 392.66754150390625,
-        "y1": 384.1158447265625,
-        "y2": 390.5419921875
-      },
-      "text": "CCS CONCEPTS"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 0,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 557.6947021484375,
-        "y1": 448.1181945800781,
-        "y2": 454.6340026855469
-      },
-      "text": "Perception, Neighborhood, Order, Bar Chart, MTurk Study."
-    }],
-    "title": {
-      "page": 0,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 375.55108642578125,
-        "y1": 433.26385498046875,
-        "y2": 439.69000244140625
-      },
-      "text": "KEYWORDS"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 0,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.7023315429688,
-        "y1": 477.66021728515625,
-        "y2": 527.3599853515625
-      },
-      "text": "Mingqian Zhao, Huamin Qu, and Michael Sedlmair. 2019. Neighborhood Perception in Bar Charts. In CHI Conference on Human Factors in Computing Systems Proceedings (CHI 2019), May 4–9, 2019, Glasgow, Scotland UK. ACM, New York, NY, USA, 12 pages. https://doi.org/10.1145/3290605.3300462"
-    }],
-    "title": {
-      "page": 0,
-      "region": {
-        "x1": 317.62298583984375,
-        "x2": 415.4867858886719,
-        "y1": 466.9253845214844,
-        "y2": 472.56500244140625
-      },
-      "text": "ACM Reference Format:"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 0,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.7442016601562,
-        "y1": 561.6871948242188,
-        "y2": 604.0679931640625
-      },
-      "text": "Bar charts are arguably on the most ubiquitous visualization techniques. Their usage ranges from casual users that seek to understand their personal data, to professional decision makers making delicate choices on such data representations."
-    }, {
-      "page": 0,
-      "region": {
-        "x1": 317.9547119140625,
-        "x2": 559.8980712890625,
-        "y1": 609.5081787109375,
-        "y2": 711.6649780273438
-      },
-      "text": "As a natural consequence, many researchers have focused on gaining a detailed understanding of how bar charts and other common statistical graphics are perceived and interpreted by users. This line of research has unveiled many interesting and surprising facets. Previous work has, for instance, shown how contextual factors, such as biased social signals [17], priming and anchoring effects [14, 40], framing effects [22], decorations [26], luminance [37], plotting density [16, 37], and neighboring objects’ size [12, 42], can"
-    }, {
-      "page": 0,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 232 Page 1"
+      "text": "Iterative improvement is the essence of the iterative design process. No design is perfect at inception, thus iteration through prototypes is necessary to improve it. If a prototype passes an evaluation, it should become a new, higher fdelity prototype that can be tested and potentially iterated upon again. In case studies of improved"
     }, {
       "page": 1,
       "region": {
-        "x1": 53.43000030517578,
-        "x2": 295.73553466796875,
-        "y1": 96.09918975830078,
-        "y2": 222.1669921875
+        "x1": 53.46699905395508,
+        "x2": 295.5613098144531,
+        "y1": 87.45320129394531,
+        "y2": 225.156005859375
       },
-      "text": "influence visual perception. Better understanding such factors is critical to design proper statistical graphics, and to avoid potential misinterpretations of the data. The goal of our work is to contribute a novel factor to this line of work: understanding neighborhood effects in bar charts. Given the prevalence of other visual biases, we were wondering in how far the perception of a bar’s height is influenced by the height of its neighboring bars. For instance, can we observe any perceived differences when the very same target stimulus bar is surrounded by the top highest vs. the top lowest bars?"
+      "text": "software usability by the Nielsen Norman Group [40], median improvement per stage of iteration was 38%, leading to overall usability improvements of 165%. Iteration is not just an aspect of usability engineering, it is a fundamental part of the design process that generalizes across many domains. In web design, designers start with a wireframe prototype and move to a minimum viable product. In mechanical design, designers improve upon initial proofs of concept by iterating upon features and prototype reliability. In graphic design, designers sketch prototypes and then move onto higher-fdelity mockups. In each domain, iteration looks diferent, but the objective is the same – to extend the prototype to move closer to the goal. To help novice designers in a meaningful and practical way, we need tools to support iteration."
     }, {
       "page": 1,
       "region": {
-        "x1": 53.001380920410156,
-        "x2": 295.74102783203125,
-        "y1": 227.606201171875,
-        "y2": 664.5079956054688
+        "x1": 53.57720947265625,
+        "x2": 295.5623779296875,
+        "y1": 229.91920471191406,
+        "y2": 367.6210021972656
       },
-      "text": "The main psychological foundation that guides the neighborhood manipulation in our study is Parallel Line Illusion (PLI). PLI illustrates how the perceived length of a target stimulus line is altered by different contextual lines positioned in parallel to it [11, 18–20]. There are two distortions in PLI: length contrast and length assimilation [18, 20]. Length contrast occurs when the target line is distorted away from the contextual line, e.g., the target line perceived to be shorter when accompanied by a long contextual line as opposed to a short one; see Fig. 2. Length assimilation occurs when the target line is distorted towards the contextual line, e.g., target line perceived to be longer when accompanied by a long contextual line than by a short one. These two distortions shift from one to the other under certain conditions. A similar work to ours is Peebles’ empirical investigation on whether two adjacent bar values affect the perception of a target bar value in a simple five-bar chart [29]. The author observed a significant difference in target bar value judgments between two conditions (the target bar measuring ‘5’ surrounded by bars measuring ‘4, 4’ vs. by ‘1, 1’). Our goal is to expand on this work and provide a more systematic investigation into potential neighborhood effects in bar charts. Simultaneously, we aim at moving from this highlycontrolled, artificial setting towards a more realistic setting by examining real world datasets. Therefore, in this work we change the order of bars to keep datasets the same (constraint from real applications) instead of only changing the neighboring bar values (highly-controlled research setting). Towards that goal, we contribute three Amazon Mechanical Turk (MTurk) experiments with overall 52,101 trials and 587 participants, in which we study these neighborhood effects.We tasked participants with rank estimation tasks. Rank estimation is a common, yet so-far mostly overlooked task in bar charts, in which users seek to relate a specific target item to the whole dataset. For example, one might want to learn about the ranking of one’s own university, company, or sports club, according to some performance metric."
+      "text": "Although there are many existing tools that support other phases of the design process such as brainstorming, prototyping, evaluation, and fnal design execution, there is a lack of tools focusing on iteration [17]. Only 6% of 148 creativity support tools from 1999- 2018 focus on iteration. Iteration tools are similar to brainstorming and prototyping tools in that they help people explore a design space. However, they are more difcult to build because they have more constraints. Unlike general prototyping tools, iterating on prototypes must be constrained further to build on ideas that were validated in the previous prototypes. Iteration still involves searching the design space, but the tools that were previously used to explore an expansive design space are not the right tools to explore a more constrained one."
     }, {
       "page": 1,
       "region": {
-        "x1": 53.79800033569336,
-        "x2": 295.58734130859375,
-        "y1": 669.9472045898438,
-        "y2": 712.3289794921875
+        "x1": 53.50199890136719,
+        "x2": 295.42742919921875,
+        "y1": 372.38421630859375,
+        "y2": 586.7999877929688
       },
-      "text": "The results of our studies show that neighborhood effects exist in rank estimation tasks. When the same target bar is surrounded by the highest bars, the perceived target bar rank is lower than when it is surrounded by the lowest neighbors."
+      "text": "Like all prototyping tools, iteration tools must be domain-specifc so they can efectively operate on the materials of that domain. We focus on the difcult design challenge of making visual blends [3]. Visual blends are an advanced graphic design technique used to convey a message visually in journalism, advertising, and public service announcements. They combine two visual symbols into one object to convey a new meaning. For example, in Figure 1 the Guggenheim Museum is blended with an acorn to convey the message “Visit New York City this autumn”. Visual blends are a canonical example of a creative design challenge [25, 43] because they are open-ended enough to encapsulate all aspects of the design process, but well-defned enough to test in a short time frame. Moreover, cognitive scientists consider blending to be an important aspect of general creativity for its ability to “create new meaning out of old.” [15] Currently, tools already exist to help people brainstorm and create initial prototypes [9] by fnding the right images and arrangements to use for the blend. However, visual blends generally require an expert with Photoshop skills to execute the design and it would be faster, easier, and more empowering for novices to improve blends by themselves, without relying on an expert."
     }, {
       "page": 1,
       "region": {
-        "x1": 317.6059875488281,
-        "x2": 559.8922119140625,
-        "y1": 298.93218994140625,
-        "y2": 460.864990234375
+        "x1": 53.7979736328125,
+        "x2": 295.5589599609375,
+        "y1": 591.5621948242188,
+        "y2": 696.3889770507812
       },
-      "text": "This finding is in line with the length contrast distortion in PLI. Yet, the effect size of neighborhood effects is small. Altering from the highest to the lowest neighborhood leads to an approximate 1.32 increase in the target bar rank. This means that a target bar being perceived as at rank 60 in its highest neighborhood will be perceived as at rank 61.32 in its lowest neighborhood. However, this small effect is largely masked by other data-inherent effects, which reveal that the accuracy of this task mostly depends on true target bar rank, number of data items and two other data characteristics (skewness and kurtosis) of the datasets. After isolating, identifying and quantifying both data-inherent effects and neighborhood effects, we draw three possible implications for future bar chart designs based on our results:"
+      "text": "We perform several formative studies to learn how experts approach the iterative improvement of visual blends. From an analysis of blends created by experts and a participatory design process with graphic designers, we learned that blends do not simply blend the surface-level style of two objects, they combine the secondary visual dimensions of both objects such as silhouette, color and internal details. Based on this observation, we present a method for structuring the iterative improvement process of blends based on secondary design dimensions. In this method, the improvement process is frst broken into stages that blend each of the dimensions separately."
     }, {
       "page": 1,
       "region": {
-        "x1": 333.427001953125,
-        "x2": 558.4644775390625,
-        "y1": 469.34130859375,
-        "y2": 572.0670166015625
+        "x1": 317.6860046386719,
+        "x2": 558.198974609375,
+        "y1": 87.45320129394531,
+        "y2": 104.60797119140625
       },
-      "text": "• Compared to random order, sorting bars according to real heights is of higher accuracy for conveying rank-related information. • Despite their existence, there is no need to worry too much about neighborhood effects in bar chart rank estimation tasks. • Skewness has a comparatively large effect on rank estimation though; additional clues might be used to convey rank-related information more precisely."
+      "text": "Then the results of each stage are combined into a single blended output."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 317.65899658203125,
+        "x2": 559.5827026367188,
+        "y1": 109.37123107910156,
+        "y2": 192.27899169921875
+      },
+      "text": "We present VisiFit – a computational design tool that allows novice graphic designers to improve a prototype of a visual blend. A prior system called VisiBlends [9] helps novices create rough initial prototypes of blends by overlaying two objects with the same shape. VisiFit helps users refne those rough prototypes into seamless and aesthetic blends. VisiFit structures the process of creating second iterations by introducing a pipeline of computational tools that allow users to quickly and easily edit secondary design dimensions."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.720458984375,
+        "y1": 427.5302429199219,
+        "y2": 466.6029968261719
+      },
+      "text": "We conclude with a discussion of how secondary design dimensions can help structure iteration in other felds and how pipelines of computational design tools can support the iterative design process."
     }],
     "title": {
       "page": 0,
       "region": {
         "x1": 317.9549865722656,
-        "x2": 411.0592041015625,
-        "y1": 546.8328247070312,
-        "y2": 553.2589721679688
+        "x2": 420.68597412109375,
+        "y1": 642.9620971679688,
+        "y2": 649.81298828125
       },
       "text": "1 INTRODUCTION"
     }
   }, {
-    "paragraphs": [{
-      "page": 1,
-      "region": {
-        "x1": 317.656005859375,
-        "x2": 559.8987426757812,
-        "y1": 621.4061889648438,
-        "y2": 711.6080322265625
-      },
-      "text": "The neighborhood manipulation is related with ordering graphical components (i.e., how to map data to different graphical characteristics). This kind of mapping is a fundamental challenge in visual design, such as mapping rays in star plots. Various empirical studies exist that investigate effects of such ordering decisions. Klippel et al., for instance, studied how aligning variables to rays in star plots influences perceptual comparison tasks. They found that solely altering"
-    }, {
-      "page": 1,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 232 Page 2"
-    }, {
-      "page": 2,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 295.1167297363281,
-        "y1": 96.09918975830078,
-        "y2": 186.301025390625
-      },
-      "text": "the assignments of two rays in an 8-ray star plot resulted in significant differences in response time and participants’ grouping behavior whereas this alter only evoked very few difference in perceived similarity [23]. Saket et al. compared between five different basic visualization types and revealed how they differ in effectiveness in ordering tasks [32]. To the best of our knowledge, no empirical studies had been conducted on ordering effects within bar charts."
-    }],
+    "paragraphs": [],
     "title": {
       "page": 1,
       "region": {
-        "x1": 317.95501708984375,
-        "x2": 455.9028015136719,
-        "y1": 591.6078491210938,
-        "y2": 612.97802734375
+        "x1": 317.9549865722656,
+        "x2": 421.7441711425781,
+        "y1": 484.8050842285156,
+        "y2": 491.656005859375
       },
-      "text": "2 RELATEDWORK Empirical Studies on Ordering"
+      "text": "2 RELATED WORK"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 1,
+      "region": {
+        "x1": 317.7489929199219,
+        "x2": 559.7156372070312,
+        "y1": 514.8502197265625,
+        "y2": 707.3469848632812
+      },
+      "text": "Design tools and creativity support tools (CSTs) have a rich tradition of accelerating innovation and discovery [49] by supporting the design process. A survey of 143 papers from 1999-2018 on creativity support tools (CSTs) found that there are papers supporting all phases of the design process: ideation, exploration, prototyping, implementation, evaluation, and process/pipeline, and iteration. [17]. Many of these tools support more than one phase of the design process. However, not all phases of the design process are equally represented in the literature. In fact, a majority of these tools focused on either very early or very late phases of the design process. Of the systems in the survey, 45% support ideation [30, 50, 59], 41% support implementation, including high-fdelity tools [57] or low-fdelity tools for prototyping or sketching [10, 21, 31, 32], and 18% supported evaluation through feedback [36, 63] or expert annotation [51]. However, only 6% of the systems surveyed supported iteration, and only 4% supported the related task of design management or pipelines. More research is needed on how to support iteration more efectively — that is, how to help designers improve"
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 294.2134094238281,
+        "y1": 87.45320129394531,
+        "y2": 104.60797119140625
+      },
+      "text": "on an initial prototype to get closer to their fnal design goal. Our work in this paper focuses on this problem."
+    }],
+    "title": {
+      "page": 1,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 406.1114196777344,
+        "y1": 500.49237060546875,
+        "y2": 507.3432922363281
+      },
+      "text": "2.1 Design Tools"
     }
   }, {
     "paragraphs": [{
       "page": 2,
       "region": {
-        "x1": 53.499000549316406,
-        "x2": 295.7410583496094,
-        "y1": 215.65118408203125,
-        "y2": 413.45001220703125
+        "x1": 53.48400115966797,
+        "x2": 295.56280517578125,
+        "y1": 136.76820373535156,
+        "y2": 230.635009765625
       },
-      "text": "Much empirical work has been conducted to better understand the widely adopted visual encoding of bar charts. Utilizing a common scale, bar charts for instance were found to offer higher accuracy for estimating component parts than other square-, circle-, or cube-based encodings [5, 7, 35, 38]. These works focused on tasks such as larger/smaller comparison, difference comparison and proportion extraction between a pair of bars [5, 16, 24, 35]. Cleveland & McGill studied 10 different pairs of bar values in simple bar charts ranging from .18 to .83 and found that the accuracy would decrease with increasing distances between the graphical elements [5], a finding that was further confirmed by Talbot et al. [39]. These studies focused on the accuracy of judging absolute bar heights or comparing the relative height between a pair of bars. No work had shed light on the visual judgment of bar ranks, namely the relative position within the whole group."
+      "text": "Existing systems that explicitly aid iteration use a number of approaches. One class of iteration applications uses crowds to iterate towards better solutions [33]. This can be by mixing features of previous designs [66], responding to community feedback [27], hiring experts [45], or identifying weak points and fxing them [28]. All of these use the strength of multiple people’s viewpoints to iterate. However, crowds can introduce errors and may be difcult to steer toward your particular vision. Therefore, it is often useful to provide designers with single user tools for iteration."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 295.5555725097656,
+        "y1": 235.39820861816406,
+        "y2": 351.1830139160156
+      },
+      "text": "Another class of iteration tools has the user produce a prototype, and then computationally generate the rest of the design. If the user is unhappy with the outcome, they can regenerate, alter their input, or adjust parameters. Several applications apply this method to generate multi-tracked music from a simple input melody. This can be done using rules and constraints [14, 61] or implicit patterns learned by deep learning [35]. Having the computer generate outcomes is especially usable for novices; it allows them to recognize good outcomes, even if they cannot produce them. This seems to work well in music, which has many mathematical rules, but it is unclear if it works as well in other domains."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 53.525604248046875,
+        "x2": 295.4256896972656,
+        "y1": 355.94622802734375,
+        "y2": 482.69000244140625
+      },
+      "text": "A third way to support iteration is to provide rich undo history to allow users control and freedom while exploring the design space. This is often done in the drawing domain both for single users [39] and for multiple users who want to draw collaboratively [67]. In the creative design process, exploration is clearly important [8], and supporting that is essential. In VisiFit, we use aspects of all three of these approaches. We target key properties of the prototype that need improving and focus iteration on these properties. We provide computational tools to generate outcomes that novices could not produce themselves. We allow users to explore design alternatives and to adjust parameters so they can achieve results they are satisfed with."
     }],
     "title": {
       "page": 2,
       "region": {
         "x1": 53.79800033569336,
-        "x2": 212.67799377441406,
-        "y1": 200.79689025878906,
-        "y2": 207.2230224609375
+        "x2": 164.25262451171875,
+        "y1": 122.41410064697266,
+        "y2": 129.2650146484375
       },
-      "text": "Graphical Perception in Bar Charts"
+      "text": "2.2 Iteration Support"
     }
   }, {
     "paragraphs": [{
-      "page": 2,
-      "region": {
-        "x1": 53.499000549316406,
-        "x2": 295.7422790527344,
-        "y1": 442.7991943359375,
-        "y2": 712.3289794921875
-      },
-      "text": "Theoretically, our work is grounded in neighborhood effects in Parallel Line Illusion (PLI) research. PLI was used to explain many different illusions [19], such as the famous Miller-Lyer [21], Baldwin [30], and Ponzo illusions [4]. Within the PLI framework also two different length distortions were described. The perceived length assimilation describes perceiving a test line length towards a context line. Length contrast describes distorted perception of a test line length away from the context line. Which direction an effect has (assimilation or contrast) depends on the spatial [18, 19] and temporal [20] distance between the two lines. Based on PLI, Zacks et al. [44] attributed the difference in accuracy of judging absolute bar height to potential length assimilation and length contrast distortions. They hypothesized that these effects might be produced by the relative heights of bars in a figure and the relative heights of judged bars to its surrounding graphical frame [44]. Closest to our work, Peebles [29] explored whether the surrounding bar values affected perceived bar values in a simple bar chart (comprised of five bar components). They compared the perceived values of a target bar measuring ‘5’ under two conditions (the two adjacent bar values to be ‘1,1’ vs. ‘4,4’) [29]. Results showed a significant difference that the mean perceived value for"
-    }, {
-      "page": 2,
-      "region": {
-        "x1": 317.1579284667969,
-        "x2": 558.4646606445312,
-        "y1": 96.09918975830078,
-        "y2": 174.34600830078125
-      },
-      "text": "‘1,1’ condition was ‘5.07’ while for ‘4,4’ was ‘4.96’. This is consistent with length contrast in PLI. Yet, this study only tested one, highly artificial stimulus chart. Building on PLI and these initial findings, we study length assimilation and length contrast effects in much more realistic settings of bar charts, with an eye towards making this theory applicable in visual design."
-    }],
-    "title": {
       "page": 2,
       "region": {
         "x1": 53.79800033569336,
-        "x2": 147.50003051757812,
-        "y1": 427.9448547363281,
-        "y2": 434.3710021972656
+        "x2": 295.0264892578125,
+        "y1": 514.8502197265625,
+        "y2": 597.7579956054688
       },
-      "text": "Parallel Line Illusion"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 2,
-      "region": {
-        "x1": 317.656005859375,
-        "x2": 559.8981323242188,
-        "y1": 203.6961669921875,
-        "y2": 377.583984375
-      },
-      "text": "The three studies were conducted in chronological order between May 2018 and September 2018. Study 1 (pilot) explored the existence of neighborhood effects with target bars at three different ranks being surround by three neighborhood conditions (highest, similar and lowest neighborhood). After identifying that other data-inherent effects had a strong confounding influence on our results, we conducted study 2 (pilot) to isolate and quantify these other effects by testing each bar in the chart under two baseline orders. In study 3 (main study), we offset the impact from these other data-inherent effects and validated the presence of neighborhood effects with target bars at six different ranks being surrounded by two neighborhood conditions (highest and lowest neighborhood). All three studies were conducted on MTurk. Details of each study are shown in Tab.1."
-    }],
-    "title": {
-      "page": 2,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 387.1181335449219,
-        "y1": 188.8418731689453,
-        "y2": 195.26800537109375
-      },
-      "text": "3 OVERVIEW"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 2,
-      "region": {
-        "x1": 317.5870056152344,
-        "x2": 559.8980102539062,
-        "y1": 406.9342041015625,
-        "y2": 544.9559936523438
-      },
-      "text": "Following Peebles’ results [29] and fundamental PLI research [18], we hypothesized that neighborhood effects exist in bar charts. Jordan et al. [18] found that in very close neighborhoods/spatial separation (5mm) assimilation effects dominate, while in larger neighborhoods (100mm) contrast effects aremore common. In our case, thewidth of the neighborhood around the target bar (distance from the leftmost neighboring bar to the rightmost neighboring bar) was roughly in the range of 100mm. We thus hypothesized that contrast effects would occur. Surrounded by the top highest bars, the target bar rank would be perceived lower than that surrounded by the top lowest bars."
-    }],
-    "title": {
-      "page": 2,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 368.5570983886719,
-        "y1": 392.079833984375,
-        "y2": 398.5059814453125
-      },
-      "text": "Hypothesis"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 2,
-      "region": {
-        "x1": 317.656005859375,
-        "x2": 558.5756225585938,
-        "y1": 574.3062133789062,
-        "y2": 664.5079956054688
-      },
-      "text": "To increase ecological validity, we carefully handpicked 15 nominal datasets which could be applied to a univariate bar chart from online resources statistics.com [36] and New York Times [28]. These 15 datasets were equally distributed into three groups with 9-13 bars (referred to as approx. 10 bars group), 18-24 bars (20 bars group), and 30-32 bars (30 bars group). Participants were recruited from MTurk and compensated at an hourly payment of $7.5."
-    }],
-    "title": {
-      "page": 2,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 432.65911865234375,
-        "y1": 559.4518432617188,
-        "y2": 565.8779907226562
-      },
-      "text": "Datasets and Participants"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 2,
-      "region": {
-        "x1": 317.47698974609375,
-        "x2": 558.2122802734375,
-        "y1": 693.8582153320312,
-        "y2": 712.3289794921875
-      },
-      "text": "We task participants with the rank estimation task.We regard it as the simpler testbed (mainly involves one target bar and"
+      "text": "Computational tools have long been a promising approach to aid design because they can search a design space and help meet a constraint. The power of computational or computer-aided design has been shown in many felds such as: education [34], medicine [22], games [52], urban planning [5], and accessibility [18]. The system designer must defne the space and the search parameters, as well as provide design patterns for solutions that can be adapted to diferent inputs. [2, 64, 65]"
     }, {
       "page": 2,
       "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
+        "x1": 53.79742431640625,
+        "x2": 295.5567321777344,
+        "y1": 602.5211791992188,
+        "y2": 707.3469848632812
       },
-      "text": "Paper 232 Page 3"
+      "text": "Computational design tools have had particularly strong adoption in graphic design problems like optimizing layout [7, 11, 41, 56], making icons [4, 6], and providing inspiration through mood boards [29, 60] and relevant examples [12, 30]. This is also true in the 3D domain, where computational tools can be used to search a design space and create multiple mesh and texture variations of objects (i.e. trees or airplanes) that can make computer generated scenes more diverse [37, 54]. Deep learning has also been applied to generate new designs that ft user specifcations [38, 62]. In this paper, we address a specifc kind of graphic design problem of that"
     }, {
-      "page": 3,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 294.2398986816406,
-        "y1": 205.79718017578125,
-        "y2": 236.2230224609375
-      },
-      "text": "the others) for investigating neighborhood effects than other tasks, e.g., to compare heights between two bars (involves two targets and the rest). We calculate rank as"
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 137.4239959716797,
-        "x2": 183.91552734375,
-        "y1": 247.90362548828125,
-        "y2": 259.654052734375
-      },
-      "text": "Rank = OR"
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 173.98199462890625,
-        "x2": 294.0447082519531,
-        "y1": 252.57029724121094,
-        "y2": 266.489013671875
-      },
-      "text": "N × 100 (1)"
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 53.43000030517578,
-        "x2": 294.2386169433594,
-        "y1": 274.79620361328125,
-        "y2": 293.2669982910156
-      },
-      "text": "where OR denotes the ordinal rank, and N denotes number of data items in the dataset."
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 53.43000030517578,
-        "x2": 295.74102783203125,
-        "y1": 298.7061767578125,
-        "y2": 711.697998046875
-      },
-      "text": "We defined a manipulation neighborhood covering 20% of the entire chart (i.e., 2, 4, and 6 bars in the three groups); see gray shadow in Fig. 1 (c) & (e). Fig. 1 exemplifies our neighborhood manipulation process. Starting with a quasi-random alphabetical order, we first identified the set of highest or lowest neighboring bars (Fig. 1 (b) & (d)); we then swapped them with the initial neighborhood bars around the target (Fig. 1 (c) & (e)). The target bar (orange) was randomly chosen within the possible range. Choices that would cut off the neighborhoods at the sides of the chart were excluded. We formulated the rank estimation task as “How do you think about the height of the target bar highlighted in orange among the whole group?” We chose this formulation to avoid misunderstanding the task as comparing the target bar with another bar such as the highest one. We only showed each chart to participants for exactly one second. With this setting, we sought to prevent participants from precisely counting how many bars are above or below a target. We tested different time durations before the studies and found that one second gave the best tradeoff between bar chart perception and avoiding counting strategies. The whole chart (measuring about 960:500 pixels) was rendered in the center of the screen, below a control panel containing the question and a slider (measuring about 600 pixels). The target bar was highlighted in orange while the other bars filled in blue. Titles of data items are replaced with ordinal numbers. For all conditions, the visual appearance of bars and tasks were exactly the same. The auxiliary materials contain all stimuli and screenshots of the setup. Participants’ responses were collected on a continuous slider with #bar-times tick marks. The two ends were clearly marked as ‘Lowest’ and ‘Highest’ in order to avoid participants accidentally swapping the scale direction. Every time a new task started, the slider handle was visually hidden. The handle appeared after a click on the slider and could be"
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.8906860351562,
-        "y1": 205.79718017578125,
-        "y2": 236.2230224609375
-      },
-      "text": "further adjusted then, always snapped to the nearest tick position though (ordinal rank). We measured estimation error in target bar rank as follows:"
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 356.1739807128906,
-        "x2": 493.5793762207031,
-        "y1": 247.54331970214844,
-        "y2": 261.37200927734375
-      },
-      "text": "Error = Perceived OR −True OR"
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 439.0950012207031,
-        "x2": 558.2017822265625,
-        "y1": 254.28831481933594,
-        "y2": 268.20599365234375
-      },
-      "text": "N × 100 (2)"
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 317.656005859375,
-        "x2": 558.2112426757812,
-        "y1": 277.8132019042969,
-        "y2": 296.28399658203125
-      },
-      "text": "Perceived OR denotes ordinal rank collected on sliders and True OR denotes the actual ordinal rank of the target bar."
-    }],
-    "title": {
       "page": 2,
       "region": {
         "x1": 317.9549865722656,
-        "x2": 413.5799560546875,
-        "y1": 679.0038452148438,
-        "y2": 685.4299926757812
-      },
-      "text": "Experimental Setting"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 3,
-      "region": {
-        "x1": 317.47698974609375,
-        "x2": 559.8991088867188,
-        "y1": 327.51318359375,
-        "y2": 453.58099365234375
-      },
-      "text": "We set quality control tasks to ensure serious participation from crowdsourcing workers. In study 1 and 3, quality control trials which shared the same task (rank estimation) and setup with the main experiment were randomly inserted into the study. The target bars in quality control trials were either the top highest, the top lowest or the median bar in a sorted order according to heights. If a participant failed (absolute error of OR exceeded 25%) more than 50 percent of all the quality control tasks, his/her entire response was discarded. In study 2, we control data quality based on outlier detection in main study tasks."
-    }],
-    "title": {
-      "page": 3,
-      "region": {
-        "x1": 317.95501708984375,
-        "x2": 389.3997497558594,
-        "y1": 312.65985107421875,
-        "y2": 319.08599853515625
-      },
-      "text": "Quality Control"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 3,
-      "region": {
-        "x1": 317.9548034667969,
-        "x2": 559.8908081054688,
-        "y1": 484.8111877441406,
-        "y2": 610.8779907226562
-      },
-      "text": "Following advise on good statistical practices [2, 6, 8, 25], we use a graphical presentation approach to present effect sizes and 95% confidence intervals (CIs). Specifically, we adopt the 95% corrected Cousineau-Morey CI generating method [2, 6], which is recommended for within-subject designs as it can strip out individual differences [2]. In regression analysis, we use adjusted R2 and stepwise model selection which is based on Akaike Information Criterion (AIC) [1] from both backward and forward directions to compare models. ANOVA tests (F-test and p-value) are adopted to test significance of models and predictors."
-    }],
-    "title": {
-      "page": 3,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 402.78997802734375,
-        "y1": 469.95684814453125,
-        "y2": 476.38299560546875
-      },
-      "text": "Statistical Analysis"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 3,
-      "region": {
-        "x1": 317.5870361328125,
-        "x2": 558.4015502929688,
-        "y1": 642.1978759765625,
-        "y2": 711.3889770507812
-      },
-      "text": "Study 1 Objective:We set out to investigate neighborhood effects with target bars at three different ranks. Each target was surrounded by three neighborhood conditions. We expected to see substantial differences in the perceived rank task for different neighborhood conditions."
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 232 Page 4"
-    }, {
-      "page": 4,
-      "region": {
-        "x1": 53.43000030517578,
-        "x2": 305.2584533691406,
-        "y1": 96.09918975830078,
-        "y2": 377.5840148925781
-      },
-      "text": "Setup: The three target bars were chosen to be low bars (rank = 25,mean = 27.07, SD = 2.83), median bars (rank = 50,mean = 51.10, SD = 1.84), and high bars (rank = 75,mean = 77.52, SD = 1.73). The three neighborhood conditions consisted of the shortest bars, bars similar to the target (e.g., for target bars ranked at 50%, neighboring bars ranged from 40% to 60%), and the highest bars. Followed by manipulation procedures discussed in Section 3, reordering was performed on the alphabetical baseline. A within-subject study was conducted with 105 MTurk workers. The whole study lasted about 10 minutes. After 9 training tasks presented in a fixed order at the beginning, the main experiment contained 135 perceptual ranking tasks (135 Trials = 3 Tarдets × 3 Neiдhborhoods × 15 Datasets) and five quality control tasks was presented. Task order in the main experiment was randomized. To eliminate fatigue, we gave participants a 30s break after 5 minutes. Results:We accepted 94 responses after quality control and plotted the mean error (effect size and CI). Fig. 3 shows the results aggregated over all trials and datasets: mean errors above zero indicate overestimation, while errors below indicate underestimation. The figure is first organized by the target bar rank condition (25%, 50%, 75%), and then by neighborhood conditions (lowest, similar, highest)."
-    }, {
-      "page": 4,
-      "region": {
-        "x1": 53.499420166015625,
-        "x2": 295.73785400390625,
-        "y1": 383.023193359375,
-        "y2": 485.1809997558594
-      },
-      "text": "Looking at the three different target bar rank groups (25%, 50%, 75%), we see a neighborhood effect within each of them. The highest neighborhood condition is always more underestimated than the other two (lowest, similar). That is, people tend to perceive target bar rank in its lowest neighborhood to be higher than that in its highest neighborhood. The similar neighborhood conditions have a substantial overlap with the lowest neighborhood conditions, so we cannot make reliable judgments about potential differences between them."
-    }, {
-      "page": 4,
-      "region": {
-        "x1": 53.43000030517578,
-        "x2": 295.7392883300781,
-        "y1": 490.62017822265625,
-        "y2": 712.3289794921875
-      },
-      "text": "Considering the results for each dataset separately (screenshots are available in the auxiliary material), we observe these neighborhood effects in 11 out of 15 datasets (19 out of 45 targets). In three other datasets (three out of 45 targets), we see a reversed pattern that is consistent with length assimilation distortion. Bar orders in the alphabetical baseline could be the confounds for inducing the reversed pattern. While we could see neighborhood effects within each of the three groups, we were surprised by the much stronger effects that exist between these groups. In Fig. 3, it is obvious that a large difference in error exists between the three target rank groups (25%, 50%, 75%). There is a substantial underestimation at 75%, a slight underestimation at 50%, and a slight overestimation at 25%. These are likely caused by other factors such as the choice of the target bar, or potentially also other data-inherent characteristics. One possible explanation for these effects might be anchoring and insufficient adjustment [10]. It is possible that participants swipe a horizontal line between the highest and lowest bars to be the ‘median’"
-    }, {
-      "page": 4,
-      "region": {
-        "x1": 317.656005859375,
-        "x2": 559.8941040039062,
-        "y1": 394.9512023925781,
-        "y2": 533.0040283203125
-      },
-      "text": "height and then conservatively indicate whether the target bar is higher or lower than this height. Another possible explanation is the statistical phenomenon regression to the mean [9, 15] in repeated measurements. When viewers make decisions based on subjective probability distribution [13] (e.g., generating a quantification of certainty on how likely this target bar to be at certain rank), the estimates for an unknown target tend to cluster to the mean of population distribution, i.e., the median 50th percentile in our rank estimation task. Both these two explanations help us understand that estimations at 75% group are under- and those in the 25% group are overestimated."
-    }, {
-      "page": 4,
-      "region": {
-        "x1": 317.5870056152344,
-        "x2": 559.8932495117188,
-        "y1": 547.496826171875,
-        "y2": 712.3289794921875
-      },
-      "text": "Study 2 Objective: The purpose of study 2 was to isolate and quantify other data-inherent effects that might influence the rank estimation task. Two baseline conditions were chosen to model these data-inherent effects: (B1) random condition with data items randomly assigned to bar components and (B2) sorted condition with bars sorted in an ascending order according to real heights. Hypothesis: Based on the lessons learned from study 1, we hypothesized that a large proportion of error could be explained by the actual target bar rank and number of data items. To some degree also data characteristics such as coefficient of variance (ratio between standard deviation to mean), skewness (asymmetry of the probability distribution),"
-    }, {
-      "page": 4,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 232 Page 5"
-    }, {
-      "page": 5,
-      "region": {
-        "x1": 53.43000030517578,
-        "x2": 295.7409362792969,
-        "y1": 251.41522216796875,
-        "y2": 712.22802734375
-      },
-      "text": "kurtosis (“tailedness” of the probability distribution) and normality might play a role. We expected to see differences between B1 and B2 conditions. Errors in B1 condition would have larger variances and the same data-inherent effects would appear as in study 1. Errors in B2 condition would have smaller variances and only little data-inherent effects would be observed considering the additional visual assistance from bars being sorted along the x-axis. Fig. 4 illustrates our anticipated effect of true target bar rank. We represent it as a curvilinear relationship between errors and true target bar ranks. We hypothesized that viewers would anchor and adjust their answers on median bars (ranked at 50) and the two extrema (ranked at 1 and 100). Means of error near these anchors would be close to zero, while for the ranks in-between we expected their perception to regress towards the anchors. The expected relationship in B2 was a horizontal line very close to x-axis, which means no effect. In terms of number of bars in a chart, we expected that with increasing number of data items, also the absolute error would increase in condition B1. This is illustrated with different colors in Fig. 4. In terms of regression analysis, we expected to see a contribution to the model’s goodness of fit (increased adjusted R2, and a smaller AIC value) from target bar rank and number of data items when adding each of them as variables into the model. An increase in R2 indicates that the model better explains the variance in the data. AIC deals with the tradeoff between model’s goodness of fit and complexity (number of predictors), with a lower AIC indicating a superior model. Setup: We conducted a new study to have every single bar component in 6 out of 15 datasets (randomly chosen) being assessed under both B1 and B2 conditions. For practical reasons we split the study into two blocks completed by two groups of participants (Block 1: charts were chosen to be N = 13, 18, 32; Block 2: N = 10, 20, 31). After the same 9 training tasks in pilot study 1, there were 126 tasks for each participant in Block 1 and 122 tasks for Block 2. The presentation order of main study tasks within each block was"
-    }, {
-      "page": 5,
-      "region": {
-        "x1": 317.47698974609375,
-        "x2": 559.8953857421875,
-        "y1": 96.09918975830078,
-        "y2": 473.2250061035156
-      },
-      "text": "randomized. Each block averaged 10 minutes. 200 MTurk workers were randomly assigned to one block. According to factorial analysis, the total number of permuted orders in B1 condition for a 10-bar chart is more than 106. To increase randomness, bar orders in B1 condition were randomized when the charts got rendered in the front end. Ideally, with 100 participants in each block, we could average between 100 random orders. For the sorted condition (B2), the order was always the same. Result:To remove speeders (workers who rushed through the study with low data quality), we used 1.5 × IQR rule to detect outliers in B2 sorted baselines. There remained 95 and 89 participants for Block 1 and Block 2 respectively. In total we kept 22,828 samples for data analysis. Comparing between errors, we observe smaller variances in B2 (mean = −1.62, SD = 11.40,CI [−1.79,−1.46]) than in B1 (mean = −2.13, SD = 19.34,CI [−2.30,−1.97]). Large variances in B1 are plausible as we let participants judge different charts for the same condition and there can be large individual differences between participants in empirical studies. We first tested the hypothesized curve by modeling relationship between error and target bar rank. We applied the 1.5 × IQR rule in each B1 condition to remove outliers. 10,863 out of 11,414 samples remained. We applied two regression models: a polynomial regression model and Locally Weighted Regression (LOESS) [27]. For the polynomial regression model, we chose a cubic fitting function as the simplest function capable of modeling our hypothesized relationship. By contrast, LOESS is a non-parametric regression method that automatically finds the curve that best describes the relationship between independent and dependent variables without the need to specify the fitting function."
-    }, {
-      "page": 5,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.8980712890625,
-        "y1": 478.6651916503906,
-        "y2": 688.41796875
-      },
-      "text": "To derive prediction models, we averaged all the repeated measurements for the same condition (124 conditions) instead of using the 10,863 original samples. While models derived from different #regression samples have different R2, their coefficients and the ANOVA test results are identical. Thus, we reported the model derived from 124 averaged samples as it introduces less uncertainty in the prediction. After applying stepwise model selection, we derive a cubic model with the lowest AIC (denoted as Model 1). Fig. 5 illustrates the fitting line and prediction intervals (i.e., 95% CI and 95% PI) of Model 1, fitting results from LOESS and regression samples. LOESS results (Residual Standard Error is 11.07) are consistent with the hypothesized curvilinear relationship between error and target bar rank. The results from the cubic model and LOESS are identical. All predictors in Model 1 are significant, revealing their associations with the dependent variable. The curvilinear relationship can be expressed as:"
-    }, {
-      "page": 5,
-      "region": {
-        "x1": 324.3429870605469,
-        "x2": 558.2017822265625,
-        "y1": 700.5904541015625,
-        "y2": 709.7639770507812
-      },
-      "text": "Error = 6.79 − 0.00735 × Rank2 + 0.0000640 × Rank3 (3)"
-    }, {
-      "page": 5,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 232 Page 6"
-    }, {
-      "page": 6,
-      "region": {
-        "x1": 53.569000244140625,
-        "x2": 301.80645751953125,
-        "y1": 322.1953125,
-        "y2": 377.1000061035156
-      },
-      "text": "However, thismodel does not yield a goodmodel fit, F (2, 121) = 11.51,p = 2.66e-5, with adjusted R2 to be 0.14 and AIC to be 957.74. Even though the curvilinear relationship we see in Fig. 5 follows our hypothesis, only using rank to account for estimation errors is insufficient."
-    }, {
-      "page": 6,
-      "region": {
-        "x1": 53.43000030517578,
-        "x2": 295.7378234863281,
-        "y1": 382.5391845703125,
-        "y2": 711.844970703125
-      },
-      "text": "To investigate the potential influence of other data characteristics, we plotted error means and CIs for each target bar (keep all the raw samples to avoid biases in CIs) as shown in Fig. 6. The pattern varies across datasets. For charts N = 13 and 32, there is the curvilinear relationship that we hypothesized. In the other charts, however, we only see large slopes or other curvilinear relations. In the two charts N = 13 and 32, x-intercepts are very close to 50, but the other four charts do not show similar patterns. We cannot confirm the hypothesis about the effects from number of data items with these graphical presentations in that the plots differ vastly. We further hypothesized that besides target bar rank and number of data items, other data characteristics might also influence the accuracy of rank estimation tasks. We thus added Coefficient of Variation (CV), skewness, kurtosis and the p-value in Shapiro-Wilk test [34] (a preferred method to test whether the dataset is drawn from normal distribution [43]) of each dataset to the model to see whether these additions can further explain the errors we see. After stepwise model selection, we derive a new multiple cubic regression model denoted as Model 2. As shown in Tab. 2, p-values for each predictor in Model 2 are statistically significant, meaning that changes in true target bar ranks, number of data items, skewness, kurtosis and the interaction between target bar rank and number of data items are related to the changes in the estimation error. Model 2 yielded a good model fit on the same 124 samples, F (6, 117) = 48.62,p < 2.2e-16, with adjusted R2 to be 0.70 and AIC to be 832.22."
-    }, {
-      "page": 6,
-      "region": {
-        "x1": 317.5870056152344,
-        "x2": 559.890625,
-        "y1": 514.3721923828125,
-        "y2": 640.4400024414062
-      },
-      "text": "Comparing between the two models, we find that Model 2 is superior to Model 1. Adjusted R2 increases from Model 1 to Model 2 (Adj .R2Fit1 = 0.14,Adj .R2Fit2 = 0.70) while AIC drops (AICFit1 = 957.74,AICFit2 = 832.22), which validates that number of data items, skewness, kurtosis and the interaction between rank and number of data items are explaining a large and unique proportion of variances that target bar rank related terms cannot. Adding rank related terms as the last additions results in an increase in adjusted R2 (from 0.61 to 0.70) and a decrease in the AIC score (from 862.08 to 832.22), which shows the contribution from true target rank."
-    }, {
-      "page": 6,
-      "region": {
-        "x1": 317.5870056152344,
-        "x2": 559.3048706054688,
-        "y1": 645.8792114257812,
-        "y2": 712.1710205078125
-      },
-      "text": "In Fig. 7, we plot the predictions of Model 2 together with the data we trained it with. As reported in Tab. 2, there is a negative correlation between error and number of data items, which means a larger number of bars in the chart will bring more underestimation in rank. However, in Fig. 7, the chart of 20 data items seems to be an outlier as it does lie on top, not"
-    }, {
-      "page": 6,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 232 Page 7"
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 53.31999969482422,
-        "x2": 295.59283447265625,
-        "y1": 322.7891845703125,
-        "y2": 424.9469909667969
-      },
-      "text": "following this negative relationship.When looking into more details, we find that this is related to the predictor skewness. Skewness has a large negative coefficient -23.86 and the chart N = 20 has the smallest skewness score -0.62 (mean = 0.17, SD = 0.60) among all the datasets. Thus, we see the largest amount of overestimation in this chart, which further indicates the large influence from other data characteristics. We will leave a full and systematic characterization of the influence from such data-inherent factors to future work."
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 53.43000030517578,
-        "x2": 295.74102783203125,
-        "y1": 430.3861999511719,
-        "y2": 652.094970703125
-      },
-      "text": "In addition, Model 2 satisfies the assumptions on both the curvilinear relationship between predictors and dependent variables and the independence of predictors. Stepwisemodel selection helps us guard against multicollinearity. Model 2 also satisfies other Ordinal Least Square (OLS) assumptions with residuals (i.e., vertical distances between observed values and fitted values) randomly scattered around zero, which means there is no heteroscedasticity. We performed out-ofsample testing onModel 2 with the same 6 datasets from pilot study 1 and adjusted R2 is 0.81. In out-of-sample testing with the 9 datasets not leveraged for deriving Model 2, adjusted R2 averages 0.87 (SD = 0.16). We also test against overfitting. Observations per term in Model 2 are 20.67, which is sufficient (rule of thumb: 10-15 observations per term) in multiple linear regressions (including polynomial terms and interactions). The predicted R2 for Model 2 is 0.68, indicating only 2% (70% - 68%) of variances is explained by too many factors or random correlations. As predicted R2 is close to adjusted R2, we know that our model is not severely overfitting."
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 295.5885925292969,
-        "y1": 657.5341796875,
-        "y2": 711.8709716796875
-      },
-      "text": "For B2 sorted baseline, we applied the same fitting function as that for Model 2 (see predictions in Fig. 8). Adjusted R2 for B2 equals 0.48 with only the interaction between target bar rank and number of data items to be non-significant. Compared with B1, there is less data-inherent effects in B2."
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 558.3969116210938,
-        "y1": 321.9252014160156,
-        "y2": 376.2619934082031
-      },
-      "text": "We conclude that there are different data-inherent factors that influence rank estimation tasks. We can build a rough model based on our data as a means to filter out noise in our investigations of neighborhood effects. Yet, further work is needed to clearly investigate these data-inherent effects."
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 317.5870056152344,
-        "x2": 559.8944702148438,
-        "y1": 391.63885498046875,
-        "y2": 711.8880004882812
-      },
-      "text": "Study 3 After accounting for data-inherent effects, we conducted a new study to validate the effect from neighborhoods. Hypothesis:We hypothesized that neighborhood effects still exist after offsetting the influence from data-inherent effects. We hoped to explain the difference between two neighborhood conditions by a new linear predictor: neighborhood rank (100 for the highest vs. 1 for the lowest) and anticipated its coefficient to be negative. Setup: Similar to pilot study 1, we generated two neighborhood conditions (i.e., the highest and the lowest) on randomly ordered bar charts. Target bar ranks were chosen to be 30, 40, 50, 60, 70, 80 in the 6 datasets we used in study 2. In total, there were 9 training tasks, 72 main study tasks, and five quality control tasks in the study. Task order was randomized. We increased the number of target bar ranks to 6 for eliminating potential learning effects. 283 MTurk workers were recruited and the study lasted about 5 minutes. Results: 200 participants remained in the sample after data cleaning. The results we saw in study 3were very similar to study 1. Plotting aggregated mean errors and CIs from a total of 14,400 samples, there is no overlap between the highest and the lowest neighborhood conditions (see Fig. 9). Neighborhood effects show up at five out of six target bar rank levels. There is a substantial overlap between CIs of the two neighborhoods at target bar rank = 60. Looking into more details, we see neighborhood effects in 13 targets (in"
-    }, {
-      "page": 7,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 232 Page 8"
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 52.1150016784668,
-        "x2": 295.7415771484375,
-        "y1": 246.25921630859375,
-        "y2": 712.2529907226562
-      },
-      "text": "total 36) from 5 datasets while other two targets showed a reversed pattern corresponding to length assimilation in PLI. Next, we performed regression analysis over the 14,400 collected samples. First, we only use the linear predictor neighborhood rank to explain residuals. Results show that this predictor is significant (coefficient is estimated to be -1.34e-2, p = 3.15e-6) but it only accounts for a small percentage of all the variances in error (Adj .R2 = 1.44e-3). Further exploration shows that the target bar rank and other factors related to datasets are also associated with changes in residuals. Then we extended Model 2 by adding neighborhood rank as a new linear predictor to directly account for variances of error in study 3. After stepwise model selection, we derived Model 3 (F (7, 14392) = 1208,p < 2.2e-16,AIC = 121329.8,Adj .R2 = 0.37). As shown in Tab. 3, all predictors are significant, meaning that they are likely to be meaningful addition to the model. The coefficient of neighborhood rank is negative as hypothesized. A target bar being judged as at rank e.g., 60 in its highest neighborhood will be judged as at 61.32 in its lowest neighborhood. Adding neighborhood rank as the last predictor improves model fit (AIC drops by 24.8 and Adj.R2 increases by 0.001)1. Based on Model 3, we also sorted predictors according to their effect sizes using Cohen’s f2 (Large effect: 0.35; Medium: 0.15; Small: 0.02 [33]): skewness (0.42) > target bar rank3 (0.12) > N (0.021) > target bar rank2 (0.015) > kurtosis (0.010) > neighborhood rank (0.002). Unit increase (value +1.00) in skewness brings -25.00 in rank; unit increase in number of data items results in -0.57 while unit increase in kurtosis brings +7.69 in rank. This shows how each data characteristics influences the estimation error. The power analyses we conducted for each predictor in Model 2 and Model 3 revealed that all the power values exceeded 0.99. This means that the sample sizes are adequate to catch effect sizes for all predictors. Note that although Model 3 only explains 37% of all the variances, there is still a reliable relationship between the significant predictors and the dependent variable. Large interindividual differences and higher level cognitive tasks [5] 1We only compared models trained with the same regression samples."
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 317.70599365234375,
-        "x2": 559.89111328125,
-        "y1": 489.7272033691406,
-        "y2": 556.0189819335938
-      },
-      "text": "can be the underlying reasons for such unexplainable highvariability. Predicted R2 for Model 3 equals 0.3695, which is close to the adjusted R2, meaning that Model 3 is not overfitting. Both the predictions from Model 3 (see Fig. 10) and Cohen’s f2 suggest that compared to the data-inherent effects, the impact from neighborhoods is rather small."
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.8946533203125,
-        "y1": 561.4581909179688,
-        "y2": 591.885009765625
-      },
-      "text": "With all these analyses, we conclude that neighborhood effects exist but their effect size is small on the rank estimation tasks."
-    }],
-    "title": {
-      "page": 3,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 396.20440673828125,
-        "y1": 627.2538452148438,
-        "y2": 633.6799926757812
-      },
-      "text": "4 EXPERIMENT"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 8,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 559.8980712890625,
-        "y1": 621.8291625976562,
-        "y2": 712.031005859375
-      },
-      "text": "In this section, we discuss design implications from our results, limitations, and future work. Design implications: Random (alphabetical order as one typical case), and sorted orders are the two most commonly used approaches in bar charts. In study 2, we hypothesized that we would see a perceptual effect of data-inherent factors in random orders while see very little of this effect in sorted orders. This hypothesis is partially confirmed. We also"
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0009765625,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 232 Page 9"
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 53.43000030517578,
-        "x2": 295.7410583496094,
-        "y1": 96.09918975830078,
-        "y2": 210.21197509765625
-      },
-      "text": "see some data-inherent effects in sorted orders although the effect size (Adj .R2 = 0.48) is smaller than that in random orders (Adj .R2 = 0.70). Nevertheless, the sorted order is still the more accurate approach to convey rank-related information as the mean of all estimation errors is closer to zero with smaller variances. Besides, results suggest that—despite their existence—designers do not need to worry too much about neighborhood effects. Our findings show that a local neighborhood manipulation does not substantially influence the perceptual rank estimation tasks in bar charts."
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 53.43000030517578,
-        "x2": 295.1415100097656,
-        "y1": 215.65118408203125,
-        "y2": 544.9559936523438
-      },
-      "text": "To the best of our knowledge, no one else has investigated perceptions on rank estimation tasks so far. A surprising result was the large amount of biases that is introduced by data-inherent effects. Following Cleveland & McGill [5], we calculate the accuracy defined on estimation errors for our task, Accuracy = loд2(|estimated value − true value | + .125). The accuracy can exceed 4.0 (marked as a large log absolute error [5]) when the estimation error goes beyond 20 in rank. This means the accuracy can be rather low in our task. Considering the comparatively large effect size of data-inherent factors such as skewness, we encourage designers to provide additional clues if they would like to convey rank-related information precisely. Limitation:We understand neighborhood effects as an interplay between all bars instead of the influence only from neighboring bars. Although we hypothesized to see length contrast effect in our study (based on previous work [18, 29]), there is no reason to rule out length assimilation effect under other experimental settings. Confounding factors could come from the ‘shape’ in the baseline charts (e.g., influence from Gestalt symmetry and continuity laws [31, 41]) and target bar positions in the chart. In three out of five assimilation cases (from 5 different datasets where length contrast effect also showed up), we found that the top highest bar was just positioned at/very close to the border of the lowest neighborhood (study 1 screenshots #96 and #123, study 3 screenshot #58 in auxiliary material), which could be the confounding factor reversing the effect."
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 53.79800033569336,
-        "x2": 295.7410583496094,
-        "y1": 550.3961791992188,
-        "y2": 700.3740234375
-      },
-      "text": "Following previous work in quantifying perceptual biases in visualizations [40], we used multiple regression to quantify both the data-inherent and neighborhood effects. We simplify the models by neglecting potential interactions between predictors. From further analysis we found that these complex but currently excluded interactions (e.g., the interaction between target bar rank and skewness) also contributed to model fit and helped in explaining varying patterns between datasets (Fig. 6), which demonstrates the challenge and importance of using real datasets. Also, the relationship between estimation errors and target bar ranks is simplified by using a cubic fitting function and the inter-individual differences [3] are not taken into account in current models."
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 317.6059875488281,
-        "x2": 559.8978271484375,
-        "y1": 96.09918975830078,
-        "y2": 544.9559936523438
-      },
-      "text": "One of the differences from our work to others on bar chart perceptions is the one-second time limit for presenting charts. Cleveland & McGill pointed out that a substantial danger in graphical perceptual research is to perform judgments differently from the way people adopt in real life [5]. A possible solution is to have participants judge much more quickly than they do in real life in order to prevent them from performing higher level cognitive tasks other than basic graphical perceptual tasks. This time limit in our work helped in preventing precise counting on the bars, but it might also result in other confounds such as random judgements. Another difference is that we used several real datasets instead of simple, highly-controlled stimuli. Our goal in doing so was to bring this line of research closer to applied visualization design. As a consequence, however, our results also did not lead to a simple, clear-cut picture. We found that patterns varied between datasets, and even observed patterns contrary to our hypothesized effects. Moreover, one could argue that the observed neighborhood effects may only be exclusive to the six datasets in our study. Although including more datasets could decrease the consistency and accuracy of a study, we still believe our current results provide some actionable insights into the question of how to account for neighboring effects when designing bar chart visualizations. Future work: One direction of future work is to expand this work by including more datasets. As our study started from an exploratory end with no benchmark, we also suggest exploring other parameters, e.g., chart exposure time, neighborhood size, neighboring bar ranks, and measurements (e.g., sliders in our study). Although we found evidence of different rank estimation effects, we haven’t figured out any counter-acting methods yet. Find counter-acting methods might become even more complicated due to constraints from real world requirements such as efficiency (e.g., to find every target item quickly) and saliency (e.g., to notice a distinct target item quickly). We regard our work as a first step and hope it can inspire more work on investigating solutions for counter-acting perceptual biases."
-    }],
-    "title": {
-      "page": 8,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 393.0062255859375,
-        "y1": 606.974853515625,
-        "y2": 613.4010009765625
-      },
-      "text": "5 DISCUSSION"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 9,
-      "region": {
-        "x1": 317.47698974609375,
-        "x2": 559.8910522460938,
-        "y1": 574.3062133789062,
-        "y2": 664.5079956054688
-      },
-      "text": "We studied the perception of ordering in bar charts on rank estimation tasks. Our results showed that neighborhood effects can be observed yet their effect size is small. Accuracy on these rank estimation tasks is dominated by other effects stemming from the choice of target bars and certain dataset characteristics. We regard our work as a further piece to better understand the perception of the widely-used bar chart encoding."
-    }],
-    "title": {
-      "page": 9,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 399.6416320800781,
-        "y1": 559.4518432617188,
-        "y2": 565.8779907226562
-      },
-      "text": "6 CONCLUSION"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 9,
-      "region": {
-        "x1": 317.47698974609375,
-        "x2": 559.740966796875,
-        "y1": 693.8582153320312,
-        "y2": 712.3289794921875
-      },
-      "text": "We thank all study participants and anonymous reviewers. This work is partly funded by RGC GRF grant 16213317."
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.001953125,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 232 Page 10"
-    }],
-    "title": {
-      "page": 9,
-      "region": {
-        "x1": 317.9549865722656,
-        "x2": 441.30694580078125,
-        "y1": 679.0038452148438,
-        "y2": 685.4299926757812
-      },
-      "text": "7 ACKNOWLEDGEMENT"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 10,
-      "region": {
-        "x1": 57.50400161743164,
-        "x2": 295.3881530761719,
-        "y1": 110.3546371459961,
+        "x2": 558.5326538085938,
+        "y1": 87.45320129394531,
         "y2": 115.5670166015625
       },
-      "text": "[1] Hirotugu Akaike. 1974. A new look at the statistical model identifica-"
+      "text": "requires blending two objects into one in order to convey a new meaning. To our knowledge, none of the existing computational design tools have addressed this problem."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 317.65899658203125,
+        "x2": 559.7164306640625,
+        "y1": 120.33021545410156,
+        "y2": 290.90899658203125
+      },
+      "text": "Although these tools can be fully automatic, some of the most useful tools are interactive and allow users to explore and guide the process. We take much inspiration from Side Views [55], an application that allows users to preview the efect of various image editing menu options, like those in Photoshop. By providing previews, users are able to recognize rather than recall the right tool to use. This also helps users adjust parameters of key properties and chain tools together to explore an even wider section of the search space. In VisiFit, we also take the interactive approach to computational design. Like Side Views, VisiFit allows users to preview and adjust tools, as well as chain them together. However, VisiFit is not just a tool for exploration - it is targeted at achieving a specifc goal; multiple tools are chained together in a pipeline that explores each of the three key visual properties needed to complete a blend. This allows the user to explore the design space and iterate in a structured fashion towards their goal."
+    }],
+    "title": {
+      "page": 2,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 293.7218017578125,
+        "y1": 500.4960632324219,
+        "y2": 507.34698486328125
+      },
+      "text": "2.3 Computational Approaches to Design Tools"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 2,
+      "region": {
+        "x1": 317.65899658203125,
+        "x2": 559.721435546875,
+        "y1": 328.5492248535156,
+        "y2": 521.0460205078125
+      },
+      "text": "Visual blends are an advanced graphic design technique where two objects are blended into one to convey a message symbolically. They represent a canonical and very challenging design problem [3] because the two objects must be blended into one object, yet still remain individually identifable so the viewer can tell what objects were blended. When asked to defne design, Charles Eames once said, “Design is a plan for arranging elements to accomplish a particular purpose”. [42] In a visual blend, the objects to blend are the elements, the way they overlap is their arrangement, and the particular purpose is the seamless blend of the objects to convey a message. Because they are a difcult design challenge, visual blends are studied by several diverse felds. In cognitive science, researchers study how creativity emerges from conceptual blending [43]. In visual communication, researcher study how visual blends convey meaning through through context and implicature rather than through explicit language [15, 16, 44, 58]. Creativity and cognition researchers study how computers might achieve creativity by creating visual blends [26]."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 316.9419860839844,
+        "x2": 559.7218017578125,
+        "y1": 525.8092041015625,
+        "y2": 707.3469848632812
+      },
+      "text": "An existing system called VisiBlends [9] helps novices with the frst step of the design process: creating a prototype. Figure 2 shows an illustration of the VisiBlends workfow to create a visual blend for the message “Visit New York this autumn”. The user must frst identify two abstract concepts to visually blend, for example, New York City and autumn. Next, the users must brainstorm simple, iconic objects associated with the concepts. From their list of associated objects, they must fnd images of those objects that can serve as symbols of the concept. For each image, users annotate the main shape of the object (i.e. whether it is a sphere, cylinder, box, circle, or rectangle) and whether the shape covers “all of the object” or “part of the object”. With the images and annotations, VisiBlends automatically searches over all pairs of objects to fnd two that have the same basic shape, but for one object the shape covers only “part of the object”. It then automatically synthesizes a prototype of the blend by cropping, scaling, positioning and rotating the objects to ft together. For example, in Figure 2 the acorn is a cylinder and"
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 53.57400131225586,
+        "x2": 294.2114562988281,
+        "y1": 550.0482177734375,
+        "y2": 621.9979858398438
+      },
+      "text": "the “part of” the Guggenheim is also a cylinder. Thus, the acorn is positioned onto the cylindrical part of the Guggenheim to produce a blend prototype where both the acorn and the Guggenheim are visible. Lastly, the user selects the best prototype based on the shape ft and the meaning implied by the blend. Once the user selects a prototype, they must complete the fnished design either on their own or by hiring a graphic artist."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.4259033203125,
+        "y1": 626.7601928710938,
+        "y2": 698.7100219726562
+      },
+      "text": "The reason VisiBlends matches objects on shape is based on the neuroscience of human visual object recognition. The human visual object recognition system is hierarchical in what features it uses to recognize an object [53]. 3D shape is the primary feature used by the brain to determine what an object is; after that, it uses secondary features like color, distinct edges and surface information [46]. By combining two objects that have the same shape but diferent"
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.2030639648438,
+        "y1": 550.0482177734375,
+        "y2": 578.159912109375
+      },
+      "text": "secondary details, the objects will appear blended into one, yet still individually identifable – which is one of the major challenges of creating a visual blend."
+    }],
+    "title": {
+      "page": 2,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 501.347900390625,
+        "y1": 314.195068359375,
+        "y2": 321.0459899902344
+      },
+      "text": "3 BACKGROUND: VISUAL BLENDS"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 3,
+      "region": {
+        "x1": 317.6860046386719,
+        "x2": 558.4349975585938,
+        "y1": 621.1171875,
+        "y2": 660.18896484375
+      },
+      "text": "To explore approaches to iteration we conducted three preliminary investigations that informed the three design principles we propose for improving blends. We tie it all together into a general technique for structuring the iterative improvement of blends."
+    }],
+    "title": {
+      "page": 3,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 522.5006713867188,
+        "y1": 593.8120727539062,
+        "y2": 613.612060546875
+      },
+      "text": "4 FORMATIVE STUDIES OF BLENDING ITERATION"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 3,
+      "region": {
+        "x1": 317.6409912109375,
+        "x2": 559.716796875,
+        "y1": 690.1931762695312,
+        "y2": 707.345947265625
+      },
+      "text": "Advances in deep learning have shown impressive results in manipulating images. An early and prominent result is deep style transfer"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 294.2811584472656,
+        "y1": 87.45320129394531,
+        "y2": 148.4429931640625
+      },
+      "text": "[19] which trains a model on a visual style, such as Van Gogh’s Starry Night, and applies that style on any image to make it look like Van Gogh painted it in the Starry Night style. This technique has the potential to automatically improve prototypes of visual blends by training on the style of one object and applying it to another."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.5574951171875,
+        "y1": 438.13824462890625,
+        "y2": 564.8820190429688
+      },
+      "text": "To explore the potential of deep style transfer, we took four blend prototypes from the VisiBlends test set, and applied deep style transfer to them. For each pair of images in the blend, we selected which object to learn the style of and which object to apply the style to. We used an implementation of style transfer from the popular Fast Style Transfer (FST) paper [19] which only requires a single image to learn style from and has impressive results on transferring artistic style. We tried multiple combinations of hyperparameters (epochs, batch size, and iterations) until we saw no noticeable improvements in the results. We also tried input images of the same object and diferent ways of cropping it, in case the algorithm was sensitive to any particular image."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 53.52899932861328,
+        "x2": 295.43280029296875,
+        "y1": 569.6452026367188,
+        "y2": 707.3469848632812
+      },
+      "text": "Although the algorithm was able to extract styles and apply them, the results fell far short of the bar for creating convincing blends. Figure 3 shows Deep Style Transfer results (top) and blends made by artists we commissioned to produce high fdelity blends. To blend orange and baseball, FST frst learned the orange style. However, when it applied that learned style to the baseball, while it preserved the baseball’s characteristic red seams, it simply turned its white texture into a blotchy orange color that is not reminiscent of the fruit. In contrast, the artist who blended it used the texture and stem of the orange, in addition to the red seams of the baseball. This made both objects highly identifable. The computer used the overall look of the orange, but didn’t separately consider its elements as it mixed and matched the parts."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 558.4384765625,
+        "y1": 87.45320129394531,
+        "y2": 192.27899169921875
+      },
+      "text": "Similarly, for the apple and burger blend, the burger style applied to the apple just turned the apple brown, because the predominant color of a burger is brown. We also explored what would happen if we isolated part of the image by hand and applied the style only within that area. To mimic the artist, we isolated the burger bun and applied the apple style to it. The results are better, but still disappointing. Although the burger has the color and texture of an apple, it does not appear as blended as the artist’s version. The artist chose to mix the apple color and the bun color to give a sense of both objects in that element."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 558.2070922851562,
+        "y1": 197.0421905517578,
+        "y2": 290.90899658203125
+      },
+      "text": "We conclude that these existing style transfer results do not easily apply to visual blends. Blends are not just about applying high-level “style”, they require designers to consider the individual elements and how they might be ft together. If we trained a model on thousands of visual blends, we might be able to make progress on this problem, but we would need to create those thousands of visual blends, and even so, results would not be guaranteed. Instead we want to explore semi-automatic approaches that augment people’s ability to create blends."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.8057250976562,
+        "y1": 296.23504638671875,
+        "y2": 345.7040100097656
+      },
+      "text": "Design Principle 1. To help users achieve better results than fully automatic systems, structure the problem into subtasks and provide interactive tools specifc to each subtask. Fully automatic tools do not always achieve desired results and give you little control in how to fx them."
+    }],
+    "title": {
+      "page": 3,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 527.115234375,
+        "y1": 675.839111328125,
+        "y2": 682.6900024414062
+      },
+      "text": "4.1 Shortcomings of Deep Style Transfer"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 4,
+      "region": {
+        "x1": 317.6860046386719,
+        "x2": 559.7177734375,
+        "y1": 383.55322265625,
+        "y2": 455.50201416015625
+      },
+      "text": "To investigate potential structures for improving blends we analyzed how professional artists improved prototypes. We paid three professional artists to make visual blends based on 13 prototypes made by novices using VisiBlends. Of those 13 images, the artists told us that two did not need editing because the output from VisiBlends was a perfectly acceptable blend. However, the other 11 blends needed signifcant iteration."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 317.6860046386719,
+        "x2": 559.712646484375,
+        "y1": 460.2652282714844,
+        "y2": 597.968017578125
+      },
+      "text": "In our analysis of professionally improved blends, we looked for secondary visual dimensions experts used to improve visual blends. As discussed in the Background section, VisiBlends creates prototypes by matching two objects with the same basic shape. This is because neuroscience has discovered that the human visual object recognition system is hierarchical in what features it uses to recognize an object: the primary feature it uses to recognize and object is its basic 3D shape, and the secondary features it uses to recognize an object are color, distinct edges, and surface information. If prototypes of blends are made by blending the primary feature used to recognize and object, then it is logical to improve prototypes by blending the secondary features used to recognize an object."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.712646484375,
+        "y1": 602.731201171875,
+        "y2": 641.802978515625
+      },
+      "text": "We performed this visual dimension-based analysis on the 11 improved blends and found that three visual properties were suffcient to explain almost all of the improvements the artists made. Figure 4 shows examples of these dimensions:"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 333.92413330078125,
+        "x2": 558.2042236328125,
+        "y1": 656.9292602539062,
+        "y2": 707.3469848632812
+      },
+      "text": "• Color: The frst row shows the result of blending a red Lego brick and a diamond ring. The initial blend has good shape ft, but the artist improved the blend by adding the color of the diamond back into the Lego. This creates the illusion of diamond-like facets into the Lego."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 69.76065063476562,
+        "x2": 295.4241638183594,
+        "y1": 87.0676498413086,
+        "y2": 225.156005859375
+      },
+      "text": "• Silhouette: The second row shows the result of blending an oblong Lego brick and a popsicle. The initial blend is decent, but the artist improved it by applying the silhouette of the popsicle back into the Lego. (Additionally, they blended the color of the popsicle back into the Lego. This lends a textured, popsicle-like red color to the Lego, rather than a smooth plastic-like red.) • Internal Details: The third row shows the result of blending an orange with the head of a snowman. The initial blend is clearly a low-fdelity prototype — the idea is clear, but the details are unrefned. In addition to applying the color and silhouette of the snowman head, they extracted the facial details of the snowman head and placed them on the orange."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 294.2154235839844,
+        "y1": 235.29322814941406,
+        "y2": 285.32501220703125
+      },
+      "text": "Throughout all the examples, we found that artists used one or more of these three secondary visual dimensions to improve the prototypes. Note that these dimensions are largely independent of one another. Thus, we believe that the three visual dimensions can be used together to guide the process of improving prototypes."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.79667663574219,
+        "x2": 294.04998779296875,
+        "y1": 290.65106201171875,
+        "y2": 340.1189880371094
+      },
+      "text": "Design Principle 2. Identify secondary dimensions of the design space to structure the iteration process. For visual blends, the key secondary dimension are: color, silhouette and internal details. We refer to this method as using secondary design dimensions."
+    }],
+    "title": {
+      "page": 4,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 497.4205322265625,
+        "y1": 369.1990661621094,
+        "y2": 376.04998779296875
+      },
+      "text": "4.2 Analysis of professional blends"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 5,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 295.560791015625,
+        "y1": 372.38421630859375,
+        "y2": 499.12799072265625
+      },
+      "text": "The three visual dimensions provide high-level structure for improving blends, but we wanted to know if there were actionable activities associated with this structure that are useful when improving blends. To investigate this, we worked with two graphic artists in multiple one-hour sessions over a period of three weeks to observe and probe their process. Both designers worked in Photoshop and had created numerous print ads although neither had made visual blends before. The goal of these sessions was to introduce them to the secondary visual dimensions and to see a) if they found them useful to structure their process, b) what actions they took to improve the blends based on these dimensions, and c) whether novices would be able to replicate their success."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 295.560791015625,
+        "y1": 503.8912353515625,
+        "y2": 608.7169799804688
+      },
+      "text": "To familiarize the artists with the concept of visual blends, we showed them examples of professionally made blends and asked them to recreate two of them in Photoshop. They found the task challenging, but through trial and error they were ultimately satisfed with their results. Next, we introduced them to the principles of blending based on color, silhouette and details. We discussed with them how we thought those principles could have been used to create the blends. Then we gave the artists prototypes of blends and asked them to improve them, referencing the visual dimensions when applicable."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.59199905395508,
+        "x2": 295.55877685546875,
+        "y1": 613.480224609375,
+        "y2": 707.3469848632812
+      },
+      "text": "The concepts of color, silhouette, and internal details were intuitive to the artists, and they readily used them to improve the blends. Blending color was a familiar idea to them, and it was very easy for them to do in Photoshop. An efective tool one artist used for blending was the \"Multiply\" feature, which preserved both the color and the texture of each object, as seen in the top row of Figure 4. Both artists were surprised at how efectively silhouettes could be used in blends. They tried using the concept of silhouette blending in blends such as the middle row of Figure 4 and were pleased"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 559.7145385742188,
+        "y1": 87.45320129394531,
+        "y2": 148.4429931640625
+      },
+      "text": "with the results. The idea of extracting and reapplying details was natural to them, as they had employed analogous features in Photoshop (i.e. magic wand) to manipulate details before. However, even with industry tools, extraction was often tedious. In general, both designers thought that if they worked on the basis of these visual dimensions, they could recreate any visual blend."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 559.7124633789062,
+        "y1": 153.20619201660156,
+        "y2": 236.114990234375
+      },
+      "text": "The artists both note that there were additional techniques they would use to produce and even higher fdelity blends. One artist mentioned the addition or removal of shadows. The other mentioned making a background that would complement the blend. However, when restricted to these three visual dimensions, they could produce a second iteration with substantially reduced seams and enhanced aesthetic quality. If they were producing a pixelperfect print ad, they would want to do a third iteration."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 317.9549560546875,
+        "x2": 559.7135620117188,
+        "y1": 240.87721252441406,
+        "y2": 466.25201416015625
+      },
+      "text": "As we observed the artists using Photoshop to execute their improvements, we noticed two parts of their process that novice designers would struggle to replicate. First, almost all of the tools the artists used in Photoshop are not available in the typical applications novices use to quickly edit images. The simple flters, cropping, and movement aforded by Instagram, presentation software, and Mac Preview aren’t enough to improve blends. Even simple color changing operations like \"Multiply\" are not available in most enduser tools. This is probably because most end-user tools focus on operations that can be applied to one image at a time. For blending, operations have to apply to two objects. Second, these tools often require multiple steps and tedious low-level manipulation. Applying the silhouette from one object to another is a process with multiple steps including positioning, object extraction, appropriate layer composition, and edge cleanup. Extracting details like the snowman face are tedious, even with the magic wand tool, which largely operates based on pixel color similarity. Instead of making users think in pixels, we want to provide higher-level abstractions, such as the separation of foreground from background or the separation of details from a base. To create operations that novices can use, we need to provide tools at a higher-level of abstraction than pixels."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 317.9549255371094,
+        "x2": 559.8056640625,
+        "y1": 471.57806396484375,
+        "y2": 542.9639892578125
+      },
+      "text": "Design Principle 3. Provide novices with high-level tools related to the secondary visual dimensions that can preview results without requiring expert knowledge or tedious, lowlevel manipulation. In VisiFit, these tools include (1) extracting and applying silhouettes, (2) blending colors between two objects, and (3) extracting and replacing internal details from one object to another."
+    }],
+    "title": {
+      "page": 5,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 234.08177185058594,
+        "y1": 358.03106689453125,
+        "y2": 364.8819885253906
+      },
+      "text": "4.3 Co-Design with Graphic Artists"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 5,
+      "region": {
+        "x1": 317.6860046386719,
+        "x2": 559.187255859375,
+        "y1": 580.6041870117188,
+        "y2": 707.3469848632812
+      },
+      "text": "To help novices iteratively improve visual blends, we created a system called VisiFit that leverages computational tools to help users easily extract and combine visual properties of each image into a blend. First the user improves the cropping of each image, then improves the three secondary visual dimensions one at a time. At each step, they are presented with blend options that are automatically created by the system. However, they are free to interactively edit them. VisiFit is implemented as a Flask-based web application. It uses Numpy, OpenCV, and Tensorfow [1]. It builds on the Fabric.js canvas element to implement interactive image manipulation. Figure 5 shows the fve steps of the interface in the order that users see them."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 53.50199890136719,
+        "x2": 294.0454406738281,
+        "y1": 430.1502380371094,
+        "y2": 447.3039855957031
+      },
+      "text": "Inputs. VisiFit takes in two inputs that are both outputs from VisiBlends:"
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 64.70359802246094,
+        "x2": 295.0338134765625,
+        "y1": 461.5412292480469,
+        "y2": 577.3259887695312
+      },
+      "text": "(1) An ordered pair of images that have a shape match. We refer to them as Object A and Object B. In Object A, the shape covers the entire object. In Object B, the shape covers only the main body of the object, leaving out parts of the object outside the shape. When blending the images, Object A will be mapped onto Object B. (2) The positioning parameters to align Object A to the shape in Object B: x-scale factor, y-scale factor, angle of rotation, and center position. In the prototype of the blend, Object A is cropped, scaled, and positioned to ft into the shape of Object B."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 53.52899932861328,
+        "x2": 295.4251708984375,
+        "y1": 591.5621948242188,
+        "y2": 685.4299926757812
+      },
+      "text": "Step 1. Extract main shapes When the page loads, the system shows Object A and the results of automatic cropping. Object A is an image of a single object that we want removed from its background. This is a classic computer vision problem: segmenting the salient object in an image. Deep learning approaches have been reported to be a fast and accurate approach to automatic object extraction, so we use the Tensorfow implementation of a pre-trained model for deeply supervised salient object detection [24] and use the mask it provides to crop the images."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.5582275390625,
+        "y1": 690.1931762695312,
+        "y2": 707.3469848632812
+      },
+      "text": "The user sees the output for Object A and decides if it is acceptable. If it is, they select it and move to the next step. If not, they"
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.2054443359375,
+        "y1": 430.1502380371094,
+        "y2": 447.3039855957031
+      },
+      "text": "can decide to improve the object using Interactive Grabcut [47], a traditional computer vision algorithm for foreground extraction."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.2047729492188,
+        "y1": 452.0672302246094,
+        "y2": 513.0579833984375
+      },
+      "text": "For Object B, users must use Interactive Grabcut to extract the main shape from the image. Our provided interface for Interactive Grabcut has users frst draw a rectangle that encloses the entire object to extract. Then it produces a foreground extraction shown to users, who can mark extraneous pieces for removal by drawing on the image and running Grabcut again."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.6860046386719,
+        "x2": 559.7157592773438,
+        "y1": 517.8211669921875,
+        "y2": 589.77001953125
+      },
+      "text": "We used a classic interactive approach rather than a fully automatic approach because identifying parts or shapes within an image is very difcult. Traditional automatic approaches like Hough Transforms [13] do not work well on most images. Deep learning approaches are fairly good at segmenting objects within images [20] but are not yet capable enough at identifying the internal parts of objects."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.7171020507812,
+        "y1": 594.533203125,
+        "y2": 666.4830322265625
+      },
+      "text": "Step 2. Automatically align objects and adjust position. After both objects have had their main shape cropped, the system automatically produces a new prototype using simple afne transformations that move, scale, position, and rotate the objects. Users are free to adjust the alignment with direct manipulation on the Fabric.js HTML5 canvas, just as they would in any image editing application."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 317.9549560546875,
+        "x2": 559.185546875,
+        "y1": 671.2451782226562,
+        "y2": 699.35693359375
+      },
+      "text": "Step 3 Select a silhouette option. When blending two objects, the blend can use the silhouette of either Object A or B, because they are very close in shape and size. The system automatically"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 294.0461120605469,
+        "y1": 657.316162109375,
+        "y2": 685.4299926757812
+      },
+      "text": "creates two versions of the blend - one with the silhouette of Object A and one with the silhouette of Object B. The user must select which silhouette looks better."
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 294.0450134277344,
+        "y1": 690.1931762695312,
+        "y2": 707.3469848632812
+      },
+      "text": "To create the two silhouetted prototypes, the system uses the inverses of the cropped images from Step 1, layers one inverse on"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.2034301757812,
+        "y1": 87.45320129394531,
+        "y2": 115.5670166015625
+      },
+      "text": "top of the other original image, and positions them according to the coordinates in Step 2. This efectively creates a mask to produce the silhouette of the object."
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.3739013671875,
+        "y1": 120.33021545410156,
+        "y2": 159.4019775390625
+      },
+      "text": "Step 4. Select and adjust color blending options. Color is the next dimension to include in the blend. There are 5 options for color blending. The user can keep the original colors, or use one of four adjustable tools to blend on the colors of objects:"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 333.91766357421875,
+        "x2": 559.58349609375,
+        "y1": 167.38209533691406,
+        "y2": 436.9809875488281
+      },
+      "text": "• Transparency. We layer Object A onto Object B with 50% transparency to allow the colors of both objects to come through, although somewhat weakly. The user can adjust the transparency level with a slider. • Color Blend. We use K-means clustering to determine the most common color in the main shape of Object B. We then do an additive color blend with the color of Object A. This only works well when one object is very light - otherwise the color turns very dark. • Multiply colors. Multiplying two images is a way to combine colors in a way that preserves characteristics from both. Whereas transparency will always balance between the two, multiplication blends both of the colors (and their shadings) simultaneously. All three examples in Figure 4 use multiply to blend colors. For example, in the Lego and ring example, multiplying colors allowed the Lego to take on the red color and keep the shading of both objects so that the facets of the diamond and the bumps on the Lego can both be seen. • Replace color. We use K-means clustering to determine the most common colors in the main shapes of Object A and B. We replace Object A’s most common color with Object B’s most common color and provide users with an adjustable threshold controlling the degree of color replacement. They can also choose to blend the image with colors they select from an eye dropper tool (not shown in Figure 5)."
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 317.52447509765625,
+        "x2": 559.7147216796875,
+        "y1": 445.3502197265625,
+        "y2": 550.176025390625
+      },
+      "text": "Step 5. Select and re-apply internal details to blend. The last visual dimension to include is internal details - these are smaller objects or salient features that help identify the object. In the snowman and orange blend, the snowman is not as iconic without his facial details. Thus, we want to extract them from the original Object B and place them back on Object A. Again, we use Interactive Grabcut to allow the user to select and refne what details to extract. While we could have used other tools such as context-aware select, Grabcut worked well on our test set and was a method users had already become familiar with in earlier stages of the pipeline."
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 317.72625732421875,
+        "x2": 558.4320068359375,
+        "y1": 554.939208984375,
+        "y2": 659.7650146484375
+      },
+      "text": "VisiFit encourages users to follow a linear workfow through each of the tools. They can see efects previewed on their iteration and choose whether or not to include them. But users are not constrained to one path through the pipeline; they can take multiple paths and add an unrestricted number of edits to the secondary visual dimensions if they so choose. The linear workfow is the default because it allows users to start on a simple path through their structured iteration. At the end, the user selects the blend they are most satisfed with and the system fnishes by showing them the initial blend and the improved blend side by side."
+    }],
+    "title": {
+      "page": 5,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 417.17327880859375,
+        "y1": 566.2501220703125,
+        "y2": 573.1010131835938
+      },
+      "text": "5 VISIFIT SYSTEM"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 7,
+      "region": {
+        "x1": 317.6860046386719,
+        "x2": 558.4373779296875,
+        "y1": 690.1931762695312,
+        "y2": 707.345947265625
+      },
+      "text": "To evaluate whether VisiFit helps novice designers substantially improve prototypes of visual blends, we conducted a user study"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 295.4286804199219,
+        "y1": 87.45320129394531,
+        "y2": 115.5670166015625
+      },
+      "text": "where participants used VisiFit to improve 11 VisiBlends prototypes. Two experts then rated those blends to judge whether they were substantially improved over the initial prototype."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 53.7979736328125,
+        "x2": 295.0341491699219,
+        "y1": 120.33021545410156,
+        "y2": 203.23797607421875
+      },
+      "text": "To choose the prototypes to improve, we frst listed all the blends mentioned in VisiBlends and found 15 candidates. Of these, 2 were already good blends and did not need improvement. Two others had signifcant similarities to blends used in the analysis and formative studies, having blended upon the same or similar objects. Hence, they would not have been fair to use in the evaluation and were thus excluded. This left an evaluation set of 11 diverse blends for diferent objects."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.5574951171875,
+        "y1": 208.00123596191406,
+        "y2": 279.95001220703125
+      },
+      "text": "We recruited 11 novice designers (7 female, average age = 21.5) for a 1-hour long study who were paid $20 for their time. First, they were introduced to the concept of visual blends and shown examples of initial prototypes with their improved versions. Then, they had two blends to practice using the tools on. During this practice session, the experimenter answered questions, demonstrated features, and gave suggestions on how to use the tool."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.02984619140625,
+        "y1": 284.7132263183594,
+        "y2": 345.7040100097656
+      },
+      "text": "In the next 44 minutes, participants used the segmentation tools to extract the main objects from all 22 images (System Steps 1 and 2) and blend the pairs into 11 improved blends (System Steps 3, 4, and 5). They had two minutes for Steps 1 and 2 and another two minutes for Steps 3, 4 and 5, for a total of 4 minutes to create each blend. All results were saved by the system."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.56146240234375,
+        "y1": 350.46722412109375,
+        "y2": 378.5799865722656
+      },
+      "text": "After the data was collected, we paid two expert graphic designers $60 per hour to look at every iterated blend and answer two questions for each of them:"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 69.76065063476562,
+        "x2": 294.0455627441406,
+        "y1": 386.5600891113281,
+        "y2": 426.0220031738281
+      },
+      "text": "• Does the iterated blend present substantial improvement over the prototype? • Is the iterated blend of sufcient quality to post on social media?"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.4274597167969,
+        "y1": 434.3912353515625,
+        "y2": 517.2990112304688
+      },
+      "text": "The most important question to answer was the frst one: does the tool help with substantial improvements? Small faws in the execution were allowed, but the objects had to be seamlessly and aesthetically blended to count as an improvement. Our second question was how often these iterated blends were good enough for social media publication (i.e. a student club announcement post). Publication would mean that both objects were clearly identifable and blended with no pronounced faws."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 53.7979736328125,
+        "x2": 295.560791015625,
+        "y1": 522.0621948242188,
+        "y2": 626.8880004882812
+      },
+      "text": "Social media is much more forgiving than print publication. Print publications must be pixel-perfect, well-lit, and high defnition. To meet this bar, a graphic designer should still use a professional tool like Photoshop. However, on social media, the images are often smaller, lower resolution, published more frequently, and for a smaller audience (such as student clubs, classes or majors) - so perfection is not as important. Additionally, the prevalence of lowfdelity user-generated content like memes and self-shot videos lowers the expectation of precision on social media, placing the emphasis on the message."
+    }],
+    "title": {
+      "page": 7,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 403.77685546875,
+        "y1": 675.839111328125,
+        "y2": 682.6900024414062
+      },
+      "text": "6 EVALUATION"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 8,
+      "region": {
+        "x1": 53.59590148925781,
+        "x2": 295.5662841796875,
+        "y1": 657.316162109375,
+        "y2": 707.3397216796875
+      },
+      "text": "During the study, the 11 participants attempted to improve a total of 121 blends. Six data points were lost due to errors in the saving process, leaving 115 blends as data points. The judges were introduced to their task with examples of prototypes and their VisiFit-improved counterparts, like the pairs seen in Figure 4 (which were done by the"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 558.20068359375,
+        "y1": 87.45320129394531,
+        "y2": 126.5260009765625
+      },
+      "text": "authors with graphic design background). For calibration, judges were shown blends of varying quality, to demonstrate what was considered \"substantial improvement\" and what was considered \"suitable for publication on social media\"."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 317.62298583984375,
+        "x2": 559.7124633789062,
+        "y1": 131.28822326660156,
+        "y2": 258.031982421875
+      },
+      "text": "After studying the blends resulting from each participant, the judges answered our two questions for all VisiFit-improved blends. Both questions on \"improvement\" and \"suitability for publication\" were highly subjective; however, the raters had “fair agreement” on both questions. They agreed on “substantial improvement” 71.3% of the time (κ = .23) and agreed on “suitability for publication” 73.9% of the time (κ = .37). In particular, there was one blend which they disagreed on every time. Both raters had well-reasoned answers for their diferences and rather than forcing them to agree or introducing another rater, we split the diference and looked at the overall average rates of \"substantial improvement\" and \"suitability for publication\" to report the success of the tool."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.2071533203125,
+        "y1": 262.7952575683594,
+        "y2": 312.8269958496094
+      },
+      "text": "Overall, people using the tool made substantial improvements to the blend 76.1% of the time. Additionally, those blends were of publishable quality 70.4% of the time. These metrics demonstrate how VisiFit enables novices to quickly and easily complete a difcult iteration task."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 317.6860046386719,
+        "x2": 558.4320678710938,
+        "y1": 317.5902404785156,
+        "y2": 400.49798583984375
+      },
+      "text": "Judges reported that blends were substantially improved when the parts of the objects looked correctly layered. This efect was achieved in a number of ways through VisiFit: when the silhouette tool was used to mask one object and produce clean borders, when the internal detail extraction tool foregrounded important parts of the bottom image, (i.e. the acorn hat detail in the Guggenheim-acorn blend of Figure 1), or when the colors were blended compositely (i.e. the corn and McDonald’s blend in Figure 6.)"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.7205810546875,
+        "y1": 405.26123046875,
+        "y2": 477.2099914550781
+      },
+      "text": "For 10 of the 11 images, it was possible for at least one of the 11 participants to create an improved and publishable blend. There are several possible reasons why there was variability in user performance. One was subjectivity; some novice users were able to create high quality blends but chose versions that the judges did not rate as improvements. Judging one’s own work is hard, because creators grow attached to their work and struggle to see it objectively."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 317.65899658203125,
+        "x2": 559.7203979492188,
+        "y1": 481.9732360839844,
+        "y2": 630.635009765625
+      },
+      "text": "A second and more important reason is the limitation of some of the tools. Cropping entire objects, applying a silhouette, and all four methods of blending colors worked as expected every time. However, the Interactive Grabcut tools for extracting parts of objects was sometimes problematic, since some details were too small to extract properly. While Grabcut is fast and easy, it does not have pixel-level precision. It often helped to improve the blend, but it sometimes weakened their suitability for publication. The VisiFit-improved blend could still be used as a guide when creating a pixel-perfect version in a professional image editing tool. For example, for the blend of the orange slice and the barbeque grill featured in Figure 1, the idea of the blend is clear and improved, but the execution had enough faws for it to be not suitable for publication."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.3700561523438,
+        "y1": 635.398193359375,
+        "y2": 685.4299926757812
+      },
+      "text": "There was one prototype that no user was able to improve. The burger and light bulb blend (Figure 6) left a seam between the burger and the light bulb every time. This example points out a limitation of VisiFit that we could fx this by implementing a fll tool to reduce the appearance of seams."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 558.2020874023438,
+        "y1": 690.1931762695312,
+        "y2": 707.3469848632812
+      },
+      "text": "Overall, given the speed of the tool, participants thought that the results were well worth the efort they put into it [8]. During"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 294.0461120605469,
+        "y1": 87.45320129394531,
+        "y2": 104.60797119140625
+      },
+      "text": "the study, several participants mentioned that the tool was fast and produced results they would not otherwise know how to achieve."
+    }],
+    "title": {
+      "page": 8,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 115.01986694335938,
+        "y1": 642.9620971679688,
+        "y2": 649.81298828125
+      },
+      "text": "6.1 Results"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 9,
+      "region": {
+        "x1": 53.46406555175781,
+        "x2": 295.5554504394531,
+        "y1": 146.73121643066406,
+        "y2": 240.5980224609375
+      },
+      "text": "The two main contributions of this paper are 1) the method of using secondary design dimensions to structure the iterative improvement process and 2) the VisiFit system that helps novices improve blends with a pipeline of computational tools. In this discussion we want to explore how the computational tools could generalize to the needs of expert designers and how secondary design dimensions can be applied to domains beyond visual blends. Additionally, we discuss the intellectual and engineering challenges that come with applying these ideas to new domains."
+    }],
+    "title": {
+      "page": 9,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 134.54714965820312,
+        "y1": 132.37710571289062,
+        "y2": 139.22802734375
+      },
+      "text": "7 DISCUSSION"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 9,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 294.27508544921875,
+        "y1": 295.6722412109375,
+        "y2": 433.375
+      },
+      "text": "Although VisiFit is meant to help novices, we co-designed it with 2 graphic artists who were eager to use it as a rapid prototyping tool despite their prior domain knowledge. Thus, we wanted to see what impressions experts would have on the system and showed the tool to two professional designers (D1 and D2). D1 is a media communications director at a medium-sized organization with over twenty years of experience. D2 is a freelance graphic designer with over 10 years of experience. Both expressed a need to efciently create novel and eye-catching visuals for social media that are beyond the quality produced by tools such as Canva. Both designers had used visual blends in their professional work before, but did not know the name for the concept and did not have a strategy for producing them."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 53.79798889160156,
+        "x2": 295.5582275390625,
+        "y1": 438.13824462890625,
+        "y2": 586.7999877929688
+      },
+      "text": "We presented them with the same blend examples from the user study and asked them to perform the same task: use the tool to iterate on the blend prototypes and create seamless and aesthetic blends. Both were impressed by how quickly and easily the blending tools helped them explore the design space. All of the basic operations were familiar to them from their experience with Photoshop, but they expressed surprise and relief to see results generated so quickly. D2 said “Sometimes I spend hours pixel pushing just to test an idea. I love being able to test an idea quickly.”. D1 likened it to flter previews on Instagram which she loves to use to make photos more interesting on social media. Even for professional designers who are adept at using pixel-perfect tools, there is a need to provide high-level tools that can preview results without low-level manipulation (Design Principle 3)."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 53.46699905395508,
+        "x2": 295.55694580078125,
+        "y1": 591.5621948242188,
+        "y2": 707.3469848632812
+      },
+      "text": "When using VisiFit, both made blend improvements in a manner diferent from novice designers. D1 especially liked to push the boundaries, to try extracting and blending the less obvious options within the secondary design dimensions. D1 almost always started by looking at the inputs and formulating a plan. However, as D1 proceeded through the workfow, she found better and more surprising ideas from the fare and focus nature of VisiFit. The system helped D1 explore the design space while keeping multiple threads open at a time. From this interaction, we believe that structuring blend improvement around secondary dimensions has value even for professional designers (Design Principle 2)."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 316.445556640625,
+        "x2": 559.7144165039062,
+        "y1": 87.45320129394531,
+        "y2": 225.156005859375
+      },
+      "text": "D2 was impressed by the way the computational tools worked and particularly so for object extraction. He found Interactive Grabcut impressive in how efective it was on shape extraction but unimpressive in how unsuccessful it could be when selecting internal details. After multiple attempts with the tool, he noted that he would have preferred either better precision during user interaction or a better automatic approach. This raised an important limitation - VisiFit only provided one tool to extract internal details. Having a back-up tool (such as shaped-based cropping) could have relieved user frustration. This reinforces Design Principle 1 - that automatic tools don’t always achieve desired results - and stresses that the system must provide multiple interactive tools specifc for each subtask so that users have control over the creative process."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 317.9549560546875,
+        "x2": 558.203369140625,
+        "y1": 229.91920471191406,
+        "y2": 290.90899658203125
+      },
+      "text": "Overall, we believe that computational design tools for structured iteration can be as useful to professional designers as they are to novices. Both groups need to explore design spaces quickly and easily. Although experts have the ability to do this with existing tools, a pipeline of computational design tools could make this more efcient and attainable for designers of all experience levels."
+    }],
+    "title": {
+      "page": 9,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 267.8673095703125,
+        "y1": 268.3670959472656,
+        "y2": 288.1671142578125
+      },
+      "text": "7.1 Professional designers’ impressions of VisiFit"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 9,
+      "region": {
+        "x1": 317.5249938964844,
+        "x2": 559.1901245117188,
+        "y1": 321.32623291015625,
+        "y2": 382.3160095214844
+      },
+      "text": "While the VisiFit system is tailored to the domain of visual blends, we believe the method of editing secondary design dimensions can be used to help novices structure the improvement process for other blending domains. We discuss three domains that it could be generalized to: animated visual blends, fashion design, and furniture design."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 317.9549560546875,
+        "x2": 558.20703125,
+        "y1": 394.3022155761719,
+        "y2": 488.16900634765625
+      },
+      "text": "7.2.1 Animated Visual Blends. One way to further enhance visual blends is to add motion to them. Although it would be easy to add arbitrary motion, it would be ideal if the motion complemented the message. The top panel of Figure 7 shows a visual blend for condom and action that implies the message “condoms are for action.” (The clapperboard is a symbol of action.) This blend is already efective at conveying the message, but to enhance it we could add motion from the clapperboard onto the condom wrapper. We call this type of motion graphic an animated blend."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 317.9549560546875,
+        "x2": 559.7158203125,
+        "y1": 492.9322204589844,
+        "y2": 608.7169799804688
+      },
+      "text": "We propose that animated blends can be created by using secondary dimensions of motion to iterate on static blends. To start, we need a reference video that shows typical motion made by one of the objects in the blend. To structure the iteration, we can extract and transfer dimensions of motion from this reference video. The important secondary design dimensions of motion include: the pattern of motion (circular motion, path segments, appearance/disappearance, expansion/contraction, or gradient changes), the speed of motion, acceleration, and timing of the motion. All or some of these dimensions of motion can be applied to create a seamless and aesthetic animated blend."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 317.95489501953125,
+        "x2": 559.7124633789062,
+        "y1": 613.480224609375,
+        "y2": 707.3469848632812
+      },
+      "text": "Figure 7 shows three animated blends. For each one, it shows the static visual blend, the reference video of one or both objects in motion, and how these secondary dimensions of motion can be added to the visual blend. For the condom and action animation, the pattern of motion of the clapperboard (up-and-down path segments) can be added to the blend to reinforce the message of “action”. For the astronaut and food animation, the speed and arc of motion that the real astronaut travels with can be applied to the static eggastronaut blend. For the tea and sunrise animation, two reference"
     }, {
       "page": 10,
       "region": {
-        "x1": 57.503997802734375,
-        "x2": 295.3914794921875,
-        "y1": 120.31661224365234,
-        "y2": 135.49200439453125
+        "x1": 53.46699905395508,
+        "x2": 295.4256591796875,
+        "y1": 408.47222900390625,
+        "y2": 469.4630126953125
       },
-      "text": "tion. IEEE transactions on automatic control 19, 6 (1974), 716–723. [2] Thom Baguley. 2012. Calculating and graphing within-subject confi-"
+      "text": "videos can be applied to the blend. First, the pattern of motion of the tea bag (up-and-down path segments) can be applied to the sun. Second, the pattern of motion of the sunrise (gradient change) can be applied to the sky. Although transferring one type of motion would be sufcient, adding two types of motion further enhances the visual appeal and meaning of the blend."
     }, {
       "page": 10,
       "region": {
-        "x1": 53.797996520996094,
-        "x2": 295.3916320800781,
-        "y1": 140.2426300048828,
-        "y2": 711.4439697265625
+        "x1": 53.79800033569336,
+        "x2": 294.2783508300781,
+        "y1": 474.2262268066406,
+        "y2": 524.2569580078125
       },
-      "text": "dence intervals for ANOVA. Behavior research methods 44, 1 (2012), 158–175. [3] Daniel J Bauer. 2011. Evaluating individual differences in psychological processes. Current Directions in Psychological Science 20, 2 (2011), 115– 118. [4] Richard W Brislin. 1974. The Ponzo illusion: Additional cues, age, orientation, and culture. Journal of Cross-cultural Psychology 5, 2 (1974), 139–161. [5] William S Cleveland and Robert McGill. 1984. Graphical perception: Theory, experimentation, and application to the development of graphical methods. Journal of the American statistical association 79, 387 (1984), 531–554. [6] Denis Cousineau. 2017. Varieties of Confidence Intervals. Advances in cognitive psychology 13, 2 (2017), 140. [7] Frederick E Croxton and Harold Stein. 1932. Graphic comparisons by bars, squares, circles, and cubes. J. Amer. Statist. Assoc. 27, 177 (1932), 54–60. [8] Geoff Cumming. 2014. The new statistics: Why and how. Psychological science 25, 1 (2014), 7–29. [9] Clarence E Davis. 2007. Regression to the mean. Wiley Encyclopedia of Clinical Trials (2007), 1–2. [10] Nicholas Epley and Thomas Gilovich. 2006. The anchoring-andadjustment heuristic: Why the adjustments are insufficient. Psychological science 17, 4 (2006), 311–318. [11] Volker H Franz, Manfred Fahle, Karl R Gegenfurtner, and Heinrich H Bülthoff. 2000. Effects of visual illusions on grasping: The ParallelLines Illusion. Perception 48 (2000), 50. [12] Patricia P Gilmartin. 1981. Influences of map context on circle perception. Annals of the Association of American Geographers 71, 2 (1981), 253–258. [13] JM Hampton, PG Moore, and Howard Thomas. 1973. Subjective probability and its measurement. Journal of the Royal Statistical Society. Series A (General) (1973), 21–42. [14] Lane Harrison, Drew Skau, Steven Franconeri, Aidong Lu, and Remco Chang. 2013. Influencing visual judgment through affective priming. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems. ACM, 2949–2958. [15] MJR Healy and H Goldstein. 1978. Regression to the mean. Annals of Human Biology 5, 3 (1978), 277–280. [16] Jeffrey Heer and Michael Bostock. 2010. Crowdsourcing graphical perception: using mechanical turk to assess visualization design. In Proceedings of the SIGCHI conference on human factors in computing systems. ACM, 203–212. [17] Jessica Hullman, Eytan Adar, and Priti Shah. 2011. The impact of social information on visual judgments. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems. ACM, 1461–1470. [18] Kevin Jordan and Peter W English. 1989. Simultaneous sampling and length contrast. Perception & Psychophysics 46, 6 (1989), 546–554. [19] Kevin Jordan and Diane J Schiano. 1986. Serial processing and the parallel-lines illusion: Length contrast through relative spatial separation of contours. Perception & Psychophysics 40, 6 (1986), 384–390. [20] Kevin Jordan and John Uhlarik. 1985. Assimilation and contrast of perceived length depend on temporal factors. Perception & psychophysics 37, 5 (1985), 447–454. [21] Charles H Judd. 1905. The Muller-Lyer illusion. The Psychological Review: Monograph Supplements (1905). [22] Young-Ho Kim, Jae Ho Jeon, Eun Kyoung Choe, Bongshin Lee, KwonHyun Kim, and Jinwook Seo. 2016. TimeAware: Leveraging framing"
+      "text": "Computational tools would be needed to extract and reapply the aforementioned dimensions of motion. Parameters for each dimension would become points of interactions for users. These tools could then be chained together into a pipeline similar to VisiFit to structure the iterative improvement of animated blends."
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 295.5646057128906,
+        "y1": 537.711181640625,
+        "y2": 598.7009887695312
+      },
+      "text": "7.2.2 Fashion and Furniture Design. In furniture and fashion design, one type of problem is to combine diferent styles to achieve a new purpose. One way to do this is arguably a type of blending - to borrow from the functional and stylistic elements of both styles to create a new hybrid style. Two examples of hybrid styles include athleisure clothing and “updated classics” in furniture design."
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 69.76065063476562,
+        "x2": 295.564697265625,
+        "y1": 608.0888061523438,
+        "y2": 680.4219970703125
+      },
+      "text": "• Athleisure is a clothing style that takes the fabrics and styles of athletic clothing and adapts them to non-athletic environments such as work, school, or other social environments [23, 48]. • Updated classics is a style of furniture design that takes the rich feel of classic furniture and adapts it to modern and utility-driven needs of the 21st century."
     }, {
       "page": 10,
       "region": {
         "x1": 317.9549865722656,
-        "x2": 559.5473022460938,
-        "y1": 97.4026107788086,
-        "y2": 710.3359985351562
+        "x2": 559.191162109375,
+        "y1": 408.47222900390625,
+        "y2": 600.969970703125
       },
-      "text": "effects to enhance personal productivity. In Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems. ACM, 272–283. [23] Alexander Klippel, Frank Hardisty, and Chris Weaver. 2009. Star plots: How shape characteristics influence classification tasks. Cartography and Geographic Information Science 36, 2 (2009), 149–163. [24] Yi-Na Li, Kang Zhang, and Dong-Jin Li. 2017. How dimensional and semantic attributes of visual sign influence relative value estimation. ACM Transactions on Applied Perception (TAP) 14, 3 (2017), 18. [25] Michael EJ Masson and Geoffrey R Loftus. 2003. Using confidence intervals for graphically based data interpretation. Canadian Journal of Experimental Psychology/Revue canadienne de psychologie expérimentale 57, 3 (2003), 203. [26] Justin Matejka, Michael Glueck, Tovi Grossman, and George Fitzmaurice. 2016. The effect of visual appearance on the performance of continuous sliders and visual analogue scales. In Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems. ACM, 5421–5432. [27] Douglas C Montgomery, Elizabeth A Peck, and G Geoffrey Vining. 2012. Introduction to linear regression analysis. Vol. 821. John Wiley & Sons. [28] Nytimes.Com. 2018. The New York Times - Breaking News, World News & Multimedia. Retrieved June 15, 2018 from https://www. nytimes.com [29] David Peebles. 2004. Distortions of perceptual judgment in diagrammatic representations. In Proceedings of the Annual Meeting of the Cognitive Science Society, Vol. 26. [30] Alexander W Pressey and Nancy E Smith. 1986. The effects of location, orientation, and cumulation of boxes in the Baldwin illusion. Perception & Psychophysics 40, 5 (1986), 344–350. [31] Irvin Rock and Stephen Palmer. 1990. The legacy of Gestalt psychology. Scientific American 263, 6 (1990), 84–91. [32] Bahador Saket, Alex Endert, and Cagatay Demiralp. 2018. Task-Based Effectiveness of Basic Visualizations. IEEE Transactions on Visualization and Computer Graphics (2018). [33] Arielle S Selya, Jennifer S Rose, Lisa C Dierker, Donald Hedeker, and Robin J Mermelstein. 2012. A practical guide to calculating Cohen’s f2, a measure of local effect size, from PROC MIXED. Frontiers in psychology 3 (2012), 111. [34] Samuel Sanford Shapiro and Martin B Wilk. 1965. An analysis of variance test for normality (complete samples). Biometrika 52, 3/4 (1965), 591–611. [35] David Simkin and Reid Hastie. 1987. An information-processing analysis of graph perception. J. Amer. Statist. Assoc. 82, 398 (1987), 454–465. [36] Statista.Com. 2018. Statista - The portal for statistics. Retrieved Jun 15, 2018 from https://www.statista.com [37] Maureen Stone and Lyn Bartram. 2008. Alpha, contrast and the perception of visual metadata. In Color and Imaging Conference, Vol. 2008. Society for Imaging Science and Technology, 355–359. [38] Marc Streit and Nils Gehlenborg. 2014. Bar charts and box plots. Nature Methods 11, 2 (2014), 117–117. https://doi.org/10.1038/nmeth.2807 [39] Justin Talbot, Vidya Setlur, and Anushka Anand. 2014. Four experiments on the perception of bar charts. IEEE transactions on visualization and computer graphics 20, 12 (2014), 2152–2160. [40] Andre Calero Valdez, Martina Ziefle, and Michael Sedlmair. 2018. Priming and anchoring effects in visualization. IEEE transactions on visualization and computer graphics 24, 1 (2018), 584–594. [41] Colin Ware. 2012. Information visualization: perception for design. Elsevier. [42] Daniel J Weintraub. 1979. Ebbinghaus illusion: context, contour, and age influence the judged size of a circle amidst circles. Journal of Experimental Psychology: Human Perception and Performance 5, 2 (1979), 353."
+      "text": "identifed which two objects to blend, a tool would help users determine what secondary dimensions to extract and apply from each object. For example, a fashion designer could operate on the dimensions of material, silhouette (neckline, hemline, leg width, etc.), color/pattern, fabrication (seam placement, grain direction, etc.), and details (closures, stitching, etc.) When combining these dimensions to create a hybrid style such as athleisure, designers often use the stretchy material of athletic clothing, the details and colors of street clothing, and a mix of silhouettes found in the gym, street, or workplace. This combination of traits helps designers achieve both comfort and socially appropriate styles. A similar set of dimensions could be used for furniture design to achieve a blend of classic sophistication with modern convenience. For example, an updated classic chair could use the classic shape of a Louis XIV chair, but fabricate it out of plastic (as is common in modern chairs) to make it easier to move and clean. It could also reduce some of the ornamentation on the silhouette to take on aspects of a minimal modern look."
     }, {
       "page": 10,
       "region": {
-        "x1": 54.0,
-        "x2": 558.001953125,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
+        "x1": 317.9549865722656,
+        "x2": 559.7216796875,
+        "y1": 605.7332153320312,
+        "y2": 677.6820068359375
       },
-      "text": "Paper 232 Page 11"
+      "text": "We believe this blending process can also be structured by chaining together computational tools for each of the secondary design dimensions. This process should be interactive, using human judgment not only to guide the search, but also to constantly consider aspects outside the dimensions such as the social acceptability of the design, the appeal to the target market, and whether its construction is feasible within desired price points."
     }, {
-      "page": 11,
+      "page": 10,
       "region": {
         "x1": 53.79800033569336,
-        "x2": 294.04229736328125,
-        "y1": 97.4026107788086,
-        "y2": 122.53997802734375
+        "x2": 294.2110290527344,
+        "y1": 690.1931762695312,
+        "y2": 707.3469848632812
       },
-      "text": "[43] BeeWah Yap and ChiawHock Sim. 2011. Comparisons of various types of normality tests. Journal of Statistical Computation and Simulation 81, 12 (2011), 2141–2155."
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 317.95501708984375,
-        "x2": 559.4228515625,
-        "y1": 97.4026107788086,
-        "y2": 122.53997802734375
-      },
-      "text": "[44] Jeff Zacks, Ellen Levy, Barbara Tversky, and Diane J Schiano. 1998. Reading bar graphs: Effects of extraneous depth cues and graphical context. Journal of experimental psychology: Applied 4, 2 (1998), 119."
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 54.0,
-        "x2": 558.0020141601562,
-        "y1": 750.914794921875,
-        "y2": 756.7197875976562
-      },
-      "text": "Paper 232 Page 12"
+      "text": "We propose that creating items within these hybrid styles could be structured using secondary design dimensions. Once the user"
     }],
     "title": {
-      "page": 10,
+      "page": 9,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 553.2642822265625,
+        "y1": 306.9720764160156,
+        "y2": 313.822998046875
+      },
+      "text": "7.2 Generalization to other blending problems"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 11,
+      "region": {
+        "x1": 53.52899932861328,
+        "x2": 295.5634765625,
+        "y1": 550.6651611328125,
+        "y2": 655.4920043945312
+      },
+      "text": "The major intellectual challenge of applying these techniques to any new domain is discovering what its secondary design dimensions are. For VisiFit, we were able to observe the dimensions from examples and from co-design sessions. Additionally, we were guided by what is known about the neuroscience of human visual object recognition. If one or more of those approaches is not available in a new domain, signifcant trial and error may be required to identify those dimensions. An exciting challenge would be to use computational tools to automatically (or semi-automatically) discover the secondary design dimensions of a new domain."
+    }, {
+      "page": 11,
       "region": {
         "x1": 53.79800033569336,
-        "x2": 116.56490325927734,
-        "y1": 96.18885803222656,
-        "y2": 102.614990234375
+        "x2": 295.55987548828125,
+        "y1": 660.2542114257812,
+        "y2": 708.1678466796875
+      },
+      "text": "The major engineering challenge of applying these design principles to a new domain is to build computational tools that can help explore each dimension with high-level tools rather than low-level manipulation. Deep learning has provided new hope for such tools, but there are still limitations to what deep learning systems can do,"
+    }, {
+      "page": 11,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.5827026367188,
+        "y1": 87.45320129394531,
+        "y2": 104.60797119140625
+      },
+      "text": "especially with limited data. This is an open challenge: to quickly create new computational tools for the dimensions of new domains."
+    }, {
+      "page": 11,
+      "region": {
+        "x1": 317.5249938964844,
+        "x2": 559.5825805664062,
+        "y1": 109.37123107910156,
+        "y2": 214.197021484375
+      },
+      "text": "For any new blending domain, there is also the possibility that some blends are too complex to be structured around secondary dimensions due to complex interactions between dimensions. For example, when the DNA of two parents are combined to make a ofspring, the ofspring certainly has a blend of the parents features, but there are so many features that the combinations become too complex to choose from. There may be too many dependencies between dimensions that make designing at a high level impossible. When considering the dimensions of a new domain, one should look out for such dependencies."
+    }],
+    "title": {
+      "page": 11,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 136.00897216796875,
+        "y1": 536.3120727539062,
+        "y2": 543.1629638671875
+      },
+      "text": "7.3 Limitations"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 11,
+      "region": {
+        "x1": 317.6409912109375,
+        "x2": 559.5825805664062,
+        "y1": 242.8701934814453,
+        "y2": 358.6549987792969
+      },
+      "text": "Iterative improvement is the essence of the iterative design process. Although there are many existing tools that support other phases of the design process (brainstorming, prototyping, evaluation, and fnal design execution) there are a lack of tools focusing on iteration [17]. We present a tool that helps novices iteratively improve on prototypes of visual blends. Visual blends are an advanced graphic design technique to combine two visual symbols into one object to convey a message symbolically. Tools already exist to help novices create initial prototypes of visual blends. However, novices do not have tools or strategies to support them through the next iteration that would take the blend from lower to higher fdelity."
+    }, {
+      "page": 11,
+      "region": {
+        "x1": 317.6860046386719,
+        "x2": 559.7164306640625,
+        "y1": 363.4182434082031,
+        "y2": 555.9149780273438
+      },
+      "text": "We conducted three preliminary investigations on how to iteratively improve visual blends. This included an exploration of automatic tools, analysis of expert examples, and a co-design process with graphic designers. From these studies we derived three design principles that can be employed in the creation of iteration tools. Additionally, we introduce a method of using secondary design dimension to structure the iterative improvement process. Based on this method, we can create computational tools to help users explore the design space during iteration. For visual blends, the secondary design dimensions are color, silhouette, and internal details. The computational tools we implemented to explore each of these dimensions used a combination of deep learning, computer vision techniques, and parametric control for fne-tuning. The principles are demonstrated in our system VisiFit – a pipeline of computational design tools to iterate on prototypes of visual blends. Our evaluation shows that when using VisiFit, novices substantially improve blends 76% of the time. Their blends were of sufcient quality for publication on social media 70% of the time."
+    }, {
+      "page": 11,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.721435546875,
+        "y1": 560.67822265625,
+        "y2": 643.5870361328125
+      },
+      "text": "Although creating visual blends is a domain-specifc problem, it is emblematic of many design challenges which involve the blending or remixing of existing things to produce novel meaning or purpose. We discuss how these principles could be reapplied in three other blending domains: animated blends, hybrid fashion design, and hybrid furniture design. These domains have their own secondary dimensions which can be used to structure the iterative improvement process."
+    }],
+    "title": {
+      "page": 11,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 405.7296142578125,
+        "y1": 228.51608276367188,
+        "y2": 235.36700439453125
+      },
+      "text": "8 CONCLUSION"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 11,
+      "region": {
+        "x1": 321.197998046875,
+        "x2": 558.968017578125,
+        "y1": 670.6480712890625,
+        "y2": 675.4669799804688
+      },
+      "text": "[1] Martín Abadi, Ashish Agarwal, Paul Barham, Eugene Brevdo, Zhifeng Chen,"
+    }, {
+      "page": 11,
+      "region": {
+        "x1": 333.19183349609375,
+        "x2": 559.3805541992188,
+        "y1": 678.619140625,
+        "y2": 707.3469848632812
+      },
+      "text": "Craig Citro, Greg S. Corrado, Andy Davis, Jefrey Dean, Matthieu Devin, Sanjay Ghemawat, Ian Goodfellow, Andrew Harp, Geofrey Irving, Michael Isard, Yangqing Jia, Rafal Jozefowicz, Lukasz Kaiser, Manjunath Kudlur, Josh Levenberg, Dan Mané, Rajat Monga, Sherry Moore, Derek Murray, Chris Olah, Mike"
+    }, {
+      "page": 12,
+      "region": {
+        "x1": 53.79400634765625,
+        "x2": 295.2237854003906,
+        "y1": 88.83009338378906,
+        "y2": 715.2369995117188
+      },
+      "text": "Schuster, Jonathon Shlens, Benoit Steiner, Ilya Sutskever, Kunal Talwar, Paul Tucker, Vincent Vanhoucke, Vijay Vasudevan, Fernanda Viégas, Oriol Vinyals, Pete Warden, Martin Wattenberg, Martin Wicke, Yuan Yu, and Xiaoqiang Zheng. 2015. TensorFlow: Large-Scale Machine Learning on Heterogeneous Systems. http://tensorfow.org/ Software available from tensorfow.org. [2] Maneesh Agrawala, Wilmot Li, and Floraine Berthouzoz. 2011. Design Principles for Visual Communication. Commun. ACM 54, 4 (April 2011), 60–69. https: //doi.org/10.1145/1924421.1924439 [3] Pete Barry. 2016. The Advertising Concept Book: Think Now, Design Later (Third). Thames & Hudson, London, UK. 296 pages. [4] Gilbert Louis Bernstein and Wilmot Li. 2015. Lillicon: Using Transient Widgets to Create Scale Variations of Icons. ACM Trans. Graph. 34, 4, Article 144 (July 2015), 11 pages. https://doi.org/10.1145/2766980 [5] Dino Borri and Domenico Camarda. 2009. The Cooperative Conceptualization of Urban Spaces in AI-assisted Environmental Planning. In Proceedings of the 6th International Conference on Cooperative Design, Visualization, and Engineering (Luxembourg, Luxembourg) (CDVE’09). Springer-Verlag, Berlin, Heidelberg, 197– 207. http://dl.acm.org/citation.cfm?id=1812983.1813012 [6] Zoya Bylinskii, Nam Wook Kim, Peter O’Donovan, Sami Alsheikh, Spandan Madan, Hanspeter Pfster, Fredo Durand, Bryan Russell, and Aaron Hertzmann. 2017. Learning Visual Importance for Graphic Designs and Data Visualizations. In Proceedings of the 30th Annual ACM Symposium on User Interface Software and Technology (Qu&#233;bec City, QC, Canada) (UIST ’17). ACM, New York, NY, USA, 57–69. https://doi.org/10.1145/3126594.3126653 [7] Zoya Bylinskii, Nam Wook Kim, Peter O’Donovan, Sami Alsheikh, Spandan Madan, Hanspeter Pfster, Fredo Durand, Bryan Russell, and Aaron Hertzmann. 2017. Learning Visual Importance for Graphic Designs and Data Visualizations. In Proceedings of the 30th Annual ACM Symposium on User Interface Software and Technology (Québec City, QC, Canada) (UIST ’17). Association for Computing Machinery, New York, NY, USA, 57–69. https://doi.org/10.1145/3126594.3126653 [8] Erin Cherry and Celine Latulipe. 2014. Quantifying the Creativity Support of Digital Tools through the Creativity Support Index. ACM Trans. Comput.-Hum. Interact. 21, 4, Article 21 (June 2014), 25 pages. https://doi.org/10.1145/2617588 [9] Lydia B. Chilton, Savvas Petridis, and Maneesh Agrawala. 2019. VisiBlends: A Flexible Workfow for Visual Blends. In Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems (Glasgow, Scotland Uk) (CHI ’19). Association for Computing Machinery, New York, NY, USA, Article 172, 14 pages. https://doi.org/10.1145/3290605.3300402 [10] Nicholas Davis, Chih-PIn Hsiao, Kunwar Yashraj Singh, Lisa Li, Sanat Moningi, and Brian Magerko. 2015. Drawing Apprentice: An Enactive Co-Creative Agent for Artistic Collaboration. In Proceedings of the 2015 ACM SIGCHI Conference on Creativity and Cognition (Glasgow, United Kingdom) (C&C ’15). Association for Computing Machinery, New York, NY, USA, 185–186. https://doi.org/10.1145/ 2757226.2764555 [11] Niraj Ramesh Dayama, Kashyap Todi, Taru Saarelainen, and Antti Oulasvirta. 2020. GRIDS: Interactive Layout Design with Integer Programming. In Proceedings of the 2020 CHI Conference on Human Factors in Computing Systems (Honolulu, HI, USA) (CHI ’20). Association for Computing Machinery, New York, NY, USA, 1–13. https://doi.org/10.1145/3313831.3376553 [12] Biplab Deka, Zifeng Huang, Chad Franzen, Joshua Hibschman, Daniel Afergan, Yang Li, Jefrey Nichols, and Ranjitha Kumar. 2017. Rico: A Mobile App Dataset for Building Data-Driven Design Applications. In Proceedings of the 30th Annual ACM Symposium on User Interface Software and Technology (Québec City, QC, Canada) (UIST ’17). Association for Computing Machinery, New York, NY, USA, 845–854. https://doi.org/10.1145/3126594.3126651 [13] Richard O. Duda and Peter E. Hart. 1972. Use of the Hough Transformation to Detect Lines and Curves in Pictures. Commun. ACM 15, 1 (Jan. 1972), 11–15. https://doi.org/10.1145/361237.361242 [14] Morwaread M. Farbood, Egon Pasztor, and Kevin Jennings. 2004. Hyperscore: A Graphical Sketchpad for Novice Composers. IEEE Comput. Graph. Appl. 24, 1 (Jan. 2004), 50–54. https://doi.org/10.1109/MCG.2004.1255809 [15] G. Fauconnier and M. Turner. 2002. The Way We Think: Conceptual Blending and the Mind’s Hidden Complexities. Basic Books, New York, NY, USA. [16] Charles Forceville. 1994. Pictorial Metaphor in Advertisements. Metaphor and Symbolic Activity 9, 1 (1994), 1–29. [17] Jonas Frich, Lindsay MacDonald Vermeulen, Christian Remy, Michael Mose Biskjaer, and Peter Dalsgaard. 2019. Mapping the Landscape of Creativity Support Tools in HCI. In Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems (Glasgow, Scotland Uk) (CHI ’19). ACM, New York, NY, USA, Article 389, 18 pages. https://doi.org/10.1145/3290605.3300619 [18] Krzysztof Z. Gajos, Daniel S. Weld, and Jacob O. Wobbrock. 2010. Automatically Generating Personalized User Interfaces with Supple. Artif. Intell. 174, 12-13 (Aug. 2010), 910–950. https://doi.org/10.1016/j.artint.2010.05.005 [19] Leon A. Gatys, Alexander S. Ecker, and Matthias Bethge. 2016. Image Style Transfer Using Convolutional Neural Networks. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR). IEEE, New York, NY, USA, 2414–2423. [20] Ross Girshick, Ilija Radosavovic, Georgia Gkioxari, Piotr Dollár, and Kaiming He. 2018. Detectron. https://github.com/facebookresearch/detectron."
+    }, {
+      "page": 12,
+      "region": {
+        "x1": 317.95458984375,
+        "x2": 559.380615234375,
+        "y1": 88.82929992675781,
+        "y2": 699.3780517578125
+      },
+      "text": "[21] Björn Hartmann, Scott R. Klemmer, Michael Bernstein, Leith Abdulla, Brandon Burr, Avi Robinson-Mosher, and Jennifer Gee. 2006. Refective Physical Prototyping Through Integrated Design, Test, and Analysis. In Proceedings of the 19th Annual ACM Symposium on User Interface Software and Technology (Montreux, Switzerland) (UIST ’06). ACM, New York, NY, USA, 299–308. https://doi.org/10.1145/1166253.1166300 [22] Narayan Hegde, Jason D Hipp, Yun Liu, Michael Emmert-Buck, Emily Reif, Daniel Smilkov, Michael Terry, Carrie J Cai, Mahul B Amin, Craig H Mermel, Phil Q Nelson, Lily H Peng, Greg S Corrado, and Martin C Stumpe. 2019. Similar image search for histopathology: SMILY. npj Digital Medicine 2, 1 (2019), 56. https://doi.org/10.1038/s41746-019-0131-z [23] Elizabeth Holmes. 2015. Athleisure: A Workout Look for Every Occasion. https://www.wsj.com/video/athleisure-a-workout-look-for-everyoccasion/D0174829-3288-40F1-9E12-0F420E38AA9A.html [24] Q. Hou, M. Cheng, X. Hu, A. Borji, Z. Tu, and P. H. S. Torr. 2019. Deeply Supervised Salient Object Detection with Short Connections. IEEE Transactions on Pattern Analysis and Machine Intelligence 41, 4 (2019), 815–828. https://doi.org/10.1109/ TPAMI.2018.2815688 [25] P. Karimi, M. L. Maher, K. Grace, and N. Davis. 2019. A computational model for visual conceptual blends. IBM Journal of Research and Development 63, 1 (2019), 5:1–5:10. [26] P. Karimi, M. L. Maher, k. Grace, and N. Davis. 2019. A Computational Model for Visual Conceptual Blends. IBM J. Res. Dev. 63, 1, Article 1 (Jan. 2019), 10 pages. https://doi.org/10.1147/JRD.2018.2881736 [27] Joy Kim, Maneesh Agrawala, and Michael S. Bernstein. 2017. Mosaic: Designing online creative communities for sharing works-in-progress. In Proceedings of the ACM Conference on Computer Supported Cooperative Work, CSCW. Association for Computing Machinery, New York, New York, USA, 246–258. https://doi.org/ 10.1145/2998181.2998195 arXiv:1611.02666 [28] Joy Kim, Sarah Sterman, Allegra Argent Beal Cohen, and Michael S. Bernstein. 2017. Mechanical novel: Crowdsourcing complex work through refection and revision. In Proceedings of the ACM Conference on Computer Supported Cooperative Work, CSCW. Association for Computing Machinery, New York, New York, USA, 233–245. https://doi.org/10.1145/2998181.2998196 arXiv:1611.02682 [29] Janin Koch, Andrés Lucero, Lena Hegemann, and Antti Oulasvirta. 2019. May AI? Design ideation with cooperative contextual bandits. In Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems. Association for Computing Machinery, New York, New York, USA, 1–12. [30] Ranjitha Kumar, Arvind Satyanarayan, Cesar Torres, Maxine Lim, Salman Ahmad, Scott R. Klemmer, and Jerry O. Talton. 2013. Webzeitgeist: Design Mining the Web. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (Paris, France) (CHI ’13). ACM, New York, NY, USA, 3083–3092. https: //doi.org/10.1145/2470654.2466420 [31] James A. Landay. 1996. SILK: Sketching Interfaces Like Krazy. In Conference Companion on Human Factors in Computing Systems (Vancouver, British Columbia, Canada) (CHI ’96). ACM, New York, NY, USA, 398–399. https://doi.org/10.1145/ 257089.257396 [32] James Lin, Mark W. Newman, Jason I. Hong, and James A. Landay. 2000. DENIM: Finding a Tighter Fit Between Tools and Practice for Web Site Design. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (The Hague, The Netherlands) (CHI ’00). ACM, New York, NY, USA, 510–517. https://doi.org/10.1145/332040.332486 [33] Greg Little, Lydia B. Chilton, Max Goldman, and Robert C. Miller. 2010. TurKit: Human Computation Algorithms on Mechanical Turk. In Proceedings of the 23Nd Annual ACM Symposium on User Interface Software and Technology (New York, New York, USA) (UIST ’10). ACM, New York, NY, USA, 57–66. https: //doi.org/10.1145/1866029.1866040 [34] J. Derek Lomas, Jodi Forlizzi, Nikhil Poonwala, Nirmal Patel, Sharan Shodhan, Kishan Patel, Ken Koedinger, and Emma Brunskill. 2016. Interface Design Optimization As a Multi-Armed Bandit Problem. In Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems (San Jose, California, USA) (CHI ’16). ACM, New York, NY, USA, 4142–4153. https://doi.org/10.1145/2858036.2858425 [35] Ryan Louie, Andy Coenen, Cheng Zhi Huang, Michael Terry, and Carrie J. Cai. 2020. Novice-AI Music Co-Creation via AI-Steering Tools for Deep Generative Models. In Proceedings of the 2020 CHI Conference on Human Factors in Computing Systems (Honolulu, HI, USA) (CHI ’20). Association for Computing Machinery, New York, NY, USA, 1–13. https://doi.org/10.1145/3313831.3376739 [36] Kurt Luther, Amy Pavel, Wei Wu, Jari-lee Tolentino, Maneesh Agrawala, Björn Hartmann, and Steven P. Dow. 2014. CrowdCrit: Crowdsourcing and Aggregating Visual Design Critique. In Proceedings of the Companion Publication of the 17th ACM Conference on Computer Supported Cooperative Work &#38; Social Computing (Baltimore, Maryland, USA) (CSCW Companion ’14). ACM, New York, NY, USA, 21–24. https://doi.org/10.1145/2556420.2556788 [37] J. Marks, B. Andalman, P. A. Beardsley, W. Freeman, S. Gibson, J. Hodgins, T. Kang, B. Mirtich, H. Pfster, W. Ruml, K. Ryall, J. Seims, and S. Shieber. 1997. Design Galleries: A General Approach to Setting Parameters for Computer Graphics and Animation. In Proceedings of the 24th Annual Conference on Computer Graphics and"
+    }, {
+      "page": 13,
+      "region": {
+        "x1": 53.79800033569336,
+        "x2": 176.6275634765625,
+        "y1": 63.2986946105957,
+        "y2": 67.34698486328125
+      },
+      "text": "CHI ’21, May 8–13, 2021, Yokohama, Japan"
+    }, {
+      "page": 13,
+      "region": {
+        "x1": 53.80097961425781,
+        "x2": 295.2236022949219,
+        "y1": 88.83009338378906,
+        "y2": 205.23211669921875
+      },
+      "text": "Interactive Techniques (SIGGRAPH ’97). ACM Press/Addison-Wesley Publishing Co., New York, NY, USA, 389–400. https://doi.org/10.1145/258734.258887 [38] Justin Matejka, Michael Glueck, Erin Bradner, Ali Hashemi, Tovi Grossman, and George Fitzmaurice. 2018. Dream Lens: Exploration and Visualization of LargeScale Generative Design Datasets. In Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems (Montreal QC, Canada) (CHI ’18). Association for Computing Machinery, New York, NY, USA, Article 369, 12 pages. https://doi.org/10.1145/3173574.3173943 [39] Brad A. Myers, Ashley Lai, Tam Minh Le, Young Seok Yoon, Andrew Faulring, and Joel Brandt. 2015. Selective undo support for painting applications. In Conference on Human Factors in Computing Systems - Proceedings, Vol. 2015-April. Association for Computing Machinery, New York, New York, USA, 4227–4236. https://doi.org/10.1145/2702123.2702543 [40] J. Nielsen. 1993. Iterative user-interface design. Computer 26, 11 (1993), 32–41. [41] Peter O’Donovan, Aseem Agarwala, and Aaron Hertzmann. 2014. Learning"
+    }, {
+      "page": 13,
+      "region": {
+        "x1": 53.80097961425781,
+        "x2": 295.2237854003906,
+        "y1": 208.38209533691406,
+        "y2": 579.8259887695312
+      },
+      "text": "Layouts for Single-Page Graphic Designs. IEEE Transactions on Visualization and Computer Graphics 20, 8 (2014), 1200–1213. [42] The Editors of WHY Magazine. 1972. Design Q & A: Charles and Ray Eames. https://www.hermanmiller.com/stories/why-magazine/design-q-and-acharles-and-ray-eames/ [43] Francisco Pereira. 2007. Creativity and AI: A Conceptual Blending Approach. Mouton de Gruyter, Berlin, Germany. [44] Savvas Petridis and Lydia B. Chilton. 2019. Human Errors in Interpreting Visual Metaphor. In Proceedings of the 2019 on Creativity and Cognition (San Diego, CA, USA) (C&C ’19). Association for Computing Machinery, New York, NY, USA, 187–197. https://doi.org/10.1145/3325480.3325503 [45] Daniela Retelny, Sébastien Robaszkiewicz, Alexandra To, Walter S. Lasecki, Jay Patel, Negar Rahmati, Tulsee Doshi, Melissa Valentine, and Michael S. Bernstein. 2014. Expert Crowdsourcing with Flash Teams. In Proceedings of the 27th Annual ACM Symposium on User Interface Software and Technology (Honolulu, Hawaii, USA) (UIST ’14). ACM, New York, NY, USA, 75–85. https://doi.org/10.1145/ 2642918.2647409 [46] M. Riddoch and G. Humphreys. 2001. Object Recognition. In B. Rapp (Ed.), Handbook of Cognitive Neuropsychology. Psychology Press, Hove, England. [47] Carsten Rother, Vladimir Kolmogorov, and Andrew Blake. 2004. \"GrabCut\": Interactive Foreground Extraction Using Iterated Graph Cuts. In ACM SIGGRAPH 2004 Papers (Los Angeles, California) (SIGGRAPH ’04). ACM, New York, NY, USA, 309–314. https://doi.org/10.1145/1186562.1015720 [48] Sam Sanders. 2015. For The Modern Man, The Sweatpant Moves Out Of The Gym. https://www.npr.org/2015/04/08/397138654/for-the-modern-man-thesweatpant-moves-out-of-the-gym [49] Ben Shneiderman. 2007. Creativity Support Tools: Accelerating Discovery and Innovation. Commun. ACM 50, 12 (Dec. 2007), 20–32. https://doi.org/10.1145/ 1323688.1323689 [50] Pao Siangliulue, Joel Chan, Steven P. Dow, and Krzysztof Z. Gajos. 2016. IdeaHound: Improving Large-scale Collaborative Ideation with Crowd-Powered Realtime Semantic Modeling. In Proceedings of the 29th Annual Symposium on User Interface Software and Technology (Tokyo, Japan) (UIST ’16). ACM, New York, NY, USA, 609–624. https://doi.org/10.1145/2984511.2984578 [51] Vikash Singh, Celine Latulipe, Erin Carroll, and Danielle Lottridge. 2011. The Choreographer’s Notebook: A Video Annotation System for Dancers and Choreographers. In Proceedings of the 8th ACM Conference on Creativity and Cognition (Atlanta, Georgia, USA) (C&C ’11). Association for Computing Machinery, New York, NY, USA, 197–206. https://doi.org/10.1145/2069618.2069653 [52] Gillian Smith, Jim Whitehead, and Michael Mateas. 2010. Tanagra: A Mixedinitiative Level Design Tool. In Proceedings of the Fifth International Conference on the Foundations of Digital Games (Monterey, California) (FDG ’10). ACM, New York, NY, USA, 209–216. https://doi.org/10.1145/1822348.1822376 [53] Robert J Sternberg. 2011. Cognitive Psychology. Cengage Learning, Boston, MA, USA. [54] Sou Tabata, Hiroki Yoshihara, Haruka Maeda, and Kei Yokoyama. 2019. Automatic Layout Generation for Graphical Design Magazines. In ACM SIGGRAPH 2019"
+    }, {
+      "page": 13,
+      "region": {
+        "x1": 519.2670288085938,
+        "x2": 558.20166015625,
+        "y1": 63.2986946105957,
+        "y2": 67.34698486328125
+      },
+      "text": "Chilton, et al."
+    }, {
+      "page": 13,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 559.3826904296875,
+        "y1": 88.83009338378906,
+        "y2": 570.2100219726562
+      },
+      "text": "Posters (Los Angeles, California) (SIGGRAPH ’19). ACM, New York, NY, USA, Article 9, 2 pages. https://doi.org/10.1145/3306214.3338574 [55] Michael Terry and Elizabeth D. Mynatt. 2002. Side Views: Persistent, onDemand Previews for Open-Ended Tasks. In Proceedings of the 15th Annual ACM Symposium on User Interface Software and Technology (Paris, France) (UIST ’02). Association for Computing Machinery, New York, NY, USA, 71–80. https://doi.org/10.1145/571985.571996 [56] Kashyap Todi, Jussi Jokinen, Kris Luyten, and Antti Oulasvirta. 2019. Individualising Graphical Layouts with Predictive Visual Search Models. ACM Trans. Interact. Intell. Syst. 10, 1, Article 9 (Aug. 2019), 24 pages. https://doi.org/10.1145/3241381 [57] Rajan Vaish, Shirish Goyal, Amin Saberi, and Sharad Goel. 2018. Creating Crowdsourced Research Talks at Scale. In Proceedings of the 2018 World Wide Web Conference (Lyon, France) (WWW ’18). International World Wide Web Conferences Steering Committee, Republic and Canton of Geneva, CHE, 1–11. https://doi.org/10.1145/3178876.3186031 [58] Margot van Mulken, Rob le Pair, and Charles Forceville. 2010. The impact of perceived complexity, deviation and comprehension on the appreciation of visual metaphor in advertising across three European countries. Journal of Pragmatics 42, 12 (2010), 3418 – 3430. https://doi.org/10.1016/j.pragma.2010.04.030 [59] Hao-Chuan Wang, Dan Cosley, and Susan R. Fussell. 2010. Idea Expander: Supporting Group Brainstorming with Conversationally Triggered Visual Thinking Stimuli. In Proceedings of the 2010 ACM Conference on Computer Supported Cooperative Work (Savannah, Georgia, USA) (CSCW ’10). Association for Computing Machinery, New York, NY, USA, 103–106. https://doi.org/10.1145/1718918.1718938 [60] Jingdong Wang and Xian-Sheng Hua. 2011. Interactive image search by color map. ACM Transactions on Intelligent Systems and Technology (TIST) 3, 1 (2011), 1–23. [61] Kento Watanabe, Yuichiroh Matsubayashi, Kentaro Inui, Tomoyasu Nakano, Satoru Fukayama, and Masataka Goto. 2017. LyriSys: An interactive support system for writing lyrics based on topic transition. In International Conference on Intelligent User Interfaces, Proceedings IUI. Association for Computing Machinery, New York, New York, USA, 559–563. https://doi.org/10.1145/3025171.3025194 [62] Ariel Weingarten, Ben Lafreniere, George Fitzmaurice, and Tovi Grossman. 2019. DreamRooms: Prototyping Rooms in Collaboration with a Generative Process. In Proceedings of the 45th Graphics Interface Conference on Proceedings of Graphics Interface 2019 (Kingston, Canada) (GI’19). Canadian HumanComputer Communications Society, Waterloo, CAN, Article 19, 9 pages. https: //doi.org/10.20380/GI2019.19 [63] Anbang Xu, Shih-Wen Huang, and Brian Bailey. 2014. Voyant: Generating Structured Feedback on Visual Designs Using a Crowd of Non-experts. In Proceedings of the 17th ACM Conference on Computer Supported Cooperative Work &#38; Social Computing (Baltimore, Maryland, USA) (CSCW ’14). ACM, New York, NY, USA, 1433–1444. https://doi.org/10.1145/2531602.2531604 [64] Lixiu Yu, Aniket Kittur, and Robert E. Kraut. 2014. Distributed Analogical Idea Generation: Inventing with Crowds. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (Toronto, Ontario, Canada) (CHI ’14). ACM, New York, NY, USA, 1245–1254. https://doi.org/10.1145/2556288.2557371 [65] Lixiu Yu, Aniket Kittur, and Robert E. Kraut. 2014. Searching for Analogical Ideas with Crowds. In Proceedings of the 32Nd Annual ACM Conference on Human Factors in Computing Systems (Toronto, Ontario, Canada) (CHI ’14). ACM, New York, NY, USA, 1225–1234. https://doi.org/10.1145/2556288.2557378 [66] Lixiu Yu and Jefrey V. Nickerson. 2011. Cooks or Cobblers?: Crowd Creativity Through Combination. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (Vancouver, BC, Canada) (CHI ’11). ACM, New York, NY, USA, 1393–1402. https://doi.org/10.1145/1978942.1979147 [67] Zhenpeng Zhao, Sriram Karthik Badam, Senthil Chandrasegaran, Deok Gun Park, Niklas Elmqvist, Lorraine Kisselburgh, and Karthik Ramani. 2014. SkWiki: A multimedia sketching system for collaborative creativity. In Conference on Human Factors in Computing Systems - Proceedings. Association for Computing Machinery, New York, New York, USA, 1235–1244. https://doi.org/10.1145/ 2556288.2557394"
+    }],
+    "title": {
+      "page": 11,
+      "region": {
+        "x1": 317.9549865722656,
+        "x2": 387.3695983886719,
+        "y1": 657.9061279296875,
+        "y2": 664.7570190429688
       },
       "text": "REFERENCES"
     }

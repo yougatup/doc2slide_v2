@@ -4,135 +4,145 @@
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-2.1 Personal Informatics and Patient-Generated Data
-2.1 Personal Informatics and Patient-Generated Data
-2.2 E-Coaching-, Behavior Change- and Persuasive Technologies
-2.2 E-Coaching-, Behavior Change- and Persuasive Technologies
-2.2 E-Coaching-, Behavior Change- and Persuasive Technologies
-2.2 E-Coaching-, Behavior Change- and Persuasive Technologies
-3 FOCUS OF THE PRESENT PAPER
-3 FOCUS OF THE PRESENT PAPER
-3 FOCUS OF THE PRESENT PAPER
-3 FOCUS OF THE PRESENT PAPER
-3 FOCUS OF THE PRESENT PAPER
-4.1 Method
-4.1 Method
-4.1 Method
-4.1 Method
-4.1 Method
-4.1 Method
-4.1 Method
-4.1 Method
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-4.2 Results
-5 STUDY 2: POTENTIAL ROLE OF TECHNOLOGY
-5 STUDY 2: POTENTIAL ROLE OF TECHNOLOGY
-5.1 Method
-5.1 Method
-5.1 Method
-5.1 Method
-5.1 Method
-5.1 Method
-5.1 Method
-5.2 Results
-5.2 Results
-5.2 Results
-5.2 Results
-5.2 Results
-5.2 Results
-5.2 Results
-5.2 Results
-5.2 Results
-5.2 Results
-5.2 Results
-5.2 Results
-5.2 Results
-5.2 Results
-5.2 Results
-5.2 Results
-5.2 Results
-6 STUDY 3: COACHES INTERACTING WITH DATA AND CLIENTS
-6 STUDY 3: COACHES INTERACTING WITH DATA AND CLIENTS
-6 STUDY 3: COACHES INTERACTING WITH DATA AND CLIENTS
-6.1 Method
-6.1 Method
-6.1 Method
-6.1 Method
-6.1 Method
-6.2 Results
-6.2 Results
-6.2 Results
-6.2 Results
-6.2 Results
-6.2 Results
-6.2 Results
-6.2 Results
-6.2 Results
-6.3 Conclusion: Coaches Interacting with Technology
-6.3 Conclusion: Coaches Interacting with Technology
-6.3 Conclusion: Coaches Interacting with Technology
-7 DISCUSSION
-7 DISCUSSION
-7 DISCUSSION
-7 DISCUSSION
-7.1 Technology Provides More Information on Behavior
-7.1 Technology Provides More Information on Behavior
-7.1 Technology Provides More Information on Behavior
-7.1 Technology Provides More Information on Behavior
-7.1 Technology Provides More Information on Behavior
-7.2 Coaching Beyond Behavior
-7.2 Coaching Beyond Behavior
-7.2 Coaching Beyond Behavior
-7.2 Coaching Beyond Behavior
-7.2 Coaching Beyond Behavior
-7.2 Coaching Beyond Behavior
-7.2 Coaching Beyond Behavior
-7.3 Synergy between Behavioral and Experiential Information
-7.3 Synergy between Behavioral and Experiential Information
-7.3 Synergy between Behavioral and Experiential Information
-7.4 The Value of Ambiguity
-7.4 The Value of Ambiguity
-7.4 The Value of Ambiguity
-7.4 The Value of Ambiguity
-7.5 Conclusion: Technology Supporting the Collaborative Coaching Process
-7.5 Conclusion: Technology Supporting the Collaborative Coaching Process
-7.5 Conclusion: Technology Supporting the Collaborative Coaching Process
-7.5 Conclusion: Technology Supporting the Collaborative Coaching Process
-7.5 Conclusion: Technology Supporting the Collaborative Coaching Process
+1 INTRODUCTION
+2.1 Afordances of VR
+2.1 Afordances of VR
+2.1 Afordances of VR
+2.1 Afordances of VR
+2.1 Afordances of VR
+2.1 Afordances of VR
+2.1 Afordances of VR
+2.1 Afordances of VR
+2.1 Afordances of VR
+2.2 Player Experiences in VR Games
+2.2 Player Experiences in VR Games
+2.2 Player Experiences in VR Games
+2.2 Player Experiences in VR Games
+2.2 Player Experiences in VR Games
+2.2 Player Experiences in VR Games
+2.3 What is VR esports?
+2.3 What is VR esports?
+2.3 What is VR esports?
+2.3 What is VR esports?
+2.3 What is VR esports?
+2.3 What is VR esports?
+2.3 What is VR esports?
+2.3 What is VR esports?
+2.3 What is VR esports?
+3 METHODOLOGY
+3 METHODOLOGY
+3 METHODOLOGY
+3 METHODOLOGY
+3 METHODOLOGY
+3.1 Materials
+3.1 Materials
+3.1 Materials
+3.1 Materials
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.1 Attitudes Towards VR and VR Esports
+4.2 Player Experiences with a Representative
+4.2 Player Experiences with a Representative
+4.2 Player Experiences with a Representative
+4.2 Player Experiences with a Representative
+4.2 Player Experiences with a Representative
+4.2 Player Experiences with a Representative
+4.2 Player Experiences with a Representative
+4.2 Player Experiences with a Representative
+4.2 Player Experiences with a Representative
+4.2 Player Experiences with a Representative
+4.2 Player Experiences with a Representative
+4.2 Player Experiences with a Representative
+4.2 Player Experiences with a Representative
+4.2 Player Experiences with a Representative
+4.2 Player Experiences with a Representative
+4.2 Player Experiences with a Representative
+4.2 Player Experiences with a Representative
+4.2 Player Experiences with a Representative
+4.3 Perceived Barriers to VR Esports
+4.3 Perceived Barriers to VR Esports
+4.3 Perceived Barriers to VR Esports
+4.3 Perceived Barriers to VR Esports
+4.3 Perceived Barriers to VR Esports
+4.3 Perceived Barriers to VR Esports
+4.3 Perceived Barriers to VR Esports
+5 DISCUSSIONS
+5.1 Players attitudes and perceptions towards
+5.1 Players attitudes and perceptions towards
+5.1 Players attitudes and perceptions towards
+5.1 Players attitudes and perceptions towards
+5.1 Players attitudes and perceptions towards
+5.1 Players attitudes and perceptions towards
+5.1 Players attitudes and perceptions towards
+5.1 Players attitudes and perceptions towards
+5.1 Players attitudes and perceptions towards
+5.2 PXs with a representative VR esports game
+5.2 PXs with a representative VR esports game
+5.2 PXs with a representative VR esports game
+5.2 PXs with a representative VR esports game
+5.3 Perceived barriers to entry to VR esports
+5.3 Perceived barriers to entry to VR esports
+5.3 Perceived barriers to entry to VR esports
+5.3 Perceived barriers to entry to VR esports
+5.3 Perceived barriers to entry to VR esports
+5.3 Perceived barriers to entry to VR esports
+5.3 Perceived barriers to entry to VR esports
+6.1 Design Implications
+6.1 Design Implications
+6.1 Design Implications
+6.1 Design Implications
+6.1 Design Implications
+6.1 Design Implications
+6.2 Research Directions
+6.2 Research Directions
+6.2 Research Directions
+6.2 Research Directions
+7 LIMITATIONS
+7 LIMITATIONS
+7 LIMITATIONS
+7 LIMITATIONS
+7 LIMITATIONS
+8 CONCLUSION
+8 CONCLUSION
 ACKNOWLEDGMENTS
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
 REFERENCES
 REFERENCES
 REFERENCES

@@ -1,6 +1,3 @@
-CCS CONCEPTS
-KEYWORDS
-ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
@@ -9,64 +6,103 @@ ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-2 RELATEDWORK Empirical Studies on Ordering
-2 RELATEDWORK Empirical Studies on Ordering
-2 RELATEDWORK Empirical Studies on Ordering
-Graphical Perception in Bar Charts
-Parallel Line Illusion
-Parallel Line Illusion
-3 OVERVIEW
-Hypothesis
-Datasets and Participants
-Experimental Setting
-Experimental Setting
-Experimental Setting
-Experimental Setting
-Experimental Setting
-Experimental Setting
-Experimental Setting
-Experimental Setting
-Experimental Setting
-Experimental Setting
-Experimental Setting
-Quality Control
-Statistical Analysis
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-4 EXPERIMENT
-5 DISCUSSION
-5 DISCUSSION
-5 DISCUSSION
-5 DISCUSSION
-5 DISCUSSION
-5 DISCUSSION
-6 CONCLUSION
-7 ACKNOWLEDGEMENT
-7 ACKNOWLEDGEMENT
+2.1 Design Tools
+2.1 Design Tools
+2.2 Iteration Support
+2.2 Iteration Support
+2.2 Iteration Support
+2.3 Computational Approaches to Design Tools
+2.3 Computational Approaches to Design Tools
+2.3 Computational Approaches to Design Tools
+2.3 Computational Approaches to Design Tools
+3 BACKGROUND: VISUAL BLENDS
+3 BACKGROUND: VISUAL BLENDS
+3 BACKGROUND: VISUAL BLENDS
+3 BACKGROUND: VISUAL BLENDS
+3 BACKGROUND: VISUAL BLENDS
+4 FORMATIVE STUDIES OF BLENDING ITERATION
+4.1 Shortcomings of Deep Style Transfer
+4.1 Shortcomings of Deep Style Transfer
+4.1 Shortcomings of Deep Style Transfer
+4.1 Shortcomings of Deep Style Transfer
+4.1 Shortcomings of Deep Style Transfer
+4.1 Shortcomings of Deep Style Transfer
+4.1 Shortcomings of Deep Style Transfer
+4.2 Analysis of professional blends
+4.2 Analysis of professional blends
+4.2 Analysis of professional blends
+4.2 Analysis of professional blends
+4.2 Analysis of professional blends
+4.2 Analysis of professional blends
+4.2 Analysis of professional blends
+4.3 Co-Design with Graphic Artists
+4.3 Co-Design with Graphic Artists
+4.3 Co-Design with Graphic Artists
+4.3 Co-Design with Graphic Artists
+4.3 Co-Design with Graphic Artists
+4.3 Co-Design with Graphic Artists
+4.3 Co-Design with Graphic Artists
+5 VISIFIT SYSTEM
+5 VISIFIT SYSTEM
+5 VISIFIT SYSTEM
+5 VISIFIT SYSTEM
+5 VISIFIT SYSTEM
+5 VISIFIT SYSTEM
+5 VISIFIT SYSTEM
+5 VISIFIT SYSTEM
+5 VISIFIT SYSTEM
+5 VISIFIT SYSTEM
+5 VISIFIT SYSTEM
+5 VISIFIT SYSTEM
+5 VISIFIT SYSTEM
+5 VISIFIT SYSTEM
+5 VISIFIT SYSTEM
+5 VISIFIT SYSTEM
+5 VISIFIT SYSTEM
+6 EVALUATION
+6 EVALUATION
+6 EVALUATION
+6 EVALUATION
+6 EVALUATION
+6 EVALUATION
+6 EVALUATION
+6 EVALUATION
+6 EVALUATION
+6.1 Results
+6.1 Results
+6.1 Results
+6.1 Results
+6.1 Results
+6.1 Results
+6.1 Results
+6.1 Results
+6.1 Results
+6.1 Results
+7 DISCUSSION
+7.1 Professional designers’ impressions of VisiFit
+7.1 Professional designers’ impressions of VisiFit
+7.1 Professional designers’ impressions of VisiFit
+7.1 Professional designers’ impressions of VisiFit
+7.1 Professional designers’ impressions of VisiFit
+7.2 Generalization to other blending problems
+7.2 Generalization to other blending problems
+7.2 Generalization to other blending problems
+7.2 Generalization to other blending problems
+7.2 Generalization to other blending problems
+7.2 Generalization to other blending problems
+7.2 Generalization to other blending problems
+7.2 Generalization to other blending problems
+7.2 Generalization to other blending problems
+7.2 Generalization to other blending problems
+7.2 Generalization to other blending problems
+7.3 Limitations
+7.3 Limitations
+7.3 Limitations
+7.3 Limitations
+8 CONCLUSION
+8 CONCLUSION
+8 CONCLUSION
+REFERENCES
 REFERENCES
 REFERENCES
 REFERENCES

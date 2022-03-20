@@ -1,83 +1,143 @@
-CCS CONCEPTS
-KEYWORDS
-ACM Reference Format:
-ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-Our contributions.
-2 RELATEDWORKS Designing for sound
-Spatial sound
-Spatial sound
-Spatial sound
-Directional sound
-Directional sound
-Acoustic lenses
-Acoustic metamaterials
-Acoustic metamaterials
-Acoustic metamaterials
-Acoustic metamaterials
-3 METASURFACE DESIGN
-3 METASURFACE DESIGN
-3 METASURFACE DESIGN
-3 METASURFACE DESIGN
-3 METASURFACE DESIGN
-3 METASURFACE DESIGN
-3 METASURFACE DESIGN
-3 METASURFACE DESIGN
-3 METASURFACE DESIGN
-3 METASURFACE DESIGN
-3 METASURFACE DESIGN
-3 METASURFACE DESIGN
-3 METASURFACE DESIGN
-3 METASURFACE DESIGN
-3 METASURFACE DESIGN
-3 METASURFACE DESIGN
-4 BASIC TOOLS FOR DEVICE DESIGN
-The thin lens approximation
-The thin lens approximation
-The thin lens approximation
-The thin lens approximation
-The thin lens approximation
-The thin lens approximation
-The thin lens approximation
-The thin lens approximation
-The thin lens approximation
-The thin lens approximation
-5 DEVICE REALISATION
-Acoustic collimator
-Acoustic collimator
-Acoustic collimator
-Acoustic collimator
-Acoustic collimator
-Acoustic collimator
-Acoustic collimator
-Acoustic collimator
-Acoustic collimator
-Acoustic collimator
-Acoustic magnifying glass
-Acoustic magnifying glass
-Acoustic magnifying glass
-Acoustic magnifying glass
-Acoustic magnifying glass
-Acoustic magnifying glass
-Acoustic magnifying glass
-Acoustic magnifying glass
-Acoustic magnifying glass
-Acoustic telescope
-Acoustic telescope
-Acoustic telescope
-6 DISCUSSION
-6 DISCUSSION
-6 DISCUSSION
-6 DISCUSSION
-6 DISCUSSION
-6 DISCUSSION
-6 DISCUSSION
-6 DISCUSSION
-6 DISCUSSION
-7 CONCLUSIONS
+1 INTRODUCTION
+1 INTRODUCTION
+2.1 Transportation and Wellbeing in Rural Areas
+2.1 Transportation and Wellbeing in Rural Areas
+2.1 Transportation and Wellbeing in Rural Areas
+2.1 Transportation and Wellbeing in Rural Areas
+2.1 Transportation and Wellbeing in Rural Areas
+2.1 Transportation and Wellbeing in Rural Areas
+2.2 Transportation for People Living with HIV in Rural Areas
+2.2 Transportation for People Living with HIV in Rural Areas
+2.2 Transportation for People Living with HIV in Rural Areas
+2.2 Transportation for People Living with HIV in Rural Areas
+2.2 Transportation for People Living with HIV in Rural Areas
+2.3 Transportation in HCI Research
+2.3 Transportation in HCI Research
+2.3 Transportation in HCI Research
+2.3 Transportation in HCI Research
+2.3 Transportation in HCI Research
+3.1 Regional Focus
+3.2 Procedures
+3.3 Data Collection
+3.3 Data Collection
+3.3 Data Collection
+3.3 Data Collection
+3.4 Self-Disclosure and Ethical Considerations
+3.5 Data Analysis
+3.5 Data Analysis
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.1 Characteristics of Participants
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+4.3 RQ2: What Role do Community-based and Healthcare Organizations Play in These Forms of Travel, if Any?
+5 DISCUSSION
+5 DISCUSSION
+5 DISCUSSION
+5 DISCUSSION
+5 DISCUSSION
+5 DISCUSSION
+5 DISCUSSION
+5 DISCUSSION
+5 DISCUSSION
+5 DISCUSSION
+5 DISCUSSION
+5 DISCUSSION
+5 DISCUSSION
+5 DISCUSSION
+5 DISCUSSION
+5 DISCUSSION
+6 LIMITATIONS
+7 CONCLUSION
 ACKNOWLEDGMENTS
+REFERENCES
+REFERENCES
+REFERENCES
 REFERENCES
 REFERENCES
 REFERENCES

@@ -1,124 +1,168 @@
 CCS CONCEPTS
 KEYWORDS
 ACM Reference Format:
-ACM Reference Format:
-ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-1 INTRODUCTION
-1 INTRODUCTION
-1 INTRODUCTION
-1 INTRODUCTION
-1 INTRODUCTION
-Technology Overuse
-Mobile Apps for Digital Wellbeing
-Mobile Apps for Digital Wellbeing
-Mobile Apps for Digital Wellbeing
-Mobile Apps for Digital Wellbeing
-Mobile Apps for Digital Wellbeing
-3 CHARACTERIZING DIGITAL WELLBEING APPS
-Method
-Method
-Method
-Method
-Findings
-Findings
-Findings
-Findings
-Findings
-4 REVIEWS’ ANALYSIS
-Method
-Method
-Method
-Method
-Method
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-5 DIGITAL WELLBEING IN THE WILD
-Socialize
-Socialize
-Socialize
-Socialize
-Socialize
-Socialize
-Socialize
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-6 DISCUSSION
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Self Monitoring vs. Habit Formation
-Self Monitoring vs. Habit Formation
-Self Monitoring vs. Habit Formation
-Designing for Digital Wellbeing
-Designing for Digital Wellbeing
-Designing for Digital Wellbeing
-Designing for Digital Wellbeing
-7 LIMITATIONS
-7 LIMITATIONS
-8 CONCLUSIONS AND FUTURE WORK
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+2.1 The Need for Labeling in Data Science
+2.1 The Need for Labeling in Data Science
+2.1 The Need for Labeling in Data Science
+2.1 The Need for Labeling in Data Science
+2.1 The Need for Labeling in Data Science
+2.1 The Need for Labeling in Data Science
+2.2 The Need for People in Labeling
+2.2 The Need for People in Labeling
+2.2 The Need for People in Labeling
+2.2 The Need for People in Labeling
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+3.1 IBM as Research Site
+3.2 Informants and Interviews
+3.2 Informants and Interviews
+3.2 Informants and Interviews
+3.2 Informants and Interviews
+3.3 Grounded Theory Research Methodology
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+4 RESULTS
+4 RESULTS
+4.1 Confgurations of Labeling Projects
+4.1 Confgurations of Labeling Projects
+4.2 Confgurations of Labeling Teams
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+4.3 Technologies of Labeling
+4.3 Technologies of Labeling
+4.3 Technologies of Labeling
+4.3 Technologies of Labeling
+4.3 Technologies of Labeling
+4.3 Technologies of Labeling
+4.3 Technologies of Labeling
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+4.4 The Experiences of Labeling
+4.4 The Experiences of Labeling
+4.4 The Experiences of Labeling
+4.4 The Experiences of Labeling
+4.4 The Experiences of Labeling
+4.5 Collaborations in Labeling
+4.5 Collaborations in Labeling
+4.5 Collaborations in Labeling
+4.5 Collaborations in Labeling
+4.5 Collaborations in Labeling
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+4.6 Examining the Quality of Labels
+4.6 Examining the Quality of Labels
+4.6 Examining the Quality of Labels
+4.6 Examining the Quality of Labels
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+4.7 Designing Ground Truth
+4.7 Designing Ground Truth
+4.7 Designing Ground Truth
+4.7 Designing Ground Truth
+4.7 Designing Ground Truth
+4.7 Designing Ground Truth
+4.7 Designing Ground Truth
+4.7 Designing Ground Truth
+4.7 Designing Ground Truth
+4.7 Designing Ground Truth
+4.7 Designing Ground Truth
+4.7 Designing Ground Truth
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+4.8 Summary of Results
+5 DISCUSSION
+5.1 Implications for Data-Labeling Tools and Work-Practices in Context/HCDS
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+5.2 Implications for HCI Data-Craft Research: Data as Design Medium
+5.2 Implications for HCI Data-Craft Research: Data as Design Medium
+5.2 Implications for HCI Data-Craft Research: Data as Design Medium
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+5.3 Implications for STS: Labeling Work as Infrastructure
+5.3 Implications for STS: Labeling Work as Infrastructure
+5.3 Implications for STS: Labeling Work as Infrastructure
+5.3 Implications for STS: Labeling Work as Infrastructure
+5.3 Implications for STS: Labeling Work as Infrastructure
+5.4 Limitations
+5.4 Limitations
+5.4 Limitations
+6 CONCLUSION
+6 CONCLUSION
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+CHI ’21, May 8–13, 2021, Yokohama, Japan Trovato and Tobin, et al.
+ACKNOWLEDGMENTS
 REFERENCES
 REFERENCES
 REFERENCES
@@ -126,7 +170,12 @@ REFERENCES
 REFERENCES
 REFERENCES
 REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan
+Designing Ground Truth and the Social Life of Labels CHI ’21, May 8–13, 2021, Yokohama, Japan

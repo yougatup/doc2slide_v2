@@ -1,7 +1,8 @@
-CCS CONCEPTS
-CCS CONCEPTS
-KEYWORDS
-ACM Reference Format:
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
@@ -11,128 +12,73 @@ ACM Reference Format:
 2 RELATED WORK
 2 RELATED WORK
 2 RELATED WORK
-2 RELATED WORK
-User Acceptance of Technology
-User Acceptance of Technology
-3 CHEWIT
-Key Features
-Key Features
-Implementation
-Implementation
-Implementation
-Implementation
-Implementation
-Implementation
-Implementation
-Implementation
-Implementation
-4 PERSPECTIVES & GENERAL FEASIBILITY
-4 PERSPECTIVES & GENERAL FEASIBILITY
-4 PERSPECTIVES & GENERAL FEASIBILITY
-4 PERSPECTIVES & GENERAL FEASIBILITY
-4 PERSPECTIVES & GENERAL FEASIBILITY
-4 PERSPECTIVES & GENERAL FEASIBILITY
-4 PERSPECTIVES & GENERAL FEASIBILITY
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-5 DESIGN RATIONALE
-5 DESIGN RATIONALE
-5 DESIGN RATIONALE
-5 DESIGN RATIONALE
-5 DESIGN RATIONALE
-5 DESIGN RATIONALE
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-ChewIt. An Intraoral Interface for Discreet Interactions
-ChewIt. An Intraoral Interface for Discreet Interactions
-ChewIt. An Intraoral Interface for Discreet Interactions
-ChewIt. An Intraoral Interface for Discreet Interactions
-ChewIt. An Intraoral Interface for Discreet Interactions
-ChewIt. An Intraoral Interface for Discreet Interactions
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-ChewIt. An Intraoral Interface for Discreet Interactions CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
-6 CONTRIBUTION AND BENEFITS
-6 CONTRIBUTION AND BENEFITS
-6 CONTRIBUTION AND BENEFITS
-6 CONTRIBUTION AND BENEFITS
-6 CONTRIBUTION AND BENEFITS
-6 CONTRIBUTION AND BENEFITS
-6 CONTRIBUTION AND BENEFITS
-6 CONTRIBUTION AND BENEFITS
-6 CONTRIBUTION AND BENEFITS
-6 CONTRIBUTION AND BENEFITS
-6 CONTRIBUTION AND BENEFITS
-6 CONTRIBUTION AND BENEFITS
-6 CONTRIBUTION AND BENEFITS
-7 LIMITATIONS
-7 LIMITATIONS
-7 LIMITATIONS
-7 LIMITATIONS
-7 LIMITATIONS
-7 LIMITATIONS
-7 LIMITATIONS
-8 CONCLUSION AND FUTURE WORK
-ACKNOWLEDGMENTS
+3 GESTURE KNITTER’S DESIGN FRAMEWORK
+3 GESTURE KNITTER’S DESIGN FRAMEWORK
+3 GESTURE KNITTER’S DESIGN FRAMEWORK
+3.1 Declaring Primitives
+3.1 Declaring Primitives
+3.2 Data Synthesis
+3.2 Data Synthesis
+3.2 Data Synthesis
+3.3 Discernability of Gestures
+3.4 Declaring Gestures with Visual Scripts
+3.4 Declaring Gestures with Visual Scripts
+3.5 Automatically Generating Declarative Scripts
+3.5 Automatically Generating Declarative Scripts
+3.5 Automatically Generating Declarative Scripts
+4 EFFICIENTLY TRAINING AND RECOGNIZING GESTURES
+4.1 Data Preprocessing
+4.1 Data Preprocessing
+4.1 Data Preprocessing
+4.2 Learning Gesture Recognizers
+4.2 Learning Gesture Recognizers
+4.3 Recognizer Synthesis and Classifcation
+4.3 Recognizer Synthesis and Classifcation
+4.3 Recognizer Synthesis and Classifcation
+4.4 Decoding Demonstrations
+4.4 Decoding Demonstrations
+4.5 Preference Gaussian Processes and Sample Generation
+4.5 Preference Gaussian Processes and Sample Generation
+4.5 Preference Gaussian Processes and Sample Generation
+4.5 Preference Gaussian Processes and Sample Generation
+4.6 Discernment of Gestures
+4.7 Online Recognition
+4.7 Online Recognition
+4.8 Implementation Details
+5 EXPERIMENTAL EVALUATION
+5.1 Study 1: Data Collection
+5.1 Study 1: Data Collection
+5.1 Study 1: Data Collection
+5.1 Study 1: Data Collection
+5.1 Study 1: Data Collection
+5.1 Study 1: Data Collection
+5.1 Study 1: Data Collection
+5.2 Recognition and Decoding Evaluation
+5.2 Recognition and Decoding Evaluation
+5.2 Recognition and Decoding Evaluation
+5.2 Recognition and Decoding Evaluation
+5.2 Recognition and Decoding Evaluation
+5.2 Recognition and Decoding Evaluation
+5.2 Recognition and Decoding Evaluation
+5.3 Study 2: Design Study
+5.3 Study 2: Design Study
+5.3 Study 2: Design Study
+5.3 Study 2: Design Study
+5.3.1 Results.
+5.3.1 Results.
+5.3.1 Results.
+5.3.1 Results.
+5.3.1 Results.
+5.3.1 Results.
+5.3.1 Results.
+5.3.1 Results.
+6 DISCUSSION AND FUTURE WORK
+6 DISCUSSION AND FUTURE WORK
+6 DISCUSSION AND FUTURE WORK
+7 CONCLUSIONS
+7 CONCLUSIONS
 ACKNOWLEDGMENTS
 REFERENCES
 REFERENCES
 REFERENCES
 REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-ChewIt. An Intraoral Interface for Discreet Interactions
-ChewIt. An Intraoral Interface for Discreet Interactions
-ChewIt. An Intraoral Interface for Discreet Interactions
-ChewIt. An Intraoral Interface for Discreet Interactions

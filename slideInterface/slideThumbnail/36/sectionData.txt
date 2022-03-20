@@ -1,91 +1,126 @@
-CCS CONCEPTS
-CCS CONCEPTS
-CCS CONCEPTS
-KEYWORDS
-ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-2 RELATEDWORK Couples’ mediated communication practices
-2 RELATEDWORK Couples’ mediated communication practices
-2 RELATEDWORK Couples’ mediated communication practices
-2 RELATEDWORK Couples’ mediated communication practices
-2 RELATEDWORK Couples’ mediated communication practices
-2 RELATEDWORK Couples’ mediated communication practices
-2 RELATEDWORK Couples’ mediated communication practices
-2 RELATEDWORK Couples’ mediated communication practices
-3 THE LIFELINES TECHNOLOGY PROBE
-3 THE LIFELINES TECHNOLOGY PROBE
-3 THE LIFELINES TECHNOLOGY PROBE
-3 THE LIFELINES TECHNOLOGY PROBE
-3 THE LIFELINES TECHNOLOGY PROBE
-3 THE LIFELINES TECHNOLOGY PROBE
-3 THE LIFELINES TECHNOLOGY PROBE
-3 THE LIFELINES TECHNOLOGY PROBE
-Customizing with Linebuilder
-Customizing with Linebuilder
-Implementation
-Implementation
-Implementation
-4 METHOD Participants
-4 METHOD Participants
-Procedure
-Procedure
-Procedure
-Procedure
-Procedure
-Procedure
-Procedure
-Procedure
-Procedure
-Data collection
-Analysis
-Analysis
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-5 RESULTS AND DISCUSSION
-Individual differences in privacy preferences
-Individual differences in privacy preferences
-Individual differences in privacy preferences
-Post Lifelines
-Post Lifelines
-Post Lifelines
-6 LIMITATIONS
-7 IMPLICATIONS FOR DESIGN Multiple streams
-7 IMPLICATIONS FOR DESIGN Multiple streams
-Persistent streams
-Persistent streams
-8 CONCLUSION & FUTUREWORK
-8 CONCLUSION & FUTUREWORK
-9 ACKNOWLEDGMENTS
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+2 BACKGROUND AND RELATED WORK
+2.1 Approaches to qualitative analysis
+2.2 Researchers’ analysis workfow
+2.2 Researchers’ analysis workfow
+2.2 Researchers’ analysis workfow
+2.3 Software support for qualitative analysis of audiovisual data
+2.3 Software support for qualitative analysis of audiovisual data
+2.3 Software support for qualitative analysis of audiovisual data
+2.3 Software support for qualitative analysis of audiovisual data
+2.4 Techniques to navigate, summarize, and visualize audiovisual content
+2.4 Techniques to navigate, summarize, and visualize audiovisual content
+2.4 Techniques to navigate, summarize, and visualize audiovisual content
+2.4 Techniques to navigate, summarize, and visualize audiovisual content
+3 HOW RESEARCHERS ANALYZE AUDIOVISUAL RECORDINGS
+3.1 Data collection and method
+3.1 Data collection and method
+3.1 Data collection and method
+3.1 Data collection and method
+3.1 Data collection and method
+3.1 Data collection and method
+3.1 Data collection and method
+3.1 Data collection and method
+3.1 Data collection and method
+3.1 Data collection and method
+3.1 Data collection and method
+3.1 Data collection and method
+3.1 Data collection and method
+3.1 Data collection and method
+3.1 Data collection and method
+3.1 Data collection and method
+3.1 Data collection and method
+3.1 Data collection and method
+3.1 Data collection and method
+3.2 How researchers prepare to work with audiovisual recordings
+3.2 How researchers prepare to work with audiovisual recordings
+3.2 How researchers prepare to work with audiovisual recordings
+3.2 How researchers prepare to work with audiovisual recordings
+3.2 How researchers prepare to work with audiovisual recordings
+3.2 How researchers prepare to work with audiovisual recordings
+3.2 How researchers prepare to work with audiovisual recordings
+3.2 How researchers prepare to work with audiovisual recordings
+3.3 What researchers look for in audiovisual recordings
+3.3 What researchers look for in audiovisual recordings
+3.3 What researchers look for in audiovisual recordings
+3.3 What researchers look for in audiovisual recordings
+3.3 What researchers look for in audiovisual recordings
+3.3 What researchers look for in audiovisual recordings
+3.3 What researchers look for in audiovisual recordings
+3.4 How researchers navigate recordings to seek information
+3.4 How researchers navigate recordings to seek information
+3.4 How researchers navigate recordings to seek information
+3.4 How researchers navigate recordings to seek information
+3.4 How researchers navigate recordings to seek information
+3.4 How researchers navigate recordings to seek information
+3.4 How researchers navigate recordings to seek information
+3.4 How researchers navigate recordings to seek information
+3.4 How researchers navigate recordings to seek information
+3.5 Key takeaways
+3.5 Key takeaways
+3.5 Key takeaways
+4 SURVEY
+4.1 Method
+4.1 Method
+4.2 Details of survey respondents
+4.2 Details of survey respondents
+4.3 What gets analyzed? Audio vs. video
+4.3 What gets analyzed? Audio vs. video
+4.3 What gets analyzed? Audio vs. video
+4.3 What gets analyzed? Audio vs. video
+4.4 Types of qualitative research
+4.4 Types of qualitative research
+4.4 Types of qualitative research
+4.4 Types of qualitative research
+4.5 How exploratory are audiovisual analyses?
+4.5 How exploratory are audiovisual analyses?
+4.5 How exploratory are audiovisual analyses?
+4.5 How exploratory are audiovisual analyses?
+4.5 How exploratory are audiovisual analyses?
+4.5 How exploratory are audiovisual analyses?
+4.5 How exploratory are audiovisual analyses?
+4.6 Transcription
+4.6 Transcription
+4.6 Transcription
+4.6 Transcription
+4.6 Transcription
+4.6 Transcription
+4.6 Transcription
+4.6 Transcription
+4.6 Transcription
+4.7 Key takeaways
+4.7 Key takeaways
+5 DISCUSSION: AUTOMATION IN FINDING DETECTABLES
+5 DISCUSSION: AUTOMATION IN FINDING DETECTABLES
+5 DISCUSSION: AUTOMATION IN FINDING DETECTABLES
+5 DISCUSSION: AUTOMATION IN FINDING DETECTABLES
+5 DISCUSSION: AUTOMATION IN FINDING DETECTABLES
+5.1 Call to automation in fnding detectables
+5.1 Call to automation in fnding detectables
+5.1 Call to automation in fnding detectables
+5.1 Call to automation in fnding detectables
+5.1 Call to automation in fnding detectables
+5.1 Call to automation in fnding detectables
+5.1 Call to automation in fnding detectables
+5.2 Design considerations for automation
+5.2 Design considerations for automation
+5.2 Design considerations for automation
+5.2 Design considerations for automation
+5.2 Design considerations for automation
+5.2 Design considerations for automation
+5.2 Design considerations for automation
+6 LIMITATIONS AND FUTURE WORK
+6 LIMITATIONS AND FUTURE WORK
+6 LIMITATIONS AND FUTURE WORK
+7 CONCLUSION
+7 CONCLUSION
+ACKNOWLEDGMENTS
 REFERENCES
 REFERENCES
 REFERENCES

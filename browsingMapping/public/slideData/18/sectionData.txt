@@ -1,8 +1,3 @@
-CCS CONCEPTS
-KEYWORDS
-ACM Reference Format:
-ACM Reference Format:
-ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
@@ -11,114 +6,83 @@ ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-Technology Overuse
-Mobile Apps for Digital Wellbeing
-Mobile Apps for Digital Wellbeing
-Mobile Apps for Digital Wellbeing
-Mobile Apps for Digital Wellbeing
-Mobile Apps for Digital Wellbeing
-3 CHARACTERIZING DIGITAL WELLBEING APPS
-Method
-Method
-Method
-Method
-Findings
-Findings
-Findings
-Findings
-Findings
-4 REVIEWS’ ANALYSIS
-Method
-Method
-Method
-Method
-Method
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Like Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-Why Users Dislike Digital Wellbeing Apps
-5 DIGITAL WELLBEING IN THE WILD
-Socialize
-Socialize
-Socialize
-Socialize
-Socialize
-Socialize
-Socialize
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Participants, Method, and Metrics
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-Socialize Evaluation: Results
-6 DISCUSSION
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Digital Wellbeing Features and Their Efectiveness
-Self Monitoring vs. Habit Formation
-Self Monitoring vs. Habit Formation
-Self Monitoring vs. Habit Formation
-Designing for Digital Wellbeing
-Designing for Digital Wellbeing
-Designing for Digital Wellbeing
-Designing for Digital Wellbeing
-7 LIMITATIONS
-7 LIMITATIONS
-8 CONCLUSIONS AND FUTURE WORK
+1 INTRODUCTION
+2 BACKGROUND
+2.1 Breastfeeding Barriers and Facilitators
+2.2 Technology to Support Breastfeeding
+2.2 Technology to Support Breastfeeding
+2.3 Integrated Behavioural Model
+2.3 Integrated Behavioural Model
+2.3 Integrated Behavioural Model
+2.3 Integrated Behavioural Model
+3 PHASE 1: INTERVIEW STUDY
+3.1 Method
+3.1 Method
+3.2 Procedure
+3.3 Participants
+3.4 Data Analysis
+3.4 Data Analysis
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.5 Results
+3.6 Summary of Findings
+4 PHASE 2: SURVEY STUDY
+4.1 Method
+4.1 Method
+4.2 Data Analysis
+4.3 Results
+4.3 Results
+4.3 Results
+4.3 Results
+4.3 Results
+4.3 Results
+4.3 Results
+4.3 Results
+4.3 Results
+4.3 Results
+4.3 Results
+4.3 Results
+4.3 Results
+4.3 Results
+4.3 Results
+4.3 Results
+4.3 Results
+4.3 Results
+4.3 Results
+4.3 Results
+4.4 Summary of Findings
+4.4 Summary of Findings
+5 DISCUSSION
+5 DISCUSSION
+5 DISCUSSION
+5.1 The Relevance of the Lived Experience When Designing Technology to Support Breastfeeding
+5.1 The Relevance of the Lived Experience When Designing Technology to Support Breastfeeding
+5.1 The Relevance of the Lived Experience When Designing Technology to Support Breastfeeding
+5.2 Casting Breastfeeding as Collective Rather
+5.2 Casting Breastfeeding as Collective Rather
+5.2 Casting Breastfeeding as Collective Rather
+6 LIMITATIONS AND FUTURE WORK
+7 CONCLUSION
+7 CONCLUSION
+ACKNOWLEDGMENTS
 REFERENCES
 REFERENCES
 REFERENCES

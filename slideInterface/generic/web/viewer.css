@@ -2644,3 +2644,10 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
 #outlineConfirmationMessageCancelBtn {
     padding: 3px;
 }
+
+.tempRect {
+    position: absolute;
+    z-index: 987987987;
+
+    border: 1px solid blue;
+}

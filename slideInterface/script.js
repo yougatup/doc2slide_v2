@@ -78,9 +78,10 @@ var MAX_NUMBER_OF_SLIDES = 10;
 var examplePresentations = [];
 var outlineStructure = [];
 var selectedOutlineIndex = -1;
-var curPresentationDuration = 0;
+var curPresentationDuration = 5;
 
 var waitingOutlineIndex = -1;
+var selectedPresentationIndex = -1;
 
 function getImgList(x) { 
 	for(var i in x) {
@@ -154,30 +155,31 @@ function appendDocumentStructureRow() {
 	);
 }
 
-async function getExamplePresentationInfo(index) {
-	var res = await postRequest(
-		API_URL + "get_presentation_info", {
-			presentationId: index
+async function getExamplePresentationInfo(presentationList) {
+	var __res = await postRequest(
+			API_URL + "get_presentation_data_bulk", {
+				presentationIds: presentationList
+			});
+
+	console.log(__res);
+
+	for(var kk=0;kk<__res.bulkData.length;kk++) {
+		var res = __res.bulkData[kk];
+
+		for (var i = 0; i < res.data.outline.length; i++) {
+			res.data.outline[i].colorCode = genColor();
 		}
-	);
 
-	console.log(res);
-
-	for(var i=0;i<res.data.outline.length;i++) {
-		res.data.outline[i].colorCode = genColor();
+		examplePresentations.push({
+			index: res.presentationId,
+			outline: res.data.outline,
+			paperSentences: res.data.paperSentences,
+			scriptSentences: res.data.scriptSentences,
+			slideInfo: res.data.slideInfo,
+			title: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.title : 'TEMP_TITLE',
+			keywords: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.keywords : ["keyword 1", "keyword 2", "keyword 3"]
+		})
 	}
-
-	console.log(res);
-
-	examplePresentations.push({
-		index: index,
-		outline: res.data.outline,
-		paperSentences: res.data.paperSentences,
-		scriptSentences: res.data.scriptSentences,
-		slideInfo: res.data.slideInfo,
-		title: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.title : 'TEMP_TITLE',
-		keywords: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.keywords : ["keyword 1", "keyword 2", "keyword 3"]
-	})
 }
 
 function getKeywordDiv(k) {
@@ -255,6 +257,7 @@ function getSlideThumbnail(presentationIndex, outline, slides) {
 			result = result + "<div class='examplePresentationSlideThumbnailImageDiv' presentationIndex='" + presentationIndex + "' thumbnailIndex='" + j + "'> " + 
 				"<div class='examplePresentationSlideThumbnailColorLabel' style='background-color: " + outline[i].colorCode + "'> </div>" + 
 				"<div class='examplePresentationSlideThumbnailNumber'>" + j + "</div>" +
+				"<div class='examplePresentationSlideThumbnailBookmark " + (examplePresentations[presentationIndex].slideInfo[j].bookmarked ? "bookmarked" : "") + "'> </div>" + 
 				"<img class='examplePresentationSlideThumbnailImage' " + 
 				"src='http://localhost:8000/slideThumbnail/" + idx  + "/images/" + j + ".jpg'> </img>" + 
 				/*
@@ -268,7 +271,7 @@ function getSlideThumbnail(presentationIndex, outline, slides) {
 		result = result + "</div>"
 	}
 
-	return "<div class='examplePresentationSlideThumbnailDiv folded'> " + result + "</div>";
+	return "<div class='examplePresentationSlideThumbnailDiv'> " + result + "</div>";
 }
 
 function showAllScript(presentationIndex) {
@@ -362,9 +365,17 @@ function getThumbnailZoom(index) {
 }
 
 function showZoomImageOnExample(presentationIndex, slideIndex, thumbnailScrollFlag, scriptScrollFlag) {
+	console.log(presentationIndex);
+
 	var idx = examplePresentations[presentationIndex].index;
+	var bookmarkFlag = examplePresentations[presentationIndex].slideInfo[slideIndex].bookmarked;
+
+	console.log(presentationIndex, slideIndex);
+	console.log(bookmarkFlag);
 
 	$(".examplePresentationZoomDiv[index='" + presentationIndex + "']").html(
+		"<div class='examplePresentationZoomImageStarDiv " + (bookmarkFlag ? "bookmarked" : "") + "'>" + 
+		"</div>" + 
 		"<img class='examplePresentationZoomImage' src='http://localhost:8000/slideThumbnail/" + idx + "/images/" + slideIndex + ".jpg'> </img>"
 	)
 
@@ -401,6 +412,44 @@ function hideZoomImageOnExample(presentationIndex) {
 	// showAllScript(presentationIndex);
 }
 
+function selectSlideThumbnail(presentationIndex, slideIndex, thumbnailScrollFlag, scriptScrollFlag) {
+	var obj = $(".examplePresentationSlideThumbnailImageDiv[presentationIndex='" + presentationIndex + "'][thumbnailIndex='" + slideIndex + "']");
+
+	$(obj).parent().parent().find(".examplePresentationSlideThumbnailImage").removeClass("thumbnailClicked");
+	$(obj).parent().parent().find(".examplePresentationSlideThumbnailImageDiv").removeClass("thumbnailClicked");
+
+	$(obj).addClass("thumbnailClicked");
+
+	showZoomImageOnExample(presentationIndex, slideIndex, thumbnailScrollFlag, scriptScrollFlag);
+
+	$(obj).find(".examplePresentationSlideThumbnailImage").addClass("thumbnailClicked");
+}
+
+function showZoomDiv(presentationIndex) {
+	selectedPresentationIndex = presentationIndex;
+
+	$("#examplePresentationDetailDiv").html(
+		"<button class='examplePresentationPrevBtn'> Prev </button>" + 
+
+		"<div class='examplePresentationInstanceTitle'>" + "[" + presentationIndex + "] " + examplePresentations[presentationIndex].title + "</div>" +
+		getKeywordDiv(examplePresentations[presentationIndex].keywords) +
+
+		getOutlineDiv(presentationIndex, examplePresentations[presentationIndex].outline, examplePresentations[presentationIndex].slideInfo) + 
+		"<div class='examplePresentationFoldDiv'>" +
+			getSlideThumbnail(presentationIndex, examplePresentations[presentationIndex].outline, examplePresentations[presentationIndex].slideInfo) +
+			"<div class='examplePresentationPreviewDiv'> " +
+			getThumbnailZoom(presentationIndex) +
+			getScriptDiv(presentationIndex, examplePresentations[presentationIndex].slideInfo) +
+			"</div>" +
+		"</div>"
+	)
+
+	selectSlideThumbnail(presentationIndex, 1, true, true);
+
+	$("#examplePresentationListDiv").hide();
+	$("#examplePresentationDetailDiv").show();
+}
+
 function updateExamplePresentation() {
 	console.log("??");
 
@@ -412,9 +461,13 @@ function updateExamplePresentation() {
 	for(var i=0;i<examplePresentations.length;i++) {
 		resultHtml = resultHtml + 
 				"<div class='examplePresentationInstance folded' index='" + i + "'> " + 
-					"<div class='examplePresentationInstanceTitle'>" + examplePresentations[i].title + "</div>" + 
+					"<div class='examplePresentationInstanceTitle'>" + "[" + examplePresentations[i].index + "] " + examplePresentations[i].title + "</div>" +
+					"<div class='examplePresentationInstanceStar'> </div>" + 
 					getKeywordDiv(examplePresentations[i].keywords) + 
+
 					getOutlineDiv(i, examplePresentations[i].outline, examplePresentations[i].slideInfo) + 
+
+/*
 					"<div class='examplePresentationFoldDiv folded'>" + 
 						getSlideThumbnail(i, examplePresentations[i].outline, examplePresentations[i].slideInfo) + 
 						"<div class='examplePresentationPreviewDiv folded'> " + 
@@ -422,7 +475,8 @@ function updateExamplePresentation() {
 							getScriptDiv(i, examplePresentations[i].slideInfo) + 
 						"</div>" + 
 					"</div>" + 
-					getFoldingBtn(i) + 
+					*/
+					// getFoldingBtn(i) + 
 				"</div>"
 	}
 
@@ -954,15 +1008,30 @@ async function createSlide(presentationIDToAdapt, contents, layoutSlideID, style
 }
 
 async function initializeDB() {
-	var presentationList = [
-		4, 6,
-            7,
-	];
+	var res = await postRequest(
+			API_URL + "search_presentations", {
+				query: "learning"
+			});
 
-	for (var i = 0; i < presentationList.length; i++) {
-		console.log(i);
-		await getExamplePresentationInfo(presentationList[i]);
+	console.log(res);
+
+	var presentationList = [];
+
+	for(var i=0;i<res.hits.length;i++) {
+		var id = parseInt(res.hits[i]["id"])
+
+		presentationList.push(id);
 	}
+
+	/*
+	var presentationList = [
+		100004, 100006,
+            100007,
+	];
+	*/
+
+
+	await getExamplePresentationInfo(presentationList);
 
 	updateExamplePresentation()
 
@@ -1002,10 +1071,12 @@ async function initializeDB() {
 		if(!("parameters" in result && "initialize" in result.parameters && !result.parameters.initialize)) {
 			$("#check2").prop("checked", "true");
 
+			/*
 			if("structureHighlightInfo" in result) 
 				structureHighlightDB = result.structureHighlightInfo;
 			else
 				structureHighlightDB = {};
+				*/
 
 			clearDB().then( () => {
 				initializeSlide().then( async () => {
@@ -1069,10 +1140,12 @@ async function initializeDB() {
 
 			slideDB = result.slideInfo;
 
+			/*
 			if("structureHighlightInfo" in result) 
 				structureHighlightDB = result.structureHighlightInfo;
 			else
 				structureHighlightDB = {};
+				*/
 
 			if("slideDeckConstraints" in result) {
 				setConstraints("slideDeck", result.slideDeckConstraints, null, false);
@@ -7629,6 +7702,7 @@ function handleOutlineEvent(relX, p) {
 		} 
 		*/
 
+		var durationString = getDurationString(thisTime);
 		var thisMin = parseInt(thisTime);
 		var thisSec = parseInt((thisTime - parseInt(thisTime)) * 60)
 
@@ -7638,7 +7712,7 @@ function handleOutlineEvent(relX, p) {
 		$("#outlineSegmentEventLeft").width(relX);
 
 		$("#outlineSegmentEventLeft").prop("duration", thisTime);
-		$("#outlineSegmentEventLeft").html(thisMin + ":" + thisSec);
+		$("#outlineSegmentEventLeft").html(durationString);
 
 		// $("#outlineSegmentLabelTemp").css("left", x + "px");
 		$("#outlineSegmentLabelTemp").width(relX);
@@ -7649,8 +7723,16 @@ function handleOutlineEvent(relX, p) {
 
 function getOutlineLabel(index) {
 	if(outlineStructure[index].status == "need_name") {
-		return "<input class='outlineLabelInput' index='" + index + "'> </input>" + 
-		"<button class='outlineLabelInputBtn' index='" + index + "'> Confirm </button>"
+		var left = (index > 0 ? outlineStructure[index-1].endX : 0) + 10 ;
+		var top = 70;
+
+		$("#outlineView").append("<div class='outlineLabelInputDiv' style='top: " + top + "px; left: " + left + "px; position: absolute;'>" + 
+			"<input class='outlineLabelInput' index='" + index + "'> </input>" + 
+			"<button class='outlineLabelInputBtn' index='" + index + "'> Confirm </button>" + 
+			"</div>"
+		)
+
+		return '';
 	}
 	else {
 		return outlineStructure[index].label;
@@ -7658,6 +7740,8 @@ function getOutlineLabel(index) {
 }
 
 function updateOutlineSegments() {
+	$(".outlineLabelInputDiv").remove();
+
 	$("#outlineSegments").html('');
 
 	var htmls = '';
@@ -7758,15 +7842,21 @@ function updateOutlineSegments() {
 
 				var lastIdx = newOutlineStructure.length-1;
 
+				console.log(idx);
+				console.log(outlineStructure[idx]);
+
 				newOutlineStructure[lastIdx].startSlideIndex = slideIndex == 2 ? 1 : slideIndex;
 				newOutlineStructure[lastIdx].endSlideIndex = slideIndex + newOutlineStructure[lastIdx].slideIDs.length - 1;
 				newOutlineStructure[lastIdx].startX = lastIdx == 0 ? 0 : newOutlineStructure[lastIdx-1].endX;
-				newOutlineStructure[lastIdx].endX = newOutlineStructure[lastIdx].startX + $("#outlineSegmentDiv").width() * newOutlineStructure[lastIdx].duration / curPresentationDuration;
+				newOutlineStructure[lastIdx].endX = (outlineStructure[idx].endX - outlineStructure[idx].startX) + newOutlineStructure[lastIdx].startX;
 
 				slideIndex += newOutlineStructure[lastIdx].slideIDs.length;
 
 				$(this).attr("index", i);
 			})
+
+			console.log(newOutlineStructure);
+
 
 			if(!changeFlag){
 				return;
@@ -7858,7 +7948,246 @@ function selectSegment(index, locateFlag) {
 	updateMessageBox();
 }
 
+function updateBookmarkCntOnPresentationInstance(presentationIndex) {
+	if(!("bookmarkCnt" in examplePresentations[presentationIndex]))
+		examplePresentations[presentationIndex].bookmarkCnt = 0;
+
+	var bookmarkCnt = examplePresentations[presentationIndex].bookmarkCnt;
+
+	var obj = $(".examplePresentationInstance[index='" + presentationIndex + "']")
+	var starObj = $(obj).find(".examplePresentationInstanceStar")
+
+	if(bookmarkCnt <= 0)  {
+		$(starObj).removeClass("bookmarked");
+		$(starObj).html('');
+	}
+	else {
+		$(starObj).addClass("bookmarked");
+		$(starObj).html(bookmarkCnt);
+	}
+}
+
+function showExampleBrowsingDiv() {
+	$("#examplePresentationListBody").show();
+	$("#examplePresentationBookmarkDiv").hide();
+
+	$("#examplePresentationBrowsingText").addClass("selected");
+	$("#examplePresentationBookmarkText").removeClass("selected")
+}
+
+function showBookmarkDiv() {
+	$("#examplePresentationBrowsingText").removeClass("selected");
+	$("#examplePresentationBookmarkText").addClass("selected")
+
+	$("#examplePresentationListBody").hide();
+	$("#examplePresentationBookmarkDiv").show();
+}
+
+function hideOutlinePopup() {
+  $("#outlinePopup").hide();
+}
+
+function showOutlinePopup(mode) {
+  var cur = $(".examplePresentationZoomImageStarDiv");
+  var popupObj = $("#outlinePopup");
+
+  popupObj.css("left", $(cur).offset().left)
+  popupObj.css("top", $(cur).offset().top)
+
+	if (mode == "segmentSelect") {
+		var title = selectedOutlineIndex >= 0 ? outlineStructure[selectedOutlineIndex].label : '';
+
+		$(popupObj).css("width", "300px");
+		$(popupObj).css("height", "60px");
+
+		$(popupObj).html(
+			'<div id="outlinePopupMessage"> Add this highlight to </div>' +
+			'<div id="outlinePopupCandidate">' +
+			'<input id="outlinePopupInput" value="' + title + '"> </input>' +
+			'<button id="outlinePopupConfirmBtn"> Confirm </button>' +
+			'</div>'
+		)
+
+		var myList = Object.keys(structureHighlightDB).map((elem) => { return structureHighlightDB[elem].text })
+
+		$('#outlinePopupInput').autocomplete({
+			minLength: 0,
+			source: function (request, response) {
+				var data = $.grep(myList, function (value) {
+					return value.toLowerCase().includes(request.term.toLowerCase());
+				});
+
+				response(data);
+			}
+		}).focus(function () {
+			$(this).autocomplete("search", "");
+		});
+
+		$(popupObj).show();
+	}
+  else if(mode == "confirmation"){
+    $("#outlinePopupMessage").hide();
+    $("#outlinePopupCandidate").hide();
+
+    $(popupObj).css("height", "150px");
+    $(popupObj).css("width", "350px");
+
+    var userInputSegment = $("#outlinePopupInput").val();
+
+    $("#outlineConfirmationMessageDiv").remove();
+
+    $(popupObj).append("<div id='outlineConfirmationMessageDiv'>" + 
+    " <div class='outlineConfirmationMessageText'> The current timeline does not have </div>" + 
+    " <div class='outlineConfirmationMessageUserSegment'> " + userInputSegment + " </div> " + 
+    " <div class='outlineConfirmationMessageText'> Do you want to create a new segment? </div>" +  
+    " <div class='outlineConfirmationMessageBtnDiv'> " + 
+    " <button id='outlineConfirmationMessageConfirmBtn'> Yes </button> " + 
+    " <button id='outlineConfirmationMessageCancelBtn'> No </button> "  + 
+    " </div> "
+    )
+  }
+  else if(mode == "confirmationCancel") {
+    $("#outlineConfirmationMessageDiv").remove();
+
+    $(popupObj).css("width", "300px");
+    $(popupObj).css("height", "80px");
+
+    $("#outlinePopupMessage").show();
+    $("#outlinePopupCandidate").show();
+  }
+}
+
+function markBookmarkOnExample(presentationIndex, thumbnailIndex) {
+	examplePresentations[presentationIndex].slideInfo[thumbnailIndex].bookmarked = true;
+
+	if (!("bookmarkCnt" in examplePresentations[presentationIndex]))
+		examplePresentations[presentationIndex].bookmarkCnt = 0;
+
+	examplePresentations[presentationIndex].bookmarkCnt++;
+
+	$(".examplePresentationZoomImageStarDiv").addClass("bookmarked");
+	$(".examplePresentationSlideThumbnailDiv").find(".examplePresentationSlideThumbnailImageDiv[presentationIndex='" + presentationIndex + "'][thumbnailIndex='" + thumbnailIndex + "']").find(".examplePresentationSlideThumbnailBookmark").addClass("bookmarked")
+
+	updateBookmarkedExampleDiv();
+
+}
+function updateBookmarkedExampleDiv() {
+
+}
+
+function addSegment(p) {
+	var startX = outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length - 1].endX;
+	var duration = 1;
+	var width = duration / curPresentationDuration * $("#outlineSegmentEvent").width();
+	var endX = startX + width;
+
+	var slideID = makeid(10);
+	var slideIndex = outlineStructure.length <= 0 ? 2 : outlineStructure[outlineStructure.length - 1].endSlideIndex + 1;
+
+	console.log(p);
+
+	outlineStructure.push({
+		messages: [],
+		bookmark: [],
+		status: "ready_slide",
+		startX: startX,
+		endX: endX,
+		duration: duration,
+		startSlideID: slideID,
+		startSlideIndex: slideIndex,
+		endSlideIndex: slideIndex,
+		slideIDs: [slideID],
+		colorCode: genColor(),
+		startTime: outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length - 1].endTime,
+		endTime: (outlineStructure.length <= 0 ? duration : outlineStructure[outlineStructure.length - 1].endTime + duration),
+		label: p.title
+	})
+
+	console.log(outlineStructure);
+
+	var requests = [];
+
+	requests.push({
+		createSlide: {
+			objectId: slideID,
+			insertionIndex: slideIndex - 1,
+			slideLayoutReference: {
+				predefinedLayout: 'TITLE_AND_BODY'
+			},
+			/*
+			placeholderIdMappings: [{
+				objectId: titleObjectID,
+				layoutPlaceholder: {
+					type: "TITLE",
+					index: 0
+				}
+			}, {
+				objectId: bodyObjectID,
+				layoutPlaceholder: {
+					type: "BODY",
+					index: 0
+				}
+			}
+			]*/
+		}
+	});
+
+	showLoadingSlidePlane();
+	waitingOutlineIndex = outlineStructure.length - 1;
+
+	gapi.client.slides.presentations.batchUpdate({
+		presentationId: PRESENTATION_ID,
+		requests: requests
+	}).then((createSlideResponse) => {
+		console.log(createSlideResponse);
+	});
+
+	console.log(p);
+
+	if ("highlightInfo" in p) {
+		registerHighlight(p.highlightInfo).then(mapping => {
+			console.log(mapping);
+
+			addMessage(outlineStructure.length - 1, p.highlightInfo.body, mapping.key);
+
+			issueEvent("root_sendMappingIdentifier", {
+				mappingID: mapping.key,
+				pageNumber: p.highlightInfo.pageNumber,
+				startWordIndex: p.highlightInfo.startWordIndex,
+				endWordIndex: p.highlightInfo.endWordIndex
+			});
+		});
+	}
+	if("bookmarkInfo" in p) {
+		addBookmark(outlineStructure.length - 1, p.bookmarkInfo.presentationIndex, p.bookmarkInfo.thumbnailIndex);
+		markBookmarkOnExample(p.bookmarkInfo.presentationIndex, p.bookmarkInfo.thumbnailIndex)
+		hideOutlinePopup();
+	}
+
+	updateOutlineSegments();
+}
+
+function addBookmark(outlineIndex, presentationIndex, thumbnailIndex){
+	outlineStructure[outlineIndex].bookmark.push({
+		presentationIndex: presentationIndex,
+		thumbnailIndex: thumbnailIndex
+	})
+}
+
+function removeBookmark(presentationIndex, thumbnailIndex) {
+	for(var i=0;i<outlineStructure.length;i++) {
+		for(var j=0;j<outlineStructure[i].bookmark.length;j++) {
+			if (outlineStructure[i].bookmark[j].presentationIndex == presentationIndex &&
+				outlineStructure[i].bookmark[j].thumbnailIndex == thumbnailIndex) {
+					outlineStructure[i].bookmark.splice(j, 1)
+					return;
+			}
+		}
+	}
+}
+
 $(document).ready(function() {
+	$("#outlineSegmentLabelMaxTime").html(curPresentationDuration + " min")
 	document.body.onmousedown = function() { 
   	++curMouseDown;
 	}
@@ -7866,13 +8195,133 @@ $(document).ready(function() {
   	--curMouseDown;
 	}
 
-	$(document).on("mouseover", ".examplePresentationSlideThumbnailImage", function(e) {
-		var obj = $(e.target).parent();
-		
-		var presentationIndex = $(obj).attr("presentationIndex");
-		var slideIndex = $(obj).attr("thumbnailIndex");
+    $(document).on("click", "#outlinePopupConfirmBtn", function(e) {
+      var segmentTitle = $("#outlinePopupInput").val();
+	  var selectedOutlineStructureIndex = -1;
 
-		showZoomImageOnExample(presentationIndex, slideIndex, false, true);
+	  for(var i=0;i<outlineStructure.length;i++) {
+		  if(outlineStructure[i].label == segmentTitle) {
+			  selectedOutlineStructureIndex = i;
+		  }
+	  }
+
+	  if(selectedOutlineStructureIndex == -1) {
+		  showOutlinePopup("confirmation");
+	  }
+	  else {
+		  var presentationIndex = selectedPresentationIndex;
+		  var thumbnailIndex = parseInt($(".examplePresentationSlideThumbnailDiv").find(".thumbnailClicked").attr("thumbnailIndex"));
+
+		  addBookmark(selectedOutlineStructureIndex, presentationIndex, thumbnailIndex);
+		  markBookmarkOnExample(presentationIndex, thumbnailIndex)
+		  hideOutlinePopup();
+	  }
+    });
+
+    $(document).on("click", "#outlineConfirmationMessageCancelBtn", function(e) {
+        showOutlinePopup("confirmationCancel");
+    })
+
+    $(document).on("click", "#outlineConfirmationMessageConfirmBtn", function(e) {
+      var segmentTitle = $("#outlinePopupInput").val();
+
+	  var presentationIndex = selectedPresentationIndex;
+	  var thumbnailIndex = parseInt($(".examplePresentationSlideThumbnailDiv").find(".thumbnailClicked").attr("thumbnailIndex"));
+
+	  addSegment(
+		  {
+			  title: segmentTitle,
+			  bookmarkInfo: {
+				  presentationIndex: presentationIndex,
+				  thumbnailIndex: thumbnailIndex
+			  }
+		  }); 
+    })
+
+	$(document).on("click", "#examplePresentationBrowsingText", function(e) {
+
+		showExampleBrowsingDiv();
+	});
+
+	$(document).on("click", "#examplePresentationBookmarkText", function(e) {
+		showBookmarkDiv();
+	});
+
+	$(document).on("click", ".examplePresentationZoomImageStarDiv", function(e) {
+		var presentationIndex = selectedPresentationIndex;
+		var thumbnailIndex = parseInt($(".examplePresentationSlideThumbnailDiv").find(".thumbnailClicked").attr("thumbnailIndex"));
+
+		console.log(presentationIndex, thumbnailIndex);
+
+		if($(e.target).hasClass("bookmarked")) {
+			examplePresentations[presentationIndex].slideInfo[thumbnailIndex].bookmarked = false;
+			examplePresentations[presentationIndex].bookmarkCnt--;
+
+			$(e.target).removeClass("bookmarked");
+			$(".examplePresentationSlideThumbnailDiv").find(".examplePresentationSlideThumbnailImageDiv[presentationIndex='" + presentationIndex + "'][thumbnailIndex='" + thumbnailIndex + "']").find(".examplePresentationSlideThumbnailBookmark").removeClass("bookmarked")
+
+			removeBookmark(presentationIndex, thumbnailIndex);
+			updateBookmarkedExampleDiv();
+		}
+		else {
+			showOutlinePopup("segmentSelect")
+
+			/*
+			examplePresentations[presentationIndex].slideInfo[thumbnailIndex].bookmarked = true;
+
+			if(!("bookmarkCnt" in examplePresentations[presentationIndex]) )
+				examplePresentations[presentationIndex].bookmarkCnt = 0;
+
+			examplePresentations[presentationIndex].bookmarkCnt++;
+
+			$(e.target).addClass("bookmarked");
+			$(".examplePresentationSlideThumbnailDiv").find(".examplePresentationSlideThumbnailImageDiv[presentationIndex='" + presentationIndex + "'][thumbnailIndex='" + thumbnailIndex + "']").find(".examplePresentationSlideThumbnailBookmark").addClass("bookmarked")
+
+			updateBookmarkedExampleDiv();
+			*/
+		}
+
+		updateBookmarkCntOnPresentationInstance(presentationIndex);
+	})
+
+	$(document).on("click", ".examplePresentationPrevBtn", function(e) {
+		$("#examplePresentationDetailDiv").hide();
+		$("#examplePresentationListDiv").show();
+	})
+
+	$(document).on("click", ".examplePresentationInstance", function(e) {
+		console.log(e.target);
+
+		var cur = $(e.target);
+
+		for(var i=0;i<100;i++) {
+			if($(cur).hasClass("examplePresentationInstance")) break;
+
+			cur = $(cur).parent();
+		}
+
+		var presentationIndex = parseInt($(cur).attr("index"));
+
+		showZoomDiv(presentationIndex);
+	})
+
+	$(document).on("mouseover", ".examplePresentationSlideThumbnailImageDiv", function(e) {
+		var obj = $(e.target);
+
+		for(var i=0;i<100;i++) {
+			if($(obj).hasClass("examplePresentationSlideThumbnailImageDiv")) break;
+			obj = $(obj).parent();
+		}
+		
+		var presentationIndex = parseInt($(obj).attr("presentationIndex"));
+		var slideIndex = parseInt($(obj).attr("thumbnailIndex"));
+
+		console.log($(obj));
+		console.log(presentationIndex, slideIndex);
+
+		$(obj).find(".examplePresentationSlideThumbnailImage").addClass("thumbnailHovered");
+
+		// showZoomImageOnExample(presentationIndex, slideIndex, false, true);
 	})
 
 	$(document).on("click", ".examplePresentationScriptHeader", function(e) {
@@ -7891,11 +8340,18 @@ $(document).ready(function() {
 		selectSlideThumbnail(presentationIndex, thumbnailIndex, true, false);
 	})
 
-	$(document).on("mouseleave", ".examplePresentationSlideThumbnailImage", function(e) {
-		var obj = $(e.target).parent();
+	$(document).on("mouseleave", ".examplePresentationSlideThumbnailImageDiv", function(e) {
+		var obj = $(e.target);
 		
+		for(var i=0;i<100;i++) {
+			if($(obj).hasClass("examplePresentationSlideThumbnailImageDiv")) break;
+			obj = $(obj).parent();
+		}
+
 		var presentationIndex = $(obj).attr("presentationIndex");
 		var slideIndex = $(obj).attr("thumbnailIndex");
+
+		$(obj).find(".examplePresentationSlideThumbnailImage").removeClass("thumbnailHovered");
 
 		var clickedObj = $(this).parent().parent().parent().find(".examplePresentationSlideThumbnailImage.thumbnailClicked");
 
@@ -7910,21 +8366,13 @@ $(document).ready(function() {
 		else hideZoomImageOnExample(presentationIndex);
 	})
 
-	function selectSlideThumbnail(presentationIndex, slideIndex, thumbnailScrollFlag, scriptScrollFlag) {
-		var obj = $(".examplePresentationSlideThumbnailImageDiv[presentationIndex='" + presentationIndex + "'][thumbnailIndex='" + slideIndex + "']");
+	$(document).on("click", ".examplePresentationSlideThumbnailImageDiv", function(e) {
+		var obj = $(e.target);
 
-		$(obj).parent().parent().find(".examplePresentationSlideThumbnailImage").removeClass("thumbnailClicked");
-		$(obj).parent().parent().find(".examplePresentationSlideThumbnailImageDiv").removeClass("thumbnailClicked");
-
-		$(obj).addClass("thumbnailClicked");
-
-		showZoomImageOnExample(presentationIndex, slideIndex, thumbnailScrollFlag, scriptScrollFlag);
-
-		$(obj).find(".examplePresentationSlideThumbnailImage").addClass("thumbnailClicked");
-	}
-
-	$(document).on("click", ".examplePresentationSlideThumbnailImage", function(e) {
-		var obj = $(e.target).parent();
+		for(var i=0;i<100;i++) {
+			if($(obj).hasClass("examplePresentationSlideThumbnailImageDiv")) break;
+			obj = $(obj).parent();
+		}
 		
 		var presentationIndex = $(obj).attr("presentationIndex");
 		var slideIndex = $(obj).attr("thumbnailIndex");
@@ -7940,6 +8388,7 @@ $(document).ready(function() {
 		*/
 
 		selectSlideThumbnail(presentationIndex, slideIndex, false, true);
+		hideOutlinePopup();
 	})
 
 	$(document).on("click", ".examplePresentationFoldingBtn", function(e) {
@@ -7973,9 +8422,42 @@ $(document).ready(function() {
 	$(document).on("click", ".outlineMessageElementRemoveBtn", function(e) {
 		var idx = parseInt($(this).attr("index"));
 
-		outlineStructure[selectedOutlineIndex].messages.splice(idx, 1);
+		var cur = $(this);
 
+		for(var i=0;i<100;i++) {
+			if($(cur).hasClass("outlineMessageElement")) break;
+			cur = $(cur).parent();
+		}
+
+		var mappingKey = $(cur).attr("mapping");
+
+		outlineStructure[selectedOutlineIndex].messages.splice(idx, 1);
 		updateMessageBox();
+
+		console.log(mappingKey);
+
+		if(mappingKey != null) {
+			var myPageNumber = null;
+
+			for (var pageNumber in highlightDB.mapping) {
+				if (mappingKey in highlightDB.mapping[pageNumber]) {
+					myPageNumber = pageNumber;
+					break;
+				}
+			}
+
+			console.log(mappingKey);
+			console.log(myPageNumber);
+			console.log(highlightDB);
+
+			if (myPageNumber != null) {
+				removeMappingOnPdfjs(pageNumber, mappingKey, false).then(result => {
+					issueEvent("root_mappingRemoved2", {
+						mappingID: result
+					});
+				});
+			}
+		}
 	})
 
 	$(document).on("click", ".outlineMessageElementCancelBtn", function(e) {
@@ -8053,6 +8535,7 @@ $(document).ready(function() {
 	
 	$(document).on("click", ".outlineLabelInputBtn", function(e) {
 		var index = parseInt($(e.target).attr("index"));
+		console.log(index);
 
 		var inputLabel = $(".outlineLabelInput[index='" + index + "']").val();
 
@@ -8145,7 +8628,7 @@ $(document).ready(function() {
 			var widthValue = $("#outlineSegmentEventLeft").width();
 			
 			var startX = leftValue;
-			var endX = leftValue + widthValue;
+			var endX = Math.min(leftValue + widthValue, $("#outlineSegments").width());
 
 			var duration = parseFloat($("#outlineSegmentEventLeft").prop("duration"));
 			var slideIndex = outlineStructure.length <= 0 ? -1 : outlineStructure[outlineStructure.length-1].endSlideIndex+1;
@@ -8154,6 +8637,7 @@ $(document).ready(function() {
 
 			outlineStructure.push({
 				messages: [],
+				bookmark: [],
 				status: "need_name",
 				startX: startX,
 				endX: endX,
@@ -8183,7 +8667,7 @@ $(document).ready(function() {
 			var relX = e.pageX - $(this).offset().left;
 			var relY = e.pageY - $(this).offset().top;
 
-			var totalWidth = $("#outlineSegmentDiv").width();
+			var totalWidth = $("#outlineSegments").width();
 
 			relX = Math.max(Math.min(relX, totalWidth), 0);
 
@@ -8777,6 +9261,21 @@ $(document).ready(function() {
 
 		return null;
 	}
+
+	$(document).on("mouseup", function(e) {
+		function isInOutline(target) {
+			if ($("#outlinePopup").find(target).length > 0 ||
+				$(".ui-autocomplete-input").find(target).length > 0 ||
+				$(".ui-autocomplete").find(target).length > 0) return true;
+			else return false;
+		}
+
+		if(!isInOutline($(e.target))) {
+			hideOutlinePopup();
+		}
+
+
+	});
 
 	$(document).on("mousedown", ".adaptationTableResourceBody", function(e) {
 		console.log($(e.target));
@@ -11407,6 +11906,9 @@ $(document).ready(function() {
                 $("#loadingPlane").hide();
 				issueEvent("root_attachMonitor", null);
 
+				structureHighlightDB = e.detail.sectionStructure;
+
+				console.log(structureHighlightDB);
               //  closeNav();
                 });
 
@@ -11468,87 +11970,7 @@ $(document).ready(function() {
 		});
 
 		$(document).on("pdfjs_addSegment", function(e) {
-			var p = e.detail;
-
-			var startX = outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length-1].endX;
-			var duration = 1;
-			var width = duration / curPresentationDuration * $("#outlineSegmentEvent").width();
-			var endX = startX + width;
-
-			var slideID = makeid(10);
-			var slideIndex = outlineStructure.length <= 0 ? 2 : outlineStructure[outlineStructure.length-1].endSlideIndex+1;
-
-			outlineStructure.push({
-				messages: [],
-				status: "ready_slide",
-				startX: startX,
-				endX: endX,
-				duration: duration,
-				startSlideID: slideID,
-				startSlideIndex: slideIndex,
-				endSlideIndex: slideIndex,
-				slideIDs: [slideID],
-				colorCode: genColor(),
-				startTime: outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length-1].endTime,
-				endTime: (outlineStructure.length <= 0 ? duration : outlineStructure[outlineStructure.length-1].endTime + duration),
-				label: p.title
-			})
-
-			console.log(outlineStructure);
-
-			var requests = [];
-
-			requests.push({
-				createSlide: {
-					objectId: slideID,
-					insertionIndex: slideIndex-1,
-					slideLayoutReference: {
-						predefinedLayout: 'TITLE_AND_BODY'
-					},
-					/*
-					placeholderIdMappings: [{
-						objectId: titleObjectID,
-						layoutPlaceholder: {
-							type: "TITLE",
-							index: 0
-						}
-					}, {
-						objectId: bodyObjectID,
-						layoutPlaceholder: {
-							type: "BODY",
-							index: 0
-						}
-					}
-					]*/
-				}
-			});
-
-			showLoadingSlidePlane();
-			waitingOutlineIndex = outlineStructure.length-1;
-
-			gapi.client.slides.presentations.batchUpdate({
-				presentationId: PRESENTATION_ID,
-				requests: requests
-			}).then((createSlideResponse) => {
-				console.log(createSlideResponse);
-			});
-
-			console.log(p);
-
-			registerHighlight(p).then(mapping => {
-				console.log(mapping);
-
-				addMessage(outlineStructure.length-1, p.body, mapping.key);
-					
-				issueEvent("root_sendMappingIdentifier", {
-					mappingID: mapping.key,
-					pageNumber: p.pageNumber,
-					startWordIndex: p.startWordIndex,
-					endWordIndex: p.endWordIndex
-				});
-			});
-
-			updateOutlineSegments();
+			addSegment(e.detail);
 		})
 
 		$(document).on("pdfjs_getSectionTitle", function(e) {
@@ -11567,6 +11989,8 @@ $(document).ready(function() {
 					structureHighlightDB[k].startWordIndex <= p.startWordIndex) result = structureHighlightDB[k].text;
 				else break;
 			}
+
+			console.log(result);
 
 			issueEvent("root_getSectionTitle", { title: result });
 		});

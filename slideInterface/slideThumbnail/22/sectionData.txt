@@ -1,143 +1,96 @@
-CCS CONCEPTS
-CCS CONCEPTS
-KEYWORDS
-ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-2 OUR APPROACH: PREEMPTIVE ACTION
-2 OUR APPROACH: PREEMPTIVE ACTION
-3 RELATEDWORK
-Sense of agency
-Sense of agency
-Sense of agency
-Sense of agency
-Sense of agency
-Sense of agency
-Sense of agency
-Sense of agency
-Sense of agency
-Sense of agency
-Sense of agency
-Sense of agency
-Haptic actuation systems
-Haptic actuation systems
-Electrical Muscle Stimulation
-Electrical Muscle Stimulation
-Electrical Muscle Stimulation
-Electrical Muscle Stimulation
-Electrical Muscle Stimulation
-4 USER STUDY 1: MEASURING AGENCY IN PREEMPTIVE HAPTIC SYSTEMS
-Apparatus
-Apparatus
-Apparatus
-Apparatus
-Apparatus
-Apparatus
-Apparatus
-Apparatus
-Apparatus
-Apparatus
-Apparatus
-Task
-Task
-Task
-Procedure
-Participants
-Participants
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Qualitative results
-5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
-5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
-5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
-5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
-5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
-5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
-5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
-5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
-5 MODELLING PREEMPTIVE ACTIONWITH AGENCY
-6 USER STUDY 2: USING OUR MODEL TO OPTIMIZE FOR BOTH AGENCY AND REACTION TIME
-6 USER STUDY 2: USING OUR MODEL TO OPTIMIZE FOR BOTH AGENCY AND REACTION TIME
-Hypotheses
-Hypotheses
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Interface conditions
-Experimental design
-Participants
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-7 LIMITATIONS OF OUR STUDY DESIGNS
-7 LIMITATIONS OF OUR STUDY DESIGNS
-7 LIMITATIONS OF OUR STUDY DESIGNS
-7 LIMITATIONS OF OUR STUDY DESIGNS
-7 LIMITATIONS OF OUR STUDY DESIGNS
-7 LIMITATIONS OF OUR STUDY DESIGNS
-8 DEMONSTRATING HOW TO APPLY OUR FINDINGS
-8 DEMONSTRATING HOW TO APPLY OUR FINDINGS
-8 DEMONSTRATING HOW TO APPLY OUR FINDINGS
-8 DEMONSTRATING HOW TO APPLY OUR FINDINGS
-8 DEMONSTRATING HOW TO APPLY OUR FINDINGS
-8 DEMONSTRATING HOW TO APPLY OUR FINDINGS
-8 DEMONSTRATING HOW TO APPLY OUR FINDINGS
-9 GROUNDING OUR RESULTS IN THE LITERATURE
-9 GROUNDING OUR RESULTS IN THE LITERATURE
-9 GROUNDING OUR RESULTS IN THE LITERATURE
-9 GROUNDING OUR RESULTS IN THE LITERATURE
-9 GROUNDING OUR RESULTS IN THE LITERATURE
-10 OUTLOOK AND FURTHER IMPLICATIONS
-10 OUTLOOK AND FURTHER IMPLICATIONS
-11 CONCLUSIONS
-11 CONCLUSIONS
-11 CONCLUSIONS
-ACKNOWLEDGMENTS
-ACKNOWLEDGMENTS
-REFERENCES
-REFERENCES
-REFERENCES
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+1 INTRODUCTION
+2 THE ROLE OF DESIGN IN MARGINALIZATION
+2 THE ROLE OF DESIGN IN MARGINALIZATION
+2 THE ROLE OF DESIGN IN MARGINALIZATION
+2 THE ROLE OF DESIGN IN MARGINALIZATION
+2 THE ROLE OF DESIGN IN MARGINALIZATION
+2 THE ROLE OF DESIGN IN MARGINALIZATION
+3 DIGITAL DESIGN MARGINALIZATION & MARGINALIZING DESIGN
+3 DIGITAL DESIGN MARGINALIZATION & MARGINALIZING DESIGN
+3 DIGITAL DESIGN MARGINALIZATION & MARGINALIZING DESIGN
+3 DIGITAL DESIGN MARGINALIZATION & MARGINALIZING DESIGN
+3 DIGITAL DESIGN MARGINALIZATION & MARGINALIZING DESIGN
+3 DIGITAL DESIGN MARGINALIZATION & MARGINALIZING DESIGN
+3 DIGITAL DESIGN MARGINALIZATION & MARGINALIZING DESIGN
+3 DIGITAL DESIGN MARGINALIZATION & MARGINALIZING DESIGN
+3 DIGITAL DESIGN MARGINALIZATION & MARGINALIZING DESIGN
+4 EXISTING CONCEPTUALIZATIONS OF INCLUSION AND MARGINALIZATION
+4.1 Conceptualizations Within the Social Sciences
+4.1 Conceptualizations Within the Social Sciences
+4.1 Conceptualizations Within the Social Sciences
+4.1 Conceptualizations Within the Social Sciences
+4.1 Conceptualizations Within the Social Sciences
+4.2 Conceptualizations Within the Design Community
+4.2 Conceptualizations Within the Design Community
+4.2 Conceptualizations Within the Design Community
+4.2 Conceptualizations Within the Design Community
+4.2 Conceptualizations Within the Design Community
+4.2 Conceptualizations Within the Design Community
+4.2 Conceptualizations Within the Design Community
+4.2 Conceptualizations Within the Design Community
+4.3 Related Conceptualizations: Algorithmic Bias
+4.3 Related Conceptualizations: Algorithmic Bias
+4.4 Design Dimensions: Marginalization and Inclusion
+4.4 Design Dimensions: Marginalization and Inclusion
+4.4 Design Dimensions: Marginalization and Inclusion
+4.4 Design Dimensions: Marginalization and Inclusion
+4.4 Design Dimensions: Marginalization and Inclusion
+4.4 Design Dimensions: Marginalization and Inclusion
+5 OLDER ADULTS AND DIGITAL DESIGN MARGINALIZATION
+5 OLDER ADULTS AND DIGITAL DESIGN MARGINALIZATION
+5.1 Case Study: The Accessible Communication App Project
+5.1 Case Study: The Accessible Communication App Project
+5.1 Case Study: The Accessible Communication App Project
+5.1.2 Analysis Through the Lens of Digital Design Marginalization.
+5.1.2 Analysis Through the Lens of Digital Design Marginalization.
+5.1.2 Analysis Through the Lens of Digital Design Marginalization.
+5.1.2 Analysis Through the Lens of Digital Design Marginalization.
+5.1.2 Analysis Through the Lens of Digital Design Marginalization.
+5.1.2 Analysis Through the Lens of Digital Design Marginalization.
+5.1.2 Analysis Through the Lens of Digital Design Marginalization.
+5.1.2 Analysis Through the Lens of Digital Design Marginalization.
+5.1.2 Analysis Through the Lens of Digital Design Marginalization.
+5.1.2 Analysis Through the Lens of Digital Design Marginalization.
+5.1.2 Analysis Through the Lens of Digital Design Marginalization.
+5.1.2 Analysis Through the Lens of Digital Design Marginalization.
+5.1.2 Analysis Through the Lens of Digital Design Marginalization.
+5.1.2 Analysis Through the Lens of Digital Design Marginalization.
+5.1.2 Analysis Through the Lens of Digital Design Marginalization.
+5.1.2 Analysis Through the Lens of Digital Design Marginalization.
+5.2 Case Study: Accessibility Features on Smart Devices
+5.2 Case Study: Accessibility Features on Smart Devices
+5.2 Case Study: Accessibility Features on Smart Devices
+5.2 Case Study: Accessibility Features on Smart Devices
+5.2.2 Analysis Through the Lens of Digital Design Marginalization.
+5.2.2 Analysis Through the Lens of Digital Design Marginalization.
+5.2.2 Analysis Through the Lens of Digital Design Marginalization.
+5.2.2 Analysis Through the Lens of Digital Design Marginalization.
+5.2.2 Analysis Through the Lens of Digital Design Marginalization.
+5.2.2 Analysis Through the Lens of Digital Design Marginalization.
+6 DESIGN PRACTICES VIEWED THROUGH THE LENS OF DIGITAL DESIGN MARGINALIZATION
+6 DESIGN PRACTICES VIEWED THROUGH THE LENS OF DIGITAL DESIGN MARGINALIZATION
+6 DESIGN PRACTICES VIEWED THROUGH THE LENS OF DIGITAL DESIGN MARGINALIZATION
+6 DESIGN PRACTICES VIEWED THROUGH THE LENS OF DIGITAL DESIGN MARGINALIZATION
+6 DESIGN PRACTICES VIEWED THROUGH THE LENS OF DIGITAL DESIGN MARGINALIZATION
+7 CONCLUSION
+7 CONCLUSION
+7 CONCLUSION
+7 CONCLUSION
+7 CONCLUSION
+7 CONCLUSION
+7 CONCLUSION
 REFERENCES
 REFERENCES
 REFERENCES

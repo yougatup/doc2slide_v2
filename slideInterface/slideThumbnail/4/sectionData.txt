@@ -1,9 +1,3 @@
-CCS CONCEPTS
-KEYWORDS
-ACM Reference Format:
-ACM Reference Format:
-ACM Reference Format:
-ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
@@ -11,102 +5,77 @@ ACM Reference Format:
 1 INTRODUCTION
 1 INTRODUCTION
 1 INTRODUCTION
-1 INTRODUCTION
-2 RELATEDWORK
-Interaction with The Face
-Bite Force Measurement
-Bite Force Measurement
-Bite Force Measurement
-Clench Detection in The Wild
-Clench Detection in The Wild
-3 USER STUDY 1: CLENCH FORCE CONTROL
-Task
-Task
-Task
-Task
-Design and Procedure
-Calibration.
-Calibration.
-Performance Measures.
-Procedure.
-Participants
-Apparatus
-Apparatus
-Apparatus
-Results
-Confirmation Techniques.
-Confirmation Techniques.
-Number of Clench Force Levels.
-Effect of Visual Feedback.
-Effect of Visual Feedback.
-Effect of Visual Feedback.
-Effect of Visual Feedback.
-Effect of Visual Feedback.
-Effect of Visual Feedback.
-Effect of Visual Feedback.
-Control at Different Clench Force Level.
-4 CLENCH INTERACTION DESIGN
-4 CLENCH INTERACTION DESIGN
-4 CLENCH INTERACTION DESIGN
-4 CLENCH INTERACTION DESIGN
-Evaluation
-Material.
-Procedure.
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Gesture for Discrete Command Input.
-Clench for Value Control.
-Clench for Value Control.
-Clench for Value Control.
-5 USER STUDY 2: PERFORMANCE EVALUATION
-Task
-Task
-Task
-Task
-Task
-Task
-Task
-Design and Procedure
-Design and Procedure
-Design and Procedure
-Design and Procedure
-Participants and Apparatus
-Participants and Apparatus
-Results
-Results
-6 USER STUDY 3: CLENCH USE CASE STUDY
-6 USER STUDY 3: CLENCH USE CASE STUDY
-Design and Procedure
-Participants and Apparatus
-Results
-Results
-7 DISCUSSION
-Associating Clench Semantically
-Limitation and Future Work
-Limitation and Future Work
-Limitation and Future Work
-Limitation and Future Work
-Limitation and Future Work
-8 CONCLUSION
-8 CONCLUSION
-8 CONCLUSION
-9 ACKNOWLEDGEMENT
+2.1 The Fear of Missing Out in 360° Video
+2.1 The Fear of Missing Out in 360° Video
+2.1 The Fear of Missing Out in 360° Video
+2.1 The Fear of Missing Out in 360° Video
+2.1 The Fear of Missing Out in 360° Video
+2.2 The Joy of Missing Out in 360° Video
+2.2 The Joy of Missing Out in 360° Video
+2.2 The Joy of Missing Out in 360° Video
+2.3 Sense of Presence in 360° Video
+2.3 Sense of Presence in 360° Video
+2.3 Sense of Presence in 360° Video
+2.4 Efects of Repeated Viewings on FOMO, JOMO, and Sense of Presence
+2.4 Efects of Repeated Viewings on FOMO, JOMO, and Sense of Presence
+3.1 Stimulus: 360° Split-Sphere Film
+3.1 Stimulus: 360° Split-Sphere Film
+3.1 Stimulus: 360° Split-Sphere Film
+3.2 Experiment Design
+3.2 Experiment Design
+3.2 Experiment Design
+3.2 Experiment Design
+3.3 Procedure
+3.3 Procedure
+3.3 Procedure
+3.3 Procedure
+3.3 Procedure
+3.3 Procedure
+3.3 Procedure
+3.3 Procedure
+3.5 Measures
+3.5 Measures
+3.5 Measures
+3.5 Measures
+3.5 Measures
+3.5 Measures
+3.6 Data Analysis
+4.1 Fear of Missing Out in 360° Video
+4.1 Fear of Missing Out in 360° Video
+4.1 Fear of Missing Out in 360° Video
+4.1 Fear of Missing Out in 360° Video
+4.1 Fear of Missing Out in 360° Video
+4.1 Fear of Missing Out in 360° Video
+4.1 Fear of Missing Out in 360° Video
+4.1 Fear of Missing Out in 360° Video
+4.1 Fear of Missing Out in 360° Video
+4.1 Fear of Missing Out in 360° Video
+4.2 Joy of Missing Out in 360° Video
+4.2 Joy of Missing Out in 360° Video
+4.2 Joy of Missing Out in 360° Video
+4.2 Joy of Missing Out in 360° Video
+4.2 Joy of Missing Out in 360° Video
+4.3 Association between FOMO and JOMO
+4.3 Association between FOMO and JOMO
+4.4 Presence, FOMO, and JOMO
+4.4 Presence, FOMO, and JOMO
+4.4 Presence, FOMO, and JOMO
+4.4 Presence, FOMO, and JOMO
+5 LIMITATIONS
+5 LIMITATIONS
+6.1 FOMO and JOMO: Two Sides of the Same Coin
+6.2 Implications for Research on FOMO and JOMO
+6.2 Implications for Research on FOMO and JOMO
+6.2 Implications for Research on FOMO and JOMO
+6.2 Implications for Research on FOMO and JOMO
+6.2 Implications for Research on FOMO and JOMO
+6.2 Implications for Research on FOMO and JOMO
+6.2 Implications for Research on FOMO and JOMO
+6.3 Design and Storytelling Implications
+6.3 Design and Storytelling Implications
+7 CONCLUSION
+ACKNOWLEDGMENTS
+ACKNOWLEDGMENTS
 REFERENCES
 REFERENCES
 REFERENCES
@@ -114,3 +83,33 @@ REFERENCES
 REFERENCES
 REFERENCES
 REFERENCES
+A DATA
+A DATA
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+B SURVEY QUESTIONS B.1 Experience with Technology
+C ROTATIONAL DATA C.1 Side Switches.
+C ROTATIONAL DATA C.1 Side Switches.
+C ROTATIONAL DATA C.1 Side Switches.
