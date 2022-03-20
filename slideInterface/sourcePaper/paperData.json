@@ -1,0 +1,1880 @@
+{
+  "abstractText": {
+    "page": 0,
+    "region": {
+      "x1": 53.56999969482422,
+      "x2": 298.75750732421875,
+      "y1": 197.23440551757812,
+      "y2": 389.6650085449219
+    },
+    "text": "ABSTRACT Online instructional videos are ubiquitous, but it is difficult for instructors to gauge learners’ experience and their level of comprehension or confusion regarding the lecture video. Moreover, learners watching the videos may become disengaged or fail to reflect and construct their own understanding. This paper explores instructor and learner perceptions of invideo prompting where learners answer reflective questions while watching videos. We conducted two studies with crowd workers to understand the effect of prompting in general, and the effect of different prompting strategies on both learners and instructors. Results show that some learners found prompts to be useful checkpoints for reflection, while others found them distracting. Instructors reported the collected responses to be generally more specific than what they have usually collected. Also, different prompting strategies had different effects on the learning experience and the usefulness of responses as feedback."
+  },
+  "figures": [{
+    "caption": "Figure 1: An example of in-video prompting supported by a video learning interface. Once the playhead reaches the red bar, the prompt appears. This example asks a question about the learner’s comprehension on a specific part of the video. While common, it’s not the only possible prompting type. This paper explores the design space of in-video prompting, and presents how learners perceive the general idea of in-video prompting and different prompting designs.",
+    "captionBoundary": {
+      "x1": 320.6260070800781,
+      "x2": 565.9129638671875,
+      "y1": 326.9380798339844,
+      "y2": 410.1319885253906
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "1",
+    "page": 0,
+    "regionBoundary": {
+      "x1": 333.0,
+      "x2": 553.0,
+      "y1": 192.0,
+      "y2": 316.0
+    }
+  }, {
+    "caption": "Table 1: The design space of in-video prompting questions, segmented by comprehension-experience orientation and the level of specificity. Comprehension-centered/Experience-centered questions ask about learners’ comprehension and learning experience. General/Specific questions determine whether the questions refer to lecture content or not. Table 1a shows example questions for each prompting strategy, and Table 1b shows sample responses for each prompting condition.",
+    "captionBoundary": {
+      "x1": 53.599998474121094,
+      "x2": 565.9279174804688,
+      "y1": 63.55208969116211,
+      "y2": 102.90997314453125
+    },
+    "figType": "Table",
+    "imageText": ["(b)", "Sample", "responses", "to", "each", "question", "presented", "in", "Table", "1a,", "submitted", "by", "crowd", "workers", "in", "our", "study.", "Speciﬁc", "The", "standard", "deviation", "is", "calculated", "by", "taking", "the", "square", "root", "of", "the", "variance.", "Explanation", "of", "change", "from", "squared", "units", "to", "units", "was", "slightly", "too", "fast.", "The", "instructor’s", "handwriting", "is", "a", "little", "bad.", "General", "Population", "standard", "deviation", "and", "how", "it", "is", "calculated", "and", "what", "it", "means", "if", "it", "is", "a", "larger", "number.", "Comprehension-centered", "Experience-centered", "(a)", "Sample", "questions", "for", "each", "prompting", "condition.", "Speciﬁc", "Describe", "how", "to", "calculate", "the", "standard", "deviation.", "You", "may", "assume", "you", "want", "to", "calculate", "the", "standard", "deviation", "of", "ﬁve", "numbers.", "Describe", "something", "unsatisfying", "about", "calculating", "the", "standard", "deviation.", "You", "can", "consider", "how", "clear", "the", "explanation", "was,", "how", "fast", "the", "explanation", "was,", "and", "what", "information", "was", "missing.", "General", "Describe", "what", "you", "have", "learned", "so", "far.", "Describe", "something", "unsatisfying", "about", "the", "lecture", "so", "far.", "Comprehension-centered", "Experience-centered"],
+    "name": "1",
+    "page": 1,
+    "regionBoundary": {
+      "x1": 53.0,
+      "x2": 565.0,
+      "y1": 132.0,
+      "y2": 344.1050109863281
+    }
+  }, {
+    "caption": "Table 3: The number of participants in each group and subgroup. Co-Sp: comprehension-centered and specific, CoGe: comprehension-centered and general, Ex-Sp: Experiencecentered and specific, and Ex-Ge: experience-centered and general. High: participants with high pretest scores; Low: participants with low pretest scores.",
+    "captionBoundary": {
+      "x1": 53.60000228881836,
+      "x2": 298.6670837402344,
+      "y1": 404.3430480957031,
+      "y2": 465.6189880371094
+    },
+    "figType": "Table",
+    "imageText": ["Ex-Ge", "50", "31", "19", "Ex-Sp", "50", "23", "27", "Co-Ge", "50", "21", "29", "Co-Sp", "50", "22", "28", "Total", "High", "Low"],
+    "name": "3",
+    "page": 6,
+    "regionBoundary": {
+      "x1": 110.0,
+      "x2": 241.0,
+      "y1": 479.0,
+      "y2": 564.0
+    }
+  }, {
+    "caption": "Figure 2: Participants’ self-reported learning experiences captured by responses to 6 survey questions (Q1-Q6). Bar graphs show the responses to each question for each of the four prompting strategies. Questions on the left column (Q1-Q4) address positive experiences while questions on the right column (Q5-Q6) address negative experiences. Error bar: +/- 1 standard error of the mean.",
+    "captionBoundary": {
+      "x1": 53.92900085449219,
+      "x2": 564.5376586914062,
+      "y1": 334.903076171875,
+      "y2": 374.260986328125
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "2",
+    "page": 6,
+    "regionBoundary": {
+      "x1": 65.0,
+      "x2": 553.0,
+      "y1": 62.0,
+      "y2": 324.0
+    }
+  }, {
+    "caption": "Table 2: Main pros and cons of in-video prompting from learners’ perspective (number of mentions in parenthesis)",
+    "captionBoundary": {
+      "x1": 79.03199768066406,
+      "x2": 538.7537841796875,
+      "y1": 63.55208969116211,
+      "y2": 70.03302001953125
+    },
+    "figType": "Table",
+    "imageText": ["Emotional", "responses", "-", "Provide", "interactivity.", "(5)", "-", "Cause", "anxiety.", "(17)", "-", "Provide", "no", "feedback", "on", "responses.", "(9)", "Learning", "process", "-", "Encourage", "reﬂection.", "(57)", "-", "Split", "the", "lecture", "into", "small", "pieces.", "(16)", "-", "Help", "grasp", "key", "concepts.", "(10)", "Concentration", "-", "Enhance", "learners’", "concentration.", "(42)", "-", "Distract", "from", "the", "learning", "process.", "(59)", "Pros", "Cons"],
+    "name": "2",
+    "page": 4,
+    "regionBoundary": {
+      "x1": 53.0,
+      "x2": 565.0,
+      "y1": 83.0,
+      "y2": 174.0
+    }
+  }],
+  "sections": [{
+    "paragraphs": [{
+      "page": 0,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 196.48960876464844,
+        "y1": 420.91729736328125,
+        "y2": 426.9200134277344
+      },
+      "text": "K.3.1. Computer Uses in Education"
+    }],
+    "title": {
+      "page": 0,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 179.48883056640625,
+        "y1": 409.8323669433594,
+        "y2": 415.4630126953125
+      },
+      "text": "ACM Classification Keywords"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 0,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 293.2702331542969,
+        "y1": 458.1733093261719,
+        "y2": 475.135009765625
+      },
+      "text": "Online Education; In-Video Prompting; MOOC; Reflection; Feedback; Learners; Instructors."
+    }],
+    "title": {
+      "page": 0,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 127.75502014160156,
+        "y1": 447.08837890625,
+        "y2": 452.7190246582031
+      },
+      "text": "Author Keywords"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 0,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 298.6658630371094,
+        "y1": 506.3882751464844,
+        "y2": 621.97998046875
+      },
+      "text": "In online learning environments, an important task for instructors is to inspect learners’ level of comprehension and learning experience regarding their lecture videos. Such inspection enables instructors to gain insights into what to teach and how to teach in future instruction. Online learning platforms such as Coursera and edX collect data from multiple sources and provide dashboard interfaces for instructors to support this task. Available data streams include video clickstream logs, responses to in-video quizzes, submissions for assignments and exams, platform interaction data, discussion forum posts, and course reviews."
+    }, {
+      "page": 0,
+      "region": {
+        "x1": 55.913002014160156,
+        "x2": 295.14215087890625,
+        "y1": 632.8181762695312,
+        "y2": 684.8410034179688
+      },
+      "text": "Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org."
+    }, {
+      "page": 0,
+      "region": {
+        "x1": 55.38300323486328,
+        "x2": 296.2440185546875,
+        "y1": 691.0418701171875,
+        "y2": 714.72900390625
+      },
+      "text": "CHI 2018, April 21–26, 2018, Montreal, QC, Canada © 2018 Copyright held by the owner/author(s). Publication rights licensed to ACM. ISBN 978-1-4503-5620-6/18/04. . . $15.00"
+    }, {
+      "page": 0,
+      "region": {
+        "x1": 55.913002014160156,
+        "x2": 235.17274475097656,
+        "y1": 721.3244018554688,
+        "y2": 725.68798828125
+      },
+      "text": "DOI: https://doi.org/10.1145/3173574.3173893"
+    }, {
+      "page": 0,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 565.831298828125,
+        "y1": 444.31829833984375,
+        "y2": 581.8270263671875
+      },
+      "text": "Research shows that learner-generated data such as artifacts in discussion forums and learner surveys are important in monitoring online courses [20] and preparing future iterations of the course [27]. Discussion forums and review websites are popular communication channels where learners share their comprehension and evaluation of the course. Through discussion forums, instructors can check how learners understand concepts and correct misconceptions by intervening in discussions among learners [15]. Review websites address various dimensions of a course, such as the level of difficulty, quality of contents, and instruction delivery. From these channels, instructors can assess how learners perceive their material and course design, which could serve as useful feedback."
+    }, {
+      "page": 0,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 565.919921875,
+        "y1": 592.7613525390625,
+        "y2": 675.4760131835938
+      },
+      "text": "However, existing channels for collecting learners’ responses and input are insufficient as a source of feedback. Posts on discussion forums could give insights into the level of comprehension, but only a small portion of learners participate in the discussion forums [3]. Posts on review websites capture subjective learning experiences, but their granularity is at the course level, which is not specific enough for instructors to identify which specific parts of the lecture need to be improved."
+    }, {
+      "page": 0,
+      "region": {
+        "x1": 320.7860107421875,
+        "x2": 565.8264770507812,
+        "y1": 696.8910522460938,
+        "y2": 714.3309936523438
+      },
+      "text": "To address these challenges, we investigate in-video prompting as a channel for collecting learners’ feedback on lecture"
+    }, {
+      "page": 0,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 319 Page 1"
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 53.68000030517578,
+        "x2": 298.7530212402344,
+        "y1": 374.665283203125,
+        "y2": 512.1749877929688
+      },
+      "text": "videos while minimizing disruption in learners’ experience. In-video prompting presents reflective questions to learners while they are watching the video, in order to get specific comments on their level of comprehension or learning experience. Figure 1 shows an example video learning interface equipped with in-video prompting. Unique properties of invideo prompting are that (1) all learners who watch the video encounter the prompts, which is likely to yield a high response rate, (2) prompting at an inopportune time might distract learners from learning, and (3) since the prompts are given in the middle of learners’ video watching session, they can ask specific questions to learners about the material just covered in the video."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 298.7479248046875,
+        "y1": 523.1082763671875,
+        "y2": 627.740966796875
+      },
+      "text": "Little research has investigated the effect of in-video prompting and its design space. A common type of in-video prompting is in-video quizzes [13], which are commonly multiple choice questions or short-answer questions that pop up during playback to maintain engagement and check understanding. But the types of possible in-video prompts are not limited to quizzes. For example, they could allow a more detailed insight into learners’ interpretation of video content. Also, carefully designed prompts could enhance learning, as research shows that reflective prompts improve learning outcomes [5, 24]."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 53.619998931884766,
+        "x2": 298.6667175292969,
+        "y1": 638.67529296875,
+        "y2": 710.4310302734375
+      },
+      "text": "The design of questions used for prompting is important in determining the type and quality of comments that instructors collect and students’ learning experience. Depending on what goal the instructor wishes to achieve with in-video prompting, questions could focus on either revealing learners’ level of comprehension, or understanding their subjective learning experience. As the learning experience is affected"
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 320.8450012207031,
+        "x2": 565.8310546875,
+        "y1": 374.665283203125,
+        "y2": 413.5450134277344
+      },
+      "text": "by the questions, we also need to understand how learners perceive in-video prompting. To understand the effect of invideo prompting on both learners and instructors, we pose the following research questions:"
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 321.59197998046875,
+        "x2": 564.6156616210938,
+        "y1": 423.6763000488281,
+        "y2": 430.48101806640625
+      },
+      "text": "• RQ1. What are learners’ perceptions of in-video prompting?"
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 321.5929870605469,
+        "x2": 564.17236328125,
+        "y1": 444.5552673339844,
+        "y2": 462.3190002441406
+      },
+      "text": "• RQ2. How do different in-video prompting strategies affect the learning experience?"
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 321.5920104980469,
+        "x2": 564.1760864257812,
+        "y1": 476.39227294921875,
+        "y2": 494.156005859375
+      },
+      "text": "• RQ3. How useful are learner responses to in-video prompts as feedback to instructors?"
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 320.6260070800781,
+        "x2": 565.8322143554688,
+        "y1": 505.09027099609375,
+        "y2": 664.5169677734375
+      },
+      "text": "We focus on two dimensions in exploring the design space of in-video prompting: the type of information collected from learners, and the specificity of the question. Table 1a illustrates the combinations of these two dimensions (the comprehensionexperience orientation and the level of specificity) with example questions. The comprehension-experience orientation represents which information learners need to submit: comprehension-centered questions ask about the level of comprehension, while experience-centered questions ask about the learning experience. The level of specificity represents whether the questions refer to lecture content or not. General questions prompt for reflection on the lecture content without referencing specific context, whereas specific questions ask about the lecture content in detail. Table 1b shows examples of learner responses for each prompting questions."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 320.7860107421875,
+        "x2": 565.8314819335938,
+        "y1": 675.4512939453125,
+        "y2": 714.3309936523438
+      },
+      "text": "To answer the three research questions, we conducted a series of studies and interviews. To understand the learners’ perspective, we conducted two studies with crowd workers to explore both the effect of prompting in general (RQ1) and the"
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 319 Page 2"
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 53.56999969482422,
+        "x2": 298.7548828125,
+        "y1": 66.32230377197266,
+        "y2": 214.791015625
+      },
+      "text": "effect of different prompting strategies (RQ2). We collected open-ended responses about the pros and cons of prompting from learners and found evidence that learners generally prefer comprehension-centered prompting to experience-centered prompting. We conducted interviews with instructors and instructional designers to understand the usefulness of the collected learner responses as feedback on how the learners were doing, and if the course iterations needed change (RQ3). It turns out that collected responses are generally more specific than what they have usually collected. Instructors found responses to experience-centered questions provided more actionable feedback than those from comprehension-centered questions. Instructional designers provided insights into designing better prompting strategies."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 53.62000274658203,
+        "x2": 236.63037109375,
+        "y1": 225.7242889404297,
+        "y2": 231.72698974609375
+      },
+      "text": "The contributions of this paper are as follows:"
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 54.427001953125,
+        "x2": 297.0039978027344,
+        "y1": 241.8582305908203,
+        "y2": 259.62200927734375
+      },
+      "text": "• Results from a study on learners’ perception of in-video prompting, organized into a list of pros and cons."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 54.426998138427734,
+        "x2": 298.6589660644531,
+        "y1": 272.6612854003906,
+        "y2": 301.3840026855469
+      },
+      "text": "• Results from a study on learners’ perception of four different prompting strategies, which span general versus specific, and comprehension-centered versus experience-centered."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 54.426998138427734,
+        "x2": 298.66009521484375,
+        "y1": 314.42327880859375,
+        "y2": 343.1449890136719
+      },
+      "text": "• Results from interviews with instructors and instructional designers about the usefulness of learner responses as feedback on lecture videos."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 53.56999969482422,
+        "x2": 298.6609802246094,
+        "y1": 354.07928466796875,
+        "y2": 436.79400634765625
+      },
+      "text": "The rest of paper is organized as follows. First, we survey related work. Second, we present instructor perspectives on learner feedback on lectures. Third, we present two studies designed to understand how in-video prompting affects learners. Fourth, we report results from interviews with instructors and instructor designers to understand how learner responses to in-video prompting serve as feedback. Finally, we conclude with the discussion of the effect of in-video prompting."
+    }],
+    "title": {
+      "page": 0,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 122.48301696777344,
+        "y1": 495.3033752441406,
+        "y2": 500.93402099609375
+      },
+      "text": "INTRODUCTION"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 2,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 298.6651916503906,
+        "y1": 465.4502868652344,
+        "y2": 515.2879638671875
+      },
+      "text": "In-video prompting involves promoting learner reflection and providing feedback to instructors. We briefly review prior research on these topics, such as methods for collecting feedback in both offline and online settings and the effect of reflective prompting on learners."
+    }],
+    "title": {
+      "page": 2,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 126.15908813476562,
+        "y1": 454.3653564453125,
+        "y2": 459.9960021972656
+      },
+      "text": "RELATED WORK"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 2,
+      "region": {
+        "x1": 53.56999969482422,
+        "x2": 298.7548522949219,
+        "y1": 543.9443359375,
+        "y2": 714.3309936523438
+      },
+      "text": "Existing online learning platforms have been collecting learners’ interaction data in both passive and active ways. Clickstream and in-video dropout data are passively collected in that the data is naturally collected regardless of learners’ intention. Although research has investigated presenting [11] and analyzing passive data [4, 26], the conclusions that can be drawn are limited as feedback because users’ true intentions behind traces are unknown. Forum posts are actively collected in that learners explicitly give the data to the platforms. Agrawal et al. [1] and Wen et al. [22] have investigated analyzing discussion forum posts to get meaningful insights from them. The granularity of forum posts is at the course-level, which makes it hard for instructors to figure out which specific parts of the lecture need to be improved. Singh et al. [19] and Lee et al. [14] facilitate discussion among learners within a lecture video. Although instructors can get more specific learner comments,"
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 320.8450012207031,
+        "x2": 565.8316040039062,
+        "y1": 66.32230377197266,
+        "y2": 105.20098876953125
+      },
+      "text": "it has limitation as feedback in that instructors cannot control the types of learner comments. In this paper, we explore invideo prompting, which yields specific and controlled learner comments, as a channel for collecting more useful feedback."
+    }],
+    "title": {
+      "page": 2,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 201.76934814453125,
+        "y1": 532.8593139648438,
+        "y2": 538.489990234375
+      },
+      "text": "Utilizing Learners’ Interaction Data"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 2,
+      "region": {
+        "x1": 320.6260070800781,
+        "x2": 565.912841796875,
+        "y1": 135.8652801513672,
+        "y2": 251.45697021484375
+      },
+      "text": "Vidcrit [17] supports asynchronous video review and sharing feedback on videos, but is designed for reviewers who indicate problems or offer suggestions, not for learners. Mudslide [9] attempts to collect spatially contextualized ‘muddy’ points in a video with specific explanations, which enables instructors to figure out the common points of confusion with reasons. We see Mudslide as a case of in-video prompting, which uses spatial anchoring at the end of the video as its prompt. In this work, we aim to understand the effect of in-video prompting broadly by exploring two specific design dimensions described in Table 1a."
+    }],
+    "title": {
+      "page": 2,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 516.3734741210938,
+        "y1": 124.78036499023438,
+        "y2": 130.4110107421875
+      },
+      "text": "Providing Feedback on Online Lecture Videos"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 2,
+      "region": {
+        "x1": 320.7659912109375,
+        "x2": 565.9176025390625,
+        "y1": 282.12127685546875,
+        "y2": 419.6310119628906
+      },
+      "text": "In a physical classroom, classroom assessment techniques (CAT) can be used to collect qualitative comments [8]. A technique described in CAT is called One-Minute paper, which asks questions to students at the end of the class. The questions include “What are the most important concepts you have learned today?”, and “What are the most confusing points?”. It not only provides students with a better learning experience [21] and higher scores on tests for some cases [7], but also enables instructors to improve teaching with formative evaluation. Our work seeks to explore the design space of invideo prompting and to help design effective online prompts that provide benefits to both learners and instructors like the One-Minute paper."
+    }],
+    "title": {
+      "page": 2,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 551.5921020507812,
+        "y1": 271.0363464355469,
+        "y2": 276.6669921875
+      },
+      "text": "Collecting Qualitative Comments in Offline Classroom"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 2,
+      "region": {
+        "x1": 320.7359924316406,
+        "x2": 565.9129028320312,
+        "y1": 450.2952880859375,
+        "y2": 653.5590209960938
+      },
+      "text": "Many studies have demonstrated that students can learn more when they are prompted to explain the meaning of what they are learning. For example, prompting students to explain what they understand from biology texts enhances the accuracy of students’ mental models about the circulatory system, arguably by helping students generate inferences and spot gaps in their understanding [5]. Williams et al. [24] suggest that explaining why a fact is true drives learners to discover underlying patterns or principles. On the other hand, there are many known cases where prompts to reflect do not enhance learning, and many more that are likely unreported. There are even cases where prompts to reflect can hurt learning, by causing learners to overgeneralize [25], ignore details [23], or rely on incorrect prior knowledge rather than observed facts [6]. These contradictory finding underscore the importance of exploring the design space of how prompts to reflect impact learners. In particular, it is important to understand the strengths and weaknesses of different kinds of prompting strategies, and how these are perceived by learners."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 320.6260070800781,
+        "x2": 565.9197387695312,
+        "y1": 664.4923095703125,
+        "y2": 714.3309936523438
+      },
+      "text": "In the context of learning online video, platforms like Coursera allow instructors to insert in-video multiple choice quizzes. While there have been studies of how they affects learners’ video navigation [13], there is less evidence about the causal impact on learning. In addition, in-video quizzes must be"
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 319 Page 3"
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 53.56999969482422,
+        "x2": 298.6678161621094,
+        "y1": 66.32230377197266,
+        "y2": 192.87298583984375
+      },
+      "text": "designed for the specific content of a video, while work on reflective prompting tends to use general prompts that aren’t tied to specific content. There has been relatively little research on the effects of adding general prompts to online videos, as existing work focuses more on different formats of video presentation [16]. In addition, educational studies of prompting have focused more on learning outcomes than on learners’ subjective experiences. And as most studies of prompting have been conducted in laboratory settings or physical classrooms, little is known about what instructors might learn by being able to rapidly view students’ responses to prompts. In this work, we attempt to fill this gap in literature."
+    }],
+    "title": {
+      "page": 2,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 503.1576843261719,
+        "y1": 439.2103576660156,
+        "y2": 444.84100341796875
+      },
+      "text": "Effect of Reflective Prompting on Students"
+    }
+  }, {
+    "paragraphs": [],
+    "title": {
+      "page": 3,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 296.9881896972656,
+        "y1": 216.04733276367188,
+        "y2": 221.677978515625
+      },
+      "text": "INSTRUCTOR PERSPECTIVES ON LEARNER FEEDBACK"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 3,
+      "region": {
+        "x1": 53.56999969482422,
+        "x2": 298.6678161621094,
+        "y1": 241.08030700683594,
+        "y2": 356.6719970703125
+      },
+      "text": "To better understand instructors’ perspectives on learner feedback on lecture videos, we conducted interviews with three instructors on campus and a web-based survey with five MOOC instructors outside of campus. We aimed to understand (1) what learner feedback instructors collect in their current practice, and (2) how useful learner feedback is in improving instruction. Among the interviewees, one instructor had experience in teaching a MOOC, and two instructors had experience in the flipped classroom method. Each interview session took about an hour, and the expected completion time for the survey was 15 minutes. We summarize the main findings below."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 53.18199920654297,
+        "x2": 298.6666564941406,
+        "y1": 367.1270751953125,
+        "y2": 450.3210144042969
+      },
+      "text": "Lack of learner comments. Instructors reported having few learner comments to work with in the first place. In the interview, the MOOC instructor said there were approximately 10 questions per each video. The flipped classroom instructors pointed out that they do not typically ask for feedback because students tend to passively consume the lecture video and they did not expect students to be willing to provide useful comments."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 298.662841796875,
+        "y1": 460.7760925292969,
+        "y2": 565.886962890625
+      },
+      "text": "Lack of Specificity. Even in the context where learners leave comments in forums, instructors responded that the comments are not specific enough to understand what causes the confusion or problem. Two of the survey respondents expressed that they would like to receive comments specifically anchored to the lecture content, such as “I would like more examples of this algorithm”, and “How do Japan and China name Japanese invasions of Korea described in slide 17?”. One of the survey respondents expressed the need for feedback on her instruction delivery, such as the tone of speech and sentence length."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 53.619998931884766,
+        "x2": 298.7478942871094,
+        "y1": 576.8212890625,
+        "y2": 714.3309936523438
+      },
+      "text": "From the interviews and the survey, we confirmed that there are few learner comments, and the comments are generally not specific enough to be used as feedback. We anticipate that in-video prompting can address these challenges by actively asking questions while learners are watching lecture videos. However, it is hard for learners to provide a large amount of specific feedback. Questions that drive our investigation in in-video prompting include: How should we design questions in prompts to collect useful feedback? What is the effect of prompting on the learning experience? How distracting is it for learners to answer the questions while watching a video? How useful are the collected responses as feedback to instructors? To answer these questions, we conducted a series of studies."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 320.6260070800781,
+        "x2": 565.8320922851562,
+        "y1": 66.69436645507812,
+        "y2": 171.4530029296875
+      },
+      "text": "INVESTIGATING IN-VIDEO PROMPTING We aim to understand the effect of in-video prompting on both learners and instructors. Our investigation is organized as follows. We first present two studies designed to understand the effect of in-video prompting on learners. Then we consider the usefulness of collected responses as feedback from instructors’ view as well as from instructional designers’ view. Finally, we wrap up the studies by discussing the complexity of considering viewpoints of multiple stakeholders when designing prompting strategies."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 320.6260070800781,
+        "x2": 565.8291015625,
+        "y1": 182.38731384277344,
+        "y2": 287.0199890136719
+      },
+      "text": "We conducted two studies to understand the effect of in-video prompting on learners. The first study explored learners’ qualitative experience of receiving in-video prompts. Learners watched videos with and without reflective prompts, and answered open-ended questions about their experience. The second study investigated how the type of prompt might influence learners’ perceptions, comparing specific versus general prompts, and prompts focused on comprehension versus sharing one’s experience with the instructor. The second study also collected quantitative measures of learners’ experience."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 565.4217529296875,
+        "y1": 297.9532775878906,
+        "y2": 347.7919921875
+      },
+      "text": "Learners received prompts to reflect at the beginning, middle, and end of each video. Prompts at the beginning could prepare people for learning [18], prompts in the middle can maintain engagement with mid-video prompts, and prompts at the end help in review the material as a whole [10]."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 320.7860107421875,
+        "x2": 565.8284912109375,
+        "y1": 362.53033447265625,
+        "y2": 412.4949951171875
+      },
+      "text": "STUDY 1. LEARNER PERCEPTIONS OF PROMPTING The objective of the first study was to gain a qualitative understanding of how learners perceive the addition of in-video reflective prompts, by asking them to compare learning experiences with and without prompts."
+    }],
+    "title": {
+      "page": 3,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 148.58303833007812,
+        "y1": 229.99533081054688,
+        "y2": 235.6259765625
+      },
+      "text": "ON LECTURE VIDEOS"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 3,
+      "region": {
+        "x1": 320.7359924316406,
+        "x2": 565.83154296875,
+        "y1": 438.31829833984375,
+        "y2": 499.114990234375
+      },
+      "text": "Participants watched two 8 minute lecture videos, one with reflective prompts, and one without any prompts. The videos were from Khan Academy, titled “Population standard deviation” and “Logarithms”, respectively. The order of presentation and pairing of prompting condition with topic were counterbalanced."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 320.7359924316406,
+        "x2": 565.832763671875,
+        "y1": 510.0492858886719,
+        "y2": 581.8049926757812
+      },
+      "text": "After participants watched both videos, they were asked openended questions about their experience in either condition, to compare their experience with respect to enjoyment, cognitive goal, and the perceived benefits to learning. 1 The prompting condition was counterbalanced over all four prompting strategies (see Table 1a), which we discuss in more depth in Study 2."
+    }],
+    "title": {
+      "page": 3,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 433.8772888183594,
+        "y1": 427.23333740234375,
+        "y2": 432.8639831542969
+      },
+      "text": "Study Design & Procedure"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 3,
+      "region": {
+        "x1": 320.6260070800781,
+        "x2": 565.91357421875,
+        "y1": 607.6293334960938,
+        "y2": 714.3309936523438
+      },
+      "text": "We recruited 100 participants (55 male, mean age 35.1) on Amazon Mechanical Turk, paying $6 for an hour-long study. Recruiting crowd workers enables us to (1) obtain a more general population compared to lab settings and (2) have greater experimental control to collect more extensive data about learning experiences, even though the motivation and background knowledge of crowd workers may be different from those of learners in online learning platforms. 1We also administered pretests and posttests to measure learning, but did not see significant effects."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 319 Page 4"
+    }],
+    "title": {
+      "page": 3,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 372.3257751464844,
+        "y1": 596.5443115234375,
+        "y2": 602.1749877929688
+      },
+      "text": "Participants"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 4,
+      "region": {
+        "x1": 53.56999969482422,
+        "x2": 298.7547302246094,
+        "y1": 207.39329528808594,
+        "y2": 333.9429931640625
+      },
+      "text": "To analyze participants’ comments, we first separated comments consisting of more than one point into multiple comments so that each comment contains only one idea. We then categorized each comment into two groups based on whether it was positive or negative. Out of 231 comments, 130 were positive and 101 were negative. For comments in each group, one researcher conducted open coding to categorize each response. Afterwards, another researcher verified the coded labels and resolved conflicts with discussion. Table 2 describes the reported pros and cons of in-video prompting from learners’ perspective. The extracted categories of participants’ comments are as follows:"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 298.6624450683594,
+        "y1": 344.3990783691406,
+        "y2": 405.67401123046875
+      },
+      "text": "Enhance learners’ concentration. Prompting encourages learners to pay more attention to the video. Responding to the question ensures that learners are on the right track, which makes learners more engaged. A participant mentioned, “the prompts gave me a good attention check to make sure I understood what was being discussed.”"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 297.0102233886719,
+        "y1": 416.1300964355469,
+        "y2": 477.4049987792969
+      },
+      "text": "Encourage reflection. Prompting asks learners to reflect what they have learned. It reinforces the knowledge, which leads to a better learning experience. A participant wrote, “it helps you think about what you know and have learned through the video, making you actively recall and cement your learning right away.”"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 53.92866516113281,
+        "x2": 298.6663818359375,
+        "y1": 487.861083984375,
+        "y2": 560.094970703125
+      },
+      "text": "Split the lecture into small pieces. Prompting splits the knowledge to digest in a more fine-grained way. By forcing learners to stop and think at checkpoints, the amount of knowledge to absorb at once is reduced: “With prompts, the learning is broken down into stages and you have to think and reiterate what you’ve learned so far, which makes it easier to remember.”"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 53.56999969482422,
+        "x2": 298.6666259765625,
+        "y1": 570.551025390625,
+        "y2": 642.7850341796875
+      },
+      "text": "Help grasp key concepts. Prompting helps learners to grasp the most important concepts of the lecture. Participants perceived the moment of prompting as important checkpoints, which makes learners think about the most important concepts they have learned so far. A participant pointed out, “Having a prompt helps to indicate exactly what the key concept was so you can take a moment and decide if you fully understand it.”"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 50.05400085449219,
+        "x2": 298.74481201171875,
+        "y1": 653.2410278320312,
+        "y2": 703.5570068359375
+      },
+      "text": "Provide interactivity. Prompting is an interactive activity. Participants said they enjoyed the interactivity and felt they have learned more. This sentiment is echoed by a participant: “I think prompts make videos more hands-on and interactive and deliver a more educational experience.”"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 317.218994140625,
+        "x2": 565.4149780273438,
+        "y1": 195.45706176757812,
+        "y2": 267.6920166015625
+      },
+      "text": "Distract from the learning process. Prompting might break the flow of concentration. Forcing learners to respond to the questions even if they are following the lecture very well can lead to a negative learning experience. A participant noted, “it might cause you to lose focus on the material in the video by breaking your chain of thought because you are basically being interrupted.”"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 317.218994140625,
+        "x2": 565.8242797851562,
+        "y1": 278.1470947265625,
+        "y2": 339.4230041503906
+      },
+      "text": "Provide no feedback on responses. Learners wish to receive feedback on their response to make sure that they properly respond to the questions. Without feedback, learners may be less motivated to respond to prompts. A participant commented, “there is no feedback so even if I answer the prompt question and I’m confident, I may be wrong.”"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 565.8226928710938,
+        "y1": 349.8780822753906,
+        "y2": 411.15399169921875
+      },
+      "text": "Cause anxiety. Some learners feel worried about giving inappropriate or inadequate responses. They feel the responses are being monitored, which makes learners frustrated when they struggle to come up with an appropriate response: “I felt frustrated that it appeared difficult for me to explain what I learned thus far.”"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 564.1532592773438,
+        "y1": 430.2443542480469,
+        "y2": 435.875
+      },
+      "text": "STUDY 2. EFFECTS OF DIFFERENT PROMPTING"
+    }],
+    "title": {
+      "page": 4,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 134.6498565673828,
+        "y1": 196.30734252929688,
+        "y2": 201.93798828125
+      },
+      "text": "Qualitative Results"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 4,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 564.1780395507812,
+        "y1": 455.27728271484375,
+        "y2": 483.1969909667969
+      },
+      "text": "Study 2 investigated how different kinds of prompts might be perceived by learners, and collected quantitative measures of how learners perceived prompts."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 320.6260070800781,
+        "x2": 565.9131469726562,
+        "y1": 494.13128662109375,
+        "y2": 664.5169677734375
+      },
+      "text": "We investigated two dimensions of prompting questions: the comprehension-experience orientation and the level of specificity. The comprehension-experience orientation represents which information the question seeks to reveal. Comprehension-centered questions (“Describe what you have learned so far.”) asked learners to reflect on the contents of the lecture and their current comprehension. These questions promote self-explanation in learners, which previous research suggests could be beneficial for their learning [24, 5]. Responses to comprehension-centered questions allow instructors to identify how well learners are following the lecture. Experience-centered questions (“Describe something unsatisfying about the lecture so far.”) reveal learning experiences during the lecture video. By directly asking what makes learners unsatisfied, instructors can collect actionable feedback on their instruction."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 320.7659912109375,
+        "x2": 564.842041015625,
+        "y1": 675.4512939453125,
+        "y2": 714.3309936523438
+      },
+      "text": "The level of specificity determines whether the prompting question refers directly to lecture content. General questions (“Describe something unsatisfying about the lecture so far.”) do not refer to the content of the lecture. These questions"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 319 Page 5"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.599998474121094,
+        "x2": 297.0139465332031,
+        "y1": 66.32230377197266,
+        "y2": 138.0780029296875
+      },
+      "text": "could be shown anywhere in a given video. Specific questions (“Describe how to calculate a mean.”) refer to concepts in the lecture video. Instructors should consider what to ask at specific moments, which requires more effort for instructors to build the prompting questions. Table 1a shows the design space of prompting questions that we cover, and examples of each."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.68000030517578,
+        "x2": 297.01019287109375,
+        "y1": 149.01231384277344,
+        "y2": 176.9320068359375
+      },
+      "text": "In addition, we investigated whether perceptions of prompt types might vary based on learners’ prior knowledge of the video content."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.46099853515625,
+        "x2": 250.4893341064453,
+        "y1": 187.86631774902344,
+        "y2": 193.8690185546875
+      },
+      "text": "We investigated the following research questions."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 54.426998138427734,
+        "x2": 297.35968017578125,
+        "y1": 204.00025939941406,
+        "y2": 221.76397705078125
+      },
+      "text": "• RQ2a. How does the effect of in-video prompting vary according to the kind of prompting strategy?"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 54.426998138427734,
+        "x2": 297.0111389160156,
+        "y1": 242.3422393798828,
+        "y2": 260.10601806640625
+      },
+      "text": "• RQ2b. How do learners with different levels of achievement perceive each prompting strategy?"
+    }],
+    "title": {
+      "page": 4,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 377.57977294921875,
+        "y1": 444.1923522949219,
+        "y2": 449.822998046875
+      },
+      "text": "STRATEGIES"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 5,
+      "region": {
+        "x1": 53.46099853515625,
+        "x2": 298.7513122558594,
+        "y1": 294.4162902832031,
+        "y2": 388.0899963378906
+      },
+      "text": "The study used a between-subjects design, where each student was randomly assigned to one of the four prompting strategies described in Table 1a. Each participant watched a lecture video from Khan Academy on “Population standard deviation”. We gave prompts at the beginning, middle, and end of the video. We denote each condition using four-letter codes; Co-Ge for the comprehension-centered and general condition, Co-Sp for comprehension and specific, Ex-Ge for experience and general, and Ex-Sp for experience and specific."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.56999969482422,
+        "x2": 298.7874450683594,
+        "y1": 399.0232849121094,
+        "y2": 558.4509887695312
+      },
+      "text": "To understand the differences between prompting strategies, we included quantitative measures of learners’ experiences. After watching the video, learners were asked to rate their agreement on a seven points scale with six statements about their experience. For example, a learner would be asked to rate on a scale from 1 (Strongly Disagree) to 7 (Strongly Agree) whether “Prompting helped me to pay attention to the lecture” (Q1). The six statements about experience with prompting are listed in Figure 2. These asked about the extent to which learners agreed or disagreed that prompting helped them pay attention to the video, understand, grasp the most important ideas, was enjoyable, interrupted their learning process, or made them worried about giving inappropriate responses. These statements were chosen by using the qualitative dimensions identified in Study 1."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 297.0101623535156,
+        "y1": 569.3853149414062,
+        "y2": 619.2230224609375
+      },
+      "text": "Participants also answered two questions about their cognitive load while watching the video [12]. They rated on a sliding scale from 0 to 100: “How much mental demand did you experience watching this lecture?” and “How much effort did it take you to watch this lecture?”."
+    }],
+    "title": {
+      "page": 5,
+      "region": {
+        "x1": 53.92899703979492,
+        "x2": 111.08722686767578,
+        "y1": 283.33135986328125,
+        "y2": 288.9620056152344
+      },
+      "text": "Study Design"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 5,
+      "region": {
+        "x1": 53.46099853515625,
+        "x2": 298.75079345703125,
+        "y1": 653.5333251953125,
+        "y2": 714.3309936523438
+      },
+      "text": "We recruited 200 participants on Amazon Mechanical Turk, paying $3.5 for a 35-minute long study. Participants’ mean age was 36.8 (SD = 11.5; min = 20; max = 72) with 102 male. For each subgroup by prompting strategy (Co-Sp, Co-Ge, ExSp, Ex-Ge), the mean ages were 39.2, 36.1, 37.3, and 36.6, respectively."
+    }],
+    "title": {
+      "page": 5,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 105.16072082519531,
+        "y1": 642.4483032226562,
+        "y2": 648.0789794921875
+      },
+      "text": "Participants"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 5,
+      "region": {
+        "x1": 320.7659912109375,
+        "x2": 565.4220581054688,
+        "y1": 77.7792739868164,
+        "y2": 127.61700439453125
+      },
+      "text": "Participants were asked to (1) take a pretest with six problems, (2) watch a video with prompting, (3) respond to a survey related to the video watching experience, and then (4) take a posttest. The session ended with a final survey asking for participants’ general experiences in free-form text."
+    }],
+    "title": {
+      "page": 5,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 392.5260925292969,
+        "y1": 66.69436645507812,
+        "y2": 72.32501220703125
+      },
+      "text": "Study Procedure"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 5,
+      "region": {
+        "x1": 320.34698486328125,
+        "x2": 565.830322265625,
+        "y1": 156.13328552246094,
+        "y2": 315.5610046386719
+      },
+      "text": "Different prompting strategies had different effects on participants’ perceived learning experience. As shown in Figure 2, learners rated comprehension-centered prompts as more helpful than experience-centered prompts on average, as measured by judgments on the positive questions Q1-Q4 (2-way ANOVA, F(1, 196) = 10.04 and p < 0.005, F(1, 196) = 33.11 and p < 0.0001, F(1, 196) = 33.00 and p < 0.0001, and F(1, 196) = 16.67 and p < 0.0001 for Q1, Q2, Q3, and Q4 respectively). Participants in the comprehension-centered conditions mentioned that they could take a breather, have time to reflect on what has been learned, and assess their understanding on their own. One participant remarked, “It was a way to help ensure I understood the whole process by breaking it down with questions to answer, instead of trying to absorb it all at once and remember everything after.”"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 565.8248901367188,
+        "y1": 326.4942932128906,
+        "y2": 453.0450134277344
+      },
+      "text": "Participants rated the experience-centered prompts as more distracting (2-way ANOVA, F(1,196)=17.13 and p<0.0001 for Q5). Participants in the experience-centered conditions mentioned that it was hard to learn from the video while at the same time trying to give comments on how the instructor could improve the video. One participant remarked, “Prompting had me thinking about many things at once. This caused me to lose focus.” However, there is also a bright side of experiencecentered prompts, especially regarding the learners’ emotional experience. Participants said that they liked being able to leave a subjective comment to the instructor and it made them feel involved in the lecture."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 320.7359924316406,
+        "x2": 565.8316040039062,
+        "y1": 463.9792785644531,
+        "y2": 557.6530151367188
+      },
+      "text": "Although participants could take advantage of comprehensioncentered prompts in their learning, being asked about the contents of the lecture in depth irritated some learners. On the other hand, experience-centered prompts ask about participants’ subjective opinion regarding the lecture and therefore it can be thought to be less pressure for learners. Our survey results show that, however, there is no such difference between comprehension-centered and experience-centered prompting strategies (Q6)."
+    }],
+    "title": {
+      "page": 5,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 353.4792175292969,
+        "y1": 145.04837036132812,
+        "y2": 150.67901611328125
+      },
+      "text": "Results"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 5,
+      "region": {
+        "x1": 320.7860107421875,
+        "x2": 564.3396606445312,
+        "y1": 581.8023071289062,
+        "y2": 675.4760131835938
+      },
+      "text": "The qualitative comments suggest that learners differ in their opinions about the value of prompting. To understand the effect of each prompting strategy for learners with unequal prior knowledge, we divided each group into two subgroups based on participants’ pretest scores and discovered how the experience differed for each subgroup. As the cut-off point to separate the two groups we used a score of 2 out of 6, the median pretest score of all participants. Table 3 shows the number of participants in each subgroup."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 564.1759033203125,
+        "y1": 686.4103393554688,
+        "y2": 714.3309936523438
+      },
+      "text": "Figure 3a illustrates self-reported cognitive load of each group for four different prompting conditions. The high-score group perceived significantly less cognitive load under the general"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 319 Page 6"
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 53.619998931884766,
+        "x2": 298.7527770996094,
+        "y1": 592.7613525390625,
+        "y2": 631.6409912109375
+      },
+      "text": "prompting conditions (ANOVA, p<0.05 for both conditions). This result corresponds to the findings from earlier research [2] that high-performing students are good at providing an answer to generic questions."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 298.7547912597656,
+        "y1": 642.5743408203125,
+        "y2": 714.3309936523438
+      },
+      "text": "Figure 3b shows how each subgroup perceived anxiety for different prompting conditions. The result indicates that the low-score group felt more anxiety than the high-score group under specific prompting condition and the opposite pattern is observed for the general prompting conditions. This outcome may seem incongruous with the previous finding that the highscore group exhibit lower cognitive load with general prompts."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 320.8450012207031,
+        "x2": 565.8525390625,
+        "y1": 407.1122741699219,
+        "y2": 500.7869873046875
+      },
+      "text": "However, study data collected from this experiment could provide alternative explanations for this result. First, a number of participants in the low-score group provided simple responses under general prompting conditions (e.g., “population standard deviation” for the prompt “Describe what you have learned so far”), leaving less chance of being wrong. In addition, with the experience-general prompts, many high-score participants mentioned it was hard for them to find unsatisfying points in the lecture, increasing their anxiety regarding their responses."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 320.7860107421875,
+        "x2": 565.828369140625,
+        "y1": 511.7203063964844,
+        "y2": 583.4769897460938
+      },
+      "text": "The result indicates that the high-score group and the lowscore group perceived a different level of cognitive load and anxiety. The low-score group reported higher cognitive load than the high-score group and the differences were especially large for general prompting conditions. Regarding the level of anxiety, the low and high-score group behaved differently for the specific and general conditions."
+    }],
+    "title": {
+      "page": 5,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 473.5341796875,
+        "y1": 570.8025512695312,
+        "y2": 576.3480224609375
+      },
+      "text": "The effect of learners’ prior knowledge"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 6,
+      "region": {
+        "x1": 320.6260070800781,
+        "x2": 565.8310546875,
+        "y1": 642.5743408203125,
+        "y2": 714.3309936523438
+      },
+      "text": "We conducted a series of interviews with instructors and instructional designers to understand the usefulness of learner responses as feedback. Instructors and instructional designers are important stakeholders in in-video prompting, as they are the ones who author the prompts and potentially benefit from the collected learner responses. This section presents results from the interview study with instructors."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 319 Page 7"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 53.66600036621094,
+        "x2": 297.2806091308594,
+        "y1": 251.73550415039062,
+        "y2": 265.885986328125
+      },
+      "text": "(a) Self-reported cognitive load, out of 100. *: the difference between low and high-score group is significant with p<0.05."
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 320.83099365234375,
+        "x2": 565.484619140625,
+        "y1": 251.73550415039062,
+        "y2": 274.85302734375
+      },
+      "text": "(b) Average scores for Q6: Prompting made me worried about giving inappropriate responses. *: the difference between low and high-score group is significant with p<0.05."
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 53.928985595703125,
+        "x2": 564.533447265625,
+        "y1": 288.69610595703125,
+        "y2": 328.052978515625
+      },
+      "text": "Figure 3: Perceived experience for Low and High group in each prompting condition. (a) The low-score group reported higher cognitive load than the high-score group when they encountered general prompts. (b) The low-score group reported higher anxiety than the high-score group when they were given a comprehension-centered and specific prompt. Error bar:+/-1 standard error of the mean."
+    }],
+    "title": {
+      "page": 6,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 564.1531372070312,
+        "y1": 617.5413208007812,
+        "y2": 637.1199951171875
+      },
+      "text": "LEARNER RESPONSES AS FEEDBACK TO INSTRUCTORS"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 7,
+      "region": {
+        "x1": 53.46099853515625,
+        "x2": 298.6666564941406,
+        "y1": 364.6902770996094,
+        "y2": 491.2409973144531
+      },
+      "text": "We had 1-hour long interviews with instructors asking how useful the collected responses to in-video prompts from learners might be as feedback. We recruited 3 instructors who had experience in publishing lecture videos. Two instructors had published 8 hours and 10 hours of lecture video in total, respectively. The other instructor had led a flipped classroom for 8 semesters. After explaining the prompting strategies, we presented the learner responses as well as the corresponding questions collected in Study 2 and asked how they would make use of the responses as feedback. Instructors explored the learner responses for 10-15 minutes. After the exploration, we asked questions about using the responses as feedback."
+    }],
+    "title": {
+      "page": 7,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 98.09550476074219,
+        "y1": 353.6053466796875,
+        "y2": 359.2359924316406
+      },
+      "text": "Procedure"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 7,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 297.0105895996094,
+        "y1": 520.552001953125,
+        "y2": 603.7449951171875
+      },
+      "text": "Specificity of learners’ responses. Instructors found that the collected responses are helpful as feedback because the responses were specific. They noted that asking questions in the middle of a video yields more specific responses. An instructor remarked, “If instructors ask for comments at the end of the lecture, it is hard for learners to give comments on specific points of the lecture because they are likely to have forgotten details.”"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 53.92872619628906,
+        "x2": 299.0816955566406,
+        "y1": 614.2010498046875,
+        "y2": 664.5169677734375
+      },
+      "text": "Needs for organizing learners’ comments. Instructors expressed needs for clustering the responses, based on criteria such as whether the comments are about visuals, pronunciation, or lack of information. An instructor said, “I thought it would be easier to read the comments if they were organized.”"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 298.65924072265625,
+        "y1": 674.9730224609375,
+        "y2": 714.3309936523438
+      },
+      "text": "Comprehension-centered vs. Experience-centered. Instructors responded that experience-centered questions yield more actionable feedback than comprehension-centered questions. The responses from experience-centered questions"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 320.7359619140625,
+        "x2": 566.3379516601562,
+        "y1": 353.2332763671875,
+        "y2": 457.86700439453125
+      },
+      "text": "(e.g., “The instructor’s handwriting is a little bad”) tend to point out the problems on instructional delivery, but the responses from comprehension-centered questions (e.g., “The standard deviation is calculated by taking the square root of the variance.”) describe their comprehension. Instructors were not sure whether the responses from comprehensioncentered questions reflect learners’ true level of comprehension. An instructor noted, “If learners’ responses are not good in comprehension-centered questions, it is hard to know whether the learner doesn’t know, or the learner is just tired.”"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 565.8321533203125,
+        "y1": 468.80029296875,
+        "y2": 639.18701171875
+      },
+      "text": "Instructors had different opinions on which questions help learning more. Two instructors said asking comprehensioncentered questions is more helpful for learners because they promote reflection on the lecture while describing learning experience is not quite relevant to learning. One of the instructors said, “I think learners feel like unnecessarily responding to experience-centered questions, and feel like checking their understanding when they respond to comprehensioncentered questions.” However, another instructor mentioned experience-centered questions help learning more: “I think experience-centered responses are going to inherently be more specific than comprehension-centered. [ . . . ]When we are talking about learning a particular topic, it’s just going to be way more useful to talk about the thing that we can both see clearly between the two of us [ . . . ]. That’s going to be a more productive discussion than what’s going on inside my head.”"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 321.0939025878906,
+        "x2": 565.4175415039062,
+        "y1": 649.6420288085938,
+        "y2": 710.91796875
+      },
+      "text": "Specific vs. General. Instructors observed that different levels of specificity in prompts result in different types of feedback. For experience-centered questions, instructors said responses to general questions could serve as feedback on instruction delivery (e.g., “It was good, just a little slow”), such as the speed of speech, but responses to specific questions"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 319 Page 8"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 298.6665954589844,
+        "y1": 66.32230377197266,
+        "y2": 105.20098876953125
+      },
+      "text": "could serve as content-related feedback (e.g., “if the entire equation was done in meters, I would have a better and easier understanding of how it works”), such as the clarity of a particular explanation."
+    }],
+    "title": {
+      "page": 7,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 86.31417846679688,
+        "y1": 509.9453430175781,
+        "y2": 515.5759887695312
+      },
+      "text": "Results"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 8,
+      "region": {
+        "x1": 53.619998931884766,
+        "x2": 297.0104675292969,
+        "y1": 131.92930603027344,
+        "y2": 159.8499755859375
+      },
+      "text": "To understand the usefulness of the responses as feedback from an educational point of view, we interviewed instructional designers."
+    }],
+    "title": {
+      "page": 8,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 284.408935546875,
+        "y1": 120.84432983398438,
+        "y2": 126.4749755859375
+      },
+      "text": "INSTRUCTIONAL DESIGNERS’ VIEW ON RESPONSES"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 8,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 298.6666564941406,
+        "y1": 186.5773162841797,
+        "y2": 247.375
+      },
+      "text": "Similar to the interview study with instructors, we presented the responses as well as corresponding questions. Then we explained the prompting strategies and the instructional designers explored the responses. We conducted 1-hour long interviews with three instructional designers who are managing online courses on campus, including those on Coursera."
+    }],
+    "title": {
+      "page": 8,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 98.09550476074219,
+        "y1": 175.49234008789062,
+        "y2": 181.12298583984375
+      },
+      "text": "Procedure"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 8,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 297.1829833984375,
+        "y1": 274.103271484375,
+        "y2": 312.98199462890625
+      },
+      "text": "Instructional designers commented that the responses could serve as feedback to instructors, identified problems in our current prompts, and suggested ways to improve the design of prompting strategies."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 298.66741943359375,
+        "y1": 323.4380798339844,
+        "y2": 395.6719970703125
+      },
+      "text": "Feedback to instructors. Instructional designers said that the responses are useful as self-checklists for instructors, but to improve the lecture, the responses should be coupled with instructional design components that the instructor should consider in the lecture. Also, they remarked that high-level feedback such as comments on learning objectives and organization of presentations is more useful for instructors."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 298.6625671386719,
+        "y1": 406.1280822753906,
+        "y2": 467.40301513671875
+      },
+      "text": "Importance of specific questions. Upon inspecting the current question prompts, instructional designers identified issues in the questions. They mentioned some questions were not concrete enough and too superficial to diagnose issues with the lecture. Designers suggested including more specific questions such as “Is the pitch of the instructor’s voice appropriate?”."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 298.664306640625,
+        "y1": 477.8591003417969,
+        "y2": 561.052001953125
+      },
+      "text": "Mixing multiple prompting strategies. Instructional designers suggested using multiple prompting strategies even in a single video. They said asking experience-centered questions multiple times during a single lecture video could distract learners and damage the learning experience. Presenting experience-centered questions at the end and comprehensioncentered questions in the middle of the video could be effective for both learners and instructors."
+    }],
+    "title": {
+      "page": 8,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 86.31417846679688,
+        "y1": 263.0183410644531,
+        "y2": 268.64898681640625
+      },
+      "text": "Results"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 8,
+      "region": {
+        "x1": 53.56996154785156,
+        "x2": 298.66668701171875,
+        "y1": 587.7803344726562,
+        "y2": 714.3309936523438
+      },
+      "text": "In this research, we attempt to understand the effect of invideo prompting, an under-explored yet complex topic. Invideo prompting has potential to make video-based learning more interactive and even increase learning, while providing instructors with valuable data. Our goal is not to show that a particular prompting strategy is better than others or to conclude that prompting should be designed in a particular way for all videos, but rather (1) to contribute an in-depth understanding of differing perspectives on in-video prompting between learners, instructors, and instructional designers, and (2) to explore the design space of in-video prompting and the trade-offs involved. We discuss several issues in in-video"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 564.1739501953125,
+        "y1": 66.32230377197266,
+        "y2": 83.28399658203125
+      },
+      "text": "prompting that involve handling trade-offs and making design decisions."
+    }],
+    "title": {
+      "page": 8,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 109.72441101074219,
+        "y1": 576.6953125,
+        "y2": 582.3259887695312
+      },
+      "text": "DISCUSSION"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 8,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 565.912841796875,
+        "y1": 108.9662857055664,
+        "y2": 213.5989990234375
+      },
+      "text": "One observation from our studies was that learners and instructors might prefer different prompting strategies for different reason. Learners perceive comprehension-centered prompting as enjoyable, less interrupting, and helping them learn. However, instructors generally found that the responses from experience-centered questions to be more actionable, which makes it easy for instructors to figure out the points that need to be improved. With this trade-off in mind, prompting strategies should be carefully designed to maximize the benefits for both stakeholders."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 320.8450012207031,
+        "x2": 565.9197998046875,
+        "y1": 224.53330993652344,
+        "y2": 329.1659851074219
+      },
+      "text": "One way to address the trade-off is to design a hybrid prompting strategy, in which multiple prompt types are presented to a learner while watching a video, as suggested by instructional designers we interviewed. However, several issues could arise. It might be the case that drawbacks of both prompt types could be observed. Moreover, presenting both prompt types makes learners respond to two different types of questions in a lecture video, which may increase their cognitive load. Further study is needed to determine whether and how this hybrid prompting strategy helps learners."
+    }],
+    "title": {
+      "page": 8,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 506.43927001953125,
+        "y1": 97.88137817382812,
+        "y2": 103.51202392578125
+      },
+      "text": "Trade-off Between Learners and Instructors"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 8,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 565.8316650390625,
+        "y1": 368.7962951660156,
+        "y2": 451.5119934082031
+      },
+      "text": "Designing specific prompts is more expensive than designing general prompts because specific prompts needs to be coupled with lecture content. For the responses, however, specific prompting tends to yield more specific responses, which instructors might find useful. Instructors should choose the level of specificity of the questions, but it is not a straightforward task. Also, specific questions could yield responses that are too narrow, which could compromise the diversity of responses."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 320.8451232910156,
+        "x2": 565.8317260742188,
+        "y1": 462.4452819824219,
+        "y2": 556.1190185546875
+      },
+      "text": "It is important to balance the level of specificity to get diverse but insightful responses. One way to meet the balance is to design multiple specific questions. For example, we currently consider content-related specificity, but we also can consider instructional delivery-related specificity, such as the pace of lecture, the tone of voice, and the speed of speech. By considering multiple types of specificity in parallel in their prompt design, instructors could potentially receive diverse and specific responses."
+    }],
+    "title": {
+      "page": 8,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 564.1534423828125,
+        "y1": 343.76434326171875,
+        "y2": 363.34197998046875
+      },
+      "text": "Trade-off Between Questions and Responses for Instructors"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 8,
+      "region": {
+        "x1": 320.7860107421875,
+        "x2": 565.8314819335938,
+        "y1": 581.8023071289062,
+        "y2": 631.6409912109375
+      },
+      "text": "Through the interviews, we observed that the meaning of useful feedback is different between instructors and instructional designers. Instructors found it useful to get actionable feedback, whereas instructional designers found it useful to get more high-level feedback."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 320.7860107421875,
+        "x2": 565.8284301757812,
+        "y1": 642.5743408203125,
+        "y2": 714.3309936523438
+      },
+      "text": "This leads us to think about what good feedback is for instructors and instructional designers. We demonstrated how collecting actionable comments from learners is possible, but making sense of them, finding patterns in them, and deriving high-level points require extra work. Future work could investigate collecting and processing the responses of learners to generate more high-level, aggregate feedback to instructors."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 319 Page 9"
+    }],
+    "title": {
+      "page": 8,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 519.5386352539062,
+        "y1": 570.7173461914062,
+        "y2": 576.3480224609375
+      },
+      "text": "Learner Feedback from Multiple Points of View"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 9,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 298.66693115234375,
+        "y1": 77.7792739868164,
+        "y2": 127.61700439453125
+      },
+      "text": "It is hard to say that one prompting strategy always outperforms another. As discussed above, there is a trade-off along the dimensions of prompting strategies for different stakeholders. However, there still remains much room for improvement in designing effective prompts."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 53.619998931884766,
+        "x2": 298.6667175292969,
+        "y1": 138.5513153076172,
+        "y2": 319.89599609375
+      },
+      "text": "The effects of in-video prompting highly depend on (1) who the learners are, (2) how difficult or well-structured the video is, and (3) what the prompts ask about. For example, as we observed in our study with crowd workers, prompting for negative feedback will generate only meager responses if the video is already well-structured, while learners may have a hard time writing their response. Likewise, requiring too detailed knowledge in in-video prompting may frustrate lowperforming learners, who are already prone to drop out. In an online learning environment, where thousands of videos meet millions of learners, thoughtfully designed and adjusted invideo prompting has potential to provide significant benefits to both learners and instructors. Future work could explore the feasibility of dynamically adjusting the prompting strategy for each video (content-specific), or generating a personalized prompt plan based on learners’ course interaction (learnerspecific)."
+    }],
+    "title": {
+      "page": 9,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 267.48114013671875,
+        "y1": 66.69436645507812,
+        "y2": 72.32501220703125
+      },
+      "text": "Exploring the Design Space of In-video Prompting"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 9,
+      "region": {
+        "x1": 53.56999969482422,
+        "x2": 298.75482177734375,
+        "y1": 361.6282958984375,
+        "y2": 411.46600341796875
+      },
+      "text": "This work aims to provide guidance to instructors and researchers about how learners perceive in-video prompts, and when it might be worth including them, and in what form. Due to the exploratory nature of this work, however, it leaves several points unanswered."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 53.46099853515625,
+        "x2": 298.2499694824219,
+        "y1": 422.4002990722656,
+        "y2": 483.1969909667969
+      },
+      "text": "We did not investigate how in-video prompting affects learning outcomes since our goal is not to yield a clear conclusion about how effective in-video prompting is. As research shows that reflective prompting could yield learning gains [5, 24], future work could address the relationship between prompting strategies and learning outcomes."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 53.46099853515625,
+        "x2": 298.7515869140625,
+        "y1": 494.13128662109375,
+        "y2": 620.6820068359375
+      },
+      "text": "This paper only covers a subset of dimensions in designing prompting strategies: comprehension-experience orientation and the level of specificity. For the prompt positions in our studies, the rationale followed the affordance of time-anchored video prompting; the positioning of reflective prompts afford different levels of specificity, e.g., a prompt at the end of a video could ask to reflect more generally, whereas a prompt in the middle could refer to the specific concept just covered. We recognize that there might be other important design factors not addressed in this work. Future work could address other dimensions such as frequency of prompting and mode of learner responses."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 53.46099853515625,
+        "x2": 297.01080322265625,
+        "y1": 631.6152954101562,
+        "y2": 714.3309936523438
+      },
+      "text": "We collected responses from crowd workers, which could bias results, e.g., due to selection bias or non-representativeness. It is not clear whether our findings might generalize to learners in online learning platforms. Moreover, the crowd workers responded to all the prompting questions partly because of monetary reward. Future work should perform a deployment study to test the effect of in-video prompting in real-world educational settings."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 565.83154296875,
+        "y1": 66.32230377197266,
+        "y2": 127.1190185546875
+      },
+      "text": "Designing personalized prompting strategies could be an interesting future work. By leveraging learners’ data, we could choose the most beneficial prompting strategies. For example, if the learner is already good at the subject covered by the lecture, the instructor could provide prompting with more challenging questions."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 565.8320922851562,
+        "y1": 138.05332946777344,
+        "y2": 209.80902099609375
+      },
+      "text": "Future work could also investigate the design of the instructor dashboard. Interview results suggest that instructors have needs for efficiently organizing and exploring the collected learner responses to easily grasp the overall perception of comments. Automatically organizing, aggregating, and visualizing learner responses could be an interesting future direction to explore."
+    }],
+    "title": {
+      "page": 9,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 201.06103515625,
+        "y1": 350.5433654785156,
+        "y2": 356.17401123046875
+      },
+      "text": "LIMITATIONS AND FUTURE WORK"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 9,
+      "region": {
+        "x1": 320.7860107421875,
+        "x2": 565.8314819335938,
+        "y1": 237.9473114013672,
+        "y2": 386.4159851074219
+      },
+      "text": "This paper investigated the effects of in-video prompting on both learners and instructors. In-video prompting enables instructors to collect specific comments from learners. To understand how in-video prompting affects the learning experience, we conducted two studies with crowd workers. Results showed that different prompting strategies have different effects on the learning experience. Learners perceive that learning-centered questions are less interrupting, more enjoyable, and more helpful for learning. Interviews with instructors revealed that in-video prompting gives specific comments to them and that responses from experience-centered questions are more actionable. Instructional designers emphasized the importance of coupling question design with instructional design components for more useful feedback."
+    }],
+    "title": {
+      "page": 9,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 381.36346435546875,
+        "y1": 226.86239624023438,
+        "y2": 232.4930419921875
+      },
+      "text": "CONCLUSION"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 9,
+      "region": {
+        "x1": 320.7860107421875,
+        "x2": 565.8299560546875,
+        "y1": 414.5542907714844,
+        "y2": 464.3919982910156
+      },
+      "text": "This work was supported by Institute for Information & communications Technology Promotion (IITP) grant funded by the Korean government (MSIT) (No. 20160005640022007, Development of Intelligent Interaction Technology Based on Context Awareness and Human Intention Understanding)."
+    }],
+    "title": {
+      "page": 9,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 417.9088439941406,
+        "y1": 403.4693298339844,
+        "y2": 409.0999755859375
+      },
+      "text": "ACKNOWLEDGMENTS"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 9,
+      "region": {
+        "x1": 326.07598876953125,
+        "x2": 565.4186401367188,
+        "y1": 492.0322570800781,
+        "y2": 498.0350036621094
+      },
+      "text": "1. Akshay Agrawal, Jagadish Venkatraman, Shane Leonard,"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 338.031005859375,
+        "x2": 537.8392944335938,
+        "y1": 502.99127197265625,
+        "y2": 530.9119873046875
+      },
+      "text": "and Andreas Paepcke. 2015. YouEDU: addressing confusion in MOOC discussion forums by recommending instructional video clips. (2015)."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 326.0760192871094,
+        "x2": 560.9034423828125,
+        "y1": 542.2133178710938,
+        "y2": 603.010009765625
+      },
+      "text": "2. Vincent Aleven, Niels Pinkwart, Kevin Ashley, and Collin Lynch. 2006. Supporting self-explanation of argument transcripts: Specific v. generic prompts. In Workshop of Intelligent Tutoring Systems for Ill-Defined domains, 8th International Conference on Intelligent Tutoring Systems. 47–55."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 326.07598876953125,
+        "x2": 564.1710205078125,
+        "y1": 614.311279296875,
+        "y2": 664.1500244140625
+      },
+      "text": "3. Lori Breslow, David E Pritchard, Jennifer DeBoer, Glenda S Stump, Andrew D Ho, and Daniel T Seaton. 2013. Studying learning in the worldwide classroom: Research into edX’s first MOOC. Research & Practice in Assessment 8 (2013)."
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 326.0760192871094,
+        "x2": 560.3854370117188,
+        "y1": 675.4512939453125,
+        "y2": 714.3309936523438
+      },
+      "text": "4. Yuanzhe Chen, Qing Chen, Mingqian Zhao, Sebastien Boyer, Kalyan Veeramachaneni, and Huamin Qu. 2016. DropoutSeer: Visualizing learning patterns in Massive Open Online Courses for dropout reasoning and"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9970092773438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 319 Page 10"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 70.197998046875,
+        "x2": 299.5642395019531,
+        "y1": 66.32230377197266,
+        "y2": 94.24298095703125
+      },
+      "text": "prediction. In Visual Analytics Science and Technology (VAST), 2016 IEEE Conference on. IEEE, 111–120. DOI: http://dx.doi.org/10.1109/VAST.2016.7883517"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 58.910003662109375,
+        "x2": 286.42510986328125,
+        "y1": 104.7782974243164,
+        "y2": 154.615966796875
+      },
+      "text": "5. Michelene TH Chi, Nicholas Leeuw, Mei-Hung Chiu, and Christian LaVancher. 1994. Eliciting self-explanations improves understanding. Cognitive science 18, 3 (1994), 439–477. DOI: http://dx.doi.org/10.1207/s15516709cog1803_3"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 58.910003662109375,
+        "x2": 297.54522705078125,
+        "y1": 165.1512908935547,
+        "y2": 214.98992919921875
+      },
+      "text": "6. Clark A Chinn and William F Brewer. 1993. The role of anomalous data in knowledge acquisition: A theoretical framework and implications for science instruction. Review of educational research 63, 1 (1993), 1–49. DOI: http://dx.doi.org/10.3102/00346543063001001"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 58.90998840332031,
+        "x2": 297.0047912597656,
+        "y1": 225.52525329589844,
+        "y2": 264.40399169921875
+      },
+      "text": "7. John F Chizmar and Anthony L Ostrosky. 1998. The one-minute paper: Some empirical findings. The Journal of Economic Education 29, 1 (1998), 3–10. DOI: http://dx.doi.org/10.1080/00220489809596436"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 58.909996032714844,
+        "x2": 298.7512512207031,
+        "y1": 274.93927001953125,
+        "y2": 291.9010009765625
+      },
+      "text": "8. K Patricia Cross and Thomas A Angelo. 1988. Classroom Assessment Techniques. A Handbook for Faculty. (1988)."
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 58.90999984741211,
+        "x2": 297.0025634765625,
+        "y1": 302.436279296875,
+        "y2": 374.1929931640625
+      },
+      "text": "9. Elena L Glassman, Juho Kim, Andrés Monroy-Hernández, and Meredith Ringel Morris. 2015. Mudslide: A spatially anchored census of student confusion for online lecture videos. In Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems. ACM, 1555–1564. DOI: http://dx.doi.org/10.1145/2702123.2702304"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 53.92897415161133,
+        "x2": 297.0137023925781,
+        "y1": 384.728271484375,
+        "y2": 434.56597900390625
+      },
+      "text": "10. Jeffrey D Karpicke and Janell R Blunt. 2011. Retrieval practice produces more learning than elaborative studying with concept mapping. Science 331, 6018 (2011), 772–775. DOI: http://dx.doi.org/10.1126/science.1199327"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 53.92899703979492,
+        "x2": 296.9480895996094,
+        "y1": 445.10125732421875,
+        "y2": 516.8579711914062
+      },
+      "text": "11. Juho Kim, Philip J Guo, Carrie J Cai, Shang-Wen Daniel Li, Krzysztof Z Gajos, and Robert C Miller. 2014. Data-driven interaction techniques for improving navigation of educational videos. In Proceedings of the 27th annual ACM symposium on User interface software and technology. ACM, 563–572. DOI: http://dx.doi.org/10.1145/2642918.2647389"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 53.92899703979492,
+        "x2": 294.0771179199219,
+        "y1": 527.393310546875,
+        "y2": 577.23095703125
+      },
+      "text": "12. René F Kizilcec, Jeremy N Bailenson, and Charles J Gomez. 2015. The instructor’s face in video instruction: Evidence from two large-scale field studies. Journal of Educational Psychology 107, 3 (2015), 724. DOI: http://dx.doi.org/10.1037/edu0000013"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 53.92899703979492,
+        "x2": 293.22967529296875,
+        "y1": 587.7662353515625,
+        "y2": 626.6459350585938
+      },
+      "text": "13. Geza Kovacs. 2016. Effects of in-video Quizzes on MOOC lecture viewing. In Proceedings of the Third (2016) ACM Conference on Learning@ Scale. ACM, 31–40. DOI:http://dx.doi.org/10.1145/2876034.2876041"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 53.92898941040039,
+        "x2": 298.68011474609375,
+        "y1": 637.1812744140625,
+        "y2": 708.9379272460938
+      },
+      "text": "14. Yi-Chieh Lee, Wen-Chieh Lin, Fu-Yin Cherng, Hao-Chuan Wang, Ching-Ying Sung, and Jung-Tai King. 2015. Using time-anchored peer comments to enhance social interaction in online educational videos. In Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems. ACM, 689–698. DOI:http://dx.doi.org/10.1145/2702123.2702349"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 564.1708374023438,
+        "y1": 66.3222427368164,
+        "y2": 105.20098876953125
+      },
+      "text": "15. Margaret Mazzolini and Sarah Maddison. 2007. When to jump in: The role of the instructor in online discussion forums. Computers & Education 49, 2 (2007), 193–213. DOI:http://dx.doi.org/10.1016/j.compedu.2005.06.011"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 564.165283203125,
+        "y1": 115.7363052368164,
+        "y2": 165.57501220703125
+      },
+      "text": "16. Samuel T Moulton, Selen Türkay, and Stephen M Kosslyn. 2017. Does a presentation’s medium affect its message? PowerPoint, Prezi, and oral presentations. PloS one 12, 7 (2017), e0178774. DOI: http://dx.doi.org/10.1371/journal.pone.0186673"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 321.0940246582031,
+        "x2": 563.4882202148438,
+        "y1": 176.11033630371094,
+        "y2": 236.907958984375
+      },
+      "text": "17. Amy Pavel, Dan B Goldman, Björn Hartmann, and Maneesh Agrawala. 2016. VidCrit: Video-based Asynchronous Video Review. In Proceedings of the 29th Annual Symposium on User Interface Software and Technology. ACM, 517–528. DOI: http://dx.doi.org/10.1145/2984511.2984552"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 321.0940246582031,
+        "x2": 564.101318359375,
+        "y1": 247.4432830810547,
+        "y2": 308.23992919921875
+      },
+      "text": "18. Daniel L Schwartz and Taylor Martin. 2004. Inventing to prepare for future learning: The hidden efficiency of encouraging original student production in statistics instruction. Cognition and Instruction 22, 2 (2004), 129–184. DOI: http://dx.doi.org/10.1207/s1532690xci2202_1"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 321.0940246582031,
+        "x2": 561.6607055664062,
+        "y1": 318.77520751953125,
+        "y2": 379.5728759765625
+      },
+      "text": "19. Vikash Singh, Sarah Abdellahi, Mary Lou Maher, and Celine Latulipe. 2016. The Video Collaboratory as a Learning Environment. In Proceedings of the 47th ACM Technical Symposium on Computing Science Education. ACM, 352–357. DOI: http://dx.doi.org/10.1145/2839509.2844588"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 564.155517578125,
+        "y1": 390.108154296875,
+        "y2": 439.94598388671875
+      },
+      "text": "20. Kristin Stephens-Martinez, Marti A Hearst, and Armando Fox. 2014. Monitoring moocs: which information sources do instructors value?. In Proceedings of the first ACM conference on Learning@ scale conference. ACM, 79–88. DOI:http://dx.doi.org/10.1145/2556325.2566246"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 321.09405517578125,
+        "x2": 561.760498046875,
+        "y1": 450.48126220703125,
+        "y2": 489.3609619140625
+      },
+      "text": "21. Richard L Weaver and Howard W Cotrell. 1985. Mental aerobics: The half-sheet response. Innovative Higher Education 10, 1 (1985), 23–31. DOI: http://dx.doi.org/10.1007/BF00893466"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 321.09405517578125,
+        "x2": 564.1781616210938,
+        "y1": 499.896240234375,
+        "y2": 527.8170166015625
+      },
+      "text": "22. Miaomiao Wen, Diyi Yang, and Carolyn Rose. 2014. Sentiment Analysis in MOOC Discussion Forums: What does it tell us?. In Educational data mining 2014."
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 564.1696166992188,
+        "y1": 538.352294921875,
+        "y2": 588.1900024414062
+      },
+      "text": "23. Joseph J Williams and Tania Lombrozo. 2010. The role of explanation in discovery and generalization: Evidence from category learning. Cognitive Science 34, 5 (2010), 776–806. DOI: http://dx.doi.org/10.1111/j.1551-6709.2010.01113.x"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 321.0939636230469,
+        "x2": 564.1781005859375,
+        "y1": 598.7252807617188,
+        "y2": 670.4819946289062
+      },
+      "text": "24. Joseph Jay Williams, Tania Lombrozo, Anne Hsu, Bernd Huber, and Juho Kim. 2016. Revising Learner Misconceptions Without Feedback: Prompting for Reflection on Anomalies. In Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems. ACM, 470–474. DOI: http://dx.doi.org/10.1145/2858036.2858361"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 563.0955200195312,
+        "y1": 681.017333984375,
+        "y2": 730.85498046875
+      },
+      "text": "25. Joseph Jay Williams, Tania Lombrozo, and Bob Rehder. 2013. The hazards of explanation: Overgeneralization in the face of exceptions. Journal of Experimental Psychology: General 142, 4 (2013), 1006. DOI: http://dx.doi.org/10.1037/a0030996"
+    }, {
+      "page": 10,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9970092773438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 319 Page 11"
+    }, {
+      "page": 11,
+      "region": {
+        "x1": 53.92900085449219,
+        "x2": 298.6878662109375,
+        "y1": 66.32230377197266,
+        "y2": 138.07794189453125
+      },
+      "text": "26. Han Zhang, Maosong Sun, Xiaochen Wang, Zhengyang Song, Jie Tang, and Jimeng Sun. 2017. Smart Jump: Automated Navigation Suggestion for Videos in MOOCs. In Proceedings of the 26th International Conference on World Wide Web Companion. International World Wide Web Conferences Steering Committee, 331–339. DOI: http://dx.doi.org/10.1145/3041021.3054166"
+    }, {
+      "page": 11,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 564.504638671875,
+        "y1": 66.3222427368164,
+        "y2": 138.0780029296875
+      },
+      "text": "27. Saijing Zheng, Pamela Wisniewski, Mary Beth Rosson, and John M Carroll. 2016. Ask the Instructors: Motivations and Challenges of Teaching Massive Open Online Courses. In Proceedings of the 19th ACM Conference on Computer-Supported Cooperative Work & Social Computing. ACM, 206–221. DOI: http://dx.doi.org/10.1145/2818048.2820082"
+    }, {
+      "page": 11,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9970092773438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 319 Page 12"
+    }],
+    "title": {
+      "page": 9,
+      "region": {
+        "x1": 321.093994140625,
+        "x2": 382.36761474609375,
+        "y1": 481.4453430175781,
+        "y2": 487.07598876953125
+      },
+      "text": "REFERENCES"
+    }
+  }]
+}
