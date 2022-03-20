@@ -3,8 +3,11 @@ import datetime
 import os
 import argparse
 import cv2
+import numpy as np
 import imutils
 import img2pdf
+import json
+
 import changedetection
 import duplicatehandler
 
@@ -14,25 +17,28 @@ parser.add_argument("-v", "--video", dest="video", required=True,
                     help="the path to your video file to be analyzed")
 parser.add_argument("-o", "--output", dest="output", default="slides.pdf",
                     help="the output pdf file where the extracted slides will be saved")
-parser.add_argument("-s", "--step-size", dest="step-size", default=20,
+parser.add_argument("-s", "--step-size", dest="step-size", default=10,
                     help="the amount of frames skipped in every iteration")
 parser.add_argument("-p", "--progress-interval", dest="progress-interval", default=1,
                     help="how many percent should be skipped between each progress output")
 parser.add_argument("-d", "--debug", dest="debug", default=False, action="store_true",
                     help="the path to your video file to be analyzed")
+parser.add_argument("--use-stored-mask", dest="use-stored-mask", default=False, action="store_true",
+                    help="if already stored masks should be used for processing")
 
 args = vars(parser.parse_args())
 
 
 class Main:
-    slideCounter = 0
-
-    def __init__(self, debug, vidpath, output, stepSize, progressInterval):
+    def __init__(self, debug, vidpath, output, step_size, progress_interval, use_stored_mask):
+        self.slide_counters = {}
         self.vidpath = vidpath
         self.output = output
+        self.start_time = 0
         self.detection = changedetection.ChangeDetection(
-            stepSize, progressInterval, debug)
-        self.dupeHandler = duplicatehandler.DuplicateHandler(1)
+            step_size, progress_interval, debug)
+        self.dup_handler = duplicatehandler.DuplicateHandler(1)
+        self.use_stored_mask = use_stored_mask
 
     def strfdelta(self, tdelta, fmt):
         d = {"days": tdelta.days}
@@ -41,7 +47,7 @@ class Main:
         return fmt.format(**d)
 
     # crop image to slide size
-    def cropImage(self, frame):
+    def __crop_image(self, frame):
         return frame
 
         min_area = (frame.shape[0] * frame.shape[1]) * (2 / 3)
@@ -57,30 +63,33 @@ class Main:
                 crop = frame[y:y+h, x:x+w]
                 return crop
 
-    def checkRatio(self, frame, min, max):
+    def check_ratio(self, frame, min, max):
         ratio = frame.shape[1] / frame.shape[0]
         return ratio >= min and ratio <= max
 
-    def onTrigger(self, frame):
-        frame = self.cropImage(frame)
-
-        print(frame.shape)
-
+    def onTrigger(self, frame, title=""):
+        frame = self.__crop_image(frame)
         if frame is not None:
-            if self.dupeHandler.check(frame):
+            if self.dup_handler.check(frame):
                 print("Found a new slide!")
-            self.saveSlide(frame)
+            self.save_slide(frame, title)
 
-    def saveSlide(self, slide):
-        if not os.path.exists(self.output):
-            os.makedirs(self.output)
-        print("Saving slide " + str(self.slideCounter) + "...")
-        cv2.imwrite(os.path.join(
-            self.output, str(self.slideCounter) + ".jpg"), slide)
-        self.slideCounter += 1
+    def save_slide(self, slide, title=""):
+        parent_path = os.path.join(self.output, "images")
+        #parent_path = self.output
+        os.makedirs(parent_path, exist_ok=True)
+
+        if not title in self.slide_counters:
+            self.slide_counters[title] = 0
+        cur_slide = self.slide_counters[title]
+        self.slide_counters[title] += 1
+
+        img_path = os.path.join(parent_path, title + str(cur_slide) + ".jpg")
+        print("Saving slide " + str(cur_slide) + " to " + img_path + " ...\n")
+        cv2.imwrite(img_path, slide)
 
     def onProgress(self, percent, pos):
-        elapsed = time.time() - self.startTime
+        elapsed = time.time() - self.start_time
         eta = (elapsed / percent) * (100 - percent)
         fps = pos / elapsed
         etaString = self.strfdelta(datetime.timedelta(seconds=eta),
@@ -92,26 +101,74 @@ class Main:
         imgs = []
         cnt = 0
 
-        for i in self.dupeHandler.entries:
+        for i in self.dup_handler.entries:
             imgs.append(cv2.imencode('.jpg', i)[1].tostring())
 
         with open(self.output, "wb") as f:
             f.write(img2pdf.convert(imgs))
 
+
+    def save_mask(self, mask_rects, img_height, img_width):
+        save_path = os.path.join(self.output, "talkingHeadMask.json")
+        with open(save_path, "w") as f:
+            json.dump({
+                "talkingHeadMaskRects": mask_rects,
+                "imageSize": {
+                    "height": img_height,
+                    "width": img_width,
+                },
+            }, fp=f)
+
+    def load_mask(self):
+        th_path = os.path.join(self.output, "talkingHeadMask.json")
+        acc_frame_path = os.path.join(self.output, "images", "acc_frame_0.jpg")
+        mask, mask_rects = None, []
+
+        if os.path.isfile(th_path) is False or self.use_stored_mask is False:
+            acc_frame = self.detection.get_acc_frame(cv2.VideoCapture(
+                self.vidpath
+            ))
+            mask, mask_rects = self.detection.mask_talking_head(acc_frame)
+            self.save_mask(mask_rects, mask.shape[0], mask.shape[1]) 
+        else:
+            with open(th_path, "r") as th_file:
+                th_json = json.load(fp=th_file)
+                mask_rects = th_json["talkingHeadMaskRects"]
+                image_size = th_json["imageSize"]["height"], th_json["imageSize"]["width"]
+                mask = np.ones(image_size, np.uint8)
+                for mask_rect in mask_rects:
+                    for i in range(mask_rect["top"], mask_rect["bottom"] + 1):
+                        for j in range(mask_rect["left"], mask_rect["right"] + 1):
+                            mask[i][j] = 0
+        return mask, mask_rects
+
     def start(self):
         self.detection.onTrigger += self.onTrigger
         self.detection.onProgress += self.onProgress
 
-        self.startTime = time.time()
+        self.start_time = time.time()
 
-        self.detection.start(cv2.VideoCapture(self.vidpath.strip()))
+        #frame_range, fps = self.find_scenes(10.0)
 
-# print("Saving PDF...")
-# self.convertToPDF()
+        mask, mask_rects = self.load_mask()
+
+        frame_range, fps = self.detection.start(
+            cv2.VideoCapture(self.vidpath),
+            mask, mask_rects
+        )
+        with open(os.path.join(self.output, "frameTimestamp.txt"), "w")  as f:
+            for i in range(len(frame_range)) :
+                f.write(str(round((frame_range[i][0]-1)/fps, 2)) + '\t' + str(round((frame_range[i][1]-1)/fps, 2)))
+                f.write('\n')
 
         print("All done!")
 
+main = Main(
+    args['debug'],
+    os.path.join(args['video'].strip()),
+    os.path.join(args['output'].strip()),
+    args['step-size'], args['progress-interval'],
+    args["use-stored-mask"]
+)
 
-main = Main(args['debug'], args['video'], args['output'],
-            args['step-size'], args['progress-interval'])
 main.start()
