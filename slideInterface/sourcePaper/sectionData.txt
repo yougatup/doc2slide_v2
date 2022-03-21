@@ -1,5 +1,5 @@
-ACM Classification Keywords
 Author Keywords
+CCS Concepts
 INTRODUCTION
 INTRODUCTION
 INTRODUCTION
@@ -15,109 +15,107 @@ INTRODUCTION
 INTRODUCTION
 INTRODUCTION
 INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-RELATED WORK
-Utilizing Learners’ Interaction Data
-Utilizing Learners’ Interaction Data
-Providing Feedback on Online Lecture Videos
-Collecting Qualitative Comments in Offline Classroom
-Effect of Reflective Prompting on Students
-Effect of Reflective Prompting on Students
-Effect of Reflective Prompting on Students
-Effect of Reflective Prompting on Students
-ON LECTURE VIDEOS
-ON LECTURE VIDEOS
-ON LECTURE VIDEOS
-ON LECTURE VIDEOS
-ON LECTURE VIDEOS
-ON LECTURE VIDEOS
-ON LECTURE VIDEOS
-ON LECTURE VIDEOS
-Study Design & Procedure
-Study Design & Procedure
+PREVIOUS WORK
+PREVIOUS WORK
+PREVIOUS WORK
+Design Principles for Tasks and Workflows
+Design Principles for Tasks and Workflows
+Design Principles for Tasks and Workflows
+Design Principles for Tasks and Workflows
+Design Principles for Tasks and Workflows
+Understanding Task Ambiguities and Worker Behavior
+Understanding Task Ambiguities and Worker Behavior
+Tools for Task and Workflow Design
+Tools for Task and Workflow Design
+Tools for Task and Workflow Design
+SPROUT: A TOOL SUPPORTING TASK DESIGN
+SPROUT: A TOOL SUPPORTING TASK DESIGN
+SPROUT: A TOOL SUPPORTING TASK DESIGN
+SPROUT: A TOOL SUPPORTING TASK DESIGN
+Finding and Characterizing Ambiguous Items
+Finding and Characterizing Ambiguous Items
+Finding and Characterizing Ambiguous Items
+Finding and Characterizing Ambiguous Items
+Finding and Characterizing Ambiguous Items
+Finding and Characterizing Ambiguous Items
+Finding and Characterizing Ambiguous Items
+Finding and Characterizing Ambiguous Items
+Finding and Characterizing Ambiguous Items
+Finding and Characterizing Ambiguous Items
+Finding and Characterizing Ambiguous Items
+Clustering and Determining Related Items
+Clustering and Determining Related Items
+Clustering and Determining Related Items
+Requester Dashboard for Improving Task Design
+Requester Dashboard for Improving Task Design
+Requester Dashboard for Improving Task Design
+Requester Dashboard for Improving Task Design
+Requester Dashboard for Improving Task Design
+Requester Dashboard for Improving Task Design
+Requester Dashboard for Improving Task Design
+Requester Dashboard for Improving Task Design
+Compiling Gated Instructions
+Compiling Gated Instructions
+EXPLORATORY USER STUDY DESIGN
+EXPLORATORY USER STUDY DESIGN
+EXPLORATORY USER STUDY DESIGN
+EXPLORATORY USER STUDY DESIGN
+EXPLORATORY USER STUDY DESIGN
+EXPLORATORY USER STUDY DESIGN
+EXPLORATORY USER STUDY DESIGN
+EXPLORATORY USER STUDY DESIGN
+EXPLORATORY USER STUDY DESIGN
+EXPLORATORY USER STUDY DESIGN
+Labeling Tasks and Requester Interfaces
+Labeling Tasks and Requester Interfaces
+Labeling Tasks and Requester Interfaces
+Labeling Tasks and Requester Interfaces
+Labeling Tasks and Requester Interfaces
+Labeling Tasks and Requester Interfaces
+Labeling Tasks and Requester Interfaces
 Participants
-Participants
-Qualitative Results
-Qualitative Results
-Qualitative Results
-Qualitative Results
-Qualitative Results
-Qualitative Results
-Qualitative Results
-Qualitative Results
-Qualitative Results
-Qualitative Results
-STRATEGIES
-STRATEGIES
-STRATEGIES
-STRATEGIES
-STRATEGIES
-STRATEGIES
-STRATEGIES
-STRATEGIES
-STRATEGIES
-Study Design
-Study Design
-Study Design
-Participants
-Study Procedure
-Results
-Results
-Results
-The effect of learners’ prior knowledge
-The effect of learners’ prior knowledge
-The effect of learners’ prior knowledge
-The effect of learners’ prior knowledge
-The effect of learners’ prior knowledge
-The effect of learners’ prior knowledge
-The effect of learners’ prior knowledge
-LEARNER RESPONSES AS FEEDBACK TO INSTRUCTORS
-LEARNER RESPONSES AS FEEDBACK TO INSTRUCTORS
-LEARNER RESPONSES AS FEEDBACK TO INSTRUCTORS
-LEARNER RESPONSES AS FEEDBACK TO INSTRUCTORS
-LEARNER RESPONSES AS FEEDBACK TO INSTRUCTORS
 Procedure
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-Results
-INSTRUCTIONAL DESIGNERS’ VIEW ON RESPONSES
 Procedure
-Results
-Results
-Results
-Results
-DISCUSSION
-DISCUSSION
-Trade-off Between Learners and Instructors
-Trade-off Between Learners and Instructors
-Trade-off Between Questions and Responses for Instructors
-Trade-off Between Questions and Responses for Instructors
-Learner Feedback from Multiple Points of View
-Learner Feedback from Multiple Points of View
-Learner Feedback from Multiple Points of View
-Exploring the Design Space of In-video Prompting
-Exploring the Design Space of In-video Prompting
-LIMITATIONS AND FUTURE WORK
-LIMITATIONS AND FUTURE WORK
-LIMITATIONS AND FUTURE WORK
-LIMITATIONS AND FUTURE WORK
-LIMITATIONS AND FUTURE WORK
-LIMITATIONS AND FUTURE WORK
-CONCLUSION
-ACKNOWLEDGMENTS
+Procedure
+Procedure
+Procedure
+RESULTS RQ1: Usefulness of Worker Feedback
+RESULTS RQ1: Usefulness of Worker Feedback
+RESULTS RQ1: Usefulness of Worker Feedback
+RESULTS RQ1: Usefulness of Worker Feedback
+RQ2: Usefulness of SPROUT’s Affordances
+RQ2: Usefulness of SPROUT’s Affordances
+RQ2: Usefulness of SPROUT’s Affordances
+RQ2: Usefulness of SPROUT’s Affordances
+RQ2: Usefulness of SPROUT’s Affordances
+RQ2: Usefulness of SPROUT’s Affordances
+RQ2: Usefulness of SPROUT’s Affordances
+RQ2: Usefulness of SPROUT’s Affordances
+RQ2: Usefulness of SPROUT’s Affordances
+How to make exploration frictionless?
+How to make exploration frictionless?
+How much information to show?
+How much initiative to take?
+How much initiative to take?
+How much initiative to take?
+How much of the workflow to support?
+How much of the workflow to support?
+How much of the workflow to support?
+LIMITATIONS
+LIMITATIONS
+CONCLUSIONS
+CONCLUSIONS
+CONCLUSIONS
+CONCLUSIONS
+ACKNOWLEDGEMENTS
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
 REFERENCES
 REFERENCES
 REFERENCES

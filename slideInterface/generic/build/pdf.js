@@ -17,6 +17,7 @@ var sectionStructureSegmentProcessed = [];
 var currentStatus = "NORMAL";
 
 var jsonPdfStructure = [];
+var jsonKeyword = {};
 var jsonSectionStructure = [];
 
 var automaticFlag = true;
@@ -18077,6 +18078,12 @@ function readTextFile(file, filetype, type)
                         }
                     }
                 }
+                else if(type == "KEYWORD") {
+                    json = $.parseJSON(allText.join([separator = '']))
+                    jsonKeyword = $.parseJSON(allText.join([separator = '']))
+
+                    console.log(jsonKeyword);
+                }
             }
         }
     }
@@ -18185,7 +18192,8 @@ $(document).ready(function() {
         console.log(result);
 
         issueEvent("pdfjs_renderFinished", {
-          sectionStructure: result
+          sectionStructure: result,
+          keyword: jsonKeyword
         });
 
         analyzeDocument();
@@ -18541,5 +18549,6 @@ $(document).ready(function() {
 //    readTextFile("../web/paperData/paper/metadata.json", 'json', "REFERENCE_META");
 //    readTextFile("../web/paperData/paper/dataOutputpaper.json", 'json', "PDF_FIGURE");
     readTextFile("paperData/paperData.json", 'json', "PDF_STRUCTURE");
+    readTextFile("paperData/keywords.json", 'json', "KEYWORD");
 });
 

@@ -85,6 +85,7 @@ var waitingSegmentRemoveFlag = false
 var selectedPresentationIndex = -1;
 
 var lastExamplePlane = 0;
+var sourcePaperKeywords = {};
 
 function getImgList(x) { 
 	for(var i in x) {
@@ -196,6 +197,8 @@ async function getExamplePresentationInfo(presentationList) {
 
 			res.data.metaInfo.keywords = arr;
 		}
+
+		if("metaInfo" in res.data && res.data.metaInfo != null && res.data.metaInfo.title == "empty") continue;
 
 		examplePresentations.push({
 			index: res.presentationId,
@@ -1040,17 +1043,19 @@ async function createSlide(presentationIDToAdapt, contents, layoutSlideID, style
 	return res;
 }
 
-async function initializeDB() {
+async function searchExamplePresentation(queryString) {
+	$("#examplePresentationListBody").html("Loading ... ");
+
 	var res = await postRequest(
-			API_URL + "search_presentations", {
-				query: "learning"
-			});
+		API_URL + "search_presentations", {
+		query: queryString
+	});
 
 	console.log(res);
 
 	var presentationList = [];
 
-	for(var i=0;i<res.hits.length;i++) {
+	for (var i = 0; i < res.hits.length; i++) {
 		var id = parseInt(res.hits[i]["id"])
 
 		presentationList.push(id);
@@ -1059,14 +1064,17 @@ async function initializeDB() {
 	/*
 	var presentationList = [
 		100004, 100006,
-            100007,
+			100007,
 	];
 	*/
-
 
 	await getExamplePresentationInfo(presentationList);
 
 	updateExamplePresentation()
+}
+
+async function initializeDB() {
+	console.log(sourcePaperKeywords);
 
 	// testGAPICall();
 
@@ -7639,9 +7647,14 @@ function addMessage(index, message, mapping) {
 function updateMessageBox() {
 	var html = '';
 
-	if(selectedOutlineIndex == -1 || outlineStructure.length >= selectedOutlineIndex) return;
-
 	console.log(selectedOutlineIndex);
+	console.log(outlineStructure);
+
+	if(selectedOutlineIndex == -1 || outlineStructure.length <= selectedOutlineIndex){
+		$("#outlineMessageElements").html('');
+
+		return;
+	} 
 
 	for(var i=0;i<outlineStructure[selectedOutlineIndex].messages.length;i++) {
 		var msgObj = outlineStructure[selectedOutlineIndex].messages[i];
@@ -8001,7 +8014,10 @@ function selectSegment(index, locateFlag) {
 	selectedOutlineIndex = index;
 
 	$(".outlineSegmentElement").removeClass("selectedSegment");
-	$(".outlineSegmentElement[index='" + index + "']").addClass("selectedSegment");
+
+	if (index != -1) {
+		$(".outlineSegmentElement[index='" + index + "']").addClass("selectedSegment");
+	}
 
 	var headerString = $(".examplePresentationBookmarkHeader.selectedSegmentHeader").html();
 
@@ -8010,15 +8026,17 @@ function selectSegment(index, locateFlag) {
 	if(headerString != null && headerString.startsWith("&gt;&gt;"))
 		$(".examplePresentationBookmarkHeader.selectedSegmentHeader").html(headerString.substring(9));
 
-
 	$(".examplePresentationBookmarkHeader").removeClass("selectedSegmentHeader");
-	$(".examplePresentationBookmarkHeader[outlineStructureIndex='" + index + "']").addClass("selectedSegmentHeader");
 
-	headerString = $(".examplePresentationBookmarkHeader.selectedSegmentHeader").html();
+	if (index != -1) {
+		$(".examplePresentationBookmarkHeader[outlineStructureIndex='" + index + "']").addClass("selectedSegmentHeader");
 
-	if(headerString != null) $(".examplePresentationBookmarkHeader.selectedSegmentHeader").html(">> " + headerString);
+		headerString = $(".examplePresentationBookmarkHeader.selectedSegmentHeader").html();
 
-	if(locateFlag) locateSlideDirectly(outlineStructure[index].slideIDs[0]);
+		if (headerString != null) $(".examplePresentationBookmarkHeader.selectedSegmentHeader").html(">> " + headerString);
+	}
+
+	if(index != -1 && locateFlag) locateSlideDirectly(outlineStructure[index].slideIDs[0]);
 
 	updateMessageBox();
 }
@@ -8297,6 +8315,33 @@ function removeBookmark(presentationIndex, thumbnailIndex) {
 	}
 }
 
+function removeMapping(mappingKey) {
+	console.log(mappingKey);
+
+	if (mappingKey != null) {
+		var myPageNumber = null;
+
+		for (var pageNumber in highlightDB.mapping) {
+			if (mappingKey in highlightDB.mapping[pageNumber]) {
+				myPageNumber = pageNumber;
+				break;
+			}
+		}
+
+		console.log(mappingKey);
+		console.log(myPageNumber);
+		console.log(highlightDB);
+
+		if (myPageNumber != null) {
+			removeMappingOnPdfjs(pageNumber, mappingKey, false).then(result => {
+				issueEvent("root_mappingRemoved2", {
+					mappingID: result
+				});
+			});
+		}
+	}
+}
+
 $(document).ready(function() {
 	$("#outlineSegmentLabelMaxTime").html(curPresentationDuration + " min")
 	document.body.onmousedown = function() { 
@@ -8545,30 +8590,7 @@ $(document).ready(function() {
 		outlineStructure[selectedOutlineIndex].messages.splice(idx, 1);
 		updateMessageBox();
 
-		console.log(mappingKey);
-
-		if(mappingKey != null) {
-			var myPageNumber = null;
-
-			for (var pageNumber in highlightDB.mapping) {
-				if (mappingKey in highlightDB.mapping[pageNumber]) {
-					myPageNumber = pageNumber;
-					break;
-				}
-			}
-
-			console.log(mappingKey);
-			console.log(myPageNumber);
-			console.log(highlightDB);
-
-			if (myPageNumber != null) {
-				removeMappingOnPdfjs(pageNumber, mappingKey, false).then(result => {
-					issueEvent("root_mappingRemoved2", {
-						mappingID: result
-					});
-				});
-			}
-		}
+		removeMapping(mappingKey);
 	})
 
 	$(document).on("click", ".outlineMessageElementCancelBtn", function(e) {
@@ -11266,7 +11288,13 @@ $(document).ready(function() {
 
 						if(outlineStructure[i].slideIDs.length <= 0) {
 							delta_X += (outlineStructure[i].endX - outlineStructure[i].startX);
+
+							for (var j = 0; j < outlineStructure[i].messages.length; j++) {
+								if (outlineStructure[i].messages[j].mapping != null)
+									removeMapping(outlineStructure[i].messages[j].mapping)
+							}
 							outlineStructure.splice(i, 1);
+
 							i--;
 						}
 					}
@@ -11333,12 +11361,13 @@ $(document).ready(function() {
 			console.log(p.pageID);
 			console.log(outlineStructure);
 
-			if(waitingOutlineIndex != -1) {
-				hideLoadingSlidePlane();
+			if(outlineStructure.length <= 0) {
+				selectedOutlineIndex = -1;
+			}
 
+			if(waitingOutlineIndex != -1) {
 				outlineStructure[waitingOutlineIndex].status = "okay";
 
-				updateOutlineSegments();
 				selectSegment(waitingOutlineIndex, true);
 
 				waitingOutlineIndex = -1;
@@ -11350,13 +11379,13 @@ $(document).ready(function() {
 				for(var i=0;i<outlineStructure.length;i++) {
 					if(outlineStructure[i].slideIDs.includes(p.pageID)) {
 						selectSegment(i, false);
-						updateMessageBox();
 					}
 				}
 
-				hideLoadingSlidePlane();
-				updateOutlineSegments();
 			}
+
+			updateOutlineSegments();
+			hideLoadingSlidePlane();
 
 			statusFlag = false;
 			setStatusLight("red");
@@ -11810,6 +11839,13 @@ $(document).ready(function() {
 				updateBookmarkCntOnPresentationInstance(presentationIndex)
 			}
 
+			console.log(outlineStructure[segmentIndex]);
+
+			for(var i=0;i<outlineStructure[segmentIndex].messages.length;i++) {
+				if(outlineStructure[segmentIndex].messages[i].mapping != null)
+					removeMapping(outlineStructure[segmentIndex].messages[i].mapping)
+			}
+
 			var requests = [];
 
 			for(var i=0;i<outlineStructure[segmentIndex].slideIDs.length;i++) {
@@ -12124,8 +12160,12 @@ $(document).ready(function() {
 				issueEvent("root_attachMonitor", null);
 
 				structureHighlightDB = e.detail.sectionStructure;
+				sourcePaperKeywords = e.detail.keyword;
 
 				console.log(structureHighlightDB);
+				console.log(sourcePaperKeywords);
+
+				searchExamplePresentation(sourcePaperKeywords.keywords.join(' '));
               //  closeNav();
                 });
 
