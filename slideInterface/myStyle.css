@@ -2383,6 +2383,13 @@ width: 100%;
 	  background-color: yellow !important;
   }
 
+  .outlineSegmentElement:not(.exampleSegmentElement):hover .outlineSegmentElementSlideIndex {
+	  display: none;
+  }
+  .outlineSegmentElement:not(.exampleSegmentElement):hover .outlineSegmentElementRemoveBtn {
+	  display: block;
+  }
+
   .outlineMessageElementXBtn {
 	  float: right;
 	  margin-right: 5px;
@@ -2489,6 +2496,7 @@ width: 100%;
 	padding-bottom: 2px;
 	border-radius: 10px;
 	background-color: #ffdb5c;
+	margin-top: 5px;
 	font-size: 13px;
   }
 
@@ -2735,6 +2743,8 @@ width: 100%;
 
   .outlineSegmentElementDuration {
 	  display: inline-block;
+	  width: calc(100% - 80px);
+	  float: left;
   }
 
   .examplePresentationPreviewDiv {
@@ -2936,4 +2946,16 @@ width: 100%;
 
 .examplePresentationBookmarkSlideThumbnailImage {
 	height: 10%;
+}
+
+.examplePresentationBookmarkHeader.selectedSegmentHeader {
+	color: blue;
+}
+
+.outlineSegmentElementRemoveBtn {
+	display: none;
+	height: 20px;
+	width: 15px;
+	float: right;
+	margin-right: 5px;
 }

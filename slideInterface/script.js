@@ -81,7 +81,10 @@ var selectedOutlineIndex = -1;
 var curPresentationDuration = 5;
 
 var waitingOutlineIndex = -1;
+var waitingSegmentRemoveFlag = false
 var selectedPresentationIndex = -1;
+
+var lastExamplePlane = 0;
 
 function getImgList(x) { 
 	for(var i in x) {
@@ -404,6 +407,7 @@ function showZoomImageOnExample(presentationIndex, slideIndex, thumbnailScrollFl
 	)
 
 	$(".examplePresentationZoomDiv[index='" + presentationIndex + "']").show();
+	$(".examplePresentationZoomDiv[index='" + presentationIndex + "']").show();
 
 	showScript(presentationIndex, slideIndex, scriptScrollFlag);
 
@@ -439,6 +443,9 @@ function hideZoomImageOnExample(presentationIndex) {
 function selectSlideThumbnail(presentationIndex, slideIndex, thumbnailScrollFlag, scriptScrollFlag) {
 	var obj = $(".examplePresentationSlideThumbnailImageDiv[presentationIndex='" + presentationIndex + "'][thumbnailIndex='" + slideIndex + "']");
 
+	$("#examplePresentationDetailDiv").attr("presentationIndex", presentationIndex);
+	$("#examplePresentationDetailDiv").attr("thumbnailIndex", slideIndex);
+
 	$(obj).parent().parent().find(".examplePresentationSlideThumbnailImage").removeClass("thumbnailClicked");
 	$(obj).parent().parent().find(".examplePresentationSlideThumbnailImageDiv").removeClass("thumbnailClicked");
 
@@ -455,7 +462,7 @@ function showZoomDiv(presentationIndex) {
 	$("#examplePresentationDetailDiv").html(
 		"<button class='examplePresentationPrevBtn'> Prev </button>" + 
 
-		"<div class='examplePresentationInstanceTitle'>" + "[" + presentationIndex + "] " + examplePresentations[presentationIndex].title + "</div>" +
+		"<div class='examplePresentationInstanceTitle'>" + "[" + examplePresentations[presentationIndex].index + "] " + examplePresentations[presentationIndex].title + "</div>" +
 		getKeywordDiv(examplePresentations[presentationIndex].keywords) +
 
 		getOutlineDiv(presentationIndex, examplePresentations[presentationIndex].outline, examplePresentations[presentationIndex].slideInfo) + 
@@ -472,6 +479,8 @@ function showZoomDiv(presentationIndex) {
 
 	$("#examplePresentationListDiv").hide();
 	$("#examplePresentationDetailDiv").show();
+
+	lastExamplePlane = 1;
 }
 
 function updateExamplePresentation() {
@@ -7630,7 +7639,9 @@ function addMessage(index, message, mapping) {
 function updateMessageBox() {
 	var html = '';
 
-	if(selectedOutlineIndex == -1) return;
+	if(selectedOutlineIndex == -1 || outlineStructure.length >= selectedOutlineIndex) return;
+
+	console.log(selectedOutlineIndex);
 
 	for(var i=0;i<outlineStructure[selectedOutlineIndex].messages.length;i++) {
 		var msgObj = outlineStructure[selectedOutlineIndex].messages[i];
@@ -7794,6 +7805,8 @@ function updateOutlineSegments() {
 					)
 					:
 					"" )  + 
+
+			"<div class='outlineSegmentElementRemoveBtn'> X </div>" + 
 		"</div>";
 
 		labelHtml = labelHtml + 
@@ -7890,6 +7903,9 @@ function updateOutlineSegments() {
 				console.log(outlineStructure[idx]);
 
 				newOutlineStructure[lastIdx].startSlideIndex = slideIndex == 2 ? 1 : slideIndex;
+
+				console.log(newOutlineStructure[lastIdx].startSlideIndex);
+
 				newOutlineStructure[lastIdx].endSlideIndex = slideIndex + newOutlineStructure[lastIdx].slideIDs.length - 1;
 				newOutlineStructure[lastIdx].startX = lastIdx == 0 ? 0 : newOutlineStructure[lastIdx-1].endX;
 				newOutlineStructure[lastIdx].endX = (outlineStructure[idx].endX - outlineStructure[idx].startX) + newOutlineStructure[lastIdx].startX;
@@ -7966,9 +7982,10 @@ function updateOutlineSegments() {
 			outlineStructure = newOutlineStructure;
 
 			updateOutlineSegments();
-
 		}
 	})
+
+	updateBookmarkedExampleDiv();
 }
 
 function genColor() {
@@ -7985,6 +8002,21 @@ function selectSegment(index, locateFlag) {
 
 	$(".outlineSegmentElement").removeClass("selectedSegment");
 	$(".outlineSegmentElement[index='" + index + "']").addClass("selectedSegment");
+
+	var headerString = $(".examplePresentationBookmarkHeader.selectedSegmentHeader").html();
+
+	console.log(headerString);
+
+	if(headerString != null && headerString.startsWith("&gt;&gt;"))
+		$(".examplePresentationBookmarkHeader.selectedSegmentHeader").html(headerString.substring(9));
+
+
+	$(".examplePresentationBookmarkHeader").removeClass("selectedSegmentHeader");
+	$(".examplePresentationBookmarkHeader[outlineStructureIndex='" + index + "']").addClass("selectedSegmentHeader");
+
+	headerString = $(".examplePresentationBookmarkHeader.selectedSegmentHeader").html();
+
+	if(headerString != null) $(".examplePresentationBookmarkHeader.selectedSegmentHeader").html(">> " + headerString);
 
 	if(locateFlag) locateSlideDirectly(outlineStructure[index].slideIDs[0]);
 
@@ -8011,7 +8043,9 @@ function updateBookmarkCntOnPresentationInstance(presentationIndex) {
 }
 
 function showExampleBrowsingDiv() {
-	$("#examplePresentationListBody").show();
+	if(lastExamplePlane == 0) $("#examplePresentationListDiv").show();
+	else $("#examplePresentationDetailDiv").show();
+
 	$("#examplePresentationBookmarkDiv").hide();
 
 	$("#examplePresentationBrowsingText").addClass("selected");
@@ -8022,7 +8056,7 @@ function showBookmarkDiv() {
 	$("#examplePresentationBrowsingText").removeClass("selected");
 	$("#examplePresentationBookmarkText").addClass("selected")
 
-	$("#examplePresentationListBody").hide();
+	$("#examplePresentationListDiv").hide();
 	$("#examplePresentationDetailDiv").hide();
 	$("#examplePresentationBookmarkDiv").show();
 }
@@ -8113,6 +8147,7 @@ function markBookmarkOnExample(presentationIndex, thumbnailIndex) {
 	$(".examplePresentationSlideThumbnailDiv").find(".examplePresentationSlideThumbnailImageDiv[presentationIndex='" + presentationIndex + "'][thumbnailIndex='" + thumbnailIndex + "']").find(".examplePresentationSlideThumbnailBookmark").addClass("bookmarked")
 
 	updateBookmarkedExampleDiv();
+	updateBookmarkCntOnPresentationInstance(presentationIndex);
 }
 
 function examplePresentationBookmarkImageOnLoad(e) {
@@ -8128,18 +8163,18 @@ function updateBookmarkedExampleDiv() {
 	for(var i=0;i<outlineStructure.length;i++) {
 		var b = outlineStructure[i].bookmark;
 
-		var body = "<div class='examplePresentationBookmarkInstance'> " + 
-					"<div class='examplePresentationBookmarkHeader'>" + outlineStructure[i].label + "</div>" + 
+		var body = "<div class='examplePresentationBookmarkInstance' outlineStructureIndex='" + i + "'> " + 
+					"<div class='examplePresentationBookmarkHeader " + (selectedOutlineIndex == i ? "selectedSegmentHeader" : "") + "' outlineStructureIndex='" + i + "'>" + 
+						(selectedOutlineIndex == i ? ">> " : "") + outlineStructure[i].label + 
+						"</div>" + 
 					"<div class='examplePresentationBookmarkSlideDiv'>"
 
-		if(b.length > 0) {
-			for (var j = 0; j < b.length; j++) {
-				body = body + "<div class='examplePresentationBookmarkSlideThumbnail' " + 
-						"outlineStructureIndex='" + i + "' bookmarkIndex='" + j + "'>" + 
-					"<img class='examplePresentationBookmarkSlideThumbnailImage' src='http://localhost:8000/slideThumbnail/" + b[j].presentationIndex + "/images/" + b[j].thumbnailIndex + ".jpg'> </img>" + 
-					"</div>"
-			}
-		} 
+		for (var j = 0; j < b.length; j++) {
+			body = body + "<div class='examplePresentationBookmarkSlideThumbnail' " +
+				"outlineStructureIndex='" + i + "' bookmarkIndex='" + j + "'>" +
+				"<img class='examplePresentationBookmarkSlideThumbnailImage' src='http://localhost:8000/slideThumbnail/" + examplePresentations[b[j].presentationIndex].index + "/images/" + b[j].thumbnailIndex + ".jpg'> </img>" +
+				"</div>"
+		}
 
 		body = body + "</div> </div>"
 
@@ -8356,13 +8391,13 @@ $(document).ready(function() {
 			updateBookmarkedExampleDiv();
 			*/
 		}
-
-		updateBookmarkCntOnPresentationInstance(presentationIndex);
 	})
 
 	$(document).on("click", ".examplePresentationPrevBtn", function(e) {
 		$("#examplePresentationDetailDiv").hide();
 		$("#examplePresentationListDiv").show();
+
+		lastExamplePlane = 0;
 	})
 
 	$(document).on("click", ".examplePresentationInstance", function(e) {
@@ -9795,6 +9830,7 @@ $(document).ready(function() {
 
 	});
 
+	/*
 	$(document).on("click", ".ui-tabs-tab",function(e) {
 		var cur = $(e.target);
 
@@ -9826,6 +9862,7 @@ $(document).ready(function() {
 			getAlternativeSlides(curDocSlideStructureIndex, "styleAlternative");
 		}
 	});
+	*/
 
 	$(document).on("mouseup", function(e) {
 		return;
@@ -11307,12 +11344,18 @@ $(document).ready(function() {
 				waitingOutlineIndex = -1;
 			}
 			else {
+				if(outlineStructure.length <= 0) {
+					selectedOutlineIndex = -1;
+				}
 				for(var i=0;i<outlineStructure.length;i++) {
 					if(outlineStructure[i].slideIDs.includes(p.pageID)) {
 						selectSegment(i, false);
 						updateMessageBox();
 					}
 				}
+
+				hideLoadingSlidePlane();
+				updateOutlineSegments();
 			}
 
 			statusFlag = false;
@@ -11743,6 +11786,96 @@ $(document).ready(function() {
 			console.log(e);
 
 		})
+
+		$(document).on("click", ".outlineSegmentElementRemoveBtn", function(e) {
+			showLoadingSlidePlane();
+
+			var segmentObj = $(this).parent();
+			var segmentIndex = parseInt($(segmentObj).attr("index"));
+
+			for (var i = 0; i < outlineStructure[segmentIndex].bookmark.length; i++) {
+				var presentationIndex = outlineStructure[segmentIndex].bookmark[i].presentationIndex;
+				var thumbnailIndex = outlineStructure[segmentIndex].bookmark[i].thumbnailIndex;
+
+				examplePresentations[presentationIndex].slideInfo[thumbnailIndex].bookmarked = false;
+				examplePresentations[presentationIndex].bookmarkCnt--;
+
+				if(parseInt($("#examplePresentationDetailDiv").attr("presentationIndex")) == presentationIndex &&
+				   parseInt($("#examplePresentationDetailDiv").attr("thumbnailIndex")) == thumbnailIndex) {
+					$(".examplePresentationZoomImageStarDiv").removeClass("bookmarked");
+				}
+
+				$(".examplePresentationSlideThumbnailDiv").find(".examplePresentationSlideThumbnailImageDiv[presentationIndex='" + presentationIndex + "'][thumbnailIndex='" + thumbnailIndex + "']").find(".examplePresentationSlideThumbnailBookmark").removeClass("bookmarked")
+
+				updateBookmarkCntOnPresentationInstance(presentationIndex)
+			}
+
+			var requests = [];
+
+			for(var i=0;i<outlineStructure[segmentIndex].slideIDs.length;i++) {
+				var slideID = outlineStructure[segmentIndex].slideIDs[i];
+
+				requests.push({
+					"deleteObject": {
+						"objectId": slideID,
+					},
+				});
+			}
+
+			updateOutlineSegments();
+			updateBookmarkedExampleDiv();
+
+			gapi.client.slides.presentations.batchUpdate({
+				presentationId: PRESENTATION_ID,
+				requests: requests
+			}).then((createSlideResponse) => {
+				console.log(createSlideResponse);
+			});
+
+			/*
+			outlineStructure.splice(segmentIndex, 1);
+
+			if(outlineStructure.length > 0) {
+				var dX = outlineStructure[0].endX - outlineStructure[0].startX;
+				var nS = outlineStructure[0].slideIDs.length;
+
+				console.log(outlineStructure.length);
+
+				outlineStructure[0].startSlideIndex = 1;
+				console.log(outlineStructure[0].startSlideIndex);
+				outlineStructure[0].endSlideIndex = 1 + nS;
+				outlineStructure[0].startX = 0;
+				outlineStructure[0].endX = dX;
+
+				for (var i = 1; i < outlineStructure.length; i++) {
+					var durationX = outlineStructure[i].endX - outlineStructure[i].startX;
+					var numSlides = outlineStructure[i].slideIDs.length;
+
+					outlineStructure[i].startX = outlineStructure[i-1].endX;
+					outlineStructure[i].endX = outlineStructure[i].startX + durationX;
+					outlineStructure[i].startSlideIndex = outlineStructure[i-1].endSlideIndex+1
+					console.log(outlineStructure[i].startSlideIndex);
+					outlineStructure[i].endSlideIndex = outlineStructure[i].startSlideIndex + numSlides - 1;
+				}
+			}
+			*/
+/*
+			if(segmentIndex < outlineStructure.length) locateSlide(outlineStructure[segmentIndex].slideIDs[0]);
+			else if(outlineStructure.length > 0) locateSlide(outlineStructure[outlineStructure.length-1].slideIDs[0])
+			*/
+
+		})
+
+		/*
+		$(document).on("mouseout", ".outlineSegmentElement", function(e) {
+			var target = $(e.target).find(".outlineSegmentElementRemoveBtn");
+
+			$(target).hide();
+
+			console.log(target);
+			
+		})
+		*/
 
 		$(document).on("click", ".mappingIndicator.mapped", function(e) {
 			issueEvent("root_navigateToWord", {
