@@ -170,6 +170,30 @@ async function getExamplePresentationInfo(presentationList) {
 			res.data.outline[i].colorCode = genColor();
 		}
 
+		// keyword processing
+
+		var arr = [];
+
+		if(res.data.metaInfo) {
+			var k = res.data.metaInfo.keywords
+
+			for(var i=0;i<k.length;i++) {
+				var keyword = k[i];
+
+				if(keyword.includes("ACM Reference Format")) {
+					keyword = keyword.split("ACM Reference Format")[0];
+
+					arr.push(keyword);
+
+					break;
+				}
+
+				arr.push(keyword);
+			}
+
+			res.data.metaInfo.keywords = arr;
+		}
+
 		examplePresentations.push({
 			index: res.presentationId,
 			outline: res.data.outline,
@@ -7752,13 +7776,22 @@ function updateOutlineSegments() {
 
 		"<div class='outlineSegmentElement " + (outlineStructure[i].status == "need_name" ? "outlineSegmentElementWaiting" : "") + "' " + 
 			 "index='" + i + "'> " + 
-			 "<div class='outlineSegmentElementDuration'> " + 
-			 	getDurationString(outlineStructure[i].duration) + 
-			 "</div>" + 
+			 (
+				 outlineStructure[i].endX - outlineStructure[i].startX >= 40 ? 
+			 		( "<div class='outlineSegmentElementDuration'> " + 
+			 			getDurationString(outlineStructure[i].duration) + 
+					 "</div>")
+					:
+					""
+			  ) + 
 				( outlineStructure[i].status == "okay" ? 
-			 		"<div class='outlineSegmentElementSlideIndex'>" + 
-			 			"Slide " + outlineStructure[i].endSlideIndex + 
-					"</div>"
+					(outlineStructure[i].endX - outlineStructure[i].startX >= 100 ? 
+			 			"<div class='outlineSegmentElementSlideIndex'>" + 
+			 				"Slide " + outlineStructure[i].endSlideIndex + 
+						"</div>"
+						:
+						""
+					)
 					:
 					"" )  + 
 		"</div>";
@@ -7805,12 +7838,23 @@ function updateOutlineSegments() {
 
 			var duration = targetWidth / totalWidth * curPresentationDuration;
 
-			$(target).find(".outlineSegmentElementDuration").html(getDurationString(duration));
-
 			outlineStructure[segmentIndex].duration = duration;
 			outlineStructure[segmentIndex].endX = outlineStructure[segmentIndex].startX + targetWidth;
+
+			if(targetWidth >= 40) $(target).find(".outlineSegmentElementDuration").html(getDurationString(duration));
+			else $(target).find(".outlineSegmentElementDuration").html('');
+
+			if(targetWidth >= 100) $(target).find(".outlineSegmentElementSlideIndex").html("Slide " + outlineStructure[segmentIndex].endSlideIndex);
+			else $(target).find(".outlineSegmentElementSlideIndex").html('');
 		},
 		stop: function(e, ui) {
+			for(var i=0;i<outlineStructure.length;i++) {
+				var durationX = outlineStructure[i].endX - outlineStructure[i].startX;
+
+				outlineStructure[i].startX = i == 0 ? 0 : outlineStructure[i-1].endX;
+				outlineStructure[i].endX = outlineStructure[i].startX + durationX;
+			}
+
 			updateOutlineSegments();
 		}
 	}); 
@@ -7940,7 +7984,6 @@ function selectSegment(index, locateFlag) {
 	selectedOutlineIndex = index;
 
 	$(".outlineSegmentElement").removeClass("selectedSegment");
-
 	$(".outlineSegmentElement[index='" + index + "']").addClass("selectedSegment");
 
 	if(locateFlag) locateSlideDirectly(outlineStructure[index].slideIDs[0]);
@@ -7980,6 +8023,7 @@ function showBookmarkDiv() {
 	$("#examplePresentationBookmarkText").addClass("selected")
 
 	$("#examplePresentationListBody").hide();
+	$("#examplePresentationDetailDiv").hide();
 	$("#examplePresentationBookmarkDiv").show();
 }
 
@@ -8069,10 +8113,42 @@ function markBookmarkOnExample(presentationIndex, thumbnailIndex) {
 	$(".examplePresentationSlideThumbnailDiv").find(".examplePresentationSlideThumbnailImageDiv[presentationIndex='" + presentationIndex + "'][thumbnailIndex='" + thumbnailIndex + "']").find(".examplePresentationSlideThumbnailBookmark").addClass("bookmarked")
 
 	updateBookmarkedExampleDiv();
-
 }
-function updateBookmarkedExampleDiv() {
 
+function examplePresentationBookmarkImageOnLoad(e) {
+	console.log("cool");
+	console.log(e);
+}
+
+function updateBookmarkedExampleDiv() {
+	var result = '';
+
+	console.log(outlineStructure);
+
+	for(var i=0;i<outlineStructure.length;i++) {
+		var b = outlineStructure[i].bookmark;
+
+		var body = "<div class='examplePresentationBookmarkInstance'> " + 
+					"<div class='examplePresentationBookmarkHeader'>" + outlineStructure[i].label + "</div>" + 
+					"<div class='examplePresentationBookmarkSlideDiv'>"
+
+		if(b.length > 0) {
+			for (var j = 0; j < b.length; j++) {
+				body = body + "<div class='examplePresentationBookmarkSlideThumbnail' " + 
+						"outlineStructureIndex='" + i + "' bookmarkIndex='" + j + "'>" + 
+					"<img class='examplePresentationBookmarkSlideThumbnailImage' src='http://localhost:8000/slideThumbnail/" + b[j].presentationIndex + "/images/" + b[j].thumbnailIndex + ".jpg'> </img>" + 
+					"</div>"
+			}
+		} 
+
+		body = body + "</div> </div>"
+
+		result = result + body;
+	}
+	
+	console.log(result);
+
+	$("#examplePresentationBookmarkDiv").html(result);
 }
 
 function addSegment(p) {
@@ -8477,9 +8553,17 @@ $(document).ready(function() {
 	});
 
 	$(document).on("click", ".outlineSegmentElement", function(e) {
-		if($(e.target).hasClass("exampleSegmentElement")) {
-			var presentationIndex = $(e.target).attr("presentationIndex");
-			var segmentIndex = $(e.target).attr("segmentIndex");
+		var cur = $(e.target);
+
+		for(var i=0;i<100;i++) {
+			if($(cur).hasClass("outlineSegmentElement")) break;
+
+			cur = $(cur).parent();
+		}
+
+		if($(cur).hasClass("exampleSegmentElement")) {
+			var presentationIndex = $(cur).attr("presentationIndex");
+			var segmentIndex = $(cur).attr("segmentIndex");
 
 			var slideIndex = examplePresentations[presentationIndex].outline[segmentIndex].startSlideIndex;
 
@@ -8487,7 +8571,7 @@ $(document).ready(function() {
 		}
 		else {
 
-			var idx = parseInt($(e.target).attr("index"));
+			var idx = parseInt($(cur).attr("index"));
 
 			selectSegment(idx, true);
 		}

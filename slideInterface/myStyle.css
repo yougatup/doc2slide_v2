@@ -2914,3 +2914,26 @@ width: 100%;
 .ui-front {
     z-index: 987987999 !important;
 }
+
+.examplePresentationBookmarkSlideDiv {
+	width: calc(100% - 30px);
+	margin-left: 30px;
+}
+
+.examplePresentationBookmarkHeader {
+	font-size: 20px;
+	font-weight: bold;
+	margin: 20px;
+}
+
+.examplePresentationBookmarkSlideThumbnail {
+	border: 1px solid black;
+	display: inline-block;
+	margin-left: 10px;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+.examplePresentationBookmarkSlideThumbnailImage {
+	height: 10%;
+}
