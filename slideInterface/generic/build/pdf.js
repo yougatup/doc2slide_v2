@@ -17871,8 +17871,19 @@ function showOutlinePopup(mode) {
   var pageTop = $(cur).offset().top;
   var lastWordTop = $(lastWordObj).offset().top;
 
-  popupObj.css("left", Math.min(640, $(lastWordObj).offset().left))
-  popupObj.css("top", (lastWordTop - pageTop) + (pageNumber-1) * 1161 + 20)
+  var pageWidth = $(cur).width();
+  var pageHeight = $(cur).height();
+
+  var firstPageTop = $(".page[data-page-number='1']").offset().top;
+  var lastWordTop = $(lastWordObj).offset().top;
+
+  var pageRight = $(cur).offset().left + $(cur).width();
+  var lastWordRight = $(lastWordObj).offset().right;
+
+  console.log(pageRight);
+
+  popupObj.css("left", Math.min(pageRight - $(cur).offset().left - 350, ($(lastWordObj).offset().left - $(cur).offset().left)))
+  popupObj.css("top", lastWordTop - firstPageTop + 20)
 
   console.log($(lastWordObj).offset());
   console.log($(popupObj).css("top"));

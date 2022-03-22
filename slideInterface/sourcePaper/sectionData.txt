@@ -1,4 +1,5 @@
 Author Keywords
+Author Keywords
 CCS Concepts
 INTRODUCTION
 INTRODUCTION
@@ -8,106 +9,75 @@ INTRODUCTION
 INTRODUCTION
 INTRODUCTION
 INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-PREVIOUS WORK
-PREVIOUS WORK
-PREVIOUS WORK
-Design Principles for Tasks and Workflows
-Design Principles for Tasks and Workflows
-Design Principles for Tasks and Workflows
-Design Principles for Tasks and Workflows
-Design Principles for Tasks and Workflows
-Understanding Task Ambiguities and Worker Behavior
-Understanding Task Ambiguities and Worker Behavior
-Tools for Task and Workflow Design
-Tools for Task and Workflow Design
-Tools for Task and Workflow Design
-SPROUT: A TOOL SUPPORTING TASK DESIGN
-SPROUT: A TOOL SUPPORTING TASK DESIGN
-SPROUT: A TOOL SUPPORTING TASK DESIGN
-SPROUT: A TOOL SUPPORTING TASK DESIGN
-Finding and Characterizing Ambiguous Items
-Finding and Characterizing Ambiguous Items
-Finding and Characterizing Ambiguous Items
-Finding and Characterizing Ambiguous Items
-Finding and Characterizing Ambiguous Items
-Finding and Characterizing Ambiguous Items
-Finding and Characterizing Ambiguous Items
-Finding and Characterizing Ambiguous Items
-Finding and Characterizing Ambiguous Items
-Finding and Characterizing Ambiguous Items
-Finding and Characterizing Ambiguous Items
-Clustering and Determining Related Items
-Clustering and Determining Related Items
-Clustering and Determining Related Items
-Requester Dashboard for Improving Task Design
-Requester Dashboard for Improving Task Design
-Requester Dashboard for Improving Task Design
-Requester Dashboard for Improving Task Design
-Requester Dashboard for Improving Task Design
-Requester Dashboard for Improving Task Design
-Requester Dashboard for Improving Task Design
-Requester Dashboard for Improving Task Design
-Compiling Gated Instructions
-Compiling Gated Instructions
-EXPLORATORY USER STUDY DESIGN
-EXPLORATORY USER STUDY DESIGN
-EXPLORATORY USER STUDY DESIGN
-EXPLORATORY USER STUDY DESIGN
-EXPLORATORY USER STUDY DESIGN
-EXPLORATORY USER STUDY DESIGN
-EXPLORATORY USER STUDY DESIGN
-EXPLORATORY USER STUDY DESIGN
-EXPLORATORY USER STUDY DESIGN
-EXPLORATORY USER STUDY DESIGN
-Labeling Tasks and Requester Interfaces
-Labeling Tasks and Requester Interfaces
-Labeling Tasks and Requester Interfaces
-Labeling Tasks and Requester Interfaces
-Labeling Tasks and Requester Interfaces
-Labeling Tasks and Requester Interfaces
-Labeling Tasks and Requester Interfaces
-Participants
-Procedure
-Procedure
-Procedure
-Procedure
-Procedure
-RESULTS RQ1: Usefulness of Worker Feedback
-RESULTS RQ1: Usefulness of Worker Feedback
-RESULTS RQ1: Usefulness of Worker Feedback
-RESULTS RQ1: Usefulness of Worker Feedback
-RQ2: Usefulness of SPROUT’s Affordances
-RQ2: Usefulness of SPROUT’s Affordances
-RQ2: Usefulness of SPROUT’s Affordances
-RQ2: Usefulness of SPROUT’s Affordances
-RQ2: Usefulness of SPROUT’s Affordances
-RQ2: Usefulness of SPROUT’s Affordances
-RQ2: Usefulness of SPROUT’s Affordances
-RQ2: Usefulness of SPROUT’s Affordances
-RQ2: Usefulness of SPROUT’s Affordances
-How to make exploration frictionless?
-How to make exploration frictionless?
-How much information to show?
-How much initiative to take?
-How much initiative to take?
-How much initiative to take?
-How much of the workflow to support?
-How much of the workflow to support?
-How much of the workflow to support?
-LIMITATIONS
-LIMITATIONS
-CONCLUSIONS
-CONCLUSIONS
-CONCLUSIONS
-CONCLUSIONS
-ACKNOWLEDGEMENTS
+Spatial Design Support System for Early Design Phase
+Prototyping in Spatial Design
+Prototyping in Spatial Design
+Prototyping in Spatial Design
+Tangible User Interface and Design Collaboration
+Design Reference Retrieval
+Design Reference Retrieval
+C-SPACE
+Physical Modeling Components
+Physical Modeling Components
+Design Reference Data Analysis
+Design Reference Data Analysis
+Design Reference Data Analysis
+Design Reference Data Analysis
+Design Reference Data Analysis
+Design Constraint Mapping
+Design Reference Retrieval Interface Overview
+Design Reference Retrieval Interface Overview
+Design Reference Retrieval Interface Overview
+Shape-Based Retrieval Method and Interface
+Number of Rooms-Based Retrieval Method and Interface
+Room Connectivity-Based Retrieval Method and Interface
+Room Connectivity-Based Retrieval Method and Interface
+Room Connectivity-Based Retrieval Method and Interface
+Material Simulation
+Material Simulation
+Material Simulation
+Alternative Management
+Export to BIM Format
+Export to BIM Format
+Export to BIM Format
+IMPLEMENTATION & RESULTS
+User Study
+Experiment Design
+Experiment Design
+User Behavior Overview
+User Behavior Overview
+User Behavior Overview
+Assisting Rapid Spatial Design Exploration and Development
+Assisting Rapid Spatial Design Exploration and Development
+Experiencing Space and Scale
+Developing Details in the Early Stage
+Developing Details in the Early Stage
+Developing Details in the Early Stage
+Inducing Collaborative Discussion
+Inducing Collaborative Discussion
+Integration of Early Design Phase to Later Design Phases
+Integration of Early Design Phase to Later Design Phases
+CONCLUSION
+CONCLUSION
+CONCLUSION
+CONCLUSION
+ACKNOWLEDGMENTS
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
+REFERENCES
 REFERENCES
 REFERENCES
 REFERENCES

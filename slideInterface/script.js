@@ -234,6 +234,26 @@ function getOutlineDiv(presentationIndex, outline, slides) {
 
 	console.log(outline);
 
+
+	result = result + "<div class='examplePresentationOutlineSlideNumDiv'>"
+
+	for(var i=0;i<outline.length;i++) {
+		var duration = (slides[outline[i].endSlideIndex].endTime - slides[outline[i].startSlideIndex].startTime) 
+		var segmentWidth = duration / presentationDuration * 100;
+
+		duration = duration / 60;
+
+		var numSlides = outline[i].endSlideIndex - outline[i].startSlideIndex + 1;
+ 
+		result = result +
+			"<div class='outlineSegmentSlideNumElement exampleLabelElement' presentationIndex='" + presentationIndex + "' segmentIndex='" + i + "' style='width: " + segmentWidth + "%;'>" + 
+			((numSlides) + (numSlides == 1 ? " slide" : " slides")) +
+			"</div>"
+	}
+
+	result = result + "</div>"
+
+
 	result = result + "<div class='examplePresentationOutlineSegmentDiv'>"
 	for(var i=0;i<outline.length;i++) {
 		var duration = (slides[outline[i].endSlideIndex].endTime - slides[outline[i].startSlideIndex].startTime) 
@@ -247,6 +267,9 @@ function getOutlineDiv(presentationIndex, outline, slides) {
 			"</div>"
 	}
 	result = result + "</div>"
+
+
+
 
 	result = result + "<div class='examplePresentationOutlineSegmentLabelDiv'>"
 
@@ -7766,13 +7789,15 @@ function handleOutlineEvent(relX, p) {
 		$("#outlineSegmentLabelTemp").width(relX);
 
 		$("#outlineSegmentLabelTemp").html('Create a segment');
+
+		$("#outlineSegmentNumSlideTemp").width(relX);
 	// }
 }
 
 function getOutlineLabel(index) {
 	if(outlineStructure[index].status == "need_name") {
 		var left = (index > 0 ? outlineStructure[index-1].endX : 0) + 10 ;
-		var top = 70;
+		var top = 75;
 
 		$("#outlineView").append("<div class='outlineLabelInputDiv' style='top: " + top + "px; left: " + left + "px; position: absolute;'>" + 
 			"<input class='outlineLabelInput' index='" + index + "'> </input>" + 
@@ -7789,10 +7814,10 @@ function getOutlineLabel(index) {
 
 function updateOutlineSegments() {
 	$(".outlineLabelInputDiv").remove();
-
 	$("#outlineSegments").html('');
 
 	var htmls = '';
+	var slideNumHtml = '';
 	var labelHtml = '';
 
 	for(var i=0;i<outlineStructure.length;i++) {
@@ -7808,6 +7833,7 @@ function updateOutlineSegments() {
 					:
 					""
 			  ) + 
+			  /*
 				( outlineStructure[i].status == "okay" ? 
 					(outlineStructure[i].endX - outlineStructure[i].startX >= 100 ? 
 			 			"<div class='outlineSegmentElementSlideIndex'>" + 
@@ -7817,28 +7843,40 @@ function updateOutlineSegments() {
 						""
 					)
 					:
-					"" )  + 
+					"" )  +  */
 
 			"<div class='outlineSegmentElementRemoveBtn'> X </div>" + 
 		"</div>";
+
+		slideNumHtml = slideNumHtml + 
+
+		"<div class='outlineSegmentSlideNumElement" + (outlineStructure[i].status == "need_name" ? "underWriting" : "") + "' " + 
+			"index='" + i + "' > " + 
+			(outlineStructure[i].status != "okay" ? "" : 
+				(outlineStructure[i].slideIDs.length + (outlineStructure[i].slideIDs.length == 1 ? " slide" : " slides")) )+ 
+			"</div>";
 
 		labelHtml = labelHtml + 
 
 		"<div class='outlineSegmentLabelElement " + (outlineStructure[i].status == "need_name" ? "underWriting" : "") + "' " + 
 			"index='" + i + "' > " + 
 			getOutlineLabel(i) + 
-			"</div>"
+			"</div>";
 	}
 
+	$("#outlineSegmentNumSlides").html(slideNumHtml);
 	$("#outlineSegments").html(htmls);
 	$("#outlineSegmentLabelArray").html(labelHtml);
+
 
 	for(var i=0;i<outlineStructure.length;i++) {
 		// $(".outlineSegmentElement[index='" + i + "']").css("left", outlineStructure[i].startX);
 		$(".outlineSegmentElement[index='" + i + "']").width(outlineStructure[i].endX - outlineStructure[i].startX);
 		$(".outlineSegmentElement[index='" + i + "']").css("background-color", outlineStructure[i].colorCode);
 
+
 		$(".outlineSegmentLabelElement[index='" + i + "']").width(outlineStructure[i].endX - outlineStructure[i].startX);
+		$(".outlineSegmentSlideNumElement[index='" + i + "']").width(outlineStructure[i].endX - outlineStructure[i].startX);
 	}
 
 	$("#outlineSegmentEvent").css("left", outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length-1].endX);
@@ -8663,6 +8701,7 @@ $(document).ready(function() {
 		if (curMouseDown <= 0) {
 			$("#outlineSegmentEventLeft").show();
 			$("#outlineSegmentLabelTemp").show();
+			$("#outlineSegmentNumSlideTemp").show();
 		}
 		$(".outlineSegmentHovered").removeClass("outlineSegmentHovered");
 	})
@@ -8670,6 +8709,7 @@ $(document).ready(function() {
 	$(document).on("mouseleave", "#outlineSegmentEvent", function(e) {
 		$("#outlineSegmentEventLeft").hide();
 		$("#outlineSegmentLabelTemp").hide();
+		$("#outlineSegmentNumSlideTemp").hide();
 
 		$(".outlineSegmentHovered").removeClass("outlineSegmentHovered");
 	})
