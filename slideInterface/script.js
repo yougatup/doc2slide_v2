@@ -232,9 +232,6 @@ function getOutlineDiv(presentationIndex, outline, slides) {
 
 	var presentationDuration = slides[slides.length-1].endTime - slides[0].startTime;
 
-	console.log(outline);
-
-
 	result = result + "<div class='examplePresentationOutlineSlideNumDiv'>"
 
 	for(var i=0;i<outline.length;i++) {
@@ -1066,32 +1063,87 @@ async function createSlide(presentationIDToAdapt, contents, layoutSlideID, style
 	return res;
 }
 
-async function searchExamplePresentation(queryString) {
+async function searchExamplePresentation(query) {
+	examplePresentations =  []
 	$("#examplePresentationListBody").html("Loading ... ");
 
-	var res = await postRequest(
-		API_URL + "search_presentations", {
-		query: queryString
-	});
+	var __res = await postRequest(
+		API_URL + "search_presentations", query);
 
-	console.log(res);
+	var log = []
+
+	for (var i = 0; i < __res.length; i++) {
+
+		__res[i].message_score = __res[i].message_score.toFixed(2);
+		__res[i].outline_score = __res[i].outline_score.toFixed(2);
+		__res[i].document_score = __res[i].document_score.toFixed(2);
+
+		log.push({
+			idx: __res[i].presentationId,
+			o: __res[i].outline_score,
+			d: __res[i].document_score,
+			m: __res[i].message_score
+		})
+	}
+
+	console.log(log);
 
 	var presentationList = [];
 
+	/*
 	for (var i = 0; i < res.hits.length; i++) {
 		var id = parseInt(res.hits[i]["id"])
 
 		presentationList.push(id);
 	}
+*/
 
-	/*
-	var presentationList = [
-		100004, 100006,
-			100007,
-	];
-	*/
+	// await getExamplePresentationInfo(presentationList);
 
-	await getExamplePresentationInfo(presentationList);
+	for(var kk=0;kk<__res.length;kk++) {
+		var res = __res[kk];
+
+		for (var i = 0; i < res.data.outline.length; i++) {
+			res.data.outline[i].colorCode = genColor();
+		}
+
+		// keyword processing
+
+		var arr = [];
+
+		if(res.data.metaInfo) {
+			var k = res.data.metaInfo.keywords
+
+			for(var i=0;i<k.length;i++) {
+				var keyword = k[i];
+
+				if(keyword.includes("ACM Reference Format")) {
+					keyword = keyword.split("ACM Reference Format")[0];
+
+					arr.push(keyword);
+
+					break;
+				}
+
+				arr.push(keyword);
+			}
+
+			res.data.metaInfo.keywords = arr;
+		}
+
+		if("metaInfo" in res.data && res.data.metaInfo != null && res.data.metaInfo.title == "empty") continue;
+
+		examplePresentations.push({
+			index: res.presentationId,
+			outline: res.data.outline,
+			paperSentences: res.data.paperSentences,
+			scriptSentences: res.data.scriptSentences,
+			slideInfo: res.data.slideInfo,
+			title: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.title : 'TEMP_TITLE',
+			keywords: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.keywords : ["keyword 1", "keyword 2", "keyword 3"]
+		})
+	}
+
 
 	updateExamplePresentation()
 }
@@ -7904,6 +7956,7 @@ function updateOutlineSegments() {
 
 			outlineStructure[segmentIndex].duration = duration;
 			outlineStructure[segmentIndex].endX = outlineStructure[segmentIndex].startX + targetWidth;
+			outlineStructure[segmentIndex].endTime = outlineStructure[segmentIndex].startTime + duration;
 
 			if(targetWidth >= 40) $(target).find(".outlineSegmentElementDuration").html(getDurationString(duration));
 			else $(target).find(".outlineSegmentElementDuration").html('');
@@ -7914,9 +7967,12 @@ function updateOutlineSegments() {
 		stop: function(e, ui) {
 			for(var i=0;i<outlineStructure.length;i++) {
 				var durationX = outlineStructure[i].endX - outlineStructure[i].startX;
+				var durationTime = outlineStructure[i].endTime - outlineStructure[i].startTime;
 
 				outlineStructure[i].startX = i == 0 ? 0 : outlineStructure[i-1].endX;
 				outlineStructure[i].endX = outlineStructure[i].startX + durationX;
+				outlineStructure[i].startTime = i == 0 ? 0 : outlineStructure[i-1].endTime;
+				outlineStructure[i].endTime = outlineStructure[i].startTime + durationTime;
 			}
 
 			updateOutlineSegments();
@@ -7960,6 +8016,9 @@ function updateOutlineSegments() {
 				newOutlineStructure[lastIdx].endSlideIndex = slideIndex + newOutlineStructure[lastIdx].slideIDs.length - 1;
 				newOutlineStructure[lastIdx].startX = lastIdx == 0 ? 0 : newOutlineStructure[lastIdx-1].endX;
 				newOutlineStructure[lastIdx].endX = (outlineStructure[idx].endX - outlineStructure[idx].startX) + newOutlineStructure[lastIdx].startX;
+
+				newOutlineStructure[lastIdx].startTime = lastIdx == 0 ? 0 : newOutlineStructure[lastIdx-1].endTime;
+				newOutlineStructure[lastIdx].endTime = (outlineStructure[idx].endTime - outlineStructure[idx].startTime) + newOutlineStructure[lastIdx].startTime;
 
 				slideIndex += newOutlineStructure[lastIdx].slideIDs.length;
 
@@ -8388,6 +8447,30 @@ $(document).ready(function() {
 	document.body.onmouseup = function() {
   	--curMouseDown;
 	}
+
+	$(document).on("click", "#exampleRefreshBtn", function (e) {
+		var timeline = []
+		var messages = []
+
+		for(var i=0;i<outlineStructure.length;i++) {
+			timeline.push(outlineStructure[i].endTime * 60);
+			var tempStr = '';
+
+			for (var j = 0; j < outlineStructure[i].messages.length; j++) {
+				tempStr = tempStr + outlineStructure[i].messages[j].body;
+			}
+			messages.push(tempStr);
+		}
+
+		console.log(timeline);
+		console.log(messages);
+
+		searchExamplePresentation({
+			keywords: sourcePaperKeywords.keywords,
+			timeline: timeline,
+			messages: messages
+		})
+	});
 
     $(document).on("click", "#outlinePopupConfirmBtn", function(e) {
       var segmentTitle = $("#outlinePopupInput").val();
@@ -12195,6 +12278,8 @@ $(document).ready(function() {
                 prepare();
                 });
 
+	
+
         $(document).on("pdfjs_renderFinished", function(e) {
                 $("#loadingPlane").hide();
 				issueEvent("root_attachMonitor", null);
@@ -12205,7 +12290,12 @@ $(document).ready(function() {
 				console.log(structureHighlightDB);
 				console.log(sourcePaperKeywords);
 
-				searchExamplePresentation(sourcePaperKeywords.keywords.join(' '));
+				searchExamplePresentation({
+					keywords: sourcePaperKeywords.keywords,
+					timeline: [],
+					messages: []
+				})
+
               //  closeNav();
                 });
 
