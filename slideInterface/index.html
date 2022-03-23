@@ -215,8 +215,41 @@
 
 									<hr /> 
 
-    								<div id="examplePresentationDiv"> 
-										<button id="exampleRefreshBtn"> Refresh </button>
+									<div id="examplePresentationDiv">
+										<div id="exampleSearchButtonsDiv">
+											<div id="exampleRefreshBtn">
+												<img id="exampleRefreshImage" src='./icons/refresh.webp'>
+											</div>
+											<div id="examplePresentationSearchBtn">
+												<img id="examplePresentationSearchImage" src="./icons/search.png"> </img>
+											</div>
+										</div>
+										<div id="examplePresentationSearch" class="folded"> 
+
+											<div id="examplePresentationSearchDiv">
+												<div id="examplePresentationSearchKeyword" class="examplePresentationSearchControlDiv">
+													<input class="examplePresentationInputBox" id="examplePresentationSearchKeywordInputBox" type="checkbox" checked> </input>
+													<div class="examplePresentationSearchHeader"> Keywords </div>
+													<div id="examplePresentationKeywordList"> </div>
+												</div>
+												<div id="examplePresentationSearchTimeline" class="examplePresentationSearchControlDiv">
+													<input class="examplePresentationInputBox" id="examplePresentationSearchTimelineInputBox" type="checkbox" > </input>
+													<div class="examplePresentationSearchHeader"> Timeline threshold </div>
+													<input id='examplePresentationSearchTimelineSlider' type="range" min="0" max="100" value="50" class="examplePresentationSearchSlider">
+
+												</div>
+												<div id="examplePresentationSearchMessage" class="examplePresentationSearchControlDiv">
+													<input class="examplePresentationInputBox" id="examplePresentationSearchMessageInputBox" type="checkbox"> </input>
+													<div class="examplePresentationSearchHeader"> Message threshold </div>
+													<input id='examplePresentationSearchMessageSlider' type="range" min="0" max="100" value="50" class="examplePresentationSearchSlider">
+												</div>
+											</div>
+
+											<div id="examplePresentationSearchFoldBtn"> 
+												<img id="examplePresentationSearchFoldImage" src="./icons/fold.png"> </img>
+											</div>
+
+										</div>
 										<!--
     									<div id="examplePresentationSearchDiv">
     										<div id='examplePresentationSearchDivTitle'> Search presentation Videos </div>

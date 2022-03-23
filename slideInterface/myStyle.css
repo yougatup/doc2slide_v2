@@ -2443,6 +2443,7 @@ width: 100%;
 	  font-weight: bold;
 	  padding-bottom: 6px;
 	  border-bottom: 2px solid gray;
+	  height: 150px;
   }
 
   #tabs-slide {
@@ -2527,9 +2528,8 @@ width: 100%;
 	font-size: 13px;
   }
 
-  .examplePresentationKeywordDiv {
-	  width: calc(100% - 20px);
-	  padding-right: 10px;
+  #examplePresentationKeywordList {
+	  margin-left: 130px;
   }
 
   .examplePresentationOutline {
@@ -2997,4 +2997,164 @@ width: 100%;
 
 .examplePresentationOutlineSlideNumDiv {
 	height: 20px;
+}
+
+#examplePresentationSearchBtn {
+	height: 40px;
+	width: 40px;
+	float: right;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+#examplePresentationSearchImage {
+	height: 100%;
+	width: 100%;
+}
+
+
+.examplePresentationInputBox{
+	height: 20px;
+	width: 20px;
+	float: left;
+}
+
+.examplePresentationSearchHeader {
+	float: left;
+	margin-top: 4px;
+	margin-left: 5px;
+}
+
+
+
+
+.examplePresentationSearchControlDiv {
+	display: none;
+	width: 100%;
+	margin-top: 5px;
+}
+
+#examplePresentationSearchDiv {
+	height: 80px;
+	width: calc(100% - 30px);
+	padding: 15px;
+}
+
+.examplePresentationSearchSlider {
+	margin-left: 10px;
+	margin-top: 5px;
+}
+
+.examplePresentationKeywordAddBtn {
+	height: 25px;
+	width: 25px;
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+}
+
+.examplePresentationKeywordAddBtnImage {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 7px;
+}
+
+.examplePresentationKeywordAddDiv {
+	position: relative;
+	display: inline-block;
+	height: 20px;
+	width: 260px;
+}
+
+#examplePresentationKeywordAddInput {
+	width: 130px;
+	height: 20px;
+	font-size: 13px;
+}
+
+.searchKeyword.enabled {
+	padding-right: 25px;
+	position: relative;
+}
+
+.searchKeyword.disabled {
+	background-color: lightgray !important;
+}
+
+.examplePresentationSearchHeader.disabled {
+	color: lightgray;
+}
+
+.examplePresentationKeyword.disabled {
+	opacity: 0.3
+}
+
+#examplePresentationKeywordConfirmBtn {
+	font-size: 12px;
+	position: absolute;
+	left: 135px;
+}
+
+#examplePresentationKeywordCancelBtn {
+	font-size: 12px;
+	position: absolute;
+	left: 195px;
+}
+
+.examplePresentationKeywordRemoveBtn {
+	font-size: 13px;
+	top: 3px;
+	right: 5px;
+	cursor: pointer;
+	font-weight: bold;
+	position: absolute;
+}
+
+#examplePresentationSearch.unfolded {
+	border-bottom: 1px solid lightgray;
+	height: 150px;
+	position: relative;
+}
+
+#examplePresentationSearch.folded {
+	height: 42px;
+}
+
+#examplePresentationSearchFoldBtn {
+	display: none;
+	position: absolute;
+	  width: 30px;
+	  height: 18px;
+	  margin-left: calc(50% - 15px);
+	  margin-top: 5px;
+	  cursor: pointer;
+	  bottom: 5px;
+}
+
+#examplePresentationSearchFoldImage {
+	height: 100%;
+	width: 100%;
+	cursor: pointer;
+}
+
+#exampleRefreshBtn {
+	height: 40px;
+	width: 40px;
+	float: right;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+
+
+#exampleRefreshImage {
+	height: 100%;
+	width: 100%;
+}
+
+
+#exampleSearchButtonsDiv {
+	width: 100%;
+	height: 40px;
 }

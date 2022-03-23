@@ -8439,8 +8439,137 @@ function removeMapping(mappingKey) {
 	}
 }
 
-$(document).ready(function() {
+function updateKeywordOnExampleSearch() {
+	var addFlag = false;
+	var keywordFlag = $("#examplePresentationSearchKeywordInputBox")[0].checked;
+
+	console.log(keywordFlag);
+	console.log(sourcePaperKeywords);
+
+	$("#examplePresentationKeywordList").html('');
+
+	for(var i=0;i<sourcePaperKeywords.keywords.length;i++) {
+		if (sourcePaperKeywords.keywords[i] == "!@##@!keyword_input!@##@!") {
+			addFlag = true;
+			$("#examplePresentationKeywordList").append(
+				"<div class='examplePresentationKeywordAddDiv'> " +
+					"<input id='examplePresentationKeywordAddInput'> </input>" + 
+					"<button id='examplePresentationKeywordConfirmBtn'> Confirm</button>" +
+					"<button id='examplePresentationKeywordCancelBtn'> Cancel </button>" +
+				"</div>"
+			)
+		}
+		else {
+			$("#examplePresentationKeywordList").append(
+				"<div class='examplePresentationKeyword searchKeyword " + (keywordFlag == true ? "enabled" : "disabled") + "' index='" + i + "'> " + 
+					"<div class='examplePresentationKeywordText'>" + 
+						sourcePaperKeywords.keywords[i] + 
+					"</div>" + 
+					(keywordFlag == true ? 
+							"<div class='examplePresentationKeywordRemoveBtn'> X </div>"
+							:
+							''
+					) + 
+		    "</div>"
+			)
+		}
+	}
+
+	if (!addFlag && keywordFlag) {
+		$("#examplePresentationKeywordList").append(
+			"<div class='examplePresentationKeywordAddBtn'> " +
+			"<img class='examplePresentationKeywordAddBtnImage' src='./icons/keywordAddBtn.png'> </img>" +
+			"</div>"
+		)
+	}
+}
+
+function foldSearchPlane() {
+	$("#examplePresentationSearch").addClass("folded");
+	$("#examplePresentationSearch").removeClass("unfolded");
+
+	$(".examplePresentationSearchControlDiv").hide();
+	$("#examplePresentationSearchBtn").show();
+	$("#examplePresentationSearchFoldBtn").hide();
+}
+
+function unfoldSearchPlane() {
+	$("#examplePresentationSearch").addClass("unfolded");
+	$("#examplePresentationSearch").removeClass("folded");
+	$(".examplePresentationSearchControlDiv").show();
+	$("#examplePresentationSearchBtn").hide();
+	$("#examplePresentationSearchFoldBtn").show();
+}
+
+function enableKeywordsOnSearch(){
+	$(".searchKeyword").removeClass("disabled");
+	$(".searchKeyword").addClass("enabled");
+	$(".examplePresentationKeywordRemoveBtn").show();
+
+	$("#examplePresentationSearchKeyword").find(".examplePresentationSearchHeader").addClass("enabled");
+	$("#examplePresentationSearchKeyword").find(".examplePresentationSearchHeader").removeClass("disabled");
+}
+
+function disableKeywordsOnSearch(){
+	$(".searchKeyword").addClass("disabled");
+	$(".searchKeyword").removeClass("enabled");
+
+	$(".examplePresentationKeywordRemoveBtn").hide();
+
+	$("#examplePresentationSearchKeyword").find(".examplePresentationSearchHeader").addClass("disabled");
+	$("#examplePresentationSearchKeyword").find(".examplePresentationSearchHeader").removeClass("enabled");
+}
+
+function enableTimelineOnSearch() {
+	$("#examplePresentationSearchTimeline").find(".examplePresentationSearchHeader").addClass("enabled");
+	$("#examplePresentationSearchTimeline").find(".examplePresentationSearchHeader").removeClass("disabled");
+
+	$("#examplePresentationSearchTimelineSlider")[0].disabled = false;
+}
+
+function disableTimelineOnSearch() {
+	$("#examplePresentationSearchTimeline").find(".examplePresentationSearchHeader").addClass("disabled");
+	$("#examplePresentationSearchTimeline").find(".examplePresentationSearchHeader").removeClass("enabled");
+
+	$("#examplePresentationSearchTimelineSlider")[0].disabled = true;
+}
+
+function enableMessageOnSearch() {
+	$("#examplePresentationSearchMessage").find(".examplePresentationSearchHeader").addClass("enabled");
+	$("#examplePresentationSearchMessage").find(".examplePresentationSearchHeader").removeClass("disabled");
+
+	$("#examplePresentationSearchMessageSlider")[0].disabled = false;
+}
+
+function disableMessageOnSearch() {
+	$("#examplePresentationSearchMessage").find(".examplePresentationSearchHeader").addClass("disabled");
+	$("#examplePresentationSearchMessage").find(".examplePresentationSearchHeader").removeClass("enabled");
+
+	$("#examplePresentationSearchMessageSlider")[0].disabled = true;
+}
+
+function updateSearchControllers() {
+	var keywordInputBox = $("#examplePresentationSearchKeywordInputBox")[0].checked
+	var timelineInputBox = $("#examplePresentationSearchTimelineInputBox")[0].checked
+	var messageInputBox = $("#examplePresentationSearchMessageInputBox")[0].checked
+
+	console.log(keywordInputBox, timelineInputBox, messageInputBox);
+
+	if(keywordInputBox == true) enableKeywordsOnSearch();
+	else disableKeywordsOnSearch();
+
+	updateKeywordOnExampleSearch();
+
+	if(timelineInputBox == true) enableTimelineOnSearch();
+	else disableTimelineOnSearch();
+
+	if(messageInputBox == true) enableMessageOnSearch();
+	else disableMessageOnSearch();
+}
+
+$(document).ready(function () {
 	$("#outlineSegmentLabelMaxTime").html(curPresentationDuration + " min")
+
 	document.body.onmousedown = function() { 
   	++curMouseDown;
 	}
@@ -8448,25 +8577,79 @@ $(document).ready(function() {
   	--curMouseDown;
 	}
 
+	$(document).on("click", ".examplePresentationInputBox", function(e) {
+		updateSearchControllers();
+	});
+
+	$(document).on("click", "#examplePresentationSearchFoldImage", function(e) {
+		foldSearchPlane();
+	})
+
+	$(document).on("click", ".examplePresentationKeywordRemoveBtn", function(e) {
+		var cur = $(e.target);
+
+		for(var i=0;i<100;i++) {
+			if($(cur).hasClass("examplePresentationKeyword")) break;
+
+			cur = $(cur).parent();
+		}
+
+		console.log($(cur))
+
+		var index = parseInt($(cur).attr("index"))
+
+		console.log(index);
+		console.log(sourcePaperKeywords);
+
+		sourcePaperKeywords.keywords.splice(index, 1);
+
+		updateKeywordOnExampleSearch();
+	})
+
+	$(document).on("click", "#examplePresentationSearchBtn", function(e) {
+		unfoldSearchPlane();
+	})
+
+	$(document).on("click", "#examplePresentationKeywordCancelBtn", function(e) {
+		sourcePaperKeywords.splice(sourcePaperKeywords.length-1, 1);
+		updateKeywordOnExampleSearch();
+	})
+
+	$(document).on("click", "#examplePresentationKeywordConfirmBtn", function(e) {
+		sourcePaperKeywords.keywords[sourcePaperKeywords.keywords.length-1] = $("#examplePresentationKeywordAddInput").val()
+		updateKeywordOnExampleSearch();
+	})
+
+	$(document).on("click", ".examplePresentationKeywordAddBtnImage", function(e) {
+		sourcePaperKeywords.keywords.push("!@##@!keyword_input!@##@!");
+		updateKeywordOnExampleSearch();
+	})
+
 	$(document).on("click", "#exampleRefreshBtn", function (e) {
+		var keywordInputBox = $("#examplePresentationSearchKeywordInputBox")[0].checked
+		var timelineInputBox = $("#examplePresentationSearchTimelineInputBox")[0].checked
+		var messageInputBox = $("#examplePresentationSearchMessageInputBox")[0].checked
+
 		var timeline = []
 		var messages = []
 
 		for(var i=0;i<outlineStructure.length;i++) {
-			timeline.push(outlineStructure[i].endTime * 60);
-			var tempStr = '';
-
-			for (var j = 0; j < outlineStructure[i].messages.length; j++) {
-				tempStr = tempStr + outlineStructure[i].messages[j].body;
+			if (timelineInputBox) {
+				timeline.push(outlineStructure[i].endTime * 60);
 			}
-			messages.push(tempStr);
+
+			if (messageInputBox) {
+				var tempStr = '';
+
+				for (var j = 0; j < outlineStructure[i].messages.length; j++) {
+					tempStr = tempStr + outlineStructure[i].messages[j].body;
+				}
+				messages.push(tempStr);
+			}
 		}
 
-		console.log(timeline);
-		console.log(messages);
-
 		searchExamplePresentation({
-			keywords: sourcePaperKeywords.keywords,
+			keywords: keywordInputBox ? sourcePaperKeywords.keywords : [],
 			timeline: timeline,
 			messages: messages
 		})
@@ -12296,8 +12479,11 @@ $(document).ready(function() {
 					messages: []
 				})
 
+				updateSearchControllers();
+
               //  closeNav();
-                });
+				});
+				
 
 	$(document).on("click", ".textShorteningViewAlternativeTextItem", function(e) {
 		showLoadingSlidePlane();
