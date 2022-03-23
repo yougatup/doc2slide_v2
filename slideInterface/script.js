@@ -1,3 +1,4 @@
+var CACHE_PRESENTATION_TREE = false;
 var MAX_ELEMENTS_PER_SLIDE = 4;
 var SLIDES_PER_MIN = 2;
 
@@ -75,6 +76,7 @@ var T = null, C = null;
 var MAX_NUMBER_OF_BULLETS = 3;
 var MAX_NUMBER_OF_SLIDES = 10;
 
+var root_examplePresentations = [];
 var examplePresentations = [];
 var outlineStructure = [];
 var selectedOutlineIndex = -1;
@@ -86,6 +88,20 @@ var selectedPresentationIndex = -1;
 
 var lastExamplePlane = 0;
 var sourcePaperKeywords = {};
+
+var userPresentationPath = [];
+var presentationTreeIndex = {};
+var presentationTree = {};
+var presentationTimeline = {};
+var presentationColorCode = {
+	0: "#C5F6FA",
+	1: "#AFE6FA",
+	2: "#AAD6FA",
+	3: "#FCE6A9",
+	4: "#FFF4C7",
+	5: "#FFFBE9"
+};
+var presentationTreeRenderingFinished = false;
 
 function getImgList(x) { 
 	for(var i in x) {
@@ -159,7 +175,9 @@ function appendDocumentStructureRow() {
 	);
 }
 
-async function getExamplePresentationInfo(presentationList) {
+async function getExamplePresentationInfo(presentationList, depth) {
+	examplePresentations = [];
+
 	var __res = await postRequest(
 			API_URL + "get_presentation_data_bulk", {
 				presentationIds: presentationList
@@ -171,7 +189,7 @@ async function getExamplePresentationInfo(presentationList) {
 		var res = __res.bulkData[kk];
 
 		for (var i = 0; i < res.data.outline.length; i++) {
-			res.data.outline[i].colorCode = genColor();
+			res.data.outline[i].colorCode = presentationColorCode[i];
 		}
 
 		// keyword processing
@@ -210,6 +228,17 @@ async function getExamplePresentationInfo(presentationList) {
 			keywords: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.keywords : ["keyword 1", "keyword 2", "keyword 3"]
 		})
 	}
+
+	console.log(examplePresentations);
+
+	updateExamplePresentation()
+	highlightExamplePresentationSegments(depth);
+}
+
+function highlightExamplePresentationSegments(depth) {
+	$(".exampleSegmentElement.sectionHighlighted").removeClass("sectionHighlighted");
+
+	$(".exampleSegmentElement[segmentindex='" + depth + "']").addClass("sectionHighlighted");
 }
 
 function getKeywordDiv(k) {
@@ -1063,6 +1092,343 @@ async function createSlide(presentationIDToAdapt, contents, layoutSlideID, style
 	return res;
 }
 
+function returnLeafNodeInternal(timelineSummary, depth, nodeIndex) {
+	if(depth >= timelineSummary[nodeIndex].timeline.length) return {};
+	return {
+		depth: depth,
+		index: 0,
+		startIndex: nodeIndex,
+		endIndex: nodeIndex,
+		numChild: 1,
+		ranges: [ [nodeIndex, nodeIndex] ],
+		valueRanges: [ [timelineSummary[nodeIndex].timeline[depth], timelineSummary[nodeIndex].timeline[depth] ] ],
+		curTimes: [timelineSummary[nodeIndex].timeline[depth]],
+		subtree: [returnLeafNodeInternal(timelineSummary, depth+1, nodeIndex)]
+	}
+}
+
+function returnLeafNode(timelineSummary, depth, index, startIndex, endIndex) {
+	var retValue = {
+		depth: depth,
+		index: index,
+		startIndex: startIndex,
+		endIndex: endIndex,
+		numChild: endIndex-startIndex+1,
+		ranges: [],
+		valueRanges: [],
+		curTimes: [],
+		subtree: []
+	};
+
+	var ranges = [];
+	var valueRanges = [];
+	var curTimes = [];
+	var subtree = [];
+
+	for(var i=startIndex;i<=endIndex;i++) {
+		ranges.push([i, i]);
+		valueRanges.push(timelineSummary[i].timeline[depth+1], timelineSummary[i].timeline[depth+1]);
+		curTimes.push(timelineSummary[i].timeline[depth+1]);
+		subtree.push(returnLeafNodeInternal(timelineSummary, depth+1, i));
+	}
+
+	retValue.ranges = ranges;
+	retValue.curTimes = curTimes;
+	retValue.subtree = subtree;
+	retValue.valueRanges = valueRanges;
+
+	return retValue;
+}
+
+function computeClustering(timelineSummary, depth, index, startIndex, endIndex) {
+	depth = depth + 1;
+
+	/*
+		{
+			depth: 0,
+			index: x,
+			startIndex: startIndex,
+			endIndex: endIndex,
+			numChild: x,
+			range: [[1, 3], [4, 5], ...]
+			subtree: [ {}, {}, ...]
+		}
+	*/
+
+	if (startIndex >= endIndex) {
+		return returnLeafNode(timelineSummary, depth-1, index, startIndex, endIndex)
+	}
+
+	var flag = false;
+
+	for(var i=startIndex;i<=endIndex;i++) {
+		if(depth < timelineSummary[i].timeline.length) {
+			flag = true;
+		}
+	}
+
+	if(!flag)
+		return returnLeafNode(timelineSummary, depth-1, index, startIndex, endIndex)
+
+	var maxLength = -1;
+	var temp = [];
+
+	for(var i=startIndex;i<=endIndex;i++) {
+		timelineSummary[i].curTime = depth < timelineSummary[i].timeline.length ? timelineSummary[i].timeline[depth] : 987987987;
+		temp.push(timelineSummary[i]);
+	}
+
+	temp.sort(function(first, second) {
+		return first.curTime - second.curTime;
+	});
+
+	// console.log(JSON.parse(JSON.stringify(temp)));
+	// console.log(JSON.parse(JSON.stringify(timelineSummary)));
+
+	for(var i=startIndex;i<=endIndex;i++) {
+		timelineSummary[i] = temp[i-startIndex];
+	}
+
+	// console.log(JSON.parse(JSON.stringify(timelineSummary)));
+	
+	var realEndIndex = -1;
+
+	for(var i=endIndex;i>=0;i--) {
+		if(timelineSummary[i].curTime != 987987987) {
+			realEndIndex = i;
+			break;
+		}
+	}
+
+	if(realEndIndex == -1) {
+		console.log("***** SOMETHING WENT WRONG *****");
+	}
+
+	var temp = timelineSummary[startIndex].curTime;
+
+	flag = false;
+
+	var result = get_wss(timelineSummary, startIndex, realEndIndex, depth);
+
+	var x0 = (realEndIndex-startIndex+1) - 1;
+	var y0 = result.result[1];
+
+	var prevDistance = -1;
+	var final_k = -1;
+
+	for(var i=1;i<result.result.length;i++) {
+		var distance = Math.abs(y0 * (i-1) + x0 * result.result[i] - x0 * y0) // / Math.sqrt(x0 * x0 + y0 * y0), but doesn't matter as we want to get minimum value only
+
+		console.log(distance);
+
+		if(distance < prevDistance) {
+			final_k = i-1;
+			break;
+		}
+
+		prevDistance = distance;
+	}
+
+	if(final_k == -1) 
+		return returnLeafNode(timelineSummary, depth-1, index, startIndex, endIndex)
+
+	final_k = Math.min(final_k, 4)
+
+	var valueRanges = [];
+	var ranges = [];
+	var curY = final_k;
+	var curX = result.Table[0].length-1;
+	
+	for(var i=0;i<100;i++) {
+		if(curY == 1) {
+			ranges.push([startIndex, startIndex + curX]);
+			valueRanges.push([timelineSummary[startIndex].curTime, timelineSummary[startIndex+curX].curTime])
+
+			break;
+		}
+
+		console.log(curY, curX);
+
+		var intermediate = result.Link[curY][curX];
+
+		ranges.push([startIndex + intermediate + 1, startIndex + curX]);
+		valueRanges.push([timelineSummary[startIndex + intermediate + 1].curTime, timelineSummary[startIndex + curX].curTime])
+
+		curY = curY - 1;
+		curX = intermediate;
+	}
+
+	ranges.reverse();
+	valueRanges.reverse();
+
+	var curTimes = [];
+
+	for(var i=0;i<ranges.length;i++) {
+		var mySum = 0;
+
+		for(var j=ranges[i][0];j<=ranges[i][1];j++) {
+			mySum += timelineSummary[j].curTime;
+		}
+
+		curTimes.push(mySum / (ranges[i][1] - ranges[i][0] + 1))
+	}
+
+	var retValue = {
+			depth: depth-1,
+			index: index,
+			startIndex: startIndex,
+			endIndex: endIndex,
+			numChild: ranges.length,
+			curTimes: curTimes,
+			ranges: ranges,
+			valueRanges: valueRanges,
+			subtree: []
+	};
+
+	for(var i=0;i<ranges.length;i++) {
+		retValue.subtree.push(computeClustering(timelineSummary, depth, i, ranges[i][0], ranges[i][1]))
+	}
+
+	return retValue;
+/*
+	for(var i=0;i<timelineSummary.length;i++) maxLength = Math.max(maxLength, timelineSummary[i].timeline.length)
+
+	for(var i=0;i<maxLength;i++) {
+		var data = [];
+
+		for(var j=0;j<timelineSummary.length;j++) {
+			if(i < timelineSummary[j].timeline.length) data.push(timelineSummary[j].timeline[i]);
+			else data.push(-1);
+		}
+
+		var kMeans_result = get_wss(timelineSummary, i);
+	}
+	*/
+}
+
+function get_ss(timelineSummary, startIndex, endIndex) {
+	var medianValue = -1;
+	var cnt = endIndex - startIndex + 1;
+
+	if(cnt % 2 == 0){
+		var mid = parseInt((startIndex + endIndex) / 2);
+		medianValue = (timelineSummary[mid].curTime + timelineSummary[mid+1].curTime) / 2;
+	} 
+	else {
+		var mid = parseInt((startIndex + endIndex) / 2);
+		medianValue = timelineSummary[mid].curTime
+	}
+
+	var retValue = 0;
+
+	for(var i=startIndex;i<=endIndex;i++) {
+		retValue = retValue + (timelineSummary[i].curTime - medianValue) * (timelineSummary[i].curTime - medianValue);
+	}
+
+	return retValue;
+}
+
+function get_wss(timelineSummary, startIndex, endIndex) {
+	var Table = [];
+	var Link = [];
+
+	var cnt = endIndex - startIndex + 1;
+
+	for(var i=0;i<=cnt;i++) {
+		Table.push([]);
+		Link.push([]);
+
+		for(var j=0;j<cnt;j++){
+			Table[i].push(0);
+			Link[i].push(-1);
+		}
+	}
+
+	for(var j=0;j<cnt;j++) {
+		Table[1][j] = get_ss(timelineSummary, startIndex, startIndex + j);
+	}
+
+	for(var i=2;i<=cnt;i++) {
+		Table[i][i-1] = 0;
+		Link[i][i-1] = i-2;
+
+		for(var j=i;j<cnt;j++) {
+			Table[i][j] = 987987987;
+
+			for(var k=i-2;k<=j-1;k++) {
+				var ss =get_ss(timelineSummary, startIndex+(k+1), startIndex+j);
+
+				if(Table[i][j] > Table[i-1][k] + ss) {
+					Table[i][j] = Table[i-1][k] + ss;
+					Link[i][j] = k;
+				}
+			}
+		}
+	}
+
+	var result = [-1];
+
+	for(var i=1;i<=cnt;i++) result.push(Table[i][cnt-1])
+
+	return {
+		result: result,
+		Table: Table,
+		Link: Link
+	}
+}
+
+function renderPresentationTree(obj, y0, x0, x1, presentationCnt) {
+	if(Object.keys(obj).length <= 0) return;
+
+	var depth = obj.depth;
+	var index = obj.index;
+	var startIndex = obj.startIndex;
+	var endIndex = obj.endIndex;
+	var numChild = obj.numChild;
+	var ranges = obj.ranges;
+	var curTimes = obj.curTimes;
+	var subtree = obj.subtree;
+
+	var colorCode = '';
+/*
+	if(!(depth in presentationColorCode)) presentationColorCode[depth] = genColor();
+	*/
+	colorCode = presentationColorCode[depth+1]
+
+	for(var i=0;i<ranges.length;i++) {
+		var nodeID = makeid(10);
+
+		var h = Math.min(curTimes[i], 300);
+
+		var _y0 = y0;
+		var _h = h / 300;
+
+		var _x0 = x0 + (ranges[i][0] - startIndex) / presentationCnt;
+		var _w = Math.min((ranges[i][1] - ranges[i][0] + 1) / presentationCnt, 100 - _x0)
+
+		if (Object.keys(subtree[i]).length > 0) {
+			$("#examplePresentationMap").append(
+				"<div id='" + nodeID + "' class='examplePresentationCell' " +
+				"style='position: absolute; top: " + (_y0 * 100) + "%; left: " + (_x0 * 100) + "%; " +
+				"height: " + ((_h - _y0) * 100) + "%; width: " + (_w * 100) + "%;" +
+				"background-color: " + colorCode + "'> </div>"
+			)
+
+			presentationTreeIndex[nodeID] = subtree[i];
+			subtree[i].nodeID = nodeID;
+			subtree[i].parentNodeID = obj.nodeID;
+
+			renderPresentationTree(subtree[i], _h, _x0, _x0 + _w, presentationCnt)
+		}
+	}
+
+	return;
+}
+
+async function filterExamplePresentation(presentationList, depth) {
+	await getExamplePresentationInfo(presentationList, depth);
+}
+
 async function searchExamplePresentation(query) {
 	examplePresentations =  []
 	$("#examplePresentationListBody").html("Loading ... ");
@@ -1087,8 +1453,62 @@ async function searchExamplePresentation(query) {
 	}
 
 	console.log(log);
+	console.log(__res);
 
-	var presentationList = [];
+	var timelineSummary = [];
+
+	for(var i=0;i<__res.length;i++) {
+		var slideInfo = __res[i].data.slideInfo;
+		var timeline = [];
+
+		for(var j=0;j<__res[i].data.outline.length;j++) {
+			var endSlideIndex = __res[i].data.outline[j].endSlideIndex;
+			var endTimestamp = slideInfo[endSlideIndex].endTime;
+
+			timeline.push(endTimestamp);
+		}
+
+		timelineSummary.push({
+			presentationIndex: __res[i].presentationId,
+			timeline: timeline
+		})
+	}
+
+	console.log(timelineSummary);
+
+	var res = await postRequest(API_URL+'get_cluster_result', null) 
+
+	console.log(res);
+
+	if(!CACHE_PRESENTATION_TREE || res.status == "none") {
+		presentationTree = computeClustering(timelineSummary, -1, -1, 0, timelineSummary.length-1);
+		presentationTimeline = timelineSummary;
+
+		if (CACHE_PRESENTATION_TREE) {
+			postRequest(API_URL + 'store_cluster_result', {
+				presentationTree: presentationTree,
+				presentationTimeline: presentationTimeline
+			})
+		}
+	}
+	else {
+		presentationTree = res.presentationTree;
+		presentationTimeline = res.presentationTimeline;
+	}
+	
+	console.log(presentationTree);
+	console.log(presentationTimeline);
+
+	console.log($("#examplePresentationMap"));
+	console.log($("#examplePresentationMap").width());
+
+	$("#examplePresentationMap").html('');
+
+	renderPresentationTree(presentationTree, 0, 0, $("#examplePresentationMap").width(), timelineSummary.length);
+
+	presentationTreeRenderingFinished = true;
+	console.log("** GREAT **");
+	hideLoadingSlidePlane();
 
 	/*
 	for (var i = 0; i < res.hits.length; i++) {
@@ -1104,7 +1524,7 @@ async function searchExamplePresentation(query) {
 		var res = __res[kk];
 
 		for (var i = 0; i < res.data.outline.length; i++) {
-			res.data.outline[i].colorCode = genColor();
+			res.data.outline[i].colorCode = genColor(i);
 		}
 
 		// keyword processing
@@ -1144,7 +1564,7 @@ async function searchExamplePresentation(query) {
 		})
 	}
 
-
+	root_examplePresentations = examplePresentations;
 	updateExamplePresentation()
 }
 
@@ -3208,7 +3628,8 @@ function hideLoadingSlidePlane() {
 	$("#slidePlaneCanvas").css("background-color", "transparent");
 	*/
 
-	$("#loadingPlane").hide();
+	if(presentationTreeRenderingFinished)
+		$("#loadingPlane").hide();
 }
 
 function writeStructureHighlight(info) {
@@ -7924,8 +8345,9 @@ function updateOutlineSegments() {
 	for(var i=0;i<outlineStructure.length;i++) {
 		// $(".outlineSegmentElement[index='" + i + "']").css("left", outlineStructure[i].startX);
 		$(".outlineSegmentElement[index='" + i + "']").width(outlineStructure[i].endX - outlineStructure[i].startX);
-		$(".outlineSegmentElement[index='" + i + "']").css("background-color", outlineStructure[i].colorCode);
+		$(".outlineSegmentElement[index='" + i + "']").css("background-color", presentationColorCode[i] /* outlineStructure[i].colorCode */);
 
+		outlineStructure[i].colorcode = presentationColorCode[i];
 
 		$(".outlineSegmentLabelElement[index='" + i + "']").width(outlineStructure[i].endX - outlineStructure[i].startX);
 		$(".outlineSegmentSlideNumElement[index='" + i + "']").width(outlineStructure[i].endX - outlineStructure[i].startX);
@@ -8095,16 +8517,67 @@ function updateOutlineSegments() {
 		}
 	})
 
+	locateUserSlideOnPresentationMap();
 	updateBookmarkedExampleDiv();
 }
 
-function genColor() {
+function locateUserSlideOnPresentationMap() {
+	$(".userPresentationLocated").removeClass("userPresentationLocated");
+
+	var timeline = [];
+
+	for(var i=0;i<outlineStructure.length;i++) timeline.push(outlineStructure[i].endTime);
+
+	var nodeList = presentationMapTraverse(presentationTree, 0, timeline);
+
+	console.log(nodeList);
+
+	for(var i=0;i<nodeList.length;i++) {
+		$("#" + nodeList[i]).addClass("userPresentationLocated");
+	}
+}
+
+function presentationMapTraverse(tree, depth, timeline) {
+	if(timeline.length <= depth) return [];
+
+	var idx = -1;
+	var thisTime = timeline[depth] * 60;
+
+	console.log(tree);
+	console.log(depth);
+	console.log(timeline);
+
+	for(var i=0;i<tree.valueRanges.length;i++) {
+		if(thisTime < tree.valueRanges[i][0]) {
+			idx = (i == 0 ? i : 
+				( Math.abs(thisTime - tree.valueRanges[i][0]) < Math.abs(thisTime - tree.valueRanges[i-1][1]) ? 
+					i : i-1 ) )
+			break;
+		}
+		else if(tree.valueRanges[i][0] <= thisTime && thisTime < tree.valueRanges[i][1]) {
+			idx = i
+			break;
+		}
+	}
+
+	if(idx == -1) idx = tree.subtree.length-1;
+
+	var nodeID = tree.subtree[idx].nodeID;
+
+	return [ nodeID ].concat(presentationMapTraverse(tree.subtree[idx], depth+1, timeline))
+}
+
+function genColor(i) {
+	/*
 	let color = "#";
 
 	for (let i = 0; i < 3; i++)
 		color += ("0" + Math.floor(((1 + Math.random()) * Math.pow(16, 2)) / 2).toString(16)).slice(-2);
 
 	return color;
+	*/
+
+	return presentationColorCode[i];
 }
 
 function selectSegment(index, locateFlag) {
@@ -8323,7 +8796,7 @@ function addSegment(p) {
 		startSlideIndex: slideIndex,
 		endSlideIndex: slideIndex,
 		slideIDs: [slideID],
-		colorCode: genColor(),
+		colorCode: presentationColorCode[0],
 		startTime: outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length - 1].endTime,
 		endTime: (outlineStructure.length <= 0 ? duration : outlineStructure[outlineStructure.length - 1].endTime + duration),
 		label: p.title
@@ -8487,6 +8960,7 @@ function updateKeywordOnExampleSearch() {
 function foldSearchPlane() {
 	$("#examplePresentationSearch").addClass("folded");
 	$("#examplePresentationSearch").removeClass("unfolded");
+	$("#examplePresentationSearch").hide();
 
 	$(".examplePresentationSearchControlDiv").hide();
 	$("#examplePresentationSearchBtn").show();
@@ -8496,6 +8970,7 @@ function foldSearchPlane() {
 function unfoldSearchPlane() {
 	$("#examplePresentationSearch").addClass("unfolded");
 	$("#examplePresentationSearch").removeClass("folded");
+	$("#examplePresentationSearch").show();
 	$(".examplePresentationSearchControlDiv").show();
 	$("#examplePresentationSearchBtn").hide();
 	$("#examplePresentationSearchFoldBtn").show();
@@ -8567,6 +9042,52 @@ function updateSearchControllers() {
 	else disableMessageOnSearch();
 }
 
+function refreshExamplePresentations() {
+	var keywordInputBox = $("#examplePresentationSearchKeywordInputBox")[0].checked
+	var timelineInputBox = $("#examplePresentationSearchTimelineInputBox")[0].checked
+	var messageInputBox = $("#examplePresentationSearchMessageInputBox")[0].checked
+
+	var timeline = []
+	var messages = []
+
+	for (var i = 0; i < outlineStructure.length; i++) {
+		if (timelineInputBox) {
+			timeline.push(outlineStructure[i].endTime * 60);
+		}
+
+		if (messageInputBox) {
+			var tempStr = '';
+
+			for (var j = 0; j < outlineStructure[i].messages.length; j++) {
+				tempStr = tempStr + outlineStructure[i].messages[j].body;
+			}
+			messages.push(tempStr);
+		}
+	}
+
+	searchExamplePresentation({
+		keywords: keywordInputBox ? sourcePaperKeywords.keywords : [],
+		timeline: timeline,
+		messages: messages
+	})
+}
+
+function getParentNodes(nodeID) {
+	var nodeList = [];
+
+	for (var i = 0; i < 100; i++) {
+		nodeList.push(nodeID);
+		$("#" + nodeID).addClass("cellHovered");
+
+		var nodeObj = presentationTreeIndex[nodeID];
+
+		if (nodeObj.depth <= 0) break;
+
+		nodeID = nodeObj.parentNodeID;
+	}
+
+	return nodeList;
+}
 $(document).ready(function () {
 	$("#outlineSegmentLabelMaxTime").html(curPresentationDuration + " min")
 
@@ -8576,6 +9097,189 @@ $(document).ready(function () {
 	document.body.onmouseup = function() {
   	--curMouseDown;
 	}
+
+	if (document.addEventListener) {
+		document.addEventListener('contextmenu', function (e) {
+			console.log($(e.target));
+
+			if ($(e.target).hasClass("examplePresentationCell")) {
+				console.log(e.pageX, e.pageY);
+				console.log(e.clientX, e.clientY);
+
+				var adaptationPopupObj = $("#examplePresentationAdaptationPopup");
+
+				$(adaptationPopupObj).attr("cell-id", $(e.target).attr("id"));
+				$(adaptationPopupObj).css("left", e.pageX);
+				$(adaptationPopupObj).css("top", e.pageY - $("#slideDiv").position().top);
+
+				$(adaptationPopupObj).show();
+
+				e.preventDefault();
+			}
+		}, false);
+	} else {
+		/*
+		document.attachEvent('oncontextmenu', function () {
+			alert("You've tried to open context menu");
+			window.event.returnValue = false;
+		});
+		*/
+	}
+
+	$(document).on("click", "#examplePresentationAdaptationBtn", function(e) {
+		var nodeID = $("#examplePresentationAdaptationPopup").attr("cell-id");
+
+		console.log(nodeID);
+
+		var presentationList = [];
+
+		var nodeObj = presentationTreeIndex[nodeID];
+		var startIndex = nodeObj.startIndex;
+		var endIndex = nodeObj.endIndex;
+		var depth = nodeObj.depth;
+		var averageTimeline = [];
+
+		for(var i=0;i<=depth;i++) averageTimeline.push(0);
+
+		for(var i=startIndex;i<=endIndex;i++) {
+			for(var j=0;j<=depth;j++) {
+				averageTimeline[j] = averageTimeline[j] + presentationTimeline[i].timeline[j];
+			}
+		}
+
+		for(var i=0;i<=depth;i++) averageTimeline[i] = averageTimeline[i] / (endIndex - startIndex + 1);
+
+		var requests = [];
+
+		console.log(averageTimeline);
+
+		for(var i=0;i<=depth;i++) {
+			if(outlineStructure.length <= i) {
+				var duration = (i > 0 ? averageTimeline[i] - averageTimeline[i-1] : averageTimeline[i]) / 60;
+				// needs to add the segment
+
+				var startX = i > 0 ? outlineStructure[i-1].endX : 0;
+				var endX = startX + duration / curPresentationDuration * $("#outlineSegments").width();
+				var startTime = i > 0 ? outlineStructure[i-1].endTime : 0;
+				var endTime = startTime + duration;
+				var startSlideIndex = i > 0 ? outlineStructure[i-1].endSlideIndex + 1 : 1;
+				var endSlideIndex = i > 0 ? startSlideIndex : 2;
+				var slideID = makeid(10);
+				var slideIDs = [ slideID ]
+				var colorCode = presentationColorCode[i]
+
+
+				outlineStructure.push({
+					messages: [],
+					bookmark: [],
+					status: "okay",
+					label: "temporary",
+					startX: startX,
+					endX: endX,
+					duration: duration,
+					startSlideID: slideID,
+					startSlideIndex: startSlideIndex,
+					endSlideIndex: endSlideIndex,
+					slideIDs: slideIDs,
+					colorCode: colorCode,
+					startTime: startTime,
+					endTime: endTime
+				})
+
+				requests.push({
+					createSlide: {
+						objectId: slideID,
+						insertionIndex: i > 0 ? outlineStructure[i-1].endSlideIndex : 1,
+						slideLayoutReference: {
+							predefinedLayout: 'TITLE_AND_BODY'
+						},
+						/*
+						placeholderIdMappings: [{
+							objectId: titleObjectID,
+							layoutPlaceholder: {
+								type: "TITLE",
+								index: 0
+							}
+						}, {
+							objectId: bodyObjectID,
+							layoutPlaceholder: {
+								type: "BODY",
+								index: 0
+							}
+						}
+						]*/
+					}
+				});
+			}
+			else {
+				outlineStructure[i].duration = (i > 0 ? averageTimeline[i] - averageTimeline[i-1] : averageTimeline[i]) / 60;
+
+				var deltaX = outlineStructure[i].duration / curPresentationDuration * $("#outlineSegments").width();
+
+				outlineStructure[i].startX = i > 0 ? outlineStructure[i-1].endX : 0;
+				outlineStructure[i].endX = outlineStructure[i].startX + deltaX;
+
+				outlineStructure[i].startTime = i > 0 ? outlineStructure[i-1].endTime : 0;
+				outlineStructure[i].endTime = outlineStructure[i].startTime + outlineStructure[i].duration;
+			}
+		}
+
+		if(requests.length > 0) {
+			showLoadingSlidePlane();
+
+			gapi.client.slides.presentations.batchUpdate({
+				presentationId: PRESENTATION_ID,
+				requests: requests
+			}).then((createSlideResponse) => {
+				//console.log(createSlideResponse);
+			});
+		}
+		updateOutlineSegments();
+		$("#examplePresentationAdaptationPopup").hide();
+	})
+
+	$(document).on("click", "#examplePresentationMap", function(e) {
+		if ($(e.target).hasClass("examplePresentationCell")) {
+			$(".childCellSelected").removeClass("childCellSelected");
+
+			var nodeID = $(e.target).attr("id");
+			var nodeList = getParentNodes(nodeID);
+
+			for (var i = 0; i < nodeList.length; i++) {
+				$("#" + nodeList[i]).addClass("childCellSelected");
+			}
+
+			$(".examplePresentationCell.selected").removeClass("selected");
+
+			console.log($(e.target));
+
+			var target = $(e.target);
+			var id = $(target).attr("id");
+
+			$(target).addClass("selected");
+
+			var presentationNode = presentationTreeIndex[id];
+			var presentationList = []
+
+			for (var i = presentationNode.startIndex; i <= presentationNode.endIndex; i++) {
+				presentationList.push(presentationTimeline[i].presentationIndex)
+			}
+
+			filterExamplePresentation(presentationList, presentationNode.depth);
+		}
+		else {
+			console.log($(e.target));
+
+			if ($(".examplePresentationCell.selected").length > 0) {
+				examplePresentations = root_examplePresentations;
+				updateExamplePresentation();
+			}
+
+			$(".childCellSelected").removeClass("childCellSelected");
+			$(".examplePresentationCell.selected").removeClass("selected");
+			$(".sectionHighlighted").removeClass("sectionHighlighted");
+		}
+	});
 
 	$(document).on("click", ".examplePresentationInputBox", function(e) {
 		updateSearchControllers();
@@ -8626,33 +9330,7 @@ $(document).ready(function () {
 	})
 
 	$(document).on("click", "#exampleRefreshBtn", function (e) {
-		var keywordInputBox = $("#examplePresentationSearchKeywordInputBox")[0].checked
-		var timelineInputBox = $("#examplePresentationSearchTimelineInputBox")[0].checked
-		var messageInputBox = $("#examplePresentationSearchMessageInputBox")[0].checked
-
-		var timeline = []
-		var messages = []
-
-		for(var i=0;i<outlineStructure.length;i++) {
-			if (timelineInputBox) {
-				timeline.push(outlineStructure[i].endTime * 60);
-			}
-
-			if (messageInputBox) {
-				var tempStr = '';
-
-				for (var j = 0; j < outlineStructure[i].messages.length; j++) {
-					tempStr = tempStr + outlineStructure[i].messages[j].body;
-				}
-				messages.push(tempStr);
-			}
-		}
-
-		searchExamplePresentation({
-			keywords: keywordInputBox ? sourcePaperKeywords.keywords : [],
-			timeline: timeline,
-			messages: messages
-		})
+		refreshExamplePresentations();
 	});
 
     $(document).on("click", "#outlinePopupConfirmBtn", function(e) {
@@ -8763,6 +9441,20 @@ $(document).ready(function () {
 		var presentationIndex = parseInt($(cur).attr("index"));
 
 		showZoomDiv(presentationIndex);
+	})
+
+	$(document).on("mouseover", ".examplePresentationCell", function(e) {
+		var target = $(e.target);
+		var nodeID = $(target).attr("id");
+		var nodeList = getParentNodes(nodeID);
+
+		for(var i=0;i<nodeList.length;i++) {
+			$("#" + nodeList[i]).addClass("cellHovered");
+		}
+	})
+
+	$(document).on("mouseleave", ".examplePresentationCell", function(e) {
+		$(".cellHovered").removeClass("cellHovered");
 	})
 
 	$(document).on("mouseover", ".examplePresentationSlideThumbnailImageDiv", function(e) {
@@ -9093,7 +9785,7 @@ $(document).ready(function () {
 				startSlideIndex: outlineStructure.length <= 0 ? 2 : slideIndex,
 				endSlideIndex: outlineStructure.length <= 0 ? 2 : slideIndex,
 				slideIDs: [slideID],
-				colorCode: genColor(),
+				colorCode: presentationColorCode[0],
 				startTime: outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length-1].endTime,
 				endTime: (outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length-1].endTime) + duration
 			})
@@ -12464,7 +13156,6 @@ $(document).ready(function () {
 	
 
         $(document).on("pdfjs_renderFinished", function(e) {
-                $("#loadingPlane").hide();
 				issueEvent("root_attachMonitor", null);
 
 				structureHighlightDB = e.detail.sectionStructure;

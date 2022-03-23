@@ -2430,7 +2430,9 @@ width: 100%;
 	  height: calc(100% - 90px);
 	  width: 100%;
 	  box-sizing: border-box;
+	  position: relative;
   }
+
   #examplePresentationDiv {
 	height: calc(100% - 90px);
     width: 100%;
@@ -2463,7 +2465,7 @@ width: 100%;
 
   #examplePresentationListBody {
 	  width: 100%;
-	  height: 100%;
+	  height: calc(100% - 300px);
 	  padding-right: 5px;
 	  box-sizing: border-box;
 	  overflow-y: auto;
@@ -3000,8 +3002,8 @@ width: 100%;
 }
 
 #examplePresentationSearchBtn {
-	height: 40px;
-	width: 40px;
+	height: 30px;
+	width: 30px;
 	float: right;
 	margin-right: 10px;
 	cursor: pointer;
@@ -3035,7 +3037,6 @@ width: 100%;
 }
 
 #examplePresentationSearchDiv {
-	height: 80px;
 	width: calc(100% - 30px);
 	padding: 15px;
 }
@@ -3113,12 +3114,17 @@ width: 100%;
 
 #examplePresentationSearch.unfolded {
 	border-bottom: 1px solid lightgray;
-	height: 150px;
 	position: relative;
+	display: inline-block;
+	padding-bottom: 20px;
 }
 
 #examplePresentationSearch.folded {
 	height: 42px;
+}
+
+#examplePresentationSearch {
+	display: none;
 }
 
 #examplePresentationSearchFoldBtn {
@@ -3139,8 +3145,8 @@ width: 100%;
 }
 
 #exampleRefreshBtn {
-	height: 40px;
-	width: 40px;
+	height: 30px;
+	width: 30px;
 	float: right;
 	margin-right: 10px;
 	cursor: pointer;
@@ -3156,5 +3162,72 @@ width: 100%;
 
 #exampleSearchButtonsDiv {
 	width: 100%;
+	height: 20px;
+}
+
+#examplePresentationMap {
+	position: relative;
+	height: 300px;
+	margin-left: 30px;
+	width: calc(100% - 50px);
+	border: 1px solid black;
+}
+
+.examplePresentationCell {
+	border: 1px solid black;
+	cursor: pointer;
+	box-sizing: border-box;
+}
+
+.examplePresentationCell:hover {
+	border: 2px solid black;
+}
+
+.examplePresentationCell.selected {
+	border: 2px solid red;
+}
+
+.exampleSegmentElement.sectionHighlighted {
+	border: 2px solid red;
+}
+.examplePresentationCell.cellHovered {
+	opacity: 0.5;
+}
+
+.examplePresentationCell.childCellSelected {
+	opacity: 0.5;
+}
+
+
+#examplePresentationSearchTimeline {
+	display: none !important;
+}
+
+#examplePresentationSearchMessage {
+	display: none !important;
+}
+
+#examplePresentationMapHeader {
+	font-size: 25px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+.userPresentationLocated {
+	border: 5px dashed darkblue;
+}
+
+#examplePresentationAdaptationPopup {
+	position: absolute;
+	display: none;
+	background-color: white;
 	height: 40px;
+	width: 80px;
+	border-radius: 10px;
+	border: 1px solid black;
+}
+
+#examplePresentationAdaptationBtn {
+	margin-top: 5px;
+	margin-left: 10px;
 }
