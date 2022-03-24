@@ -3117,6 +3117,8 @@ width: 100%;
 	position: relative;
 	display: inline-block;
 	padding-bottom: 20px;
+	width: 100%;
+	margin-bottom: 10px;
 }
 
 #examplePresentationSearch.folded {
@@ -3174,7 +3176,6 @@ width: 100%;
 }
 
 .examplePresentationCell {
-	border: 1px solid black;
 	cursor: pointer;
 	box-sizing: border-box;
 }
@@ -3230,4 +3231,21 @@ width: 100%;
 #examplePresentationAdaptationBtn {
 	margin-top: 5px;
 	margin-left: 10px;
+}
+
+#examplePresentationSearchLimitDecreaseBtn, #examplePresentationSearchLimitIncreaseBtn {
+	width: 24px;
+	margin: 0px;
+}
+
+#examplePresentationSearchLimitCountBox {
+	width: 50px;
+	text-align: center;
+}
+
+#examplePresentationSearchLimitInputDiv {
+	height: 30px;
+	display: inline-block;
+	width: 150px;
+	margin-left: 30px;
 }

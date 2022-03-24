@@ -77,6 +77,7 @@ var MAX_NUMBER_OF_BULLETS = 3;
 var MAX_NUMBER_OF_SLIDES = 10;
 
 var root_examplePresentations = [];
+var root_examplePresentations_index = {};
 var examplePresentations = [];
 var outlineStructure = [];
 var selectedOutlineIndex = -1;
@@ -178,6 +179,7 @@ function appendDocumentStructureRow() {
 async function getExamplePresentationInfo(presentationList, depth) {
 	examplePresentations = [];
 
+	/*
 	var __res = await postRequest(
 			API_URL + "get_presentation_data_bulk", {
 				presentationIds: presentationList
@@ -228,6 +230,12 @@ async function getExamplePresentationInfo(presentationList, depth) {
 			keywords: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.keywords : ["keyword 1", "keyword 2", "keyword 3"]
 		})
 	}
+	*/
+
+	for(var i=0;i<presentationList.length;i++) {
+		if(presentationList[i] in root_examplePresentations_index)
+			examplePresentations.push(root_examplePresentations_index[presentationList[i]]);
+	}
 
 	console.log(examplePresentations);
 
@@ -265,6 +273,9 @@ function getOutlineDiv(presentationIndex, outline, slides) {
 
 	for(var i=0;i<outline.length;i++) {
 		var duration = (slides[outline[i].endSlideIndex].endTime - slides[outline[i].startSlideIndex].startTime) 
+
+		if(i == 0) duration = duration - 3.67;
+
 		var segmentWidth = duration / presentationDuration * 100;
 
 		duration = duration / 60;
@@ -530,6 +541,10 @@ function showZoomDiv(presentationIndex) {
 	selectSlideThumbnail(presentationIndex, 1, true, true);
 
 	$("#examplePresentationListDiv").hide();
+	$("#examplePresentationButtonsDiv").hide();
+	$("#examplePresentationSearch").hide();
+	$("#examplePresentationMapDiv").hide();
+
 	$("#examplePresentationDetailDiv").show();
 
 	lastExamplePlane = 1;
@@ -1127,7 +1142,7 @@ function returnLeafNode(timelineSummary, depth, index, startIndex, endIndex) {
 
 	for(var i=startIndex;i<=endIndex;i++) {
 		ranges.push([i, i]);
-		valueRanges.push(timelineSummary[i].timeline[depth+1], timelineSummary[i].timeline[depth+1]);
+		valueRanges.push( [timelineSummary[i].timeline[depth+1], timelineSummary[i].timeline[depth+1]] );
 		curTimes.push(timelineSummary[i].timeline[depth+1]);
 		subtree.push(returnLeafNodeInternal(timelineSummary, depth+1, i));
 	}
@@ -1219,8 +1234,6 @@ function computeClustering(timelineSummary, depth, index, startIndex, endIndex) 
 	for(var i=1;i<result.result.length;i++) {
 		var distance = Math.abs(y0 * (i-1) + x0 * result.result[i] - x0 * y0) // / Math.sqrt(x0 * x0 + y0 * y0), but doesn't matter as we want to get minimum value only
 
-		console.log(distance);
-
 		if(distance < prevDistance) {
 			final_k = i-1;
 			break;
@@ -1246,8 +1259,6 @@ function computeClustering(timelineSummary, depth, index, startIndex, endIndex) 
 
 			break;
 		}
-
-		console.log(curY, curX);
 
 		var intermediate = result.Link[curY][curX];
 
@@ -1409,8 +1420,8 @@ function renderPresentationTree(obj, y0, x0, x1, presentationCnt) {
 		if (Object.keys(subtree[i]).length > 0) {
 			$("#examplePresentationMap").append(
 				"<div id='" + nodeID + "' class='examplePresentationCell' " +
-				"style='position: absolute; top: " + (_y0 * 100) + "%; left: " + (_x0 * 100) + "%; " +
-				"height: " + ((_h - _y0) * 100) + "%; width: " + (_w * 100) + "%;" +
+				"style='position: absolute; left: " + (_y0 * 100) + "%; top: " + (_x0 * 100) + "%; " +
+				"width: " + ((_h - _y0) * 100) + "%; height: " + (_w * 100) + "%;" +
 				"background-color: " + colorCode + "'> </div>"
 			)
 
@@ -1431,13 +1442,15 @@ async function filterExamplePresentation(presentationList, depth) {
 
 async function searchExamplePresentation(query) {
 	examplePresentations =  []
+
+	$("#examplePresentationMap").html("Loading ... ");
 	$("#examplePresentationListBody").html("Loading ... ");
 
 	var __res = await postRequest(
 		API_URL + "search_presentations", query);
 
 	var log = []
-
+/*
 	for (var i = 0; i < __res.length; i++) {
 
 		__res[i].message_score = __res[i].message_score.toFixed(2);
@@ -1454,6 +1467,7 @@ async function searchExamplePresentation(query) {
 
 	console.log(log);
 	console.log(__res);
+*/
 
 	var timelineSummary = [];
 
@@ -1463,7 +1477,7 @@ async function searchExamplePresentation(query) {
 
 		for(var j=0;j<__res[i].data.outline.length;j++) {
 			var endSlideIndex = __res[i].data.outline[j].endSlideIndex;
-			var endTimestamp = slideInfo[endSlideIndex].endTime;
+			var endTimestamp = slideInfo[endSlideIndex].endTime-3.67;
 
 			timeline.push(endTimestamp);
 		}
@@ -1565,6 +1579,12 @@ async function searchExamplePresentation(query) {
 	}
 
 	root_examplePresentations = examplePresentations;
+	root_examplePresentations_index = {};
+
+	for(var i=0;i<root_examplePresentations.length;i++) {
+		root_examplePresentations_index[root_examplePresentations[i].index] = root_examplePresentations[i];
+	}
+
 	updateExamplePresentation()
 }
 
@@ -8631,7 +8651,12 @@ function updateBookmarkCntOnPresentationInstance(presentationIndex) {
 }
 
 function showExampleBrowsingDiv() {
-	if(lastExamplePlane == 0) $("#examplePresentationListDiv").show();
+	if(lastExamplePlane == 0) {
+		$("#examplePresentationButtonsDiv").show();
+		$("#examplePresentationSearch").show();
+		$("#examplePresentationMapDiv").show();
+		$("#examplePresentationListDiv").show();
+	}
 	else $("#examplePresentationDetailDiv").show();
 
 	$("#examplePresentationBookmarkDiv").hide();
@@ -8644,6 +8669,9 @@ function showBookmarkDiv() {
 	$("#examplePresentationBrowsingText").removeClass("selected");
 	$("#examplePresentationBookmarkText").addClass("selected")
 
+	$("#examplePresentationButtonsDiv").hide();
+	$("#examplePresentationSearch").hide();
+	$("#examplePresentationMapDiv").hide();
 	$("#examplePresentationListDiv").hide();
 	$("#examplePresentationDetailDiv").hide();
 	$("#examplePresentationBookmarkDiv").show();
@@ -8995,6 +9023,50 @@ function disableKeywordsOnSearch(){
 	$("#examplePresentationSearchKeyword").find(".examplePresentationSearchHeader").removeClass("enabled");
 }
 
+function disableLimitOnSearch(){
+	$("#examplePresentationSearchLimitDecreaseBtn").addClass("disabled");
+	$("#examplePresentationSearchLimitDecreaseBtn").removeClass("enabled");
+	$("#examplePresentationSearchLimitDecreaseBtn")[0].disabled = true;
+
+	$("#examplePresentationSearchLimitIncreaseBtn").addClass("disabled");
+	$("#examplePresentationSearchLimitIncreaseBtn").removeClass("enabled");
+	$("#examplePresentationSearchLimitIncreaseBtn")[0].disabled = true;
+
+	$("#examplePresentationSearchLimitCountBox").addClass("disabled");
+	$("#examplePresentationSearchLimitCountBox").removeClass("enabled");
+	$("#examplePresentationSearchLimitCountBox")[0].disabled = true;
+
+	$("#examplePresentationSearchLimit").find(".examplePresentationSearchHeader").addClass("disabled");
+	$("#examplePresentationSearchLimit").find(".examplePresentationSearchHeader").removeClass("enabled");
+}
+
+function enableLimitOnSearch() {
+	$("#examplePresentationSearchLimitDecreaseBtn").addClass("enabled");
+	$("#examplePresentationSearchLimitDecreaseBtn").removeClass("disabled");
+	$("#examplePresentationSearchLimitDecreaseBtn")[0].disabled = false;
+
+	$("#examplePresentationSearchLimitIncreaseBtn").addClass("enabled");
+	$("#examplePresentationSearchLimitIncreaseBtn").removeClass("disabled");
+	$("#examplePresentationSearchLimitIncreaseBtn")[0].disabled = false;
+
+	$("#examplePresentationSearchLimitCountBox").addClass("enabled");
+	$("#examplePresentationSearchLimitCountBox").removeClass("disabled");
+	$("#examplePresentationSearchLimitCountBox")[0].disabled = false;
+
+	$("#examplePresentationSearchLimit").find(".examplePresentationSearchHeader").addClass("enabled");
+	$("#examplePresentationSearchLimit").find(".examplePresentationSearchHeader").removeClass("disabled");
+}
+
+function disableKeywordsOnSearch(){
+	$(".searchKeyword").addClass("disabled");
+	$(".searchKeyword").removeClass("enabled");
+
+	$(".examplePresentationKeywordRemoveBtn").hide();
+
+	$("#examplePresentationSearchKeyword").find(".examplePresentationSearchHeader").addClass("disabled");
+	$("#examplePresentationSearchKeyword").find(".examplePresentationSearchHeader").removeClass("enabled");
+}
+
 function enableTimelineOnSearch() {
 	$("#examplePresentationSearchTimeline").find(".examplePresentationSearchHeader").addClass("enabled");
 	$("#examplePresentationSearchTimeline").find(".examplePresentationSearchHeader").removeClass("disabled");
@@ -9025,25 +9097,38 @@ function disableMessageOnSearch() {
 
 function updateSearchControllers() {
 	var keywordInputBox = $("#examplePresentationSearchKeywordInputBox")[0].checked
+	var limitInputBox = $("#examplePresentationSearchLimitInputBox")[0].checked
+
+	/*
 	var timelineInputBox = $("#examplePresentationSearchTimelineInputBox")[0].checked
 	var messageInputBox = $("#examplePresentationSearchMessageInputBox")[0].checked
+	*/
 
-	console.log(keywordInputBox, timelineInputBox, messageInputBox);
+	console.log(keywordInputBox, limitInputBox);
+	// console.log(keywordInputBox, timelineInputBox, messageInputBox);
 
 	if(keywordInputBox == true) enableKeywordsOnSearch();
 	else disableKeywordsOnSearch();
 
+	if(limitInputBox == true)  enableLimitOnSearch();
+	else disableLimitOnSearch();
+
 	updateKeywordOnExampleSearch();
 
+	/*
 	if(timelineInputBox == true) enableTimelineOnSearch();
 	else disableTimelineOnSearch();
 
 	if(messageInputBox == true) enableMessageOnSearch();
 	else disableMessageOnSearch();
+	*/
 }
 
 function refreshExamplePresentations() {
 	var keywordInputBox = $("#examplePresentationSearchKeywordInputBox")[0].checked
+	var limitInputBox =  $("#examplePresentationSearchLimitInputBox")[0].checked
+
+	/*
 	var timelineInputBox = $("#examplePresentationSearchTimelineInputBox")[0].checked
 	var messageInputBox = $("#examplePresentationSearchMessageInputBox")[0].checked
 
@@ -9064,11 +9149,15 @@ function refreshExamplePresentations() {
 			messages.push(tempStr);
 		}
 	}
+	*/
 
 	searchExamplePresentation({
 		keywords: keywordInputBox ? sourcePaperKeywords.keywords : [],
+		limit: limitInputBox ? parseInt($("#examplePresentationSearchLimitCountBox").val()) : 200
+		/*
 		timeline: timeline,
 		messages: messages
+		*/
 	})
 }
 
@@ -9126,6 +9215,28 @@ $(document).ready(function () {
 		*/
 	}
 
+	$(document).on("click", "#examplePresentationSearchLimitIncreaseBtn", function(e) {
+		var value = parseInt($("#examplePresentationSearchLimitCountBox").val());
+		$("#examplePresentationSearchLimitCountBox").val(value+1);
+	})
+
+	$(document).on("click", "#examplePresentationSearchLimitDecreaseBtn", function(e) {
+		var value = parseInt($("#examplePresentationSearchLimitCountBox").val());
+
+		if(value-1 >= 0) 
+			$("#examplePresentationSearchLimitCountBox").val(value-1);
+	})
+
+	$(document).on("change", "#examplePresentationSearchLimitCountBox", function(e) {
+		var value = parseInt($("#examplePresentationSearchLimitCountBox").val());
+
+		if(value < 0) 
+			$("#examplePresentationSearchLimitCountBox").val(0);
+
+		if(value > 744) 
+			$("#examplePresentationSearchLimitCountBox").val(744);
+	});
+
 	$(document).on("click", "#examplePresentationAdaptationBtn", function(e) {
 		var nodeID = $("#examplePresentationAdaptationPopup").attr("cell-id");
 
@@ -9138,10 +9249,13 @@ $(document).ready(function () {
 		var endIndex = nodeObj.endIndex;
 		var depth = nodeObj.depth;
 		var averageTimeline = [];
+		var maxTime = -1;
 
 		for(var i=0;i<=depth;i++) averageTimeline.push(0);
 
 		for(var i=startIndex;i<=endIndex;i++) {
+			console.log(presentationTimeline[i]);
+
 			for(var j=0;j<=depth;j++) {
 				averageTimeline[j] = averageTimeline[j] + presentationTimeline[i].timeline[j];
 			}
@@ -9223,6 +9337,34 @@ $(document).ready(function () {
 				outlineStructure[i].endTime = outlineStructure[i].startTime + outlineStructure[i].duration;
 			}
 		}
+
+		for(var i=depth+1;i<outlineStructure.length;i++) {
+			outlineStructure[i].startTime = outlineStructure[i-1].endTime;
+			outlineStructure[i].endTime = outlineStructure[i].startTime + outlineStructure[i].duration;
+			outlineStructure[i].startX = outlineStructure[i-1].endX;
+			outlineStructure[i].endX = outlineStructure[i].startX + outlineStructure[i].duration / curPresentationDuration * $("#outlineSegments").width();
+		}
+		
+		var maxEndTime = outlineStructure[outlineStructure.length-1].endTime * 60;
+
+		console.log(outlineStructure);
+		console.log(maxEndTime);
+
+		if(maxEndTime > 300) {
+			var ratio = 300 / maxEndTime;
+
+			console.log(ratio);
+
+			for (var i = 0; i < outlineStructure.length; i++) {
+				outlineStructure[i].duration *= ratio;
+				outlineStructure[i].startTime *= ratio;
+				outlineStructure[i].endTime *= ratio;
+				outlineStructure[i].startX *= ratio;
+				outlineStructure[i].endX *= ratio;
+			}
+		}
+
+		console.log(outlineStructure);
 
 		if(requests.length > 0) {
 			showLoadingSlidePlane();
@@ -9423,6 +9565,9 @@ $(document).ready(function () {
 	$(document).on("click", ".examplePresentationPrevBtn", function(e) {
 		$("#examplePresentationDetailDiv").hide();
 		$("#examplePresentationListDiv").show();
+		$("#examplePresentationButtonsDiv").show();
+		$("#examplePresentationSearch").show();
+		$("#examplePresentationMapDiv").show();
 
 		lastExamplePlane = 0;
 	})
@@ -10412,8 +10557,6 @@ $(document).ready(function () {
 		if(!isInOutline($(e.target))) {
 			hideOutlinePopup();
 		}
-
-
 	});
 
 	$(document).on("mousedown", ".adaptationTableResourceBody", function(e) {
@@ -13166,8 +13309,7 @@ $(document).ready(function () {
 
 				searchExamplePresentation({
 					keywords: sourcePaperKeywords.keywords,
-					timeline: [],
-					messages: []
+					limit: 200
 				})
 
 				updateSearchControllers();
