@@ -2325,6 +2325,7 @@ width: 100%;
 	  white-space: nowrap;
 	  text-overflow: ellipsis;
 	  overflow: hidden;
+	  cursor: pointer;
   }
 
   .outlineLabelInput {
@@ -2350,7 +2351,7 @@ width: 100%;
   }
 
   .outlineSegmentElement.selectedSegment {
-	  border: 3px solid #ff6666;
+	  border: 3px solid #ff6666 !important;
   }
 
   #outlineMessageBoxDiv {
@@ -2407,7 +2408,7 @@ width: 100%;
   }
 
   .outlineSegmentElement:not(.exampleSegmentElement):hover{
-	  background-color: yellow !important;
+	  border: 1px solid black;
   }
 
   .outlineSegmentElement:not(.exampleSegmentElement):hover .outlineSegmentElementSlideIndex {
@@ -3215,7 +3216,7 @@ width: 100%;
 }
 
 .userPresentationLocated {
-	border: 5px dashed darkblue;
+	border: 2px dashed darkblue;
 }
 
 #examplePresentationAdaptationPopup {
@@ -3248,4 +3249,45 @@ width: 100%;
 	display: inline-block;
 	width: 150px;
 	margin-left: 30px;
+}
+
+.outlineLabelRequestBtn {
+	cursor: pointer;
+}
+
+#outlineLabelInputDiv {
+	position: absolute;
+	width: 300px;
+	height: 300px;
+	border-radius: 10px;
+	border: 1px solid black;
+	background-color: white;
+	height: 70px;
+	display: none;
+}
+
+#outlineLabelInputHeader {
+	margin-top: 10px;
+	margin-left: 10px;
+	float: left;
+}
+
+#outlineLabelInputBox {
+	width: 200px;
+	margin-top: 5px;
+	margin-left: 20px;
+}
+
+#outlineLabelSubmitBtn {
+	width: 60px;
+}
+
+#outlineLabelCancelBtn {
+	float: right;
+	margin-top: 5px;
+	margin-right: 6px;
+}
+
+#outlineLabelCancelBtn {
+	cursor: pointer;
 }

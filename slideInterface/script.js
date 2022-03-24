@@ -1,5 +1,6 @@
 var CACHE_PRESENTATION_TREE = false;
 var MAX_ELEMENTS_PER_SLIDE = 4;
+var DEFAULT_NUM_OF_PRESENTATIONS = 10
 var SLIDES_PER_MIN = 2;
 
 var curMouseDown = 0;
@@ -1432,6 +1433,8 @@ function renderPresentationTree(obj, y0, x0, x1, presentationCnt) {
 			renderPresentationTree(subtree[i], _h, _x0, _x0 + _w, presentationCnt)
 		}
 	}
+
+	locateUserSlideOnPresentationMap();
 
 	return;
 }
@@ -8254,8 +8257,8 @@ function handleOutlineEvent(relX, p) {
 		*/
 		// if((".outlineSegmentEventLeftWaiting").length > 0) return;
 
-		var len = $(".outlineSegmentEventLeftWaiting").length;
-		if(len > 0) return;
+		// var len = $(".outlineSegmentEventLeftWaiting").length;
+		// if(len > 0) return;
 
 		var thisTime = Math.max(Math.min(p, 1), 0) * curPresentationDuration;
 		var x = 0;
@@ -8269,6 +8272,8 @@ function handleOutlineEvent(relX, p) {
 		var durationString = getDurationString(thisTime);
 		var thisMin = parseInt(thisTime);
 		var thisSec = parseInt((thisTime - parseInt(thisTime)) * 60)
+
+		console.log(durationString);
 
 		$("#outlineSegmentEventLeft").css("border-right",  "5px solid #ff7777");
 
@@ -8292,13 +8297,22 @@ function getOutlineLabel(index) {
 		var left = (index > 0 ? outlineStructure[index-1].endX : 0) + 10 ;
 		var top = 75;
 
+		/*
 		$("#outlineView").append("<div class='outlineLabelInputDiv' style='top: " + top + "px; left: " + left + "px; position: absolute;'>" + 
 			"<input class='outlineLabelInput' index='" + index + "'> </input>" + 
 			"<button class='outlineLabelInputBtn' index='" + index + "'> Confirm </button>" + 
 			"</div>"
 		)
+		*/
 
-		return '';
+		/*
+		$("#outlineView").append("<div class='outlineLabelInputDiv' style='top: " + top + "px; left: " + left + "px; position: absolute;'>" + 
+			"<button class='outlineLabelRequestBtn' index='" + index + "'> Add </button>" + 
+			"</div>"
+		)
+		*/
+
+		return "<button class='outlineLabelRequestBtn' index='" + index + "'> Add </button>"
 	}
 	else {
 		return outlineStructure[index].label;
@@ -8343,10 +8357,9 @@ function updateOutlineSegments() {
 
 		slideNumHtml = slideNumHtml + 
 
-		"<div class='outlineSegmentSlideNumElement" + (outlineStructure[i].status == "need_name" ? "underWriting" : "") + "' " + 
+		"<div class='outlineSegmentSlideNumElement" + "' " + 
 			"index='" + i + "' > " + 
-			(outlineStructure[i].status != "okay" ? "" : 
-				(outlineStructure[i].slideIDs.length + (outlineStructure[i].slideIDs.length == 1 ? " slide" : " slides")) )+ 
+				(outlineStructure[i].slideIDs.length + (outlineStructure[i].slideIDs.length == 1 ? " slide" : " slides")) + 
 			"</div>";
 
 		labelHtml = labelHtml + 
@@ -8448,12 +8461,7 @@ function updateOutlineSegments() {
 
 				var lastIdx = newOutlineStructure.length-1;
 
-				console.log(idx);
-				console.log(outlineStructure[idx]);
-
 				newOutlineStructure[lastIdx].startSlideIndex = slideIndex == 2 ? 1 : slideIndex;
-
-				console.log(newOutlineStructure[lastIdx].startSlideIndex);
 
 				newOutlineStructure[lastIdx].endSlideIndex = slideIndex + newOutlineStructure[lastIdx].slideIDs.length - 1;
 				newOutlineStructure[lastIdx].startX = lastIdx == 0 ? 0 : newOutlineStructure[lastIdx-1].endX;
@@ -8461,6 +8469,7 @@ function updateOutlineSegments() {
 
 				newOutlineStructure[lastIdx].startTime = lastIdx == 0 ? 0 : newOutlineStructure[lastIdx-1].endTime;
 				newOutlineStructure[lastIdx].endTime = (outlineStructure[idx].endTime - outlineStructure[idx].startTime) + newOutlineStructure[lastIdx].startTime;
+				newOutlineStructure[lastIdx].colorCode = presentationColorCode[lastIdx];
 
 				slideIndex += newOutlineStructure[lastIdx].slideIDs.length;
 
@@ -8558,7 +8567,7 @@ function locateUserSlideOnPresentationMap() {
 }
 
 function presentationMapTraverse(tree, depth, timeline) {
-	if(timeline.length <= depth) return [];
+	if(timeline.length <= depth || Object.keys(tree).length <= 0) return [];
 
 	var idx = -1;
 	var thisTime = timeline[depth] * 60;
@@ -8805,8 +8814,14 @@ function updateBookmarkedExampleDiv() {
 function addSegment(p) {
 	var startX = outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length - 1].endX;
 	var duration = 1;
-	var width = duration / curPresentationDuration * $("#outlineSegmentEvent").width();
+	var width = duration / curPresentationDuration * $("#outlineSegments").width();
 	var endX = startX + width;
+
+	if(endX > $("#outlineSegments").width()) {
+		var endX = $("#outlineSegments").width();
+
+		var duration = (endX - startX) / $("#outlineSegments").width() * curPresentationDuration;
+	}
 
 	var slideID = makeid(10);
 	var slideIndex = outlineStructure.length <= 0 ? 2 : outlineStructure[outlineStructure.length - 1].endSlideIndex + 1;
@@ -8824,7 +8839,7 @@ function addSegment(p) {
 		startSlideIndex: slideIndex,
 		endSlideIndex: slideIndex,
 		slideIDs: [slideID],
-		colorCode: presentationColorCode[0],
+		colorCode: presentationColorCode[outlineStructure.length],
 		startTime: outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length - 1].endTime,
 		endTime: (outlineStructure.length <= 0 ? duration : outlineStructure[outlineStructure.length - 1].endTime + duration),
 		label: p.title
@@ -9153,7 +9168,7 @@ function refreshExamplePresentations() {
 
 	searchExamplePresentation({
 		keywords: keywordInputBox ? sourcePaperKeywords.keywords : [],
-		limit: limitInputBox ? parseInt($("#examplePresentationSearchLimitCountBox").val()) : 200
+		limit: limitInputBox ? parseInt($("#examplePresentationSearchLimitCountBox").val()) : DEFUALT_NUM_OF_PRESENTATIONS
 		/*
 		timeline: timeline,
 		messages: messages
@@ -9282,12 +9297,10 @@ $(document).ready(function () {
 				var slideIDs = [ slideID ]
 				var colorCode = presentationColorCode[i]
 
-
 				outlineStructure.push({
 					messages: [],
 					bookmark: [],
-					status: "okay",
-					label: "temporary",
+					status: "need_name",
 					startX: startX,
 					endX: endX,
 					duration: duration,
@@ -9930,16 +9943,66 @@ $(document).ready(function () {
 				startSlideIndex: outlineStructure.length <= 0 ? 2 : slideIndex,
 				endSlideIndex: outlineStructure.length <= 0 ? 2 : slideIndex,
 				slideIDs: [slideID],
-				colorCode: presentationColorCode[0],
+				colorCode: presentationColorCode[outlineStructure.length],
 				startTime: outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length-1].endTime,
 				endTime: (outlineStructure.length <= 0 ? 0 : outlineStructure[outlineStructure.length-1].endTime) + duration
 			})
 
 			console.log(outlineStructure);
 
-			$("#outlineSegmentEventLeft").addClass("outlineSegmentEventLeftWaiting");
+		var index = outlineStructure.length - 1;
 
-			updateOutlineSegments();
+		var inputLabel = $(".outlineLabelInput[index='" + index + "']").val();
+
+		var slideIndex = -1;
+
+		if (index == 0) {
+			slideIndex = 1;
+			outlineStructure[index].startSlideIndex = 1;
+			outlineStructure[index].endSlideIndex = 2;
+		}
+		else slideIndex = outlineStructure[index - 1].endSlideIndex;
+
+		var requests = [];
+
+		requests.push({
+			createSlide: {
+				objectId: outlineStructure[index].slideIDs[0],
+				insertionIndex: slideIndex,
+				slideLayoutReference: {
+					predefinedLayout: 'TITLE_AND_BODY'
+				},
+				/*
+				placeholderIdMappings: [{
+					objectId: titleObjectID,
+					layoutPlaceholder: {
+						type: "TITLE",
+						index: 0
+					}
+				}, {
+					objectId: bodyObjectID,
+					layoutPlaceholder: {
+						type: "BODY",
+						index: 0
+					}
+				}
+				]*/
+			}
+		});
+
+		showLoadingSlidePlane();
+		waitingOutlineIndex = index;
+
+		gapi.client.slides.presentations.batchUpdate({
+			presentationId: PRESENTATION_ID,
+			requests: requests
+		}).then((createSlideResponse) => {
+			console.log(createSlideResponse);
+		});
+
+		// $("#outlineSegmentEventLeft").addClass("outlineSegmentEventLeftWaiting");
+
+		updateOutlineSegments();
 		// }
 	})
 
@@ -12434,11 +12497,14 @@ $(document).ready(function () {
 								if (outlineStructure[i].messages[j].mapping != null)
 									removeMapping(outlineStructure[i].messages[j].mapping)
 							}
+
 							outlineStructure.splice(i, 1);
 
 							i--;
 						}
 					}
+
+					for(var i=0;i<outlineStructure.length;i++) outlineStructure[i].colorCode = presentationColorCode[i];
 				}
 				else if(diffFlag == 2) { // slides added
 					var addedSlides = [];
@@ -12507,7 +12573,7 @@ $(document).ready(function () {
 			}
 
 			if(waitingOutlineIndex != -1) {
-				outlineStructure[waitingOutlineIndex].status = "okay";
+				// outlineStructure[waitingOutlineIndex].status = "okay";
 
 				selectSegment(waitingOutlineIndex, true);
 
@@ -12952,6 +13018,70 @@ $(document).ready(function () {
 			}
 		});
 
+		function appearLabelRequestBox(target, index) {
+			var idx = index;
+
+			var left = $(target).position().left + $("#outlineSegmentLabel").position().left;
+			var top = $(target).position().top + $("#outlineSegmentLabel").position().top;
+
+			$("#outlineLabelInputBox").val('');
+
+			left = Math.min(left, $("#outlineView").width() - 330);
+			left = Math.max(2, left);
+
+			$("#outlineLabelInputDiv").css("left", left + "px")
+			$("#outlineLabelInputDiv").css("top", (top+40)+ "px")
+			$("#outlineLabelInputDiv").attr("index", idx);
+
+			var myList = Object.keys(structureHighlightDB).map((elem) => { return structureHighlightDB[elem].text })
+
+			$('#outlineLabelInputBox').autocomplete({
+				minLength: 0,
+				source: function (request, response) {
+					var data = $.grep(myList, function (value) {
+						return value.toLowerCase().includes(request.term.toLowerCase());
+					});
+
+					response(data);
+				}
+			}).focus(function () {
+				$(this).autocomplete("search", "");
+			});
+
+			$("#outlineLabelInputDiv").show();
+		}
+
+		$(document).on("click", ".outlineSegmentLabelElement", function(e) {
+			var idx = parseInt($(e.target).attr("index"));
+			var target = $(e.target);
+
+			appearLabelRequestBox(target, idx);
+		})
+
+		$(document).on("click", ".outlineLabelRequestBtn", function(e) {
+			var idx = parseInt($(e.target).attr("index"));
+			var target = $(e.target);
+
+			appearLabelRequestBox(target, idx);
+		})
+
+		$(document).on("click", "#outlineLabelSubmitBtn", function(e) {
+			var idx = $("#outlineLabelInputDiv").attr("index");
+			var text = $("#outlineLabelInputBox").val();
+
+			outlineStructure[idx].label = text;
+			outlineStructure[idx].status = "okay";
+
+			$("#outlineLabelInputDiv").hide();
+
+			updateOutlineSegments();
+		})
+
+		$(document).on("click", "#outlineLabelCancelBtn", function(e) {
+			$("#outlineLabelInputDiv").hide();
+		})
+
+
 		$(document).on("extension_filmstripInfo", function(e) {
 			console.log(e);
 
@@ -13309,7 +13439,7 @@ $(document).ready(function () {
 
 				searchExamplePresentation({
 					keywords: sourcePaperKeywords.keywords,
-					limit: 200
+					limit: DEFAULT_NUM_OF_PRESENTATIONS
 				})
 
 				updateSearchControllers();
