@@ -9192,6 +9192,7 @@ function getParentNodes(nodeID) {
 
 	return nodeList;
 }
+
 $(document).ready(function () {
 	$("#outlineSegmentLabelMaxTime").html(curPresentationDuration + " min")
 
@@ -9755,9 +9756,26 @@ $(document).ready(function () {
 		updateMessageBox();
 	})
 	
+	$(document).on("input", "#outlineMessageBoxContents", function(e) {
+		console.log(e);
+
+		var body = $("#outlineMessageBoxContents").html();
+
+		if(body.includes("<br></div>")) {
+			console.log("HI");
+			body = body.replaceAll("<br></div>", "<ul><li></li></ul></div>");
+			$("#outlineMessageBoxContents").html(body);
+		}
+
+		console.log(body);
+
+	});
+
+	/*
 	$(document).on("keydown", function(e) {
 		console.log(e);
 	})
+	*/
 
 	$(document).on("click", "#outlineMessageAddBtn", function(e) {
 		addBlankMessage(selectedOutlineIndex);

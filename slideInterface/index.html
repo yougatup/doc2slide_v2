@@ -46,6 +46,7 @@
 
         <script src="script.js"></script>
 
+
     </head>
 
     <body>
@@ -606,11 +607,10 @@
 
 								<div id="outlineMessageBoxDiv">
 									<div id="outlineMessageBoxHeader"> Message Box </div>
-									<div id="outlineMessageBoxContents"> 
-										<div id="outlineMessageElements">
-										</div>
-										<button id="outlineMessageAddBtn"> Add </button>
-
+									<div id="outlineMessageBoxContents" contenteditable="true"> 
+										<ul>
+											<li> </li>
+										</ul>
 									</div>
 								</div>
 
@@ -662,14 +662,13 @@
         </div>
     </body>
 
-        <script src="./splitjs/split.js"></script>
-		<script>
-				Split(['#outlineView', '#slideIframe'], {
-					gutterSize: 5,
-					sizes: [25, 75],
-					minSize: [25, 10],
-					direction: "vertical"
-				});
-		</script>
-
+    <script src="./splitjs/split.js"></script>
+	<script>
+			Split(['#outlineView', '#slideIframe'], {
+				gutterSize: 5,
+				sizes: [25, 75],
+				minSize: [25, 10],
+				direction: "vertical"
+			});
+	</script>
 </html>
