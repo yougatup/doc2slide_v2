@@ -1592,7 +1592,34 @@ async function searchExamplePresentation(query) {
 }
 
 async function initializeDB() {
-	console.log(sourcePaperKeywords);
+	var startX = 0
+	var duration = 1;
+	var width = duration / curPresentationDuration * $("#outlineSegments").width();
+	var endX = startX + width;
+	var slideID = "THIS_IS_FIRST_SLIDE";
+	var slideIndex = 1;
+
+	outlineStructure.push({
+		messages: [{
+			indentation: 1,
+			text: ''
+		}],
+		bookmark: [],
+		status: "ready_slide",
+		startX: startX,
+		endX: endX,
+		duration: duration,
+		startSlideID: slideID,
+		startSlideIndex: slideIndex,
+		endSlideIndex: slideIndex,
+		slideIDs: [slideID],
+		colorCode: presentationColorCode[0],
+		startTime: 0,
+		endTime: width,
+		label: "TITLE"
+	});
+
+	updateOutlineSegments();
 
 	// testGAPICall();
 
@@ -8144,33 +8171,73 @@ async function copyCurrentSlide(slideId) {
 		console.log(res);
 	});
 }
-
+/*
 function addBlankMessage(index) {
 	outlineStructure[index].messages.push({
 		status: "blank",
 	});
 
 	updateMessageBox();
-}
+}*/
 
-function addMessage(index, message, mapping) {
+function addMessage(index, indentation, message, mapping) {
 	outlineStructure[index].messages.push({
-		status: "okay",
-		body: message,
+		indentation: indentation,
+		text: message,
 		mapping: mapping
 	});
 
 	updateMessageBox();
 }
 
+function updateMappingViz() {
+	var vizHtml = '';
+
+	$("#outlineMessageBoxContents").find("li").each(function(idx, elem) {
+		var top = $(this).position().top - $("#messageBoxMappingViz").position().top;
+		var height = $(this).height();
+
+		vizHtml = vizHtml +
+			"<div class='messageBoxMappingVizElement " +
+			(outlineStructure[selectedOutlineIndex].messages[idx].mapping != null ? "mapped" : "") + "' " +
+			(outlineStructure[selectedOutlineIndex].messages[idx].mapping != null ? "mappingKey='" + outlineStructure[selectedOutlineIndex].messages[idx].mapping + "'" : "") + 
+			" style='top: " + top + "px; height: " + height + "px;'>" + 
+			"</div>"
+	});
+
+	$("#messageBoxMappingViz").html(vizHtml);
+}
+
 function updateMessageBox() {
 	var html = '';
+	var vizHtml = '';
 
 	console.log(selectedOutlineIndex);
 	console.log(outlineStructure);
 
+	if(selectedOutlineIndex == -1) return;
+
+	$(".messageBoxUl").html('');
+
+	if(outlineStructure[selectedOutlineIndex].messages.length <= 0) $("#.messageBoxUl").html("<li class='tab-1' indentationlevel='1'></li>")
+
+	for(var i=0;i<outlineStructure[selectedOutlineIndex].messages.length;i++) {
+		html = html + 
+				"<li class='tab-" + outlineStructure[selectedOutlineIndex].messages[i].indentation + "' " + 
+					"indentationlevel='" + outlineStructure[selectedOutlineIndex].messages[i].indentation + "'  " + 
+					(outlineStructure[selectedOutlineIndex].messages[i].mapping != null ? ("mapping='" + outlineStructure[selectedOutlineIndex].messages[i].mapping + "' ") : "") + ">" + 
+					outlineStructure[selectedOutlineIndex].messages[i].text + 
+				"</li>";
+	}
+
+	console.log(html);
+
+	$(".messageBoxUl").html(html);
+
+	updateMappingViz();
+	/*
 	if(selectedOutlineIndex == -1 || outlineStructure.length <= selectedOutlineIndex){
-		$("#outlineMessageElements").html('');
+		console.log("**** SOMETHING WENT WRONG ****")
 
 		return;
 	} 
@@ -8208,8 +8275,8 @@ function updateMessageBox() {
 				"</div>"
 		}
 	}
+	*/
 
-	$("#outlineMessageElements").html(html);
 }
 
 function getLinearSlidesFromOutline() {
@@ -8272,8 +8339,6 @@ function handleOutlineEvent(relX, p) {
 		var durationString = getDurationString(thisTime);
 		var thisMin = parseInt(thisTime);
 		var thisSec = parseInt((thisTime - parseInt(thisTime)) * 60)
-
-		console.log(durationString);
 
 		$("#outlineSegmentEventLeft").css("border-right",  "5px solid #ff7777");
 
@@ -8352,7 +8417,7 @@ function updateOutlineSegments() {
 					:
 					"" )  +  */
 
-			"<div class='outlineSegmentElementRemoveBtn'> X </div>" + 
+			(i > 0 ? "<div class='outlineSegmentElementRemoveBtn'> X </div>" : "") + 
 		"</div>";
 
 		slideNumHtml = slideNumHtml + 
@@ -8478,7 +8543,6 @@ function updateOutlineSegments() {
 
 			console.log(newOutlineStructure);
 
-
 			if(!changeFlag){
 				return;
 			} 
@@ -8559,8 +8623,6 @@ function locateUserSlideOnPresentationMap() {
 
 	var nodeList = presentationMapTraverse(presentationTree, 0, timeline);
 
-	console.log(nodeList);
-
 	for(var i=0;i<nodeList.length;i++) {
 		$("#" + nodeList[i]).addClass("userPresentationLocated");
 	}
@@ -8571,10 +8633,6 @@ function presentationMapTraverse(tree, depth, timeline) {
 
 	var idx = -1;
 	var thisTime = timeline[depth] * 60;
-
-	console.log(tree);
-	console.log(depth);
-	console.log(timeline);
 
 	for(var i=0;i<tree.valueRanges.length;i++) {
 		if(thisTime < tree.valueRanges[i][0]) {
@@ -8890,7 +8948,7 @@ function addSegment(p) {
 		registerHighlight(p.highlightInfo).then(mapping => {
 			console.log(mapping);
 
-			addMessage(outlineStructure.length - 1, p.highlightInfo.body, mapping.key);
+			addMessage(outlineStructure.length - 1, 1, p.highlightInfo.body, mapping.key);
 
 			issueEvent("root_sendMappingIdentifier", {
 				mappingID: mapping.key,
@@ -8900,6 +8958,13 @@ function addSegment(p) {
 			});
 		});
 	}
+	else {
+		outlineStructure[outlineStructure.length-1].messages.push({
+			indentation: 1,
+			text: ''
+		})
+	}
+
 	if("bookmarkInfo" in p) {
 		addBookmark(outlineStructure.length - 1, p.bookmarkInfo.presentationIndex, p.bookmarkInfo.thumbnailIndex);
 		markBookmarkOnExample(p.bookmarkInfo.presentationIndex, p.bookmarkInfo.thumbnailIndex)
@@ -8907,6 +8972,12 @@ function addSegment(p) {
 	}
 
 	updateOutlineSegments();
+}
+
+function getLastIndentation() {
+	var lastBulletObj = $("#outlineMessageBoxContents").find("li").last();
+
+	return parseInt($(lastBulletObj).attr("indentationLevel"));
 }
 
 function addBookmark(outlineIndex, presentationIndex, thumbnailIndex){
@@ -9193,6 +9264,61 @@ function getParentNodes(nodeID) {
 	return nodeList;
 }
 
+function updateMessageOnOutline(outlineIndex) {
+	var mappingIdList = [];
+	var before = outlineStructure[outlineIndex].messages;
+
+	console.log("HI");
+
+	outlineStructure[outlineIndex].messages = [];
+
+	$(".messageBoxUl").find("li").each(function(idx, elem) {
+		var indentation = parseInt($(elem).attr("indentationLevel"));
+		var mapping = $(elem).attr("mapping")
+		var text = $(elem).html();
+
+		outlineStructure[outlineIndex].messages.push({
+			indentation: indentation,
+			text: text,
+			mapping: mapping
+		})
+
+		if(mapping != null) mappingIdList.push(mapping);
+	});
+
+	console.log(mappingIdList);
+
+	for(var i=0;i<before.length;i++) {
+		var mappingKey = before[i].mapping;
+		console.log(mappingKey);
+
+		if(mappingKey != null) {
+			if(!mappingIdList.includes(mappingKey)) {
+				var myPageNumber = null;
+
+				for (var pageNumber in highlightDB.mapping) {
+					if (mappingKey in highlightDB.mapping[pageNumber]) {
+						myPageNumber = pageNumber;
+						break;
+					}
+				}
+
+				console.log(myPageNumber, mappingKey);
+
+				if (myPageNumber != null) {
+					removeMappingOnPdfjs(pageNumber, mappingKey, false).then(result => {
+						issueEvent("root_mappingRemoved2", {
+							mappingID: result
+						});
+					});
+				}
+			}
+		}
+	}
+
+	updateMappingViz();
+}
+
 $(document).ready(function () {
 	$("#outlineSegmentLabelMaxTime").html(curPresentationDuration + " min")
 
@@ -9299,7 +9425,10 @@ $(document).ready(function () {
 				var colorCode = presentationColorCode[i]
 
 				outlineStructure.push({
-					messages: [],
+					messages: [{
+						indentation: 1,
+						text: ''
+					}],
 					bookmark: [],
 					status: "need_name",
 					startX: startX,
@@ -9759,17 +9888,164 @@ $(document).ready(function () {
 	$(document).on("input", "#outlineMessageBoxContents", function(e) {
 		console.log(e);
 
-		var body = $("#outlineMessageBoxContents").html();
+		var obj = $("#outlineMessageBoxContents")[0];
 
-		if(body.includes("<br></div>")) {
-			console.log("HI");
-			body = body.replaceAll("<br></div>", "<ul><li></li></ul></div>");
-			$("#outlineMessageBoxContents").html(body);
+		var sel = document.getSelection();
+ 
+		var curNode = sel.anchorNode;
+
+		console.log(curNode)
+		var nodeName = $(curNode)[0].nodeName;
+
+		console.log(nodeName);
+		var mappingDict = {};
+
+		if($("#messageBoxMappingViz").length <= 0) { // got initialized
+			$("#outlineMessageBoxContents").html(
+				"<ul class='messageBoxUl'>" +
+				"<li class='tab-1' indentationLevel='1'>" +
+				"</li>" +
+				"</ul>" +
+				'<div id="messageBoxMappingViz"></div>'
+			);
 		}
 
-		console.log(body);
+		$("#outlineMessageBoxContents").find("li").each(function(idx, elem) {
+			var mappingKey = $(elem).attr("mapping");
 
+			if(mappingKey in mappingDict) {
+				$(elem).removeAttr("mapping");
+			}
+			else mappingDict[mappingKey] = 1;
+		});
+
+		var body = $("#outlineMessageBoxContents").html();
+
+		console.log(body);
+/*
+		while(true) {
+			if(body.includes("<div><div>")) {
+				for(var i=0;i<body.length-10;i++) {
+					if()
+				}
+			}
+			else break;
+		}
+		*/
+		console.log(body);
+		if(body.includes("<br></div>")) {
+			body = body.replaceAll("<div><br></div>", "").trim();
+
+			console.log(body);
+
+			if(body.startsWith('<div id="messageBoxMappingViz"')) $("#outlineMessageBoxContents").html(
+				"<ul class='messageBoxUl'>" + 
+					"<li class='tab-1' indentationLevel='1'>" + 
+					"</li>" + 
+				"</ul>" + 
+				'<div id="messageBoxMappingViz" contenteditable="false"></div>'
+				);
+			else {
+				$("#outlineMessageBoxContents").html(body);
+
+				var el = document.getElementById("outlineMessageBoxContents")
+				var range = document.createRange()
+				var sel = window.getSelection()
+
+				var lastBulletObj = $("#outlineMessageBoxContents").find("li").last();
+
+				console.log($(lastBulletObj)[0]);
+
+				range.setStart($(lastBulletObj)[0], 1)
+				range.collapse(true)
+
+				sel.removeAllRanges()
+				sel.addRange(range)
+			}
+		}
+		
+		updateMessageOnOutline(selectedOutlineIndex);
 	});
+
+	$(document).on("click", ".messageBoxMappingVizElement.mapped", function(e) {
+		issueEvent("root_navigateToWord", {
+			mappingID: $(e.target).attr("mappingKey")
+		});
+	})
+
+
+	$(document).on("keydown", "#outlineMessageBoxContents", function(e) {
+		var shiftPressed = false;
+;/*
+		if(e.key == "Delete" || (e.metaKey == true && e.keyCode == 40)) {
+			e.preventDefault();
+			return false;
+		}
+		*/
+
+		console.log(e);
+
+		if(e.key != "Tab") return;
+		if(e.key == "Tab") e.preventDefault();
+		if(e.shiftKey) shiftPressed = true;
+
+		var obj = $("#outlineMessageBoxContents")[0];
+
+		var sel = document.getSelection();
+ 
+		var curNode = sel.anchorNode;
+		var nodeName = $(curNode)[0].nodeName;
+
+		if(nodeName == "#text") {
+			curNode = $(curNode).parent();
+		}
+
+		if($(curNode)[0].nodeName != "LI") console.log("**** SOMETHING WENT WRONG ****");
+
+		var indentationLevel = parseInt($(curNode).attr("indentationLevel"));
+
+		if(indentationLevel <= 2 && !shiftPressed) {
+			var className = "tab-" + indentationLevel;
+			var newClassName = "tab-" + (indentationLevel + 1);
+
+			$(curNode).removeClass(className);
+			$(curNode).addClass(newClassName);
+
+			$(curNode).attr("indentationLevel", indentationLevel+1);
+
+			updateMessageOnOutline(selectedOutlineIndex);
+		}
+		else if(indentationLevel >= 2 && shiftPressed){
+			var className = "tab-" + (indentationLevel);
+			var newClassName = "tab-" + (indentationLevel-1);
+
+			$(curNode).removeClass(className);
+			$(curNode).addClass(newClassName);
+
+			$(curNode).attr("indentationLevel", indentationLevel-1);
+
+			updateMessageOnOutline(selectedOutlineIndex);
+		}
+
+
+		// return pos;
+
+
+		/*
+		var start = obj.selectionStart;
+		var end = obj.selectionEnd;
+	
+		console.log(start, end);
+
+		// set textarea value to: text before caret + tab + text after caret
+		obj.value = obj.value.substring(0, start) +
+		  "\t" + obj.value.substring(end);
+	
+		// put caret at right position again
+		obj.selectionStart =
+		  obj.selectionEnd = start + 1;
+		  */
+	})
 
 	/*
 	$(document).on("keydown", function(e) {
@@ -9778,7 +10054,7 @@ $(document).ready(function () {
 	*/
 
 	$(document).on("click", "#outlineMessageAddBtn", function(e) {
-		addBlankMessage(selectedOutlineIndex);
+		// addBlankMessage(selectedOutlineIndex);
 	});
 
 	$(document).on("click", ".outlineSegmentElement", function(e) {
@@ -9951,7 +10227,10 @@ $(document).ready(function () {
 			var slideID = makeid(10);
 
 			outlineStructure.push({
-				messages: [],
+				messages: [{
+					indentation: 1,
+					text: ''
+				}],
 				bookmark: [],
 				status: "need_name",
 				startX: startX,
@@ -12453,11 +12732,14 @@ $(document).ready(function () {
 			var slidesFromOutline = getLinearSlidesFromOutline();
 			var diffFlag = -1;
 
-			if(slidesFromOutline.length != p.filmstripStructure.length-1) {
-				// slide added or deleted
-				console.log(slidesFromOutline.length, p.filmstripStructure.length-1);
+			console.log(slidesFromOutline);
+			console.log(p);
 
-				if(slidesFromOutline.length > p.filmstripStructure.length-1) {
+			if(slidesFromOutline.length != p.filmstripStructure.length) {
+				// slide added or deleted
+				console.log(slidesFromOutline.length, p.filmstripStructure.length);
+
+				if(slidesFromOutline.length > p.filmstripStructure.length) {
 					diffFlag = 1; // removed
 				}
 				else {
@@ -12466,8 +12748,8 @@ $(document).ready(function () {
 			}
 
 			if (diffFlag == -1) {
-				for (var i = 1; i < p.filmstripStructure.length; i++) {
-					if (slidesFromOutline[i - 1] != p.filmstripStructure[i].slideID) {
+				for (var i = 0; i < p.filmstripStructure.length; i++) {
+					if (slidesFromOutline[i] != p.filmstripStructure[i].slideID) {
 						diffFlag = 2;
 						break;
 					}
@@ -12481,7 +12763,7 @@ $(document).ready(function () {
 				if(diffFlag == 1) { // slides removed
 					var slideDict = {};
 
-					for (var i = 1; i < p.filmstripStructure.length; i++) {
+					for (var i=0;i<p.filmstripStructure.length; i++) {
 						slideDict[p.filmstripStructure[i].slideID] = 1;
 					}
 
@@ -12528,7 +12810,7 @@ $(document).ready(function () {
 					var addedSlides = [];
 					var prevSlide = -1;
 
-					for(var i=1;i<p.filmstripStructure.length;i++) {
+					for(var i=0;i<p.filmstripStructure.length;i++) {
 						if(!slidesFromOutline.includes(p.filmstripStructure[i].slideID)) {
 							addedSlides.push(p.filmstripStructure[i].slideID);
 
@@ -13573,7 +13855,11 @@ $(document).ready(function () {
 				registerHighlight(p).then(mapping => {
 					console.log(mapping);
 
-					addMessage(index, p.text, mapping.key);
+					if(outlineStructure[index].messages.length <= 1 && outlineStructure[index].messages[0].text == '' && outlineStructure[index].messages[0].mapping == null) {
+						outlineStructure[index].messages = [];
+					}
+
+					addMessage(index, getLastIndentation(), p.text, mapping.key);
 
 					issueEvent("root_sendMappingIdentifier", {
 						mappingID: mapping.key,
