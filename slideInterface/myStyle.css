@@ -2508,7 +2508,7 @@ width: 100%;
   }
 
   .examplePresentationInstance:hover {
-	  border: 2px solid black;
+	  border: 2px solid darkred;
   }
 
   .examplePresentationInstanceTitle {
@@ -3154,6 +3154,7 @@ width: 100%;
 	float: right;
 	margin-right: 10px;
 	cursor: pointer;
+	display: none;
 }
 
 
@@ -3317,4 +3318,25 @@ width: 100%;
 
 .messageBoxMappingVizElement.mapped {
 	background-color: rgb(44, 174, 29)
+}
+
+#examplePresentationScatterPlot {
+	position: relative;
+	height: 300px;
+	margin-left: 30px;
+	width: calc(100% - 50px);
+	border: 1px solid black;
+}
+
+.examplePresentationInstance.hoveredFromPoint {
+	border: 3px solid red;
+}
+
+#examplePresentationMapDiv {
+	display: none;
+}
+
+#examplePresentationViewSelectionDiv {
+	width: 100%;
+	height: 30px;
 }

@@ -5,6 +5,8 @@
         <link rel="stylesheet" type="text/css" href="myStyle.css">
         <link rel="stylesheet" href="./splitjs/split.css">
 
+		<link rel="stylesheet" href="scatter.css" charset="utf-8">
+
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -43,6 +45,9 @@
 
         <script src="https://apis.google.com/js/api.js"></script>
         <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+		<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+		<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
         <script src="script.js"></script>
 
@@ -216,6 +221,10 @@
 									<hr /> 
 
 									<div id="examplePresentationDiv">
+									<div id="examplePresentationViewSelectionDiv">
+										<div id="examplePresentationPlotText" class="examplePresentationModeSelectionText selected"> Plot </div>
+										<div id="examplePresentationMapText" class="examplePresentationModeSelectionText"> Map </div>
+									</div>
 										<div id="exampleSearchButtonsDiv">
 											<div id="exampleRefreshBtn">
 												<img id="exampleRefreshImage" src='./icons/refresh.webp'>
@@ -267,6 +276,14 @@
 											<div id="examplePresentationMap">
 										
 											</div>
+										</div>
+
+										<div id="examplePresentationPlotDiv">
+											<div id="examplePresentationMapHeader"> Presentation Plot </div>
+											<div id="examplePresentationScatterPlot">
+
+											</div>
+
 										</div>
 
 										<!--

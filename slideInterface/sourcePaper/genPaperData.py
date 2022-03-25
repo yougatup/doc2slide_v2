@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 import os
 
+doi = "10.1145/3313831.3376452"
+
 def getSectionStructure() :
     jsonData = json.load(open('./paperData.json'))
     

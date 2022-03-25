@@ -2,6 +2,7 @@ var CACHE_PRESENTATION_TREE = false;
 var MAX_ELEMENTS_PER_SLIDE = 4;
 var DEFAULT_NUM_OF_PRESENTATIONS = 10
 var SLIDES_PER_MIN = 2;
+var SOURCE_PAPER_DOI = "10.1145/3313831.3376452";
 
 var curMouseDown = 0;
 
@@ -238,10 +239,10 @@ async function getExamplePresentationInfo(presentationList, depth) {
 			examplePresentations.push(root_examplePresentations_index[presentationList[i]]);
 	}
 
-	console.log(examplePresentations);
-
 	updateExamplePresentation()
-	highlightExamplePresentationSegments(depth);
+
+	if(depth >= 0)
+		highlightExamplePresentationSegments(depth);
 }
 
 function highlightExamplePresentationSegments(depth) {
@@ -545,6 +546,7 @@ function showZoomDiv(presentationIndex) {
 	$("#examplePresentationButtonsDiv").hide();
 	$("#examplePresentationSearch").hide();
 	$("#examplePresentationMapDiv").hide();
+	$("#examplePresentationPlotDiv").hide();
 
 	$("#examplePresentationDetailDiv").show();
 
@@ -552,8 +554,6 @@ function showZoomDiv(presentationIndex) {
 }
 
 function updateExamplePresentation() {
-	console.log("??");
-
 	var title = "Seeing Beyond Expert Blind Spots";
 	var keywords = ["HCI education", "Instructor belief", "Learning@Scale"];
 
@@ -1389,6 +1389,205 @@ function get_wss(timelineSummary, startIndex, endIndex) {
 	}
 }
 
+function renderScatterPlot(d) {
+	$("#examplePresentationScatterPlot").html('');
+
+	var data = d.dataset;
+	data.push({
+		presentationIndex: -1,
+		x: d.user.x,
+		y: d.user.y
+	});
+
+	var outerWidth = ($(window).width() / 2) - 80,
+		outerHeight = 300,
+		width = outerWidth,
+		height = outerHeight
+
+		console.log(d3);
+
+	var x = d3.scale.linear()
+		.range([0, width]).nice();
+
+	var y = d3.scale.linear()
+		.range([height, 0]).nice();
+
+	var xCat = "x",
+		yCat = "y",
+		rCat = "Protein (g)",
+		colorCat = "Manufacturer";
+
+		var xMax = d3.max(data, function (d) { return d[xCat]; }) * 1.05,
+			xMin = d3.min(data, function (d) { return d[xCat]; }),
+			xMin = xMin > 0 ? 0 : xMin,
+			yMax = d3.max(data, function (d) { return d[yCat]; }) * 1.05,
+			yMin = d3.min(data, function (d) { return d[yCat]; }),
+			yMin = yMin > 0 ? 0 : yMin;
+
+		x.domain([xMin-5, xMax+5]);
+		y.domain([yMin-5, yMax+5]);
+
+		var xAxis = d3.svg.axis()
+			.scale(x)
+			.orient("bottom")
+			.tickSize(-height);
+
+		var yAxis = d3.svg.axis()
+			.scale(y)
+			.orient("left")
+			.tickSize(-width);
+
+		var color = d3.scale.category10();
+
+		var zoomBeh = d3.behavior.zoom()
+			.x(x)
+			.y(y)
+			.scaleExtent([0, 500])
+			.on("zoom", zoom);
+
+		var svg = d3.select("#examplePresentationScatterPlot")
+			.append("svg")
+			.attr("width", outerWidth)
+			.attr("height", outerHeight)
+			.append("g")
+			.call(zoomBeh);
+
+		svg.append("rect")
+			.attr("width", width)
+			.attr("height", height);
+
+		var objects = svg.append("svg")
+			.classed("objects", true)
+			.attr("width", width)
+			.attr("height", height);
+
+		objects.selectAll(".dot")
+			.data(data)
+			.enter().append("circle")
+			.classed("dot", true)
+			.attr("presentationIndex", function(d) { return d.presentationIndex } )
+			.attr("r", function (d) { return 6 })
+			.attr("transform", transform)
+			.style("fill", function (d) { return (d.presentationIndex == -1 ? color('red') : color('blue')) ; })
+			.on("mouseover", pointMouseOver)
+			.on("mouseout", pointMouseLeave);
+
+		function zoom() {
+			// console.log("cool");
+			svg.select(".x.axis").call(xAxis);
+			svg.select(".y.axis").call(yAxis);
+
+			svg.selectAll(".dot")
+				.attr("transform", transform);
+
+			var domainX = x.domain();
+			var domainY = y.domain();
+			var presentationList = [];
+
+			svg.selectAll(".dot").each( function(d) {
+				if(domainX[0] <= d.x && d.x <= domainX[1] &&
+					domainY[0] <= d.y && d.y <= domainY[1]) {
+						presentationList.push(d.presentationIndex)
+					}
+			})
+
+			filterExamplePresentation(presentationList, -1);
+		}
+
+		function transform(d) {
+			return "translate(" + x(d[xCat]) + "," + y(d[yCat]) + ")";
+		}
+
+		function pointMouseOver(d) {
+			hoverPresentation(d.presentationIndex);
+			d3.select(this).transition()
+			.duration('100')
+			.attr("r", 9);
+		}
+
+		function pointMouseLeave(d) {
+			$(".hoveredFromPoint").removeClass("hoveredFromPoint");
+			d3.select(this).transition()
+			.duration('100')
+			.attr("r", 6);
+		}
+
+}
+
+function hoverPresentation(idx) {
+	$(".hoveredFromPoint").removeClass("hoveredFromPoint");
+
+	for(var i=0;i<examplePresentations.length;i++) {
+		if(examplePresentations[i].index == idx) {
+			var obj = $(".examplePresentationInstance[index='" + i + "']")
+
+			$(obj).addClass("hoveredFromPoint");
+
+			$("#examplePresentationListBody").scrollTop(
+				$(obj).position().top - $(".examplePresentationInstance[index='0']").position().top
+			);
+
+		}
+	}
+}
+
+async function showPresentationMap() {
+	var timelineSummary = [];
+
+	for (var i = 0; i < examplePresentations.length; i++) {
+		var slideInfo = examplePresentations[i].slideInfo;
+		var timeline = [];
+
+		for (var j = 0; j < examplePresentations[i].outline.length; j++) {
+			var endSlideIndex = examplePresentations[i].outline[j].endSlideIndex;
+			var endTimestamp = slideInfo[endSlideIndex].endTime - 3.67;
+
+			timeline.push(endTimestamp);
+		}
+
+		timelineSummary.push({
+			presentationIndex: examplePresentations[i].index,
+			timeline: timeline
+		})
+	}
+
+	console.log(timelineSummary);
+
+
+	var res = await postRequest(API_URL + 'get_cluster_result', null)
+
+	console.log(res);
+
+	if (!CACHE_PRESENTATION_TREE || res.status == "none") {
+		presentationTree = computeClustering(timelineSummary, -1, -1, 0, timelineSummary.length - 1);
+		presentationTimeline = timelineSummary;
+
+		if (CACHE_PRESENTATION_TREE) {
+			postRequest(API_URL + 'store_cluster_result', {
+				presentationTree: presentationTree,
+				presentationTimeline: presentationTimeline
+			})
+		}
+	}
+	else {
+		presentationTree = res.presentationTree;
+		presentationTimeline = res.presentationTimeline;
+	}
+
+	console.log(presentationTree);
+	console.log(presentationTimeline);
+
+	console.log($("#examplePresentationMap"));
+	console.log($("#examplePresentationMap").width());
+
+	$("#examplePresentationMap").html('');
+
+	renderPresentationTree(presentationTree, 0, 0, $("#examplePresentationMap").width(), timelineSummary.length);
+
+	presentationTreeRenderingFinished = true;
+	console.log("** GREAT **");
+}
+
 function renderPresentationTree(obj, y0, x0, x1, presentationCnt) {
 	if(Object.keys(obj).length <= 0) return;
 
@@ -1447,148 +1646,152 @@ async function searchExamplePresentation(query) {
 	examplePresentations =  []
 
 	$("#examplePresentationMap").html("Loading ... ");
+	$("#examplePresentationScatterPlot").html("Loading ... ");
 	$("#examplePresentationListBody").html("Loading ... ");
 
 	var __res = await postRequest(
 		API_URL + "search_presentations", query);
 
-	var log = []
-/*
-	for (var i = 0; i < __res.length; i++) {
+	loadPresentation(__res);
 
-		__res[i].message_score = __res[i].message_score.toFixed(2);
-		__res[i].outline_score = __res[i].outline_score.toFixed(2);
-		__res[i].document_score = __res[i].document_score.toFixed(2);
+	// var log = []
+// /*
+	// for (var i = 0; i < __res.length; i++) {
 
-		log.push({
-			idx: __res[i].presentationId,
-			o: __res[i].outline_score,
-			d: __res[i].document_score,
-			m: __res[i].message_score
-		})
-	}
+		// __res[i].message_score = __res[i].message_score.toFixed(2);
+		// __res[i].outline_score = __res[i].outline_score.toFixed(2);
+		// __res[i].document_score = __res[i].document_score.toFixed(2);
 
-	console.log(log);
-	console.log(__res);
-*/
+		// log.push({
+			// idx: __res[i].presentationId,
+			// o: __res[i].outline_score,
+			// d: __res[i].document_score,
+			// m: __res[i].message_score
+		// })
+	// }
 
-	var timelineSummary = [];
+	// console.log(log);
+	// console.log(__res);
+// */
 
-	for(var i=0;i<__res.length;i++) {
-		var slideInfo = __res[i].data.slideInfo;
-		var timeline = [];
+	// var timelineSummary = [];
 
-		for(var j=0;j<__res[i].data.outline.length;j++) {
-			var endSlideIndex = __res[i].data.outline[j].endSlideIndex;
-			var endTimestamp = slideInfo[endSlideIndex].endTime-3.67;
+	// for(var i=0;i<__res.length;i++) {
+		// var slideInfo = __res[i].data.slideInfo;
+		// var timeline = [];
 
-			timeline.push(endTimestamp);
-		}
+		// for(var j=0;j<__res[i].data.outline.length;j++) {
+			// var endSlideIndex = __res[i].data.outline[j].endSlideIndex;
+			// var endTimestamp = slideInfo[endSlideIndex].endTime-3.67;
 
-		timelineSummary.push({
-			presentationIndex: __res[i].presentationId,
-			timeline: timeline
-		})
-	}
+			// timeline.push(endTimestamp);
+		// }
 
-	console.log(timelineSummary);
+		// timelineSummary.push({
+			// presentationIndex: __res[i].presentationId,
+			// timeline: timeline
+		// })
+	// }
 
-	var res = await postRequest(API_URL+'get_cluster_result', null) 
+	// console.log(timelineSummary);
 
-	console.log(res);
+	// var res = await postRequest(API_URL+'get_cluster_result', null) 
 
-	if(!CACHE_PRESENTATION_TREE || res.status == "none") {
-		presentationTree = computeClustering(timelineSummary, -1, -1, 0, timelineSummary.length-1);
-		presentationTimeline = timelineSummary;
+	// console.log(res);
 
-		if (CACHE_PRESENTATION_TREE) {
-			postRequest(API_URL + 'store_cluster_result', {
-				presentationTree: presentationTree,
-				presentationTimeline: presentationTimeline
-			})
-		}
-	}
-	else {
-		presentationTree = res.presentationTree;
-		presentationTimeline = res.presentationTimeline;
-	}
+	// if(!CACHE_PRESENTATION_TREE || res.status == "none") {
+		// presentationTree = computeClustering(timelineSummary, -1, -1, 0, timelineSummary.length-1);
+		// presentationTimeline = timelineSummary;
+
+		// if (CACHE_PRESENTATION_TREE) {
+			// postRequest(API_URL + 'store_cluster_result', {
+				// presentationTree: presentationTree,
+				// presentationTimeline: presentationTimeline
+			// })
+		// }
+	// }
+	// else {
+		// presentationTree = res.presentationTree;
+		// presentationTimeline = res.presentationTimeline;
+	// }
 	
-	console.log(presentationTree);
-	console.log(presentationTimeline);
+	// console.log(presentationTree);
+	// console.log(presentationTimeline);
 
-	console.log($("#examplePresentationMap"));
-	console.log($("#examplePresentationMap").width());
+	// console.log($("#examplePresentationMap"));
+	// console.log($("#examplePresentationMap").width());
 
-	$("#examplePresentationMap").html('');
+	// $("#examplePresentationMap").html('');
 
-	renderPresentationTree(presentationTree, 0, 0, $("#examplePresentationMap").width(), timelineSummary.length);
+	// renderPresentationTree(presentationTree, 0, 0, $("#examplePresentationMap").width(), timelineSummary.length);
+	// renderScatterPlot();
 
-	presentationTreeRenderingFinished = true;
-	console.log("** GREAT **");
-	hideLoadingSlidePlane();
+	// presentationTreeRenderingFinished = true;
+	// console.log("** GREAT **");
+	// hideLoadingSlidePlane();
 
-	/*
-	for (var i = 0; i < res.hits.length; i++) {
-		var id = parseInt(res.hits[i]["id"])
+	// /*
+	// for (var i = 0; i < res.hits.length; i++) {
+		// var id = parseInt(res.hits[i]["id"])
 
-		presentationList.push(id);
-	}
-*/
+		// presentationList.push(id);
+	// }
+// */
 
-	// await getExamplePresentationInfo(presentationList);
+	// // await getExamplePresentationInfo(presentationList);
 
-	for(var kk=0;kk<__res.length;kk++) {
-		var res = __res[kk];
+	// for(var kk=0;kk<__res.length;kk++) {
+		// var res = __res[kk];
 
-		for (var i = 0; i < res.data.outline.length; i++) {
-			res.data.outline[i].colorCode = genColor(i);
-		}
+		// for (var i = 0; i < res.data.outline.length; i++) {
+			// res.data.outline[i].colorCode = genColor(i);
+		// }
 
-		// keyword processing
+		// // keyword processing
 
-		var arr = [];
+		// var arr = [];
 
-		if(res.data.metaInfo) {
-			var k = res.data.metaInfo.keywords
+		// if(res.data.metaInfo) {
+			// var k = res.data.metaInfo.keywords
 
-			for(var i=0;i<k.length;i++) {
-				var keyword = k[i];
+			// for(var i=0;i<k.length;i++) {
+				// var keyword = k[i];
 
-				if(keyword.includes("ACM Reference Format")) {
-					keyword = keyword.split("ACM Reference Format")[0];
+				// if(keyword.includes("ACM Reference Format")) {
+					// keyword = keyword.split("ACM Reference Format")[0];
 
-					arr.push(keyword);
+					// arr.push(keyword);
 
-					break;
-				}
+					// break;
+				// }
 
-				arr.push(keyword);
-			}
+				// arr.push(keyword);
+			// }
 
-			res.data.metaInfo.keywords = arr;
-		}
+			// res.data.metaInfo.keywords = arr;
+		// }
 
-		if("metaInfo" in res.data && res.data.metaInfo != null && res.data.metaInfo.title == "empty") continue;
+		// if("metaInfo" in res.data && res.data.metaInfo != null && res.data.metaInfo.title == "empty") continue;
 
-		examplePresentations.push({
-			index: res.presentationId,
-			outline: res.data.outline,
-			paperSentences: res.data.paperSentences,
-			scriptSentences: res.data.scriptSentences,
-			slideInfo: res.data.slideInfo,
-			title: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.title : 'TEMP_TITLE',
-			keywords: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.keywords : ["keyword 1", "keyword 2", "keyword 3"]
-		})
-	}
+		// examplePresentations.push({
+			// index: res.presentationId,
+			// outline: res.data.outline,
+			// paperSentences: res.data.paperSentences,
+			// scriptSentences: res.data.scriptSentences,
+			// slideInfo: res.data.slideInfo,
+			// title: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.title : 'TEMP_TITLE',
+			// keywords: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.keywords : ["keyword 1", "keyword 2", "keyword 3"]
+		// })
+	// }
 
-	root_examplePresentations = examplePresentations;
-	root_examplePresentations_index = {};
+	// root_examplePresentations = examplePresentations;
+	// root_examplePresentations_index = {};
 
-	for(var i=0;i<root_examplePresentations.length;i++) {
-		root_examplePresentations_index[root_examplePresentations[i].index] = root_examplePresentations[i];
-	}
+	// for(var i=0;i<root_examplePresentations.length;i++) {
+		// root_examplePresentations_index[root_examplePresentations[i].index] = root_examplePresentations[i];
+	// }
 
-	updateExamplePresentation()
+	// updateExamplePresentation()
 }
 
 async function initializeDB() {
@@ -3678,8 +3881,8 @@ function hideLoadingSlidePlane() {
 	$("#slidePlaneCanvas").css("background-color", "transparent");
 	*/
 
-	if(presentationTreeRenderingFinished)
-		$("#loadingPlane").hide();
+	// if(presentationTreeRenderingFinished)
+	$("#loadingPlane").hide();
 }
 
 function writeStructureHighlight(info) {
@@ -7179,6 +7382,20 @@ function updateMappingInternal(slideID, m_body, pushFlag) {
 
 }
 
+async function getRequest(url) {
+	const requestOptions = {
+		method: 'GET',
+		headers: { 'Content-Type': 'application/json' },
+	};
+
+	var res = await fetch(url, requestOptions)
+		.then(response => response.json())
+		.then(data => {
+			return data;
+		});
+
+	return res;
+}
 async function postRequest(url, body) {
 	const requestOptions = {
 		method: 'POST',
@@ -8719,9 +8936,26 @@ function updateBookmarkCntOnPresentationInstance(presentationIndex) {
 
 function showExampleBrowsingDiv() {
 	if(lastExamplePlane == 0) {
-		$("#examplePresentationButtonsDiv").show();
-		$("#examplePresentationSearch").show();
-		$("#examplePresentationMapDiv").show();
+		if($("#examplePresentationPlotText").hasClass("selected")) {
+			$("#examplePresentationButtonsDiv").show();
+
+			if($("#examplePresentationSearch").hasClass("unfolded")) $("#examplePresentationSearch").show();
+			else $("#examplePresentationSearch").hide();
+
+			$("#examplePresentationMapDiv").hide();
+			$("#examplePresentationPlotDiv").show();
+		}
+		else {
+			$("#examplePresentationButtonsDiv").hide();
+
+			$("#examplePresentationSearch").hide();
+			$("#examplePresentationSearch").hide();
+
+			$("#examplePresentationMapDiv").show();
+			$("#examplePresentationPlotDiv").hide();
+
+		}
+
 		$("#examplePresentationListDiv").show();
 	}
 	else $("#examplePresentationDetailDiv").show();
@@ -8736,6 +8970,7 @@ function showBookmarkDiv() {
 	$("#examplePresentationBrowsingText").removeClass("selected");
 	$("#examplePresentationBookmarkText").addClass("selected")
 
+	$("#examplePresentationPlotDiv").hide();
 	$("#examplePresentationButtonsDiv").hide();
 	$("#examplePresentationSearch").hide();
 	$("#examplePresentationMapDiv").hide();
@@ -9072,6 +9307,9 @@ function updateKeywordOnExampleSearch() {
 }
 
 function foldSearchPlane() {
+	$("#exampleRefreshBtn").hide();
+	$("#examplePresentationSearchBtn").show();
+
 	$("#examplePresentationSearch").addClass("folded");
 	$("#examplePresentationSearch").removeClass("unfolded");
 	$("#examplePresentationSearch").hide();
@@ -9082,6 +9320,9 @@ function foldSearchPlane() {
 }
 
 function unfoldSearchPlane() {
+	$("#exampleRefreshBtn").show();
+	$("#examplePresentationSearchBtn").hide();
+
 	$("#examplePresentationSearch").addClass("unfolded");
 	$("#examplePresentationSearch").removeClass("folded");
 	$("#examplePresentationSearch").show();
@@ -9317,6 +9558,120 @@ function updateMessageOnOutline(outlineIndex) {
 	}
 
 	updateMappingViz();
+}
+
+async function loadPresentation(presentationList) {
+	var presentationIndexList = presentationList;
+
+	var userVector = await getUserVector();
+	var result_points = await getPaperPoints({
+		userVector: userVector.embedding.vector,
+		presentationList: presentationIndexList
+	})
+
+	console.log(userVector);
+	console.log(result_points);
+
+	renderScatterPlot(result_points);
+
+	hideLoadingSlidePlane();
+
+	/*
+	for (var i = 0; i < res.hits.length; i++) {
+		var id = parseInt(res.hits[i]["id"])
+
+		presentationList.push(id);
+	}
+*/
+
+	// await getExamplePresentationInfo(presentationList);
+
+	for(var kk=0;kk<result_points.presentationData.length;kk++) {
+		var res = result_points.presentationData[kk];
+
+		for (var i = 0; i < res.data.outline.length; i++) {
+			res.data.outline[i].colorCode = genColor(i);
+		}
+
+		// keyword processing
+
+		var arr = [];
+
+		if(res.data.metaInfo) {
+			var k = res.data.metaInfo.keywords
+
+			for(var i=0;i<k.length;i++) {
+				var keyword = k[i];
+
+				if(keyword.includes("ACM Reference Format")) {
+					keyword = keyword.split("ACM Reference Format")[0];
+
+					arr.push(keyword);
+
+					break;
+				}
+
+				arr.push(keyword);
+			}
+
+			res.data.metaInfo.keywords = arr;
+		}
+
+		if("metaInfo" in res.data && res.data.metaInfo != null && res.data.metaInfo.title == "empty") continue;
+
+		examplePresentations.push({
+			index: res.presentationId,
+			outline: res.data.outline,
+			paperSentences: res.data.paperSentences,
+			scriptSentences: res.data.scriptSentences,
+			slideInfo: res.data.slideInfo,
+			title: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.title : 'TEMP_TITLE',
+			keywords: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.keywords : ["keyword 1", "keyword 2", "keyword 3"]
+		})
+	}
+
+	root_examplePresentations = examplePresentations;
+	root_examplePresentations_index = {};
+
+	for(var i=0;i<root_examplePresentations.length;i++) {
+		root_examplePresentations_index[root_examplePresentations[i].index] = root_examplePresentations[i];
+	}
+
+	updateExamplePresentation()
+	return res;
+}
+
+async function getAllPresentation() {
+	var __res = await postRequest(
+		API_URL + "get_all_presentation_index");
+
+	loadPresentation(__res);
+}
+
+async function getUserVector() {
+	var res = await getRequest(
+		"https://api.semanticscholar.org/graph/v1/paper/" + SOURCE_PAPER_DOI + "?fields=abstract,embedding,title");
+
+	console.log(res);
+
+	return res;
+
+}
+
+async function getPaperPoints(d) {
+	var res = await postRequest(
+		API_URL + "get_paper_points", d);
+
+	for(var i=0;i<res.dataset.length;i++) {
+		res.dataset[i].presentationIndex = parseInt(res.dataset[i].presentationIndex);
+		res.dataset[i].x = parseFloat(res.dataset[i].x);
+		res.dataset[i].y = parseFloat(res.dataset[i].y);
+	}
+
+	res.user.x = parseFloat(res.user.x);
+	res.user.y = parseFloat(res.user.y);
+
+	return res;
 }
 
 $(document).ready(function () {
@@ -9706,18 +10061,46 @@ $(document).ready(function () {
 	})
 
 	$(document).on("click", ".examplePresentationPrevBtn", function(e) {
-		$("#examplePresentationDetailDiv").hide();
-		$("#examplePresentationListDiv").show();
-		$("#examplePresentationButtonsDiv").show();
-		$("#examplePresentationSearch").show();
-		$("#examplePresentationMapDiv").show();
+		if($("#examplePresentationPlotText").hasClass("selected")) {
+			$("#examplePresentationButtonsDiv").show();
 
+			if($("#examplePresentationSearch").hasClass("unfolded")) $("#examplePresentationSearch").show();
+			else $("#examplePresentationSearch").hide();
+
+			$("#examplePresentationMapDiv").hide();
+			$("#examplePresentationPlotDiv").show();
+		}
+		else {
+			$("#examplePresentationButtonsDiv").hide();
+
+			$("#examplePresentationSearch").hide();
+			$("#examplePresentationSearch").hide();
+
+			$("#examplePresentationMapDiv").show();
+			$("#examplePresentationPlotDiv").hide();
+
+		}
+		$("#examplePresentationDetailDiv").hide();
+
+		$("#examplePresentationListDiv").show();
 		lastExamplePlane = 0;
 	})
 
-	$(document).on("click", ".examplePresentationInstance", function(e) {
-		console.log(e.target);
+	$(document).on("mouseleave", ".examplePresentationInstance", function(e) {
+		$(".dot.hovered").removeClass("hovered");
+	})
 
+	$(document).on("mouseover", ".examplePresentationInstance", function(e) {
+		$(".dot.hovered").removeClass("hovered");
+
+		var idx = parseInt($(this).attr("index"));
+
+		var presentationIndex = examplePresentations[idx].index;
+
+		$(".dot[presentationIndex='" + presentationIndex + "']").addClass("hovered");
+	})
+
+	$(document).on("click", ".examplePresentationInstance", function(e) {
 		var cur = $(e.target);
 
 		for(var i=0;i<100;i++) {
@@ -9729,6 +10112,36 @@ $(document).ready(function () {
 		var presentationIndex = parseInt($(cur).attr("index"));
 
 		showZoomDiv(presentationIndex);
+	})
+
+	$(document).on("click", "#examplePresentationMapText", function(e) {
+		if($("#examplePresentationMapText").hasClass("selected")) return;
+
+		$("#examplePresentationMapText").addClass("selected");
+		$("#examplePresentationPlotText").removeClass("selected");
+
+		showPresentationMap();
+
+		$("#examplePresentationMapDiv").show();
+		$("#examplePresentationPlotDiv").hide();
+
+		$("#exampleSearchButtonsDiv").hide();
+		$("#examplePresentationSearch").hide();
+	})
+
+	$(document).on("click", "#examplePresentationPlotText", function(e) {
+		if($("#examplePresentationPlotText").hasClass("selected")) return;
+
+		$("#examplePresentationPlotText").addClass("selected");
+		$("#examplePresentationMapText").removeClass("selected");
+
+		$("#examplePresentationPlotDiv").show();
+		$("#examplePresentationMapDiv").hide();
+
+		$("#exampleSearchButtonsDiv").show();
+
+		if($("#examplePresentationSearch").hasClass("unfolded")) $("#examplePresentationSearch").show();
+		else $("#examplePresentationSearch").hide();
 	})
 
 	$(document).on("mouseover", ".examplePresentationCell", function(e) {
@@ -13728,7 +14141,7 @@ $(document).ready(function () {
 
 	
 
-        $(document).on("pdfjs_renderFinished", function(e) {
+        $(document).on("pdfjs_renderFinished", async function(e) {
 				issueEvent("root_attachMonitor", null);
 
 				structureHighlightDB = e.detail.sectionStructure;
@@ -13737,10 +14150,14 @@ $(document).ready(function () {
 				console.log(structureHighlightDB);
 				console.log(sourcePaperKeywords);
 
+				/*
 				searchExamplePresentation({
 					keywords: sourcePaperKeywords.keywords,
 					limit: DEFAULT_NUM_OF_PRESENTATIONS
 				})
+				*/
+
+				var allPresentationList = await getAllPresentation();
 
 				updateSearchControllers();
 
