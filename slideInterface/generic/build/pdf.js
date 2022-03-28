@@ -18,6 +18,7 @@ var currentStatus = "NORMAL";
 
 var jsonPdfStructure = [];
 var jsonKeyword = {};
+var jsonSectionEmbedding = {};
 var jsonSectionStructure = [];
 
 var automaticFlag = true;
@@ -18092,8 +18093,10 @@ function readTextFile(file, filetype, type)
                 else if(type == "KEYWORD") {
                     json = $.parseJSON(allText.join([separator = '']))
                     jsonKeyword = $.parseJSON(allText.join([separator = '']))
-
-                    console.log(jsonKeyword);
+                }
+                else if(type == "SECTION_EMBEDDING") {
+                    json = $.parseJSON(allText.join([separator = '']))
+                    jsonSectionEmbedding = $.parseJSON(allText.join([separator = '']))
                 }
             }
         }
@@ -18204,7 +18207,8 @@ $(document).ready(function() {
 
         issueEvent("pdfjs_renderFinished", {
           sectionStructure: result,
-          keyword: jsonKeyword
+          keyword: jsonKeyword,
+          sectionEmbedding: jsonSectionEmbedding
         });
 
         analyzeDocument();
@@ -18561,5 +18565,6 @@ $(document).ready(function() {
 //    readTextFile("../web/paperData/paper/dataOutputpaper.json", 'json', "PDF_FIGURE");
     readTextFile("paperData/paperData.json", 'json', "PDF_STRUCTURE");
     readTextFile("paperData/keywords.json", 'json', "KEYWORD");
+    readTextFile("paperData/sectionEmbeddingDB.json", 'json', "SECTION_EMBEDDING");
 });
 

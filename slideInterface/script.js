@@ -80,6 +80,9 @@ var MAX_NUMBER_OF_SLIDES = 10;
 
 var root_examplePresentations = [];
 var root_examplePresentations_index = {};
+
+var temp_plot_examplePresentations = [];
+var temp_map_examplePresentations = [];
 var examplePresentations = [];
 var outlineStructure = [];
 var selectedOutlineIndex = -1;
@@ -181,59 +184,6 @@ function appendDocumentStructureRow() {
 async function getExamplePresentationInfo(presentationList, depth) {
 	examplePresentations = [];
 
-	/*
-	var __res = await postRequest(
-			API_URL + "get_presentation_data_bulk", {
-				presentationIds: presentationList
-			});
-
-	console.log(__res);
-
-	for(var kk=0;kk<__res.bulkData.length;kk++) {
-		var res = __res.bulkData[kk];
-
-		for (var i = 0; i < res.data.outline.length; i++) {
-			res.data.outline[i].colorCode = presentationColorCode[i];
-		}
-
-		// keyword processing
-
-		var arr = [];
-
-		if(res.data.metaInfo) {
-			var k = res.data.metaInfo.keywords
-
-			for(var i=0;i<k.length;i++) {
-				var keyword = k[i];
-
-				if(keyword.includes("ACM Reference Format")) {
-					keyword = keyword.split("ACM Reference Format")[0];
-
-					arr.push(keyword);
-
-					break;
-				}
-
-				arr.push(keyword);
-			}
-
-			res.data.metaInfo.keywords = arr;
-		}
-
-		if("metaInfo" in res.data && res.data.metaInfo != null && res.data.metaInfo.title == "empty") continue;
-
-		examplePresentations.push({
-			index: res.presentationId,
-			outline: res.data.outline,
-			paperSentences: res.data.paperSentences,
-			scriptSentences: res.data.scriptSentences,
-			slideInfo: res.data.slideInfo,
-			title: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.title : 'TEMP_TITLE',
-			keywords: "metaInfo" in res.data && res.data.metaInfo != null ? res.data.metaInfo.keywords : ["keyword 1", "keyword 2", "keyword 3"]
-		})
-	}
-	*/
-
 	for(var i=0;i<presentationList.length;i++) {
 		if(presentationList[i] in root_examplePresentations_index)
 			examplePresentations.push(root_examplePresentations_index[presentationList[i]]);
@@ -243,6 +193,7 @@ async function getExamplePresentationInfo(presentationList, depth) {
 
 	if(depth >= 0)
 		highlightExamplePresentationSegments(depth);
+
 }
 
 function highlightExamplePresentationSegments(depth) {
@@ -301,7 +252,9 @@ function getOutlineDiv(presentationIndex, outline, slides) {
 		duration = duration / 60;
  
 		result = result +
-			"<div class='outlineSegmentElement exampleSegmentElement' presentationIndex='" + presentationIndex + "' segmentIndex='" + i + "' style='width: " + segmentWidth + "%; background-color: " + outline[i].colorCode + "'>" + 
+			"<div class='outlineSegmentElement exampleSegmentElement " + 
+			(outline[i].semanticHighlightFlag ? "exampleSegmentSemanticHighlighted" : "") + 
+			"' presentationIndex='" + presentationIndex + "' segmentIndex='" + i + "' style='width: " + segmentWidth + "%; background-color: " + outline[i].colorCode + "'>" + 
 				getDurationString(duration) + 
 			"</div>"
 	}
@@ -568,6 +521,7 @@ function updateExamplePresentation() {
 
 					getOutlineDiv(i, examplePresentations[i].outline, examplePresentations[i].slideInfo) + 
 
+					getSlideThumbnailView(i) + 
 /*
 					"<div class='examplePresentationFoldDiv folded'>" + 
 						getSlideThumbnail(i, examplePresentations[i].outline, examplePresentations[i].slideInfo) + 
@@ -582,6 +536,24 @@ function updateExamplePresentation() {
 	}
 
 	$("#examplePresentationListBody").html(resultHtml);
+}
+
+function getSlideThumbnailView(presentationIndex) {
+	var num_slides = 3;
+	var returnHtml = '';
+
+	for(var i=0;i<num_slides;i++) {
+		returnHtml = returnHtml + 
+		"<div class='slideThumbnailImageDiv' thumbnailIndex='" + i + "'>" + 
+			"<img class='slideThumbnailImage' src='http://localhost:8000/slideThumbnail/" + examplePresentations[presentationIndex].index + "/images/" + i + ".jpg'> </img>" + 
+		"</div>"
+	}
+
+	return "<div class='slideThumbnailViewDiv' presentationIndex='" + presentationIndex + "'> " + 
+				"<div class='slideThumbnailViewDivLeftBtn'> < </div>" + 
+					returnHtml + 
+				"<div class='slideThumbnailViewDivRightBtn'> > </div>" + 
+		   "</div>"
 }
 
 async function prepare() {
@@ -8884,7 +8856,9 @@ function genColor(i) {
 	return presentationColorCode[i];
 }
 
-function selectSegment(index, locateFlag) {
+async function selectSegment(index, locateFlag) {
+	// if(index == selectedOutlineIndex) return;
+
 	selectedOutlineIndex = index;
 
 	$(".outlineSegmentElement").removeClass("selectedSegment");
@@ -8910,9 +8884,86 @@ function selectSegment(index, locateFlag) {
 		if (headerString != null) $(".examplePresentationBookmarkHeader.selectedSegmentHeader").html(">> " + headerString);
 	}
 
+
 	if(index != -1 && locateFlag) locateSlideDirectly(outlineStructure[index].slideIDs[0]);
 
 	updateMessageBox();
+
+	// visualizeCloseSegments();
+}
+
+async function visualizeCloseSegments() {
+	if (selectedOutlineIndex != -1) {
+		console.log(outlineStructure);
+
+		var presentationList = [];
+
+		for(var i=0;i<examplePresentations.length;i++) {
+			presentationList.push(examplePresentations[i].index);
+		}
+
+		sectionLabel = outlineStructure[selectedOutlineIndex].label;
+
+		if (isSectionTitle(sectionLabel)) {
+			var embedding = sectionEmbedding["0_" + sectionLabel];
+
+			await getCloseSegments({
+				embedding: embedding,
+				presentationList: presentationList
+			});
+		}
+	}
+}
+
+async function getCloseSegments(d) {
+	var __res = await postRequest(
+		API_URL + "get_close_segments", d)
+		
+	console.log(__res);
+
+	$(".exampleSegmentSemanticHighlighted").removeClass("exampleSegmentSemanticHighlighted");
+	
+	for(var i=0;i<examplePresentations.length;i++){
+		examplePresentations[i].semanticSimilarityScore = 987987987;
+
+		if("semanticHighlight" in examplePresentations[i]){
+			examplePresentations[i].outline[examplePresentations[i].semanticHighlight].semanticHighlightFlag = false;
+		}
+	}
+
+	for(var i=0;i<examplePresentations.length;i++) {
+		var idx = examplePresentations[i].index;
+
+		if (idx in __res) {
+			var firstSectionIndex = __res[idx].indices[0].sectionNumber;
+
+			for (var j = 0; j < examplePresentations[i].outline.length; j++) {
+				if (examplePresentations[i].outline[j].sectionTitle.startsWith(firstSectionIndex + " ")) {
+					examplePresentations[i].semanticSimilarityScore = __res[idx].distances[0];
+					examplePresentations[i].semanticHighlight = j;
+					examplePresentations[i].outline[j].semanticHighlightFlag = true;
+
+					break;
+				}
+			}
+		}
+	}
+
+	examplePresentations.sort(function(first, second) {
+		return first.semanticSimilarityScore - second.semanticSimilarityScore;
+	});
+
+	console.log(examplePresentations);
+
+	updateExamplePresentation();
+}
+
+function isSectionTitle(t) {
+	for(var k in structureHighlightDB) {
+		if(structureHighlightDB[k].text == t) 
+			return true;
+	}
+	return false;
 }
 
 function updateBookmarkCntOnPresentationInstance(presentationIndex) {
@@ -8953,7 +9004,6 @@ function showExampleBrowsingDiv() {
 
 			$("#examplePresentationMapDiv").show();
 			$("#examplePresentationPlotDiv").hide();
-
 		}
 
 		$("#examplePresentationListDiv").show();
@@ -9422,9 +9472,82 @@ function disableMessageOnSearch() {
 	$("#examplePresentationSearchMessageSlider")[0].disabled = true;
 }
 
+function enableMinNumSegmentsBox () {
+	$("#examplePresentationSearchMinNumSegmentsBox").find(".examplePresentationSearchHeader").addClass("enabled");
+	$("#examplePresentationSearchMinNumSegmentsBox").find(".examplePresentationSearchHeader").removeClass("disabled");
+
+	$("#examplePresentationSearchMinNumSegmentsBox")[0].disabled = false;
+}
+
+function disableMinNumSegmentsBox() {
+	$("#examplePresentationSearchMinNumSegmentsBox").find(".examplePresentationSearchHeader").addClass("disabled");
+	$("#examplePresentationSearchMinNumSegmentsBox").find(".examplePresentationSearchHeader").removeClass("enabled");
+
+	$("#examplePresentationSearchMinNumSegmentsBox")[0].disabled = true;
+}
+
+function enableMaxNumSegmentsBox () {
+	$("#examplePresentationSearchMaxNumSegmentsBox").find(".examplePresentationSearchHeader").addClass("enabled");
+	$("#examplePresentationSearchMaxNumSegmentsBox").find(".examplePresentationSearchHeader").removeClass("disabled");
+
+	$("#examplePresentationSearchMaxNumSegmentsBox")[0].disabled = false;
+}
+
+function disableMaxNumSegmentsBox() {
+	$("#examplePresentationSearchMaxNumSegmentsBox").find(".examplePresentationSearchHeader").addClass("disabled");
+	$("#examplePresentationSearchMaxNumSegmentsBox").find(".examplePresentationSearchHeader").removeClass("enabled");
+
+	$("#examplePresentationSearchMaxNumSegmentsBox")[0].disabled = true;
+}
+
+function enableSectionTitleBox () {
+	$("#examplePresentationSearchSectionTitleBox").find(".examplePresentationSearchHeader").addClass("enabled");
+	$("#examplePresentationSearchSectionTitleBox").find(".examplePresentationSearchHeader").removeClass("disabled");
+
+	$("#examplePresentationSearchSectionTitleBox")[0].disabled = false;
+}
+
+function disableMaxNumSegmentsBox() {
+	$("#examplePresentationSearchSectionTitleBox").find(".examplePresentationSearchHeader").addClass("disabled");
+	$("#examplePresentationSearchSectionTitleBox").find(".examplePresentationSearchHeader").removeClass("enabled");
+
+	$("#examplePresentationSearchSectionTitleBox")[0].disabled = true;
+}
 function updateSearchControllers() {
-	var keywordInputBox = $("#examplePresentationSearchKeywordInputBox")[0].checked
-	var limitInputBox = $("#examplePresentationSearchLimitInputBox")[0].checked
+	if ($("#examplePresentationSearchPlotConditions").css("display") == "block") {
+		var keywordInputBox = $("#examplePresentationSearchKeywordInputBox")[0].checked
+		var limitInputBox = $("#examplePresentationSearchLimitInputBox")[0].checked
+
+		if (keywordInputBox == true) enableKeywordsOnSearch();
+		else disableKeywordsOnSearch();
+
+		if (limitInputBox == true) enableLimitOnSearch();
+		else disableLimitOnSearch();
+
+		updateKeywordOnExampleSearch();
+	}
+
+	if( $("#examplePresentationSearchMapConditions").css("display") == "block") {
+		var minNumSegmentsBox = $("#examplePresentationSearchMinNumSegmentsInputBox")[0].checked
+		var maxNumSegmentsBox = $("#examplePresentationSearchMaxNumSegmentsInputBox")[0].checked
+
+		console.log(minNumSegmentsBox, maxNumSegmentsBox);
+
+		if (minNumSegmentsBox == true) enableMinNumSegmentsBox();
+		else disableMinNumSegmentsBox();
+
+		if (maxNumSegmentsBox == true) enableMaxNumSegmentsBox();
+		else disableMaxNumSegmentsBox();
+
+		updateKeywordOnExampleSearch();
+	}
+
+	if($("#examplePresentationSearchSlideConditions").css("display") == "block") {
+		var sectionTitleBox = $("#examplePresentationSearchSectionTitleInputBox")[0].checked
+
+		if(sectionTitleBox) enableSectionTitleBox();
+		else disableSectionTitleBox();
+	}
 
 	/*
 	var timelineInputBox = $("#examplePresentationSearchTimelineInputBox")[0].checked
@@ -9434,13 +9557,6 @@ function updateSearchControllers() {
 	console.log(keywordInputBox, limitInputBox);
 	// console.log(keywordInputBox, timelineInputBox, messageInputBox);
 
-	if(keywordInputBox == true) enableKeywordsOnSearch();
-	else disableKeywordsOnSearch();
-
-	if(limitInputBox == true)  enableLimitOnSearch();
-	else disableLimitOnSearch();
-
-	updateKeywordOnExampleSearch();
 
 	/*
 	if(timelineInputBox == true) enableTimelineOnSearch();
@@ -9452,40 +9568,55 @@ function updateSearchControllers() {
 }
 
 function refreshExamplePresentations() {
-	var keywordInputBox = $("#examplePresentationSearchKeywordInputBox")[0].checked
-	var limitInputBox =  $("#examplePresentationSearchLimitInputBox")[0].checked
+	if ($("#examplePresentationSearchPlotConditions").css("display") == "block") {
+		var keywordInputBox = $("#examplePresentationSearchKeywordInputBox")[0].checked
+		var limitInputBox = $("#examplePresentationSearchLimitInputBox")[0].checked
 
-	/*
-	var timelineInputBox = $("#examplePresentationSearchTimelineInputBox")[0].checked
-	var messageInputBox = $("#examplePresentationSearchMessageInputBox")[0].checked
+		searchExamplePresentation({
+			keywords: keywordInputBox ? sourcePaperKeywords.keywords : [],
+			limit: limitInputBox ? parseInt($("#examplePresentationSearchLimitCountBox").val()) : DEFUALT_NUM_OF_PRESENTATIONS
+			/*
+			timeline: timeline,
+			messages: messages
+			*/
+		})
+	}
+	
+	if($("#examplePresentationSearchMapConditions").css("display") == "block") {
+		var minNumSegmentsBox = $("#examplePresentationSearchMinNumSegmentsInputBox")[0].checked
+		var maxNumSegmentsBox = $("#examplePresentationSearchMaxNumSegmentsInputBox")[0].checked
 
-	var timeline = []
-	var messages = []
+		var minNumSegments = -987987987;
+		var maxNumSegments = 987987987;
 
-	for (var i = 0; i < outlineStructure.length; i++) {
-		if (timelineInputBox) {
-			timeline.push(outlineStructure[i].endTime * 60);
+		if(minNumSegmentsBox) minNumSegments = parseInt($("#examplePresentationSearchMinNumSegmentsBox").val());
+		if(maxNumSegmentsBox) maxNumSegments = parseInt($("#examplePresentationSearchMaxNumSegmentsBox").val());
+
+		examplePresentations = [];
+
+		for(var i=0;i<temp_plot_examplePresentations.length;i++) {
+			var segmentCnt = temp_plot_examplePresentations[i].outline.length;
+
+			if(minNumSegments <= segmentCnt && segmentCnt <= maxNumSegments) {
+				examplePresentations.push(temp_plot_examplePresentations[i]);
+			}
 		}
 
-		if (messageInputBox) {
-			var tempStr = '';
+		console.log(examplePresentations);
 
-			for (var j = 0; j < outlineStructure[i].messages.length; j++) {
-				tempStr = tempStr + outlineStructure[i].messages[j].body;
-			}
-			messages.push(tempStr);
+		if(examplePresentations.length > 0) {
+			showPresentationMap();
+			updateExamplePresentation();
+		}
+		else {
+			$("#examplePresentationMap").html("No results found");
+			$("#examplePresentationListBody").html("No results found");
 		}
 	}
-	*/
 
-	searchExamplePresentation({
-		keywords: keywordInputBox ? sourcePaperKeywords.keywords : [],
-		limit: limitInputBox ? parseInt($("#examplePresentationSearchLimitCountBox").val()) : DEFUALT_NUM_OF_PRESENTATIONS
-		/*
-		timeline: timeline,
-		messages: messages
-		*/
-	})
+	if($("#examplePresentationSearchSlideConditions").css("display") == "block") {
+
+	}
 }
 
 function getParentNodes(nodeID) {
@@ -10114,34 +10245,87 @@ $(document).ready(function () {
 		showZoomDiv(presentationIndex);
 	})
 
+	$(document).on("click", "#examplePresentationSlideText", function(e) {
+		$(".searchConditionDiv").hide();
+		$("#examplePresentationSearchSlideConditions").show();
+
+		if($("#examplePresentationPlotText").hasClass("selected")) {
+			temp_plot_examplePresentations = examplePresentations;
+			temp_map_examplePresentations = examplePresentations;
+		}
+
+		if($("#examplePresentationMapText").hasClass("selected"))
+			temp_map_examplePresentations = examplePresentations;
+
+		if($("#examplePresentationSlideText").hasClass("selected")) return;
+
+		$("#examplePresentationMapText").removeClass("selected");
+		$("#examplePresentationPlotText").removeClass("selected");
+		$("#examplePresentationSlideText").addClass("selected");
+
+		$("#examplePresentationMapDiv").hide();
+		$("#examplePresentationPlotDiv").hide();
+
+		// $("#exampleSearchButtonsDiv").hide();
+		// $("#examplePresentationSearch").hide();
+
+		$("#examplePresentationListBody").css("height", "calc(100% - 5px)");
+		$(".slideThumbnailViewDiv").show();
+	})
+
 	$(document).on("click", "#examplePresentationMapText", function(e) {
+		$(".searchConditionDiv").hide();
+		$("#examplePresentationSearchMapConditions").show();
+
+		if($("#examplePresentationPlotText").hasClass("selected"))
+			temp_plot_examplePresentations = examplePresentations;
+
+		if($("#examplePresentationSlideText").hasClass("selected"))
+			examplePresentations = temp_map_examplePresentations;
+
 		if($("#examplePresentationMapText").hasClass("selected")) return;
 
 		$("#examplePresentationMapText").addClass("selected");
 		$("#examplePresentationPlotText").removeClass("selected");
+		$("#examplePresentationSlideText").removeClass("selected");
 
 		showPresentationMap();
 
 		$("#examplePresentationMapDiv").show();
 		$("#examplePresentationPlotDiv").hide();
 
-		$("#exampleSearchButtonsDiv").hide();
-		$("#examplePresentationSearch").hide();
+		// $("#exampleSearchButtonsDiv").hide();
+		// $("#examplePresentationSearch").hide();
+
+		$("#examplePresentationListBody").css("height", "calc(100% - 300px)");
+		$(".slideThumbnailViewDiv").hide();
 	})
 
 	$(document).on("click", "#examplePresentationPlotText", function(e) {
+		$(".searchConditionDiv").hide();
+		$("#examplePresentationSearchPlotConditions").show();
+
 		if($("#examplePresentationPlotText").hasClass("selected")) return;
+
+		examplePresentations = temp_plot_examplePresentations;
+
+		updateExamplePresentation();
 
 		$("#examplePresentationPlotText").addClass("selected");
 		$("#examplePresentationMapText").removeClass("selected");
+		$("#examplePresentationSlideText").removeClass("selected");
 
 		$("#examplePresentationPlotDiv").show();
 		$("#examplePresentationMapDiv").hide();
 
-		$("#exampleSearchButtonsDiv").show();
-
+		// $("#exampleSearchButtonsDiv").show();
+/*
 		if($("#examplePresentationSearch").hasClass("unfolded")) $("#examplePresentationSearch").show();
 		else $("#examplePresentationSearch").hide();
+		*/
+
+		$("#examplePresentationListBody").css("height", "calc(100% - 300px)");
+		$(".slideThumbnailViewDiv").hide();
 	})
 
 	$(document).on("mouseover", ".examplePresentationCell", function(e) {
@@ -10488,7 +10672,6 @@ $(document).ready(function () {
 			selectSlideThumbnail(presentationIndex, slideIndex, true, true);
 		}
 		else {
-
 			var idx = parseInt($(cur).attr("index"));
 
 			selectSegment(idx, true);
@@ -14139,16 +14322,16 @@ $(document).ready(function () {
                 prepare();
                 });
 
-	
-
         $(document).on("pdfjs_renderFinished", async function(e) {
 				issueEvent("root_attachMonitor", null);
 
 				structureHighlightDB = e.detail.sectionStructure;
 				sourcePaperKeywords = e.detail.keyword;
+				sectionEmbedding = e.detail.sectionEmbedding;
 
 				console.log(structureHighlightDB);
 				console.log(sourcePaperKeywords);
+				console.log(sectionEmbedding);
 
 				/*
 				searchExamplePresentation({

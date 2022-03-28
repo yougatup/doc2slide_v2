@@ -1,10 +1,13 @@
+import requests
 import scipdf
 import json
+from typing import Dict, List
 import numpy as np
 import pandas as pd
 import os
 
 doi = "10.1145/3313831.3376452"
+paperTitle = "C-Space: An Interactive Prototyping Platform for Collaborative Spatial Design Exploration"
 
 def getSectionStructure() :
     jsonData = json.load(open('./paperData.json'))
@@ -105,6 +108,66 @@ def getKeyword() :
 
     return
 
+sectionTitleIndex = 0
+
+def isTopSectionTitle(text) :
+    global sectionTitleIndex
+
+    parsedIndex = text.split(' ')[0]
+            
+    if parsedIndex.isdigit() :
+        body = text[(len(str(parsedIndex))+1):]
+                
+        if not (body.isupper()) :
+            return (False, {})
+        
+        return (True, {
+            "index": int(parsedIndex),
+            "title": body
+        })
+
+    else :
+        if not (text.isupper()) :
+            return (False, {})
+
+        sectionTitleIndex = sectionTitleIndex + 1
+
+        return (True, {
+            "index": sectionTitleIndex,
+            "title": text 
+        })
+    
+def getSectionTitles (jsonData) :
+    sectionTitles = []
+    
+    for s in jsonData["sections"] :
+        if "title" in s :
+            titleText = s["title"]["text"]
+        
+            ret = isTopSectionTitle(titleText)
+            
+            if ret[0] :
+                sectionTitles.append(ret[1])
+ 
+    return sectionTitles
+
+def embed(papers):
+    embeddings_by_paper_id: Dict[str, List[float]] = {}
+
+    for chunk in chunks(papers):
+        # Allow Python requests to convert the data above to JSON
+        response = requests.post(URL, json=chunk)
+
+        if response.status_code != 200:
+            raise RuntimeError("Sorry, something went wrong, please try later!")
+
+        for paper in response.json()["preds"]:
+            embeddings_by_paper_id[paper["paper_id"]] = paper["embedding"]
+
+    return embeddings_by_paper_id
+
+
+
 
 os.system('cp ./paper.pdf ../../pdffigures2/paper.pdf')
 
@@ -128,3 +191,91 @@ else :
     getKeyword()
 
 
+jsonData = json.load(open("./paperData.json"))
+titles = getSectionTitles(jsonData)
+sectionCnt = len(titles)
+    
+flag = False
+    
+for i in range(1, sectionCnt+1) :
+    if titles[i-1]["index"] != i :
+        flag = True
+        break
+    
+sectionDatabase = []
+
+if flag :
+    print("**** needs attention **** ")
+    print(titles)
+    
+    cnt = cnt + 1
+    
+else :
+    db = {}
+    curSection = ''
+    cnt = 1
+    
+    for s in jsonData["sections"] :
+        if not "paragraphs" in s :
+            continue
+            
+        if "title" in s and isTopSectionTitle(s["title"]["text"])[0] :
+            curSection = s["title"]["text"]
+            
+        if curSection != '' :
+            for p in s["paragraphs"] :
+                text = p["text"]
+            
+                if not curSection in db :
+                    db[curSection] = ''
+                    
+                tmp = db[curSection] + ('' if len(db[curSection]) == 0 else ' ') + text
+                
+                if len(tmp.split(' ')) <= 300 :
+                    db[curSection] = tmp
+ 
+    sectionDatabase.append({
+            "index": 0,
+            "paperTitle": paperTitle,
+            "body": db
+    })
+
+    URL = "https://model-apis.semanticscholar.org/specter/v1/invoke"
+    MAX_BATCH_SIZE = 16
+    
+    def chunks(lst, chunk_size=MAX_BATCH_SIZE):
+        """Splits a longer list to respect batch size"""
+        for i in range(0, len(lst), chunk_size):
+            yield lst[i : i + chunk_size]
+    
+    SAMPLE_PAPERS = []
+    
+    for i in range(len(sectionDatabase)) :
+        paperTitle = sectionDatabase[i]["paperTitle"]
+        
+        for k in sectionDatabase[i]["body"] :
+            SAMPLE_PAPERS.append({
+                "paper_id": str(i) + "_" + k,
+                "title": paperTitle,
+                "abstract": sectionDatabase[i]["body"][k]
+            })
+        
+    def embed(papers):
+        embeddings_by_paper_id: Dict[str, List[float]] = {}
+    
+        for chunk in chunks(papers):
+            # Allow Python requests to convert the data above to JSON
+            response = requests.post(URL, json=chunk)
+    
+            if response.status_code != 200:
+                raise RuntimeError("Sorry, something went wrong, please try later!")
+    
+            for paper in response.json()["preds"]:
+                embeddings_by_paper_id[paper["paper_id"]] = paper["embedding"]
+    
+        return embeddings_by_paper_id
+        
+    all_embeddings = embed(SAMPLE_PAPERS)
+
+    f = open("sectionEmbeddingDB.json", "w")
+    f.write(json.dumps(all_embeddings))

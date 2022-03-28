@@ -2844,6 +2844,7 @@ width: 100%;
 }
 
 .examplePresentationZoomImageStarDiv {
+	display: none;
 	height: 30px;
 	width: 30px;
 	position: absolute;
@@ -3336,7 +3337,86 @@ width: 100%;
 	display: none;
 }
 
+#examplePresentationSlideDiv {
+	display: none;
+}
+
 #examplePresentationViewSelectionDiv {
 	width: 100%;
 	height: 30px;
+}
+
+.exampleSegmentSemanticHighlighted {
+	border: 3px solid orange;
+}
+
+.slideThumbnailViewDiv {
+	width: 100%;
+	height: 200px;
+	display: none;
+}
+
+.slideThumbnailImage {
+	width: calc((100% - 60px) / 3);
+	float: left;
+	height: 100%;
+}
+
+.slideThumbnailViewDivLeftBtn {
+	width: 30px;
+	height: 80px;
+	float: left;
+	font-size: 20px;
+	padding-top: 90px;
+}
+
+.slideThumbnailViewDivRightBtn {
+	width: 30px;
+	height: 80%;
+	float: right;
+	font-size: 20px;
+	padding-top: 90px;
+}
+
+.slideThumbnailImage {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.slideThumbnailImageDiv {
+	width: calc((100% - 60px) / 3);
+	float: left;
+	height: 100%;
+	box-sizing: border-box;
+	padding: 5px;
+}
+
+.examplePresentationSearchMapConditions {
+	display: none;
+}
+
+
+#examplePresentationSearchMinNumSegments {
+	height: 35px;
+}
+
+#examplePresentationSearchMaxNumSegments {
+	height: 35px;
+}
+
+#examplePresentationSearchMinNumSegmentsBox {
+	width: 30px;
+	text-align: center;
+	margin-left: 30px;
+}
+
+#examplePresentationSearchMaxNumSegmentsBox {
+	width: 30px;
+	text-align: center;
+	margin-left: 30px;
+}
+
+#examplePresentationSearchSectionTitleBox {
+	margin-left: 30px;
 }

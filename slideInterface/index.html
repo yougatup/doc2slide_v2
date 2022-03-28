@@ -213,6 +213,7 @@
 							</div>
 							<div id="tabs-slide">
 								<div id='slideDiv'>
+									<!--
 									<div id="examplePresentationModeSelectionDiv">
 										<div id="examplePresentationBrowsingText" class="examplePresentationModeSelectionText selected"> Example presentations </div>
 										<div id="examplePresentationBookmarkText" class="examplePresentationModeSelectionText"> Bookmarked examples </div>
@@ -220,10 +221,13 @@
 
 									<hr /> 
 
+									-->
+
 									<div id="examplePresentationDiv">
 									<div id="examplePresentationViewSelectionDiv">
 										<div id="examplePresentationPlotText" class="examplePresentationModeSelectionText selected"> Plot </div>
 										<div id="examplePresentationMapText" class="examplePresentationModeSelectionText"> Map </div>
+										<div id="examplePresentationSlideText" class="examplePresentationModeSelectionText"> Slides </div>
 									</div>
 										<div id="exampleSearchButtonsDiv">
 											<div id="exampleRefreshBtn">
@@ -234,22 +238,52 @@
 											</div>
 										</div>
 										<div id="examplePresentationSearch" class="folded"> 
-
 											<div id="examplePresentationSearchDiv">
-												<div id="examplePresentationSearchKeyword" class="examplePresentationSearchControlDiv">
-													<input class="examplePresentationInputBox" id="examplePresentationSearchKeywordInputBox" type="checkbox" checked> </input>
-													<div class="examplePresentationSearchHeader"> Keywords </div>
-													<div id="examplePresentationKeywordList"> </div>
+												<div id='examplePresentationSearchPlotConditions' class='searchConditionDiv'>
+													<div id="examplePresentationSearchKeyword" class="examplePresentationSearchControlDiv">
+														<input class="examplePresentationInputBox" id="examplePresentationSearchKeywordInputBox" type="checkbox" checked> </input>
+														<div class="examplePresentationSearchHeader"> Keywords </div>
+														<div id="examplePresentationKeywordList"> </div>
+													</div>
+													<div id="examplePresentationSearchLimit" class="examplePresentationSearchControlDiv">
+														<input class="examplePresentationInputBox" id="examplePresentationSearchLimitInputBox" type="checkbox" checked> </input>
+														<div class="examplePresentationSearchHeader"> Maximum number of presentations </div>
+														<div id="examplePresentationSearchLimitInputDiv">
+															<button id="examplePresentationSearchLimitDecreaseBtn"> - </button>
+															<input id="examplePresentationSearchLimitCountBox" value=200> </input>
+															<button id="examplePresentationSearchLimitIncreaseBtn"> + </button>
+														</div> 
+													</div>
 												</div>
-												<div id="examplePresentationSearchLimit" class="examplePresentationSearchControlDiv">
-													<input class="examplePresentationInputBox" id="examplePresentationSearchLimitInputBox" type="checkbox" checked> </input>
-													<div class="examplePresentationSearchHeader"> Maximum number of presentations </div>
-													<div id="examplePresentationSearchLimitInputDiv">
-														<button id="examplePresentationSearchLimitDecreaseBtn"> - </button>
-														<input id="examplePresentationSearchLimitCountBox" value=200> </input>
-														<button id="examplePresentationSearchLimitIncreaseBtn"> + </button>
-													</div> 
+
+												<div id='examplePresentationSearchMapConditions' class='searchConditionDiv'>
+													<div id="examplePresentationSearchMinNumSegments" class="examplePresentationSearchControlDiv">
+														<input class="examplePresentationInputBox" id="examplePresentationSearchMinNumSegmentsInputBox" type="checkbox" checked> </input>
+														<div class="examplePresentationSearchHeader"> Minimum number of segments </div>
+														<input id="examplePresentationSearchMinNumSegmentsBox" value=0> </input>
+													</div>
+													<div id="examplePresentationSearchMaxNumSegments" class="examplePresentationSearchControlDiv">
+														<input class="examplePresentationInputBox" id="examplePresentationSearchMaxNumSegmentsInputBox" type="checkbox" checked> </input>
+														<div class="examplePresentationSearchHeader"> Maximum number of segments </div>
+														<input id="examplePresentationSearchMaxNumSegmentsBox" value=5> </input>
+													</div>
+
 												</div>
+
+												<div id='examplePresentationSearchSlideConditions' class='searchConditionDiv'>
+													<div id="examplePresentationSearchSectionTitle" class="examplePresentationSearchControlDiv">
+														<input class="examplePresentationInputBox" id="examplePresentationSearchSearhTitleInputBox" type="checkbox" checked> </input>
+														<div class="examplePresentationSearchHeader"> Section Title </div>
+														<input id="examplePresentationSearchSectionTitleBox"> </input>
+													</div>
+
+												</div>
+
+
+
+
+
+
 
 
 
@@ -281,6 +315,14 @@
 										<div id="examplePresentationPlotDiv">
 											<div id="examplePresentationMapHeader"> Presentation Plot </div>
 											<div id="examplePresentationScatterPlot">
+
+											</div>
+
+										</div>
+
+										<div id="examplePresentationSlideDiv">
+											<div id="examplePresentationMapHeader"> Presentation Slides </div>
+											<div id="examplePresentationSlide">
 
 											</div>
 
