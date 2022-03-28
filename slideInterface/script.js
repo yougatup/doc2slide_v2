@@ -253,7 +253,8 @@ function getOutlineDiv(presentationIndex, outline, slides) {
  
 		result = result +
 			"<div class='outlineSegmentElement exampleSegmentElement " + 
-			(outline[i].semanticHighlightFlag ? "exampleSegmentSemanticHighlighted" : "") + 
+			(outline[i].semanticHighlightFlag ? "exampleSegmentSemanticHighlighted " : "") + 
+			($("#examplePresentationSlideText").hasClass("selected") ? "hoverActive" : "") + 
 			"' presentationIndex='" + presentationIndex + "' segmentIndex='" + i + "' style='width: " + segmentWidth + "%; background-color: " + outline[i].colorCode + "'>" + 
 				getDurationString(duration) + 
 			"</div>"
@@ -496,7 +497,7 @@ function showZoomDiv(presentationIndex) {
 	selectSlideThumbnail(presentationIndex, 1, true, true);
 
 	$("#examplePresentationListDiv").hide();
-	$("#examplePresentationButtonsDiv").hide();
+	$("#exampleSearchButtonsDiv").hide();
 	$("#examplePresentationSearch").hide();
 	$("#examplePresentationMapDiv").hide();
 	$("#examplePresentationPlotDiv").hide();
@@ -542,14 +543,19 @@ function getSlideThumbnailView(presentationIndex) {
 	var num_slides = 3;
 	var returnHtml = '';
 
-	for(var i=0;i<num_slides;i++) {
-		returnHtml = returnHtml + 
-		"<div class='slideThumbnailImageDiv' thumbnailIndex='" + i + "'>" + 
-			"<img class='slideThumbnailImage' src='http://localhost:8000/slideThumbnail/" + examplePresentations[presentationIndex].index + "/images/" + i + ".jpg'> </img>" + 
-		"</div>"
+	for(var i=0;i<examplePresentations[presentationIndex].outline.length;i++) {
+		var startSlideIndex = examplePresentations[presentationIndex].outline[i].startSlideIndex;
+		var endSlideIndex = examplePresentations[presentationIndex].outline[i].endSlideIndex;
+		
+		for(var j=startSlideIndex;j<=endSlideIndex;j++) {
+			returnHtml = returnHtml +
+				"<div class='slideThumbnailImageDiv " + (j <= num_slides ? "visible" : "") + "' thumbnailIndex='" + j + "'>" +
+					"<div class='slideThumbnailImageSegmentBar' style='background-color: " + presentationColorCode[i] + "'> </div>" +
+					"<img class='examplePresentationSlidesThumbnailImage' src='http://localhost:8000/slideThumbnail/" + examplePresentations[presentationIndex].index + "/images/" + j + ".jpg'> </img>" +
+				"</div>"
+		}
 	}
-
-	return "<div class='slideThumbnailViewDiv' presentationIndex='" + presentationIndex + "'> " + 
+	return "<div class='slideThumbnailViewDiv " + ($("#examplePresentationSlideText").hasClass("selected") ? "visible" : "") + "' presentationIndex='" + presentationIndex + "'> " + 
 				"<div class='slideThumbnailViewDivLeftBtn'> < </div>" + 
 					returnHtml + 
 				"<div class='slideThumbnailViewDivRightBtn'> > </div>" + 
@@ -8889,6 +8895,9 @@ async function selectSegment(index, locateFlag) {
 
 	updateMessageBox();
 
+	if(index != -1 && "label" in outlineStructure[index])
+		$("#examplePresentationSearchSectionTitleBox").val(outlineStructure[index].label);
+
 	// visualizeCloseSegments();
 }
 
@@ -9615,9 +9624,46 @@ function refreshExamplePresentations() {
 	}
 
 	if($("#examplePresentationSearchSlideConditions").css("display") == "block") {
+		var sectionTitleBox = $("#examplePresentationSearchSectionTitleInputBox")[0].checked
 
+		if(sectionTitleBox) {
+			var sectionTitle = $("#examplePresentationSearchSectionTitleBox").val();
+
+			console.log(sectionTitle);
+
+			searchSectionTitles(sectionTitle);
+		}
 	}
 }
+
+function searchSectionTitles(t) {
+	for (var i = 0; i < examplePresentations.length; i++) {
+		examplePresentations[i].foundSectionIndex = 987987987;
+
+		for(var j=0;j<examplePresentations[i].outline.length;j++) {
+			var outlineText = examplePresentations[i].outline[j].sectionTitle;
+
+			if(outlineText.replaceAll(' ', '').toLowerCase().includes(t.replaceAll(' ', '').toLowerCase()) || 
+			t.replaceAll(' ', '').toLowerCase().includes(outlineText.replaceAll(' ', '').toLowerCase())) {
+				examplePresentations[i].foundSectionIndex = j;
+
+				break;
+			}
+		}
+	}
+
+	examplePresentations.sort(function(first, second) {
+		return first.foundSectionIndex - second.foundSectionIndex
+	});
+
+	updateExamplePresentation();
+
+	for(var i=0;i<examplePresentations.length;i++) {
+		if(examplePresentations[i].foundSectionIndex != 987987987)
+			locateSlideOnSlidesDiv(i, examplePresentations[i].outline[examplePresentations[i].foundSectionIndex].startSlideIndex, true);
+	}
+}
+
 
 function getParentNodes(nodeID) {
 	var nodeList = [];
@@ -9770,6 +9816,44 @@ async function loadPresentation(presentationList) {
 
 	updateExamplePresentation()
 	return res;
+}
+
+function locateSlideOnSlidesDiv(presentationIndex, slideIndex, sectionHighlightFlag) {
+	var totalNumSlides = examplePresentations[presentationIndex].slideInfo.length-1;
+	var st = Math.max(Math.min(slideIndex, totalNumSlides-3), 1)
+
+	$(".slideThumbnailViewDiv[presentationIndex='" + presentationIndex + "']").find(".slideThumbnailImageDiv").removeClass("visible");
+
+	for(var i=st;i<st+Math.min(totalNumSlides, 3);i++) {
+		console.log($(".slideThumbnailViewDiv[presentationIndex='" + presentationIndex + "']").find(".slideThumbnailImageDiv[thumbnailIndex='" + i + "']"));
+
+		$(".slideThumbnailViewDiv[presentationIndex='" + presentationIndex + "']").find(".slideThumbnailImageDiv[thumbnailIndex='" + i + "']").addClass("visible");
+	}
+
+	console.log(sectionHighlightFlag);
+
+	if(sectionHighlightFlag) {
+		var sectionIndex = -1;
+
+		for(var i=0;i<examplePresentations[presentationIndex].outline.length;i++) {
+			var start = examplePresentations[presentationIndex].outline[i].startSlideIndex;
+			var end =  examplePresentations[presentationIndex].outline[i].endSlideIndex;
+
+			console.log(start, end, slideIndex);
+
+			if(start <= slideIndex && slideIndex <= end) {
+				sectionIndex = i;
+				break;
+			}
+		}
+
+		$(".outlineSegmentElement[presentationIndex='" + presentationIndex + "'][segmentIndex='" + sectionIndex + "']").addClass("segmentHighlighted");
+	}
+}
+function showThumbnailsOnSlidesTab(presentationIndex, segmentIndex) {
+	var startSlideIndex = examplePresentations[presentationIndex].outline[segmentIndex].startSlideIndex;
+
+	locateSlideOnSlidesDiv(presentationIndex, startSlideIndex, false);
 }
 
 async function getAllPresentation() {
@@ -10192,25 +10276,29 @@ $(document).ready(function () {
 	})
 
 	$(document).on("click", ".examplePresentationPrevBtn", function(e) {
+		$("#exampleSearchButtonsDiv").show();
 		if($("#examplePresentationPlotText").hasClass("selected")) {
-			$("#examplePresentationButtonsDiv").show();
-
 			if($("#examplePresentationSearch").hasClass("unfolded")) $("#examplePresentationSearch").show();
 			else $("#examplePresentationSearch").hide();
 
+			$("#examplePresentationSlideDiv").hide();
 			$("#examplePresentationMapDiv").hide();
 			$("#examplePresentationPlotDiv").show();
 		}
-		else {
-			$("#examplePresentationButtonsDiv").hide();
+		else if($("#examplePresentationMapText").hasClass("selected")) {
+			if($("#examplePresentationSearch").hasClass("unfolded")) $("#examplePresentationSearch").show();
+			else $("#examplePresentationSearch").hide();
 
-			$("#examplePresentationSearch").hide();
-			$("#examplePresentationSearch").hide();
-
+			$("#examplePresentationSlideDiv").hide();
 			$("#examplePresentationMapDiv").show();
 			$("#examplePresentationPlotDiv").hide();
-
 		}
+		else {
+			$("#examplePresentationSlideDiv").show();
+			$("#examplePresentationMapDiv").hide();
+			$("#examplePresentationPlotDiv").hide();
+		}
+
 		$("#examplePresentationDetailDiv").hide();
 
 		$("#examplePresentationListDiv").show();
@@ -10231,8 +10319,26 @@ $(document).ready(function () {
 		$(".dot[presentationIndex='" + presentationIndex + "']").addClass("hovered");
 	})
 
+	$(document).on("click", ".slideThumbnailViewDivLeftBtn", function(e) {
+		var presentationIndex = parseInt($(e.target).parent().attr("presentationIndex"));
+		var startSlideIndex = parseInt($($(".slideThumbnailViewDiv[presentationIndex='" + presentationIndex + "']").find(".slideThumbnailImageDiv.visible")[0]).attr("thumbnailIndex"))
+
+		locateSlideOnSlidesDiv(presentationIndex, startSlideIndex-1, false);
+	})
+
+	$(document).on("click", ".slideThumbnailViewDivRightBtn", function(e) {
+		var presentationIndex = parseInt($(e.target).parent().attr("presentationIndex"));
+		var startSlideIndex = parseInt($($(".slideThumbnailViewDiv[presentationIndex='" + presentationIndex + "']").find(".slideThumbnailImageDiv.visible")[0]).attr("thumbnailIndex"))
+
+		locateSlideOnSlidesDiv(presentationIndex, startSlideIndex+1, false);
+	})
+
 	$(document).on("click", ".examplePresentationInstance", function(e) {
 		var cur = $(e.target);
+
+		if($(cur).hasClass("hoverActive")) return;
+		if($(cur).hasClass("slideThumbnailViewDivRightBtn") || 
+		   $(cur).hasClass("slideThumbnailViewDivLeftBtn")) return;
 
 		for(var i=0;i<100;i++) {
 			if($(cur).hasClass("examplePresentationInstance")) break;
@@ -10248,6 +10354,8 @@ $(document).ready(function () {
 	$(document).on("click", "#examplePresentationSlideText", function(e) {
 		$(".searchConditionDiv").hide();
 		$("#examplePresentationSearchSlideConditions").show();
+
+		$(".exampleSegmentElement").addClass("hoverActive");
 
 		if($("#examplePresentationPlotText").hasClass("selected")) {
 			temp_plot_examplePresentations = examplePresentations;
@@ -10270,10 +10378,12 @@ $(document).ready(function () {
 		// $("#examplePresentationSearch").hide();
 
 		$("#examplePresentationListBody").css("height", "calc(100% - 5px)");
-		$(".slideThumbnailViewDiv").show();
+		$(".slideThumbnailViewDiv").addClass("visible");
 	})
 
 	$(document).on("click", "#examplePresentationMapText", function(e) {
+		$(".exampleSegmentElement").removeClass("hoverActive");
+
 		$(".searchConditionDiv").hide();
 		$("#examplePresentationSearchMapConditions").show();
 
@@ -10298,10 +10408,12 @@ $(document).ready(function () {
 		// $("#examplePresentationSearch").hide();
 
 		$("#examplePresentationListBody").css("height", "calc(100% - 300px)");
-		$(".slideThumbnailViewDiv").hide();
+		$(".slideThumbnailViewDiv").removeClass("visible");
 	})
 
 	$(document).on("click", "#examplePresentationPlotText", function(e) {
+		$(".exampleSegmentElement").removeClass("hoverActive");
+
 		$(".searchConditionDiv").hide();
 		$("#examplePresentationSearchPlotConditions").show();
 
@@ -10325,7 +10437,7 @@ $(document).ready(function () {
 		*/
 
 		$("#examplePresentationListBody").css("height", "calc(100% - 300px)");
-		$(".slideThumbnailViewDiv").hide();
+		$(".slideThumbnailViewDiv").removeClass("visible");
 	})
 
 	$(document).on("mouseover", ".examplePresentationCell", function(e) {
@@ -10664,12 +10776,20 @@ $(document).ready(function () {
 		}
 
 		if($(cur).hasClass("exampleSegmentElement")) {
-			var presentationIndex = $(cur).attr("presentationIndex");
-			var segmentIndex = $(cur).attr("segmentIndex");
+			if($("#examplePresentationSlideText").hasClass("selected")) {
+				var presentationIndex = parseInt($(cur).attr("presentationIndex"));
+				var segmentIndex = parseInt($(cur).attr("segmentIndex"));
 
-			var slideIndex = examplePresentations[presentationIndex].outline[segmentIndex].startSlideIndex;
+				showThumbnailsOnSlidesTab(presentationIndex, segmentIndex)
+			}
+			else {
+				var presentationIndex = $(cur).attr("presentationIndex");
+				var segmentIndex = $(cur).attr("segmentIndex");
 
-			selectSlideThumbnail(presentationIndex, slideIndex, true, true);
+				var slideIndex = examplePresentations[presentationIndex].outline[segmentIndex].startSlideIndex;
+
+				selectSlideThumbnail(presentationIndex, slideIndex, true, true);
+			}
 		}
 		else {
 			var idx = parseInt($(cur).attr("index"));

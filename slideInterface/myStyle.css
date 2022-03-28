@@ -1279,6 +1279,7 @@ width: 100%;
 	  cursor: pointer;
   }
 
+
   .slideImageDivBottom {
 	  top: 20%;
 	  position: relative;
@@ -2823,10 +2824,17 @@ width: 100%;
 .examplePresentationModeSelectionText {
 	font-size: 18px;
 	float: left;
-	margin-left: 15px;
 	color: gray;
 	text-decoration: underline;
 	cursor: pointer;
+	padding-top: 4px;
+	height: 40px;
+	position: relative;
+	width: 33%;
+	background-color: lightblue;
+	box-sizing: border-box;
+	text-align: center;
+	padding-top: 10px;
 }
 
 .examplePresentationModeSelectionText.selected {
@@ -3356,26 +3364,37 @@ width: 100%;
 	display: none;
 }
 
-.slideThumbnailImage {
-	width: calc((100% - 60px) / 3);
+.slideThumbnailViewDiv.visible {
+	display: block;
+}
+
+.examplePresentationSlidesThumbnailImage {
+	width: 100%;
 	float: left;
-	height: 100%;
+	height: calc(100% - 40px);
+	box-sizing: border-box;
+	padding: 5px;
+	position: absolute;
+	top: 40px;
+	object-fit: contain;
 }
 
 .slideThumbnailViewDivLeftBtn {
 	width: 30px;
-	height: 80px;
+	height: 100%;
 	float: left;
 	font-size: 20px;
 	padding-top: 90px;
+	box-sizing: border-box;
 }
 
 .slideThumbnailViewDivRightBtn {
 	width: 30px;
-	height: 80%;
+	height: 100%;
 	float: right;
 	font-size: 20px;
 	padding-top: 90px;
+	box-sizing: border-box;
 }
 
 .slideThumbnailImage {
@@ -3390,6 +3409,8 @@ width: 100%;
 	height: 100%;
 	box-sizing: border-box;
 	padding: 5px;
+	display: none;
+	position: relative;
 }
 
 .examplePresentationSearchMapConditions {
@@ -3420,3 +3441,42 @@ width: 100%;
 #examplePresentationSearchSectionTitleBox {
 	margin-left: 30px;
 }
+
+.slideThumbnailViewDivRightBtn:hover {
+	background-color: lightgray;
+}
+
+.slideThumbnailViewDivLeftBtn:hover {
+	background-color: lightgray;
+}
+
+.slideThumbnailImageDiv.visible {
+	display: block;
+}
+
+.slideThumbnailImageSegmentBar {
+	width: 100%;
+	height: 20px;
+	position: absolute;
+	top: 20px;
+}
+
+.exampleSegmentElement.hoverActive:hover{
+	box-sizing: border-box;
+	border: 2px solid red;
+}
+
+.exampleSegmentElement.hoverActive.segmentHighlighted {
+	border: 2px solid red;
+}
+
+.examplePresentationTextRightDiv {
+	width: 0; 
+	height: 0; 
+	border-top: 20px solid white;
+	border-bottom: 20px solid white;
+	border-left: 40px solid lightblue;
+	top: 0px;
+	position: absolute;
+	right: 0px;
+  }
