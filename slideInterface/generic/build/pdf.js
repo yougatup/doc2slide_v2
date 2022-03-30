@@ -17856,18 +17856,12 @@ function showOutlinePopup(mode) {
   var cur = $(lastWordObj);
 
   for(var i=0;i<100;i++) {
-    console.log(cur);
-
     if($(cur).hasClass("page")) break;
 
     cur = $(cur).parent();
   }
 
-  console.log(cur);
-
   var pageNumber = parseInt($(cur).attr("data-page-number"));
-
-  console.log(pageNumber);
 
   var pageTop = $(cur).offset().top;
   var lastWordTop = $(lastWordObj).offset().top;
@@ -17881,13 +17875,8 @@ function showOutlinePopup(mode) {
   var pageRight = $(cur).offset().left + $(cur).width();
   var lastWordRight = $(lastWordObj).offset().right;
 
-  console.log(pageRight);
-
   popupObj.css("left", Math.min(pageRight - $(cur).offset().left - 350, ($(lastWordObj).offset().left - $(cur).offset().left)))
   popupObj.css("top", lastWordTop - firstPageTop + 20)
-
-  console.log($(lastWordObj).offset());
-  console.log($(popupObj).css("top"));
 
   if (mode == "segmentSelect") {
 

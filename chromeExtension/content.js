@@ -218,9 +218,6 @@ function checkFilmstripIDs() {
 
 		var slideObj = $($($($($(this).find("g")[0]).find("svg")[0]).find("g")[0]).find("g")[0]);
 
-		console.log($(slideObj));
-		console.log($(slideObj).length);
-
 		if($(slideObj).length <= 0){
 			flag = false;
 			return false;
@@ -560,18 +557,12 @@ function chromeExtensionBody() {
 		
 		var filmstripStructure = getFilmstripStructure();
 
-		console.log(outlineStructure);
-
-		console.log(filmstripStructure);
-
 		for (var i = 0; i < filmstripStructure.length; i++) {
 			$(filmstripStructure[i].outlineStripObj).attr("fill", "none");
 
 			for(var j=0;j<outlineStructure.length;j++) {
 
 				if(outlineStructure[j].slideIDs.includes(filmstripStructure[i].slideID)) {
-					console.log($(filmstripStructure[i].outerObj));
-
 					$(filmstripStructure[i].outlineStripObj).attr("fill", outlineStructure[j].colorCode);
 					break;
 				}

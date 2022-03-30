@@ -1543,12 +1543,7 @@ async function showPresentationMap() {
 		})
 	}
 
-	console.log(timelineSummary);
-
-
 	var res = await postRequest(API_URL + 'get_cluster_result', null)
-
-	console.log(res);
 
 	if (!CACHE_PRESENTATION_TREE || res.status == "none") {
 		presentationTree = computeClustering(timelineSummary, -1, -1, 0, timelineSummary.length - 1);
@@ -1565,12 +1560,6 @@ async function showPresentationMap() {
 		presentationTree = res.presentationTree;
 		presentationTimeline = res.presentationTimeline;
 	}
-
-	console.log(presentationTree);
-	console.log(presentationTimeline);
-
-	console.log($("#examplePresentationMap"));
-	console.log($("#examplePresentationMap").width());
 
 	$("#examplePresentationMap").html('');
 
@@ -8433,9 +8422,6 @@ function updateMessageBox() {
 	var html = '';
 	var vizHtml = '';
 
-	console.log(selectedOutlineIndex);
-	console.log(outlineStructure);
-
 	if(selectedOutlineIndex == -1) return;
 
 	$(".messageBoxUl").html('');
@@ -8450,8 +8436,6 @@ function updateMessageBox() {
 					outlineStructure[selectedOutlineIndex].messages[i].text + 
 				"</li>";
 	}
-
-	console.log(html);
 
 	$(".messageBoxUl").html(html);
 
@@ -8907,8 +8891,6 @@ async function selectSegment(index, locateFlag) {
 
 	var headerString = $(".examplePresentationBookmarkHeader.selectedSegmentHeader").html();
 
-	console.log(headerString);
-
 	if(headerString != null && headerString.startsWith("&gt;&gt;"))
 		$(".examplePresentationBookmarkHeader.selectedSegmentHeader").html(headerString.substring(9));
 
@@ -9167,8 +9149,6 @@ function examplePresentationBookmarkImageOnLoad(e) {
 function updateBookmarkedExampleDiv() {
 	var result = '';
 
-	console.log(outlineStructure);
-
 	for(var i=0;i<outlineStructure.length;i++) {
 		var b = outlineStructure[i].bookmark;
 
@@ -9190,8 +9170,6 @@ function updateBookmarkedExampleDiv() {
 		result = result + body;
 	}
 	
-	console.log(result);
-
 	$("#examplePresentationBookmarkDiv").html(result);
 }
 
@@ -9721,8 +9699,6 @@ function updateMessageOnOutline(outlineIndex) {
 	var mappingIdList = [];
 	var before = outlineStructure[outlineIndex].messages;
 
-	console.log("HI");
-
 	outlineStructure[outlineIndex].messages = [];
 
 	$(".messageBoxUl").find("li").each(function(idx, elem) {
@@ -9739,11 +9715,8 @@ function updateMessageOnOutline(outlineIndex) {
 		if(mapping != null) mappingIdList.push(mapping);
 	});
 
-	console.log(mappingIdList);
-
 	for(var i=0;i<before.length;i++) {
 		var mappingKey = before[i].mapping;
-		console.log(mappingKey);
 
 		if(mappingKey != null) {
 			if(!mappingIdList.includes(mappingKey)) {
@@ -10167,7 +10140,7 @@ $(document).ready(function () {
 			requests.push({
 				insertText: {
 					objectId: titleObjID,
-					text: "title",
+					text: outlineStructure[selectedOutlineIndex].label == null ? "Title" : outlineStructure[selectedOutlineIndex].label,
 					insertionIndex: 0
 				}
 			});
@@ -10998,11 +10971,7 @@ $(document).ready(function () {
 		var sel = document.getSelection();
  
 		var curNode = sel.anchorNode;
-
-		console.log(curNode)
 		var nodeName = $(curNode)[0].nodeName;
-
-		console.log(nodeName);
 		var mappingDict = {};
 
 		if($("#messageBoxMappingViz").length <= 0) { // got initialized
@@ -11026,7 +10995,6 @@ $(document).ready(function () {
 
 		var body = $("#outlineMessageBoxContents").html();
 
-		console.log(body);
 /*
 		while(true) {
 			if(body.includes("<div><div>")) {
@@ -11037,11 +11005,8 @@ $(document).ready(function () {
 			else break;
 		}
 		*/
-		console.log(body);
 		if(body.includes("<br></div>")) {
 			body = body.replaceAll("<div><br></div>", "").trim();
-
-			console.log(body);
 
 			if(body.startsWith('<div id="messageBoxMappingViz"')) $("#outlineMessageBoxContents").html(
 				"<ul class='messageBoxUl'>" + 
@@ -11058,8 +11023,6 @@ $(document).ready(function () {
 				var sel = window.getSelection()
 
 				var lastBulletObj = $("#outlineMessageBoxContents").find("li").last();
-
-				console.log($(lastBulletObj)[0]);
 
 				range.setStart($(lastBulletObj)[0], 1)
 				range.collapse(true)
@@ -13850,7 +13813,6 @@ $(document).ready(function () {
 			if (!alreadyProcessedFlag) {
 				if (slidesFromOutline.length != p.filmstripStructure.length) {
 					// slide added or deleted
-					console.log(slidesFromOutline.length, p.filmstripStructure.length);
 
 					if (slidesFromOutline.length > p.filmstripStructure.length) {
 						diffFlag = 1; // removed
@@ -13977,7 +13939,7 @@ $(document).ready(function () {
 				}
 			}
 
-			alreadyProcessedFlag = true;
+			alreadyProcessedFlag = false;
 
 			console.log(waitingOutlineIndex);
 
@@ -14013,14 +13975,11 @@ $(document).ready(function () {
 			statusFlag = false;
 			setStatusLight("red");
 
-			console.log(JSON.parse(JSON.stringify(docSlideStructure)));
-
 			if (adaptivePlaneStatus != 2) {
 				var tempCnt = 1;
 				var p = e.detail;
 
 				console.log("PAGE UPDATED");
-				console.log(p);
 
 				curSlideObjects = p;
 
@@ -14932,29 +14891,20 @@ $(document).ready(function () {
 		$(document).on("pdfjs_getSectionTitle", function(e) {
 			var p = e.detail;
 
-			console.log(p);
-			console.log(structureHighlightDB);
-
 			var result = '';
 
 			for(var k in structureHighlightDB) {
-				console.log(k);
-
 				if(structureHighlightDB[k].pageNumber < p.pageNumber || 
 				   structureHighlightDB[k].pageNumber == p.pageNumber && 
 					structureHighlightDB[k].startWordIndex <= p.startWordIndex) result = structureHighlightDB[k].text;
 				else break;
 			}
 
-			console.log(result);
-
 			issueEvent("root_getSectionTitle", { title: result });
 		});
 
 		$(document).on("pdfjs_addHighlight", function(e) {
 			var p = e.detail;
-
-			console.log(p);
 
 			var flag = false;
 			var index = -1;
