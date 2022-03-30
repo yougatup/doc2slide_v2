@@ -33,7 +33,7 @@ right: 0px;
 top: 0px;
 width: 100%;
 float: left;
-height: calc(100% - 40px);
+height: 100%;
 border: 1px solid black;
 }
 
@@ -2367,6 +2367,7 @@ width: 100%;
 	  font-size: 20px;
 	  margin-top: 10px;
 	  margin-left: 5px;
+	  height: 0px;
   }
 
   #outlineMessageBoxContents {
@@ -2912,6 +2913,16 @@ width: 100%;
     display: none;
 }
 
+#outlineMessageSlideCreationPopup {
+    background-color: white;
+    position: absolute;
+    z-index: 987987987;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+	display: none;
+	width: 500px;
+}
 #outlinePopupMessage {
     font-size: 15px;
 }
@@ -3480,3 +3491,120 @@ width: 100%;
 	position: absolute;
 	right: 0px;
   }
+
+#examplePresentationSlideHeader {
+	font-size: 25px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+#examplePresentationSlide {
+	position: relative;
+	height: 100px;
+	margin-left: 30px;
+	width: calc(100% - 50px);
+	border: 1px solid black;
+}
+
+.presentationSlideTableRow {
+	height: 30px;
+}
+
+.presentationSlideTableTitle {
+	padding-left: 5px;
+	padding-right: 5px;
+	text-align: center;
+	border: 1px solid black;
+	cursor: pointer;
+	box-sizing: border-box;
+}
+
+.presentationSlideTableTitle.highlighted {
+	padding-left: 5px;
+	padding-right: 5px;
+	text-align: center;
+	font-weight: bold;
+
+	border: 1px solid black;
+	cursor: pointer;
+
+	border-left: 3px solid red;
+	border-right: 3px solid red;
+	border-top: 3px solid red;
+}
+
+.presentationSlideTableCell {
+	border: 1px solid black;
+	text-align: center;
+	cursor: pointer;
+	box-sizing: border-box;
+}
+
+.presentationSlideTableCell.highlighted {
+	border-left: 3px solid red;
+	border-right: 3px solid red;
+	border-bottom: 3px solid red;
+}
+
+.presentationSlideTableCell.hovered {
+	border-left: 2px solid red;
+	border-right: 2px solid red;
+	border-bottom: 2px solid red;
+}
+
+.presentationSlideTableTitle.hovered {
+	border-left: 2px solid red;
+	border-right: 2px solid red;
+	border-top: 2px solid red;
+}
+
+#presentationSlideTable {
+	width: 700px;
+	border: 1px solid black;
+	margin-left: calc(50% - 350px);
+	border-collapse: collapse;
+	margin-top: 20px;
+}
+
+.presentationSlideTableCell.selected {
+	background-color: yellow;
+}
+
+#outlineMessageSlideBox {
+	float: right;
+	width: 280px;
+	margin-bottom: 10px;
+}
+
+#outlineMessageSlideBoxIncreaseBtn, #outlineMessageSlideBoxDecreaseBtn {
+	width: 20px;
+	height: 20px;
+	padding: 0px;
+	text-align: center;
+	cursor: pointer;
+}
+
+#outlineMessageSlideBoxInputBox {
+	width: 50px;
+	height: 20px;
+	text-align: center;
+}
+
+#outlineMessageSlideBoxHeader {
+	display: inline-block;
+}
+
+#outlineMessageSlideCreateSlideBtn {
+	margin-left: 20px;
+	cursor: pointer;
+}
+
+#outlineMessageSlideCreationPopupConfirm, #outlineMessageSlideCreationPopupCancel  {
+	text-align: center;
+	font-size: 16px;
+	margin-top: 10px;
+}
+
+#outlineMessageSlideCreationPopupConfirm {
+	margin-left: calc(50% - 40px);
+}

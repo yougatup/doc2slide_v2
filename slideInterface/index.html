@@ -173,6 +173,12 @@
 				<div style='float: left'>
 					Initialize when starting
 				</div>
+
+				<div style='float: left; margin-left: 20px;'>
+					Initialize mouse down
+
+					<button id='initializeMouseDownBtn'> Click </button>
+				</div>
 			</div>
 
 			<div id='documentStructureBtnDiv'> 
@@ -333,7 +339,7 @@
 										</div>
 
 										<div id="examplePresentationSlideDiv">
-											<div id="examplePresentationMapHeader"> Presentation Slides </div>
+											<div id="examplePresentationSlideHeader"> Presentation Slides </div>
 											<div id="examplePresentationSlide">
 
 											</div>
@@ -678,6 +684,27 @@
 
 								<div id="outlineMessageBoxDiv">
 									<div id="outlineMessageBoxHeader"> Message Box </div>
+									<div id="outlineMessageSlideBox"> 
+										<div id="outlineMessageSlideBoxHeader"> Slide: </div>
+										<button id='outlineMessageSlideBoxDecreaseBtn'> - </button>
+										<input id='outlineMessageSlideBoxInputBox' value=1> </input>
+										<button id='outlineMessageSlideBoxIncreaseBtn'> + </button>
+
+										<button id='outlineMessageSlideCreateSlideBtn'> Create Slides </button>
+									</div>
+										<div id="outlineMessageSlideCreationPopup">
+											<div id="outlineMessageSlideCreationPopupBody">
+												The system will create slides that contain the bullet-pointed text.
+											
+												The current slide contents are removed.
+											
+												Are you sure to proceed?
+											</div>
+
+											<button id="outlineMessageSlideCreationPopupConfirm"> Yes </button>
+											<button id="outlineMessageSlideCreationPopupCancel"> No </button>
+										</div>
+
 									<div id="outlineMessageBoxContents" contenteditable="true"> 
 										<ul class='messageBoxUl'>
 											<li class='tab-1' indentationLevel='1'>
@@ -739,8 +766,8 @@
 	<script>
 			Split(['#outlineView', '#slideIframe'], {
 				gutterSize: 5,
-				sizes: [25, 75],
-				minSize: [25, 10],
+				sizes: [52, 48],
+				minSize: [25, 20],
 				direction: "vertical"
 			});
 	</script>

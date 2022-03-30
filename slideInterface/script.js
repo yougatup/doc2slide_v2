@@ -108,6 +108,20 @@ var presentationColorCode = {
 	5: "#FFFBE9"
 };
 var presentationTreeRenderingFinished = false;
+var alreadyProcessedFlag = false;
+var sortableClickedIndex = -1;
+
+var sectionTitles = [
+	['Title'],
+	['Introduction'],
+	['Related work', 'Background'],
+	['Evaluation', 'study'],
+	['Method'],
+	['Results', 'Findings'],
+	['Discussion', 'Limitation', 'Future work'],
+	['Conclusion'],
+	['End']
+];
 
 function getImgList(x) { 
 	for(var i in x) {
@@ -3844,8 +3858,20 @@ function disappearDropbox() {
 	$(".filmstripIndicator").hide();
 }
 
-function showLoadingSlidePlane(){
+function showLoadingSlidePlane(flag){
 	$("#loadingPlane").show();
+
+	if(flag) {
+		setTimeout(function () {
+			hideLoadingSlidePlane();
+			selectSegment(sortableClickedIndex);
+
+			waitingOutlineIndex = -1;
+		}, 1000);
+	}
+
+
+
 /*
 	$("#loadingSlidePlane").show();
 	$("#slidePlaneCanvas").css("background-color", "rgb(0, 0, 0, 0.3)");
@@ -8706,7 +8732,7 @@ function updateOutlineSegments() {
 			var startPoint = $(ui.item[0]).attr("index");
 
 			var newOutlineStructure = [];
-			var slideIndex = 2;
+			var slideIndex = 1;
 			var changeFlag = false;
 
 			$("#outlineSegments").children().each(function(i) {
@@ -8721,7 +8747,7 @@ function updateOutlineSegments() {
 
 				var lastIdx = newOutlineStructure.length-1;
 
-				newOutlineStructure[lastIdx].startSlideIndex = slideIndex == 2 ? 1 : slideIndex;
+				newOutlineStructure[lastIdx].startSlideIndex = slideIndex;
 
 				newOutlineStructure[lastIdx].endSlideIndex = slideIndex + newOutlineStructure[lastIdx].slideIDs.length - 1;
 				newOutlineStructure[lastIdx].startX = lastIdx == 0 ? 0 : newOutlineStructure[lastIdx-1].endX;
@@ -8742,7 +8768,7 @@ function updateOutlineSegments() {
 				return;
 			} 
 
-			showLoadingSlidePlane();
+			showLoadingSlidePlane(true);
 
 			var startIndex = -1, endIndex = -1;
 
@@ -8766,8 +8792,10 @@ function updateOutlineSegments() {
 			console.log(JSON.parse(JSON.stringify(newOutlineStructure)));
 
 			console.log(startIndex, endIndex);
+			console.log(startPoint);
 
 			if(startIndex == startPoint) {
+				sortableClickedIndex = endIndex;
 				// from start to end
 				requests.push({
 					updateSlidesPosition: {
@@ -8779,6 +8807,7 @@ function updateOutlineSegments() {
 				waitingOutlineIndex = endIndex;
 			}
 			else {
+				sortableClickedIndex = startIndex;
 				// from end to start
 				requests.push({
 					updateSlidesPosition: {
@@ -8802,10 +8831,13 @@ function updateOutlineSegments() {
 			outlineStructure = newOutlineStructure;
 
 			updateOutlineSegments();
+			selectSegment(sortableClickedIndex);
 		}
 	})
 
 	locateUserSlideOnPresentationMap();
+	locateUserSlideOnPresentationSlides();
+
 	updateBookmarkedExampleDiv();
 }
 
@@ -9226,7 +9258,7 @@ function addSegment(p) {
 		}
 	});
 
-	showLoadingSlidePlane();
+	showLoadingSlidePlane(false);
 	waitingOutlineIndex = outlineStructure.length - 1;
 
 	gapi.client.slides.presentations.batchUpdate({
@@ -9631,20 +9663,23 @@ function refreshExamplePresentations() {
 
 			console.log(sectionTitle);
 
+			$(".presentationSlideTableCell.highlighted").removeClass("highlighted");
+			$(".presentationSlideTableTitle.highlighted").removeClass("highlighted");
+
 			searchSectionTitles(sectionTitle);
 		}
 	}
 }
 
-function searchSectionTitles(t) {
+function searchSectionTitles(index) {
 	for (var i = 0; i < examplePresentations.length; i++) {
 		examplePresentations[i].foundSectionIndex = 987987987;
 
 		for(var j=0;j<examplePresentations[i].outline.length;j++) {
-			var outlineText = examplePresentations[i].outline[j].sectionTitle;
+			var __outlineText = examplePresentations[i].outline[j].sectionTitle;
+			var idx = getSectionIndex(__outlineText);
 
-			if(outlineText.replaceAll(' ', '').toLowerCase().includes(t.replaceAll(' ', '').toLowerCase()) || 
-			t.replaceAll(' ', '').toLowerCase().includes(outlineText.replaceAll(' ', '').toLowerCase())) {
+			if (idx == index) {
 				examplePresentations[i].foundSectionIndex = j;
 
 				break;
@@ -9850,6 +9885,78 @@ function locateSlideOnSlidesDiv(presentationIndex, slideIndex, sectionHighlightF
 		$(".outlineSegmentElement[presentationIndex='" + presentationIndex + "'][segmentIndex='" + sectionIndex + "']").addClass("segmentHighlighted");
 	}
 }
+
+function locateUserSlideOnPresentationSlides() {
+	if(selectedOutlineIndex == -1) return;
+
+	$(".presentationSlideTableCell.selected").removeClass("selected");
+
+	var label = outlineStructure[selectedOutlineIndex].label;
+	var idx = -1;
+
+	if(label == null) return;
+
+	for(var i=0;i<sectionTitles.length;i++) {
+		for(var j=0;j<sectionTitles[i].length;j++) {
+			if(label.toLowerCase().includes(sectionTitles[i][j].toLowerCase())) {
+				idx = i;
+			}
+		}
+	}
+
+	if(idx != -1) {
+		$(".presentationSlideTableCell[index='" + idx + "']").addClass("selected");
+	}
+}
+
+function getSectionIndex(t) {
+	for(var i=0;i<sectionTitles.length;i++) {
+		for(var j=0;j<sectionTitles[i].length;j++) {
+			if(t.toLowerCase().includes(sectionTitles[i][j].toLowerCase())) {
+				return i;
+			}
+		}
+	}
+
+	return -1;
+}
+
+function showPresentationSlides() {
+	var html = "<table id='presentationSlideTable'> "  +
+					"<tr class='presentationSlideTableRow'>";
+
+	var cnt = [];
+
+	for(var i=0;i<sectionTitles.length;i++) {
+		html = html + "<td class='presentationSlideTableTitle' index='" + i + "'>" + sectionTitles[i][0] + "</td>"
+		
+		cnt.push(0);
+	}
+
+	html = html + "</tr> <tr class='presentationSlideTableRow'>"
+
+	for(var i=0;i<examplePresentations.length;i++) {
+		for(var j=0;j<examplePresentations[i].outline.length;j++) {
+			var t = examplePresentations[i].outline[j].sectionTitle
+			var sectionIndex = getSectionIndex(t);
+
+			if(sectionIndex != -1) cnt[sectionIndex] = cnt[sectionIndex] + 1;
+		}
+	}
+
+	for(var i=0;i<sectionTitles.length;i++) {
+		html = html + "<td class='presentationSlideTableCell' index='" + i + "'>  " + 
+			cnt[i] + 
+		"</td>"
+	}
+
+	html = html + "</tr> </table>"
+
+	$("#examplePresentationSlide").html(html);
+
+	locateUserSlideOnPresentationSlides();
+}
+
 function showThumbnailsOnSlidesTab(presentationIndex, segmentIndex) {
 	var startSlideIndex = examplePresentations[presentationIndex].outline[segmentIndex].startSlideIndex;
 
@@ -9926,6 +10033,262 @@ $(document).ready(function () {
 		});
 		*/
 	}
+
+	$(document).on("click", "#initializeMouseDownBtn", function(e) {
+		curMouseDown = 0;
+	})
+
+	$(document).on("click", "#outlineMessageSlideBoxIncreaseBtn", function(e) {
+		if(selectedOutlineIndex == -1) return;
+
+		var value = parseInt($("#outlineMessageSlideBoxInputBox").val());
+
+		$("#outlineMessageSlideBoxInputBox").val(value + 1);
+	})
+
+	$(document).on("click", "#outlineMessageSlideBoxDecreaseBtn", function(e) {
+		if(selectedOutlineIndex == -1) return;
+
+		var value = parseInt($("#outlineMessageSlideBoxInputBox").val());
+
+		if(value-1 >= 1) {
+			$("#outlineMessageSlideBoxInputBox").val(value-1);
+		}
+	})
+
+	$(document).on("click", "#outlineMessageSlideCreateSlideBtn", function(e) {
+		if(selectedOutlineIndex == -1) return;
+
+		$("#outlineMessageSlideCreationPopup").css("right", "30px");
+		$("#outlineMessageSlideCreationPopup").css("top", $("#outlineMessageSlideBox").position().top + 30);
+		$("#outlineMessageSlideCreationPopup").show();
+	})
+
+	$(document).on("click", "#outlineMessageSlideCreationPopupConfirm", function(e) {
+		$("#outlineMessageSlideCreationPopup").hide();
+
+		showLoadingSlidePlane(false);
+
+		var requests = [];
+
+		for(var i=0;i<outlineStructure[selectedOutlineIndex].slideIDs.length;i++) {
+			requests.push({
+				"deleteObject": {
+					"objectId": outlineStructure[selectedOutlineIndex].slideIDs[i]
+				},
+			});
+		}
+
+		outlineStructure[selectedOutlineIndex].slideIDs = [];
+
+		var numSlides = parseInt($("#outlineMessageSlideBoxInputBox").val())
+		var startIndex = outlineStructure[selectedOutlineIndex].startSlideIndex;
+		var curIndex = startIndex;
+		var startMessageIndex = 0, endMessageIndex = -1;
+		var msgs = [];
+
+		for (var kk = 0; kk<100; kk++) {
+			if(startMessageIndex >= outlineStructure[selectedOutlineIndex].messages.length) break;
+
+			for (var i = startMessageIndex; i < outlineStructure[selectedOutlineIndex].messages.length; i++) {
+				if (outlineStructure[selectedOutlineIndex].messages[i].indentation == 1) {
+					startMessageIndex = i;
+					break;
+				}
+			}
+
+			endMessageIndex = startMessageIndex;
+
+			for (var i = startMessageIndex + 1; i < outlineStructure[selectedOutlineIndex].messages.length; i++) {
+				if (outlineStructure[selectedOutlineIndex].messages[i].indentation == 1) break;
+
+				endMessageIndex = i;
+			}
+
+			var bodyText = '';
+
+			for (var j = startMessageIndex; j <= endMessageIndex; j++) {
+				if (j > startMessageIndex) bodyText = bodyText + "\n";
+
+				for (var k = 0; k < outlineStructure[selectedOutlineIndex].messages[j].indentation - 1; k++)
+					bodyText = bodyText + "\t";
+
+				var t = outlineStructure[selectedOutlineIndex].messages[j].text;
+
+				t = t.replaceAll("&nbsp;", " ")
+				t = t.replaceAll("<br>", "\n")
+				t = t.trim();
+
+				if(t == '') t = ' ';
+
+				bodyText = bodyText + t;
+			}
+
+			console.log(startMessageIndex, endMessageIndex);
+
+			msgs.push(bodyText);
+
+			startMessageIndex = endMessageIndex + 1;
+		}
+
+		console.log(msgs);
+
+		var curMsgIndex = 0;
+
+		for (var i = 0; i < numSlides; i++) {
+			var titleObjID = makeid(10);
+			var bodyObjID = makeid(10);
+			var slideID = makeid(10);
+			var msgCnt = parseInt(msgs.length / numSlides) + (msgs.length % numSlides > i ? 1 : 0)
+
+			requests.push({
+				createSlide: {
+					objectId: slideID,
+					insertionIndex: curIndex-1,
+					slideLayoutReference: {
+						predefinedLayout: 'TITLE_AND_BODY'
+					},
+					placeholderIdMappings: [{
+						objectId: titleObjID,
+						layoutPlaceholder: {
+							type: "TITLE",
+							index: 0
+						}
+					}, {
+						objectId: bodyObjID,
+						layoutPlaceholder: {
+							type: "BODY",
+							index: 0
+						}
+					}]
+				}
+			});
+
+			requests.push({
+				insertText: {
+					objectId: titleObjID,
+					text: "title",
+					insertionIndex: 0
+				}
+			});
+
+			var bodyText = ''
+
+			console.log(msgCnt);
+			console.log(curMsgIndex);
+
+			for(var j=0;j<msgCnt;j++) bodyText = bodyText + (j == 0 ? '' : '\n') + msgs[curMsgIndex+j];
+
+			curMsgIndex += msgCnt;
+
+			requests.push({
+				insertText: {
+					objectId: bodyObjID,
+					text: bodyText,
+					insertionIndex: 0
+				}
+			});
+
+			if (bodyText != '') {
+				requests.push({
+					createParagraphBullets: {
+						objectId: bodyObjID,
+						textRange: {
+							type: "ALL"
+						},
+						bulletPreset: "BULLET_DISC_CIRCLE_SQUARE"
+					}
+				});
+			}
+
+			/*
+			requests.push({
+				"updateParagraphStyle": {
+					objectId: objID,
+					style: {
+						lineSpacing: 110,
+					},
+					textRange: {
+						type: "ALL"
+					},
+					fields: "lineSpacing"
+				}
+			});
+			*/
+
+			if(i == 0) outlineStructure[selectedOutlineIndex].startSlideID = slideID;
+
+			outlineStructure[selectedOutlineIndex].slideIDs.push(slideID);
+
+			curIndex = curIndex + 1;
+		}
+
+		alreadyProcessedFlag = true;
+		waitingOutlineIndex = selectedOutlineIndex;
+	
+		console.log(requests);
+
+		outlineStructure[selectedOutlineIndex].endSlideIndex = outlineStructure[selectedOutlineIndex].startSlideIndex + numSlides - 1;
+
+		for(var i=selectedOutlineIndex+1;i<outlineStructure.length;i++) {
+			var slideCnt = outlineStructure[i].endSlideIndex - outlineStructure[i].startSlideIndex + 1;
+
+			outlineStructure[i].startSlideIndex = i == 0 ? 1 : outlineStructure[i-1].endSlideIndex + 1;
+			outlineStructure[i].endSlideIndex = outlineStructure[i].startSlideIndex + slideCnt - 1;
+		}
+
+		gapi.client.slides.presentations.batchUpdate({
+			presentationId: PRESENTATION_ID,
+			requests: requests
+		}).then((createSlideResponse) => {
+			//console.log(createSlideResponse);
+		});
+	})
+
+	$(document).on("click", "#outlineMessageSlideCreationPopupCancel", function(e) {
+		$("#outlineMessageSlideCreationPopup").hide();
+	})
+
+	$(document).on("input", "#outlineMessageSlideBoxInputBox", function(e) {
+		if(selectedOutlineIndex == -1) return;
+
+		function is_numeric(str){
+			return /^\d+$/.test(str);
+		}
+
+		var value = $("#outlineMessageSlideBoxInputBox").val();
+		var prev_value = value;
+
+		if(!is_numeric(value)) {
+			$("#outlineMessageSlideBoxInputBox").html('');
+		}
+
+		value = parseInt(value);
+
+		var cnt = 0;
+
+		for(var i=0;i<outlineStructure[selectedOutlineIndex].messages.length;i++) {
+			if(outlineStructure[selectedOutlineIndex].messages[i].indentation == 1)
+				cnt = cnt + 1;
+		}
+
+		if(!(1 <= value && value <= cnt)) {
+			$("#outlineMessageSlideBoxInputBox").val(prev_value);
+		}
+
+	})
+
+	$(document).on("click", ".presentationSlideTableCell, .presentationSlideTableTitle", function(e) {
+		$(".presentationSlideTableCell.highlighted").removeClass("highlighted");
+		$(".presentationSlideTableTitle.highlighted").removeClass("highlighted");
+
+		var idx = parseInt($(e.target).attr("index"));
+
+		$(".presentationSlideTableCell[index='" + idx + "']").addClass("highlighted");
+		$(".presentationSlideTableTitle[index='" + idx + "']").addClass("highlighted");
+
+		searchSectionTitles(idx);
+	})
 
 	$(document).on("click", "#examplePresentationSearchLimitIncreaseBtn", function(e) {
 		var value = parseInt($("#examplePresentationSearchLimitCountBox").val());
@@ -10080,7 +10443,7 @@ $(document).ready(function () {
 		console.log(outlineStructure);
 
 		if(requests.length > 0) {
-			showLoadingSlidePlane();
+			showLoadingSlidePlane(false);
 
 			gapi.client.slides.presentations.batchUpdate({
 				presentationId: PRESENTATION_ID,
@@ -10305,6 +10668,33 @@ $(document).ready(function () {
 		lastExamplePlane = 0;
 	})
 
+	$(document).on("click", "#examplePresentationSlide", function(e) {
+		console.log($(e.target));
+
+		if($(e.target).attr("id") == "examplePresentationSlide") {
+			$(".exampleSegmentElement.segmentHighlighted").removeClass("segmentHighlighted");
+
+			$(".presentationSlideTableCell.highlighted").removeClass("highlighted");
+			$(".presentationSlideTableTitle.highlighted").removeClass("highlighted");
+		}
+
+	})
+
+	$(document).on("mouseover", ".presentationSlideTableCell, .presentationSlideTableTitle", function(e) {
+		$(".presentationSlideTableCell.hovered").removeClass("hovered");
+		$(".presentationSlideTableTitle.hovered").removeClass("hovered");
+
+		var idx = parseInt($(this).attr("index"));
+
+		$(".presentationSlideTableCell[index='" + idx + "']").addClass("hovered");
+		$(".presentationSlideTableTitle[index='" + idx + "']").addClass("hovered");
+	})
+
+	$(document).on("mouseleave", ".presentationSlideTableCell, .presentationSlideTableTitle", function(e) {
+		$(".presentationSlideTableCell.hovered").removeClass("hovered");
+		$(".presentationSlideTableTitle.hovered").removeClass("hovered");
+	})
+
 	$(document).on("mouseleave", ".examplePresentationInstance", function(e) {
 		$(".dot.hovered").removeClass("hovered");
 	})
@@ -10353,6 +10743,7 @@ $(document).ready(function () {
 
 	$(document).on("click", "#examplePresentationSlideText", function(e) {
 		$(".searchConditionDiv").hide();
+
 		$("#examplePresentationSearchSlideConditions").show();
 
 		$(".exampleSegmentElement").addClass("hoverActive");
@@ -10371,8 +10762,11 @@ $(document).ready(function () {
 		$("#examplePresentationPlotText").removeClass("selected");
 		$("#examplePresentationSlideText").addClass("selected");
 
+		showPresentationSlides();
+
 		$("#examplePresentationMapDiv").hide();
 		$("#examplePresentationPlotDiv").hide();
+		$("#examplePresentationSlideDiv").show();
 
 		// $("#exampleSearchButtonsDiv").hide();
 		// $("#examplePresentationSearch").hide();
@@ -10403,6 +10797,7 @@ $(document).ready(function () {
 
 		$("#examplePresentationMapDiv").show();
 		$("#examplePresentationPlotDiv").hide();
+		$("#examplePresentationSlideDiv").hide();
 
 		// $("#exampleSearchButtonsDiv").hide();
 		// $("#examplePresentationSearch").hide();
@@ -10429,6 +10824,7 @@ $(document).ready(function () {
 
 		$("#examplePresentationPlotDiv").show();
 		$("#examplePresentationMapDiv").hide();
+		$("#examplePresentationSlideDiv").hide();
 
 		// $("#exampleSearchButtonsDiv").show();
 /*
@@ -10888,7 +11284,7 @@ $(document).ready(function () {
 			}
 		});
 
-		showLoadingSlidePlane();
+		showLoadingSlidePlane(false);
 		waitingOutlineIndex = index;
 
 		gapi.client.slides.presentations.batchUpdate({
@@ -11003,7 +11399,7 @@ $(document).ready(function () {
 			}
 		});
 
-		showLoadingSlidePlane();
+		showLoadingSlidePlane(false);
 		waitingOutlineIndex = index;
 
 		gapi.client.slides.presentations.batchUpdate({
@@ -11123,14 +11519,14 @@ $(document).ready(function () {
 
 			if(paragraphIndex == 0 && docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.contents == "") return;
 
-			showLoadingSlidePlane();
+			showLoadingSlidePlane(false);
 
 			removeParagraph(slideID, objID, paragraphIndex, true, null);
 
 			docSlideStructure[slideIndex].contents.list.splice(resourceIndex, 1);
 		}
 		else {
-			showLoadingSlidePlane();
+			showLoadingSlidePlane(false);
 
 			var label = docSlideStructure[slideIndex].contents.list[resourceIndex].currentContent.label;
 			var objID = docSlideStructure[slideIndex].layout.mapping[label];
@@ -11232,7 +11628,7 @@ $(document).ready(function () {
 		var docslideindex = parseInt($(t).attr("docslideindex"));
 		var index = parseInt($(t).attr("index"));
 
-		showLoadingSlidePlane();
+		showLoadingSlidePlane(false);
 
 		var response = await gapi.client.slides.presentations.get({
 			presentationId: PRESENTATION_ID
@@ -11366,7 +11762,7 @@ $(document).ready(function () {
 	});
 
 	$(document).on("click", ".imageResultItem", function(e) {
-		showLoadingSlidePlane();
+		showLoadingSlidePlane(false);
 
 		var slideIndex = $("#imageView").attr("slideindex");
 		var resourceIndex = $("#imageView").attr("resourceindex");
@@ -11453,7 +11849,7 @@ $(document).ready(function () {
 	})
 
 	$(document).on("change", ".adaptationTableLabelSelector", function(e) {
-		showLoadingSlidePlane();
+		showLoadingSlidePlane(false);
 
 		console.log(e.target);
 
@@ -11508,7 +11904,7 @@ $(document).ready(function () {
 		}
 		else {
 			// showLoadingAdaptationRow(slideIndex, resourceIndex);
-			showLoadingSlidePlane();
+			showLoadingSlidePlane(false);
 
 			if (selectedIndex == 0) { // changed to text
 				handleChangeText(slideIndex, resourceIndex, true);
@@ -11694,7 +12090,7 @@ $(document).ready(function () {
 	});
 
 	$(document).on("click", "#reviewCancelBtn", async function(e) {
-		showLoadingSlidePlane();
+		showLoadingSlidePlane(false);
 
 		if(docSlideStructure[curDocSlideStructureIndex].previousVersion == null) {
 			var requests = [];
@@ -12121,7 +12517,7 @@ $(document).ready(function () {
 				var resourceIndex = parseInt($(p).attr("resourceindex"));
 
 				if (!(slideIndex == selectedSlideIndex && resourceIndex == selectedResourceIndex)) {
-					showLoadingSlidePlane();
+					showLoadingSlidePlane(false);
 
 					console.log(slideIndex, resourceIndex);
 
@@ -12160,7 +12556,7 @@ $(document).ready(function () {
 			}
 		}
 		else if($(e.target).hasClass("thumbnailDest")) {
-			showLoadingSlidePlane();
+			showLoadingSlidePlane(false);
 
 			var targetSlideID = $($(e.target).parent()).attr("slideid");
 			var slideindex = $($(e.target).parent()).attr("slideindex");
@@ -12627,7 +13023,7 @@ $(document).ready(function () {
 	});
 
 	$(document).on("click", "#slideDeckCompareApplyBtn", async function(e) {
-		showLoadingSlidePlane();
+		showLoadingSlidePlane(false);
 
 		var slideDeckObj = $(".checkedSlideDeck");
 
@@ -13451,133 +13847,137 @@ $(document).ready(function () {
 			console.log(slidesFromOutline);
 			console.log(p);
 
-			if(slidesFromOutline.length != p.filmstripStructure.length) {
-				// slide added or deleted
-				console.log(slidesFromOutline.length, p.filmstripStructure.length);
+			if (!alreadyProcessedFlag) {
+				if (slidesFromOutline.length != p.filmstripStructure.length) {
+					// slide added or deleted
+					console.log(slidesFromOutline.length, p.filmstripStructure.length);
 
-				if(slidesFromOutline.length > p.filmstripStructure.length) {
-					diffFlag = 1; // removed
-				}
-				else {
-					diffFlag = 2; // added
-				}
-			}
-
-			if (diffFlag == -1) {
-				for (var i = 0; i < p.filmstripStructure.length; i++) {
-					if (slidesFromOutline[i] != p.filmstripStructure[i].slideID) {
-						diffFlag = 2;
-						break;
-					}
-				}
-			}
-
-			if(diffFlag != -1) {
-				console.log(slidesFromOutline);
-				console.log(p.filmstripStructure);
-
-				if(diffFlag == 1) { // slides removed
-					var slideDict = {};
-
-					for (var i=0;i<p.filmstripStructure.length; i++) {
-						slideDict[p.filmstripStructure[i].slideID] = 1;
-					}
-
-					console.log(slideDict);
-
-					var removedSlideCnt = 0;
-					var delta_X = 0;
-
-					for(var i=0;i<outlineStructure.length;i++) {
-						outlineStructure[i].startSlideIndex -= removedSlideCnt;
-						outlineStructure[i].endSlideIndex -= removedSlideCnt;
-
-						outlineStructure[i].startX -= delta_X;
-						outlineStructure[i].endX -= delta_X;
-
-						for(var j=0;j<outlineStructure[i].slideIDs.length;j++) {
-							if(!(outlineStructure[i].slideIDs[j] in slideDict)) {
-								outlineStructure[i].slideIDs.splice(j, 1);
-								outlineStructure[i].endSlideIndex--;
-
-								removedSlideCnt++;
-
-								j--;
-							}
-						}
-
-						if(outlineStructure[i].slideIDs.length <= 0) {
-							delta_X += (outlineStructure[i].endX - outlineStructure[i].startX);
-
-							for (var j = 0; j < outlineStructure[i].messages.length; j++) {
-								if (outlineStructure[i].messages[j].mapping != null)
-									removeMapping(outlineStructure[i].messages[j].mapping)
-							}
-
-							outlineStructure.splice(i, 1);
-
-							i--;
-						}
-					}
-
-					for(var i=0;i<outlineStructure.length;i++) outlineStructure[i].colorCode = presentationColorCode[i];
-				}
-				else if(diffFlag == 2) { // slides added
-					var addedSlides = [];
-					var prevSlide = -1;
-
-					for(var i=0;i<p.filmstripStructure.length;i++) {
-						if(!slidesFromOutline.includes(p.filmstripStructure[i].slideID)) {
-							addedSlides.push(p.filmstripStructure[i].slideID);
-
-							if(prevSlide == -1) prevSlide = p.filmstripStructure[i-1].slideID;
-						}
-					}
-
-					console.log(addedSlides);
-
-					if(prevSlide == "THIS_IS_FIRST_SLIDE") {
-						for(var i=0;i<outlineStructure.length;i++) {
-							outlineStructure[i].startSlideIndex += numAddedSlides;
-							outlineStructure[i].endSlideIndex += numAddedSlides;
-
-							if(i == 0) {
-								outlineStructure[i].slideIDs.splice(0, 0, ...addedSlides);
-
-								numAddedSlides += addedSlides.length;
-								outlineStructure[i].endSlideIndex += numAddedSlides;
-							}
-						}
+					if (slidesFromOutline.length > p.filmstripStructure.length) {
+						diffFlag = 1; // removed
 					}
 					else {
-						var numAddedSlides = 0;
+						diffFlag = 2; // added
+					}
+				}
 
-						console.log(addedSlides);
-						console.log(prevSlide);
-
-						for(var i=0;i<outlineStructure.length;i++) {
-							console.log(i, numAddedSlides);
-
-							outlineStructure[i].startSlideIndex += numAddedSlides;
-							outlineStructure[i].endSlideIndex += numAddedSlides;
-
-							if(outlineStructure[i].slideIDs.includes(prevSlide)) {
-								var idx = outlineStructure[i].slideIDs.indexOf(prevSlide);
-
-								outlineStructure[i].slideIDs.splice(idx+1, 0, ...addedSlides);
-
-								numAddedSlides += addedSlides.length;
-								outlineStructure[i].endSlideIndex += numAddedSlides;
-							}
+				if (diffFlag == -1) {
+					for (var i = 0; i < p.filmstripStructure.length; i++) {
+						if (slidesFromOutline[i] != p.filmstripStructure[i].slideID) {
+							diffFlag = 2;
+							break;
 						}
 					}
 				}
-				else { // slide moved
-					
+
+				if (diffFlag != -1) {
+					console.log(slidesFromOutline);
+					console.log(p.filmstripStructure);
+
+					if (diffFlag == 1) { // slides removed
+						var slideDict = {};
+
+						for (var i = 0; i < p.filmstripStructure.length; i++) {
+							slideDict[p.filmstripStructure[i].slideID] = 1;
+						}
+
+						console.log(slideDict);
+
+						var removedSlideCnt = 0;
+						var delta_X = 0;
+
+						for (var i = 0; i < outlineStructure.length; i++) {
+							outlineStructure[i].startSlideIndex -= removedSlideCnt;
+							outlineStructure[i].endSlideIndex -= removedSlideCnt;
+
+							outlineStructure[i].startX -= delta_X;
+							outlineStructure[i].endX -= delta_X;
+
+							for (var j = 0; j < outlineStructure[i].slideIDs.length; j++) {
+								if (!(outlineStructure[i].slideIDs[j] in slideDict)) {
+									outlineStructure[i].slideIDs.splice(j, 1);
+									outlineStructure[i].endSlideIndex--;
+
+									removedSlideCnt++;
+
+									j--;
+								}
+							}
+
+							if (outlineStructure[i].slideIDs.length <= 0) {
+								delta_X += (outlineStructure[i].endX - outlineStructure[i].startX);
+
+								for (var j = 0; j < outlineStructure[i].messages.length; j++) {
+									if (outlineStructure[i].messages[j].mapping != null)
+										removeMapping(outlineStructure[i].messages[j].mapping)
+								}
+
+								outlineStructure.splice(i, 1);
+
+								i--;
+							}
+						}
+
+						for (var i = 0; i < outlineStructure.length; i++) outlineStructure[i].colorCode = presentationColorCode[i];
+					}
+					else if (diffFlag == 2) { // slides added
+						var addedSlides = [];
+						var prevSlide = -1;
+
+						for (var i = 0; i < p.filmstripStructure.length; i++) {
+							if (!slidesFromOutline.includes(p.filmstripStructure[i].slideID)) {
+								addedSlides.push(p.filmstripStructure[i].slideID);
+
+								if (prevSlide == -1) prevSlide = p.filmstripStructure[i - 1].slideID;
+							}
+						}
+
+						console.log(addedSlides);
+
+						if (prevSlide == "THIS_IS_FIRST_SLIDE") {
+							for (var i = 0; i < outlineStructure.length; i++) {
+								outlineStructure[i].startSlideIndex += numAddedSlides;
+								outlineStructure[i].endSlideIndex += numAddedSlides;
+
+								if (i == 0) {
+									outlineStructure[i].slideIDs.splice(0, 0, ...addedSlides);
+
+									numAddedSlides += addedSlides.length;
+									outlineStructure[i].endSlideIndex += numAddedSlides;
+								}
+							}
+						}
+						else {
+							var numAddedSlides = 0;
+
+							console.log(addedSlides);
+							console.log(prevSlide);
+
+							for (var i = 0; i < outlineStructure.length; i++) {
+								console.log(i, numAddedSlides);
+
+								outlineStructure[i].startSlideIndex += numAddedSlides;
+								outlineStructure[i].endSlideIndex += numAddedSlides;
+
+								if (outlineStructure[i].slideIDs.includes(prevSlide)) {
+									var idx = outlineStructure[i].slideIDs.indexOf(prevSlide);
+
+									outlineStructure[i].slideIDs.splice(idx + 1, 0, ...addedSlides);
+
+									numAddedSlides += addedSlides.length;
+									outlineStructure[i].endSlideIndex += numAddedSlides;
+								}
+							}
+						}
+					}
+					else { // slide moved
+
+					}
+
+					updateOutlineSegments();
 				}
-				
-				updateOutlineSegments();
 			}
+
+			alreadyProcessedFlag = true;
 
 			console.log(waitingOutlineIndex);
 
@@ -14104,7 +14504,7 @@ $(document).ready(function () {
 		})
 
 		$(document).on("click", ".outlineSegmentElementRemoveBtn", function(e) {
-			showLoadingSlidePlane();
+			showLoadingSlidePlane(false);
 
 			var segmentObj = $(this).parent();
 			var segmentIndex = parseInt($(segmentObj).attr("index"));
@@ -14235,7 +14635,7 @@ $(document).ready(function () {
 		$(document).on("click", "#shortTextSubmitBtn", function(e) {
 			var text = $("#resourceBoxShortTextBox").val();
 
-			showLoadingSlidePlane();
+			showLoadingSlidePlane(false);
 
 			disappearPopover();
 			disappearDropbox();
@@ -14307,7 +14707,7 @@ $(document).ready(function () {
 				$(e.target).addClass("slideObjectSecondSelected");
 			}
 			else if($(e.target).hasClass("filmstripIndicator")) {
-				showLoadingSlidePlane();
+				showLoadingSlidePlane(false);
 
 				var pageID = $(e.target).attr("pageID");
 
@@ -14360,7 +14760,7 @@ $(document).ready(function () {
 					// $(dst).removeClass("slideObjectSecondSelected");
 
 					if(srcParagraphIndex+1 != dstParagraphIndex) {
-						showLoadingSlidePlane();
+						showLoadingSlidePlane(false);
 						if(srcParagraphIndex < dstParagraphIndex) {
 							// move srcParagraph --> dstParagraph-1
 
@@ -14469,7 +14869,7 @@ $(document).ready(function () {
 				
 
 	$(document).on("click", ".textShorteningViewAlternativeTextItem", function(e) {
-		showLoadingSlidePlane();
+		showLoadingSlidePlane(false);
 
 		console.log($(e.target));
 
@@ -14597,7 +14997,7 @@ $(document).ready(function () {
 			var p = e.detail;
 //			var info = organizeHighlightOnSections();
 
-		// 	showLoadingSlidePlane();
+		// 	showLoadingSlidePlane(false);
 
 			registerHighlight(p).then(mapping => {
 				/*
@@ -14616,7 +15016,7 @@ $(document).ready(function () {
 			var before_finalRepresentation = printLink(info, T, C, numSlides, null, false);
 
 			registerHighlight(p).then(mapping => {
-				showLoadingSlidePlane();
+				showLoadingSlidePlane(false);
 
 				return automaticallyPutContents(p, mapping, before_finalRepresentation).then(() => {
 					issueEvent("root_sendMappingIdentifier", {
@@ -16182,7 +16582,7 @@ function updateSlideThumbnail() {
 }
 
 function putContentsToDocSlide(index, c) {
-	showLoadingSlidePlane();
+	showLoadingSlidePlane(false);
 
 	var label = '';
 	var idx = -1;
@@ -16270,7 +16670,7 @@ async function automaticallyPutContents(textInfo, mapping) {
 		})
 	}
 	else {
-		showLoadingSlidePlane();
+		showLoadingSlidePlane(false);
 
 		if(index == -1) { // create the section
 			index = 0;

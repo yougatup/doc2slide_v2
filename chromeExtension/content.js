@@ -101,6 +101,8 @@ function focusObject(objID) {
 }
 
 function filmstripUpdated(mutationsList) {
+	console.log("FILMSTRIP UPDATED");
+
 	if(!checkFilmstripIDs()) return;
 
 /*
@@ -322,6 +324,8 @@ function getTextInParagraph(pObj) {
 }
 
 function pageUpdated(mutationsList, eventFlag) {
+	console.log("PAGE UPDATED");
+
 	if(!checkFilmstripIDs()) return;
 
 	console.log($("g[pointer-events='visiblePainted']").children())
