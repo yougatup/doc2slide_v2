@@ -8497,6 +8497,7 @@ function updateMessageBox() {
 	var vizHtml = '';
 
 	if(selectedOutlineIndex == -1) return;
+	if(selectedOutlineIndex >= outlineStructure.length) return;
 
 	$(".messageBoxUl").html('');
 
@@ -8677,7 +8678,7 @@ function updateOutlineSegments() {
 		"<div class='outlineSegmentElement " + (outlineStructure[i].status == "need_name" ? "outlineSegmentElementWaiting" : "") + "' " + 
 			 "index='" + i + "'> " + 
 			 (
-				 outlineStructure[i].endX - outlineStructure[i].startX >= 40 ? 
+				 outlineStructure[i].endX - outlineStructure[i].startX >= 60 ? 
 			 		( "<div class='outlineSegmentElementDuration'> " + 
 			 			getDurationString(outlineStructure[i].duration) + 
 					 "</div>")
@@ -8739,6 +8740,7 @@ function updateOutlineSegments() {
 
 	$("#outlineSegments > .outlineSegmentElement").resizable({
 		handles: 'e',
+		minWidth: 40,
 		resize: function(e, ui) {
 			var target = $(e.target)
 
@@ -8793,7 +8795,7 @@ function updateOutlineSegments() {
 	}); 
 
 	$("#outlineSegments").sortable({
-		items: $(".outlineSegmentElement"),
+		items: $(".outlineSegmentElement[index!='0']"),
 		axis: "x",
 		tolerance: "pointer",
 		distance: 20,
@@ -8993,6 +8995,8 @@ function genColor(i) {
 
 async function selectSegment(index, locateFlag) {
 	// if(index == selectedOutlineIndex) return;
+
+	if(index == -1 || index >= outlineStructure.length) return;
 
 	selectedOutlineIndex = index;
 
@@ -9968,6 +9972,7 @@ function locateSlideOnSlidesDiv(presentationIndex, slideIndex, sectionHighlightF
 
 function locateUserSlideOnPresentationSlides() {
 	if(selectedOutlineIndex == -1) return;
+	if(selectedOutlineIndex >= outlineStructure.length) return;
 
 	$(".presentationSlideTableCell.selected").removeClass("selected");
 	$(".examplePresentationSlideUserHighlighter").hide();
@@ -10132,6 +10137,7 @@ $(document).ready(function () {
 
 	$(document).on("click", "#outlineMessageSlideBoxIncreaseBtn", function(e) {
 		if(selectedOutlineIndex == -1) return;
+		if(selectedOutlineIndex >= outlineStructure.length) return;
 
 		var value = parseInt($("#outlineMessageSlideBoxInputBox").val());
 
@@ -10140,6 +10146,7 @@ $(document).ready(function () {
 
 	$(document).on("click", "#outlineMessageSlideBoxDecreaseBtn", function(e) {
 		if(selectedOutlineIndex == -1) return;
+		if(selectedOutlineIndex >= outlineStructure.length) return;
 
 		var value = parseInt($("#outlineMessageSlideBoxInputBox").val());
 
@@ -10150,6 +10157,7 @@ $(document).ready(function () {
 
 	$(document).on("click", "#outlineMessageSlideCreateSlideBtn", function(e) {
 		if(selectedOutlineIndex == -1) return;
+		if(selectedOutlineIndex >= outlineStructure.length) return;
 
 		$("#outlineMessageSlideCreationPopup").css("right", "30px");
 		$("#outlineMessageSlideCreationPopup").css("top", $("#outlineMessageSlideBox").position().top + 30);
@@ -10343,6 +10351,7 @@ $(document).ready(function () {
 
 	$(document).on("input", "#outlineMessageSlideBoxInputBox", function(e) {
 		if(selectedOutlineIndex == -1) return;
+		if(selectedOutlineIndex >= outlineStructure.length) return;
 
 		function is_numeric(str){
 			return /^\d+$/.test(str);
@@ -10952,6 +10961,7 @@ $(document).ready(function () {
 			$(".slideThumbnailViewDiv").removeClass("visible");
 
 			updateExamplePresentation();
+			locateUserSlideOnPresentationMap();
 		}
 		else if($("#examplePresentationSlideText").hasClass("selected")) {
 			examplePresentations = JSON.parse(JSON.stringify(temp_plot_examplePresentations));
@@ -14074,7 +14084,7 @@ $(document).ready(function () {
 				if (diffFlag == -1) {
 					for (var i = 0; i < p.filmstripStructure.length; i++) {
 						if (slidesFromOutline[i] != p.filmstripStructure[i].slideID) {
-							diffFlag = 2;
+							diffFlag = 3;
 							break;
 						}
 					}
@@ -14181,7 +14191,193 @@ $(document).ready(function () {
 						}
 					}
 					else { // slide moved
+						console.log("MOVED");
 
+						var diffStart = -1, diffEnd = -1, diffMid = -1;
+
+						var slideIndexDict = {};
+						cur = 0;
+
+						var list1 = [], list2 = [];
+
+						for(var i=0;i<slidesFromOutline.length;i++) {
+							slideIndexDict[slidesFromOutline[i]] = cur;
+							cur = cur + 1;
+						}
+
+						for(var i=0;i<slidesFromOutline.length;i++) {
+							list1.push(slideIndexDict[slidesFromOutline[i]]);
+							list2.push(slideIndexDict[p.filmstripStructure[i].slideID]);
+						}
+
+						for(var i=0;i<slidesFromOutline.length;i++) {
+							if(slidesFromOutline[i] != p.filmstripStructure[i].slideID) {
+								diffStart = i;
+								break;
+							}
+						}
+
+						for(var i=slidesFromOutline.length-1;i>=0;i--) {
+							if(slidesFromOutline[i] != p.filmstripStructure[i].slideID) {
+								diffEnd = i;
+								break;
+							}
+						}
+
+						for (var i = diffStart; i <= diffEnd; i++) {
+							if (list2[i + 1] != list2[i] + 1) {
+								diffMid = i;
+								break;
+							}
+						}
+
+						// start~mid, mid+1~end
+
+						var finalStart = -1, finalEnd = -1;
+						var curPage = p.pageID;
+
+						for (var i = diffStart; i <= diffMid; i++) {
+							if (p.filmstripStructure[i].slideID == curPage) {
+								finalStart = diffStart;
+								finalEnd = diffMid;
+							}
+						}
+
+						if (finalStart == -1) {
+							finalStart = diffMid + 1;
+							finalEnd = diffEnd;
+						}
+
+						var outlineIndexDict = {};
+
+						for (var i = 0; i < outlineStructure.length; i++) {
+							for (var j = 0; j < outlineStructure[i].slideIDs.length; j++) {
+								outlineIndexDict[outlineStructure[i].slideIDs[j]] = i;
+							}
+						}
+
+						var newSlideIDs = [], newOutlineIndex = [];
+
+						for (var i = 0; i < p.filmstripStructure.length; i++) {
+							newSlideIDs.push(p.filmstripStructure[i].slideID);
+							newOutlineIndex.push(outlineIndexDict[p.filmstripStructure[i].slideID]);
+						}
+
+						var sameSegmentFlag = true;
+						var finalFlag = false;
+
+						console.log(newOutlineIndex);
+						console.log(finalStart, finalEnd);
+
+						for (var i = finalStart; i <= finalEnd; i++) {
+							if (newOutlineIndex[i] != newOutlineIndex[finalStart]) {
+								sameSegmentFlag = false;
+								break;
+							}
+						}
+
+						if (sameSegmentFlag) {
+							if (finalEnd - finalStart + 1 == outlineStructure[newOutlineIndex[finalStart]].slideIDs.length) {
+								var prevIndex = newOutlineIndex[finalStart - 1];
+
+								if (newSlideIDs[finalStart - 1] == outlineStructure[prevIndex].slideIDs[outlineStructure[prevIndex].slideIDs.length - 1]) {
+									finalFlag = false;
+								}
+								else finalFlag = true;
+							}
+							else finalFlag = true;
+						}
+						else {
+							// same count. at the end.
+							finalFlag = true;
+						}
+
+						if (finalFlag) {
+							var sameSegmentFlag2 = false;
+
+							for(var i=diffStart;i<=diffEnd;i++) {
+								if(newOutlineIndex[i] != newOutlineIndex[diffStart]) {
+									sameSegmentFlag2 = true;
+									break;
+								}
+							}
+
+							if (sameSegmentFlag2) {
+								for (var i = finalStart; i <= finalEnd; i++) {
+									newOutlineIndex[i] = -1;
+								}
+							}
+
+							var curIndex = 0;
+							var curStart = 0, curEnd = 0;
+
+							console.log(newOutlineIndex);
+
+							for (var i = 1; i <= p.filmstripStructure.length; i++) {
+								if (i < p.filmstripStructure.length && (newOutlineIndex[i] == -1 || newOutlineIndex[i] == curIndex));
+								else {
+									curEnd = i - 1;
+
+									outlineStructure[curIndex].startSlideIndex = curStart + 1;
+									outlineStructure[curIndex].endSlideIndex = curEnd + 1;
+									outlineStructure[curIndex].startSlideID = newSlideIDs[curStart];
+									outlineStructure[curIndex].slideIDs = [];
+
+									for (var j = curStart; j <= curEnd; j++) {
+										outlineStructure[curIndex].slideIDs.push(newSlideIDs[j]);
+									}
+
+									curStart = curEnd + 1;
+									curEnd = curStart;
+
+									for (var k = 0; k < 100; k++) {
+										curIndex = curIndex + 1;
+
+										if (curStart >= newOutlineIndex.length || newOutlineIndex[curStart] == curIndex) break;
+
+										outlineStructure[curIndex] = {};
+									}
+								}
+							}
+
+							for (var i = curIndex; i < outlineStructure.length; i++) outlineStructure[i] = {};
+
+							for (var i = outlineStructure.length - 1; i >= 0; i--) {
+								if (Object.keys(outlineStructure[i]).length <= 0) {
+									outlineStructure.splice(i, 1);
+								}
+							}
+
+							console.log(outlineStructure);
+						}
+						else {
+							var newOutlineIndexUnique = [];
+
+							newOutlineIndexUnique.push(newOutlineIndex[0]);
+
+							for(var i=1;i<newOutlineIndex.length;i++) {
+								if(newOutlineIndexUnique[newOutlineIndexUnique.length-1] != newOutlineIndex[i]) {
+									newOutlineIndexUnique.push(newOutlineIndex[i]);
+								}
+							}
+
+							var __outlineStructure = [];
+
+							for(var i=0;i<outlineStructure.length;i++) __outlineStructure.push(outlineStructure[newOutlineIndexUnique[i]]);
+
+							outlineStructure = __outlineStructure;
+						}
+
+						for (var i = 0; i < outlineStructure.length; i++) {
+							outlineStructure[i].colorCode = presentationColorCode[i];
+
+							if (i > 0) {
+								var diffX = outlineStructure[i].endX - outlineStructure[i].startX;
+
+								outlineStructure[i].startX = outlineStructure[i - 1].endX;
+								outlineStructure[i].endX = outlineStructure[i].startX + diffX;
+							}
+						}
 					}
 
 					updateOutlineSegments();

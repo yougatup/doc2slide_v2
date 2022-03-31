@@ -425,6 +425,12 @@ function pageUpdated(mutationsList, eventFlag) {
 				pageNumber: $(this).attr("id").split('-')[2],
 				pageID: $(this).attr("id").split('-')[3]
 			});
+		})
+		
+		filmstripInfo.sort(function (first, second) {
+			if (first.rect.y > second.rect.y) return 1;
+			else if (first.rect.y == second.rect.y) return 0;
+			else return -1;
 		});
 
 		$("#editor-" + getPageID()).children("g:not([id$='-bg'])").map((key, value) => { 

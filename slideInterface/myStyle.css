@@ -923,7 +923,7 @@ border-spacing: 0 !important;
 .coverageTableCell.selected {
 	/*
 	background-color: yellow;
-*/
+	*/
 }
 
 .coverageTableCell.disabled {
@@ -2297,6 +2297,15 @@ width: 100%;
 	  height: 100%;
 	  cursor: pointer;
 	  display: inline-block;
+
+		-webkit-touch-callout: none; /* iOS Safari */
+		  -webkit-user-select: none; /* Safari */
+		   -khtml-user-select: none; /* Konqueror HTML */
+			 -moz-user-select: none; /* Old versions of Firefox */
+			  -ms-user-select: none; /* Internet Explorer/Edge */
+				  user-select: none; /* Non-prefixed version, currently
+										supported by Chrome, Edge, Opera and Firefox */
+
   }
 
   .outlineSegmentSlideNumElement.underWriting {
@@ -3700,9 +3709,9 @@ width: 100%;
 	display: none;
 	z-index: 987987987;
 
-	border-top: 2px dashed black;
-	border-right: 2px dashed black;
-	border-bottom: 2px dashed black;
+	border-top: 1px dashed black;
+	border-right: 1px dashed black;
+	border-bottom: 1px dashed black;
 
 	height: 100%;
 	left: -5px;
