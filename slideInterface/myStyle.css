@@ -921,7 +921,9 @@ border-spacing: 0 !important;
 }
 
 .coverageTableCell.selected {
+	/*
 	background-color: yellow;
+*/
 }
 
 .coverageTableCell.disabled {
@@ -2230,6 +2232,7 @@ width: 100%;
 	  margin-left: 10px;
 	  width: calc(100% - 20px);
 	  height: 20px;
+	  white-space: nowrap;
   }
 
   #outlineSegmentDiv {
@@ -2237,6 +2240,7 @@ width: 100%;
 	  width: 100%;
 	  position: relative;
 	  margin-top: 10px;
+	  white-space: nowrap;
   }
 
   #outlineSegmentEvent {
@@ -2288,22 +2292,20 @@ width: 100%;
   }
 
   .outlineSegmentElement{
-	  float: left;
 	  text-align: center;
 	  box-sizing: border-box;
 	  height: 100%;
 	  cursor: pointer;
+	  display: inline-block;
   }
 
   .outlineSegmentSlideNumElement.underWriting {
-	  float: left;
 	  text-align: center;
 	  box-sizing: border-box;
 	  white-space: inherit;
   }
 
   .outlineSegmentSlideNumElement {
-	  float: left;
 	  text-align: center;
 	  box-sizing: border-box;
 	  white-space: nowrap;
@@ -2311,22 +2313,22 @@ width: 100%;
 	  overflow: hidden;
 	  font-size: 13px;
 	  margin-top: 7px;
+	  display: inline-block;
   }
   .outlineSegmentLabelElement.underWriting {
-	  float: left;
 	  text-align: center;
 	  box-sizing: border-box;
 	  white-space: inherit;
   }
 
   .outlineSegmentLabelElement {
-	  float: left;
 	  text-align: center;
 	  box-sizing: border-box;
 	  white-space: nowrap;
 	  text-overflow: ellipsis;
 	  overflow: hidden;
 	  cursor: pointer;
+	  display: inline-block;
   }
 
   .outlineLabelInput {
@@ -2357,7 +2359,7 @@ width: 100%;
 
   #outlineMessageBoxDiv {
 	  position: absolute;
-	  top: 90px;
+	  top: 100px;
 	  width: 100%;
 	  height: calc(100% - 100px);
   }
@@ -2674,6 +2676,7 @@ width: 100%;
   .examplePresentationOutlineSegmentDiv {
 	  height: 20px;
 	  border: 1px solid black;
+	  position: relative;
   }
 
   .examplePresentationOutlineSegmentLabelDiv {
@@ -2832,10 +2835,10 @@ width: 100%;
 	height: 40px;
 	position: relative;
 	width: 33%;
-	background-color: lightblue;
 	box-sizing: border-box;
 	text-align: center;
 	padding-top: 10px;
+	padding-right: 20px;
 }
 
 .examplePresentationModeSelectionText.selected {
@@ -3203,10 +3206,6 @@ width: 100%;
 	box-sizing: border-box;
 }
 
-.examplePresentationCell:hover {
-	border: 2px solid black;
-}
-
 .examplePresentationCell.selected {
 	border: 2px solid red;
 }
@@ -3232,9 +3231,10 @@ width: 100%;
 }
 
 #examplePresentationMapHeader {
-	font-size: 25px;
+	font-size: 23px;
 	font-weight: bold;
-	margin-bottom: 5px;
+	margin-bottom: 25px;
+	color: black;
 }
 
 .userPresentationLocated {
@@ -3424,7 +3424,11 @@ width: 100%;
 	position: relative;
 }
 
-.examplePresentationSearchMapConditions {
+#examplePresentationSearchMapConditions {
+	display: none;
+}
+
+#examplePresentationSearchSlideConditions {
 	display: none;
 }
 
@@ -3475,6 +3479,10 @@ width: 100%;
 .exampleSegmentElement.hoverActive:hover{
 	box-sizing: border-box;
 	border: 2px solid red;
+}
+
+.exampleSegmentElement.hoverActive {
+	pointer-events: auto !important;
 }
 
 .exampleSegmentElement.hoverActive.segmentHighlighted {
@@ -3607,4 +3615,135 @@ width: 100%;
 
 #outlineMessageSlideCreationPopupConfirm {
 	margin-left: calc(50% - 40px);
+}
+
+#examplePresentationPlotText {
+	background-color: #AAA492; 
+}
+
+#examplePresentationPlotText > .examplePresentationTextRightDiv {
+	border-left: 40px solid #AAA492;
+
+}
+
+#examplePresentationMapText {
+	background-color: #C7BEA2;
+}
+
+#examplePresentationMapText > .examplePresentationTextRightDiv {
+	border-left: 40px solid #C7BEA2;
+}
+
+#examplePresentationSlideText {
+	background-color: #E5DCC3;
+}
+#examplePresentationSlideText > .examplePresentationTextRightDiv  {
+	border-left: 40px solid #E5DCC3;
+	
+}
+
+#examplePresentationViewExplorationTitle {
+	font-size: 23px;
+	font-weight: bold;
+	margin-bottom: 5px;
+	color: black;
+}
+
+.examplePresentationHighlighter {
+	position: absolute;
+	display: none;
+	border-top: 2px solid red;
+	border-bottom: 2px solid red;
+	width: calc(100% + 20px);
+	left: -10px;
+	z-index: 987987987;
+	pointer-events: none;
+	box-sizing: border-box;
+}
+
+.examplePresentationHighlighterAbove, .examplePresentationHighlighterBelow {
+	background-color: rgba(255, 255, 255, 0.3);
+	position: absolute;
+	display: none;
+	width: 100%;
+	z-index: 987987987;
+	pointer-events: none;
+}
+
+.examplePresentationCursor {
+	position: absolute;
+	display: none;
+	z-index: 987987987;
+	pointer-events: none;
+	border-top: 2px solid red;
+	border-right: 2px solid red;
+	border-bottom: 2px solid red;
+	box-sizing: border-box;
+	left: -2px;
+}
+
+
+.examplePresentationOutlineSegmentHighlighter {
+	position: absolute;
+	pointer-events: none;
+	display: none;
+	z-index: 987987987;
+	border: 2px solid red;
+	height: 100%;
+	left: -2px;
+	box-sizing: border-box;
+}
+
+.examplePresentationUserHighlighter {
+	position: absolute;
+	pointer-events: none;
+	display: none;
+	z-index: 987987987;
+
+	border-top: 2px dashed black;
+	border-right: 2px dashed black;
+	border-bottom: 2px dashed black;
+
+	height: 100%;
+	left: -5px;
+	box-sizing: border-box;
+}
+
+.outlineSegmentElement.exampleSegmentElement {
+	pointer-events: none;
+}
+
+.examplePresentationIndexStartLabel, .examplePresentationIndexEndLabel {
+	position: absolute;
+	left: -40px;
+	width: 40px;
+	font-size: 12px;
+	text-align: center;
+}
+
+.examplePresentationUserLabel {
+	position: absolute;
+	left: -42px;
+	width: 42px;
+	font-size: 14px;
+	color: orange;
+	font-weight: bold;
+}
+
+.presentationMicroLabel {
+	font-size: 6px;
+}
+
+.examplePresentationSlideUserHighlighter {
+	position: absolute;
+	width: 42px;
+	font-size: 14px;
+	text-align: center;
+	color: orange;
+	font-weight: bold;
+}
+
+#outlineSegmentLabelArray {
+	width: 100%;
+	white-space: nowrap;
 }

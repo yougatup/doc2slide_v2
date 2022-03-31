@@ -83,6 +83,7 @@ var root_examplePresentations_index = {};
 
 var temp_plot_examplePresentations = [];
 var temp_map_examplePresentations = [];
+var temp_map2_examplePresentations = [];
 var examplePresentations = [];
 var outlineStructure = [];
 var selectedOutlineIndex = -1;
@@ -100,16 +101,38 @@ var presentationTreeIndex = {};
 var presentationTree = {};
 var presentationTimeline = {};
 var presentationColorCode = {
-	0: "#C5F6FA",
-	1: "#AFE6FA",
-	2: "#AAD6FA",
-	3: "#FCE6A9",
-	4: "#FFF4C7",
-	5: "#FFFBE9"
+	0: "rgb(238, 222, 167)",
+	1: "rgb(243, 209, 175)",
+	2: "rgb(239, 189, 188)",
+	3: "rgb(237, 198, 216)",
+	4: "rgb(210, 198, 225)",
+	5: "rgb(167, 210, 230)",
+	6: "rgb(192, 228, 239)",
+	7: "rgb(199, 230, 217)",
+	8: "rgb(207, 234, 204)",
+	9: "rgb(238, 245, 189)",
+	10: "rgb(218, 202, 194)",
+	11: "rgb(197, 200, 204)",
 };
+/*
+	0: "rgb(238, 222, 167)",
+	1: "rgb(243, 209, 175)",
+	2: "rgb(239, 189, 188)",
+	3: "rgb(237, 198, 216)",
+	4: "rgb(210, 198, 225)",
+	5: "rgb(167, 210, 230)",
+	6: "rgb(192, 228, 239)",
+	7: "rgb(199, 230, 217)",
+	8: "rgb(207, 234, 204)",
+	9: "rgb(238, 245, 189)",
+	10: "rgb(218, 202, 194)",
+	11: "rgb(197, 200, 204)",
+	*/
 var presentationTreeRenderingFinished = false;
-var alreadyProcessedFlag = false;
+var alreadyProcessedFlag = true;
 var sortableClickedIndex = -1;
+
+var presentationMapCached = false;
 
 var sectionTitles = [
 	['Title'],
@@ -211,9 +234,17 @@ async function getExamplePresentationInfo(presentationList, depth) {
 }
 
 function highlightExamplePresentationSegments(depth) {
+	for(var i=0;i<examplePresentations.length;i++) {
+		var highlighterObj = $(".examplePresentationInstance[index='" + i + "']").find(".examplePresentationOutlineSegmentHighlighter");
+		var segmentObj = $(".outlineSegmentElement[presentationIndex='" + i + "'][segmentIndex='" + depth + "']");
+
+		$(highlighterObj).width($(segmentObj).position().left + $(segmentObj).width());
+		$(highlighterObj).show();
+	}
+
 	$(".exampleSegmentElement.sectionHighlighted").removeClass("sectionHighlighted");
 
-	$(".exampleSegmentElement[segmentindex='" + depth + "']").addClass("sectionHighlighted");
+	// $(".exampleSegmentElement[segmentindex='" + depth + "']").addClass("sectionHighlighted");
 }
 
 function getKeywordDiv(k) {
@@ -258,7 +289,9 @@ function getOutlineDiv(presentationIndex, outline, slides) {
 	result = result + "</div>"
 
 
-	result = result + "<div class='examplePresentationOutlineSegmentDiv'>"
+	result = result + "<div class='examplePresentationOutlineSegmentDiv'>" + 
+					"<div class='examplePresentationOutlineSegmentHighlighter'> </div>" 
+
 	for(var i=0;i<outline.length;i++) {
 		var duration = (slides[outline[i].endSlideIndex].endTime - slides[outline[i].startSlideIndex].startTime) 
 		var segmentWidth = duration / presentationDuration * 100;
@@ -1101,16 +1134,26 @@ async function createSlide(presentationIDToAdapt, contents, layoutSlideID, style
 }
 
 function returnLeafNodeInternal(timelineSummary, depth, nodeIndex) {
-	if(depth >= timelineSummary[nodeIndex].timeline.length) return {};
-	return {
+	if(depth+1 >= timelineSummary[nodeIndex].timeline.length) return {
+		depth: depth,
+		index: 0,
+		startIndex: nodeIndex,
+		endIndex: nodeIndex,
+		numChild: 0,
+		ranges: [],
+		valueRanges: [  ],
+		curTimes: [],
+		subtree: []
+	};
+	else return {
 		depth: depth,
 		index: 0,
 		startIndex: nodeIndex,
 		endIndex: nodeIndex,
 		numChild: 1,
 		ranges: [ [nodeIndex, nodeIndex] ],
-		valueRanges: [ [timelineSummary[nodeIndex].timeline[depth], timelineSummary[nodeIndex].timeline[depth] ] ],
-		curTimes: [timelineSummary[nodeIndex].timeline[depth]],
+		valueRanges: [ [timelineSummary[nodeIndex].timeline[depth+1], timelineSummary[nodeIndex].timeline[depth+1] ] ],
+		curTimes: [timelineSummary[nodeIndex].timeline[depth+1]],
 		subtree: [returnLeafNodeInternal(timelineSummary, depth+1, nodeIndex)]
 	}
 }
@@ -1462,7 +1505,16 @@ function renderScatterPlot(d) {
 			.attr("transform", transform)
 			.style("fill", function (d) { return (d.presentationIndex == -1 ? color('red') : color('blue')) ; })
 			.on("mouseover", pointMouseOver)
-			.on("mouseout", pointMouseLeave);
+			.on("mouseout", pointMouseLeave)
+/*
+		objects.selectAll(".userText")
+			.data(data)
+			.enter().append("text")
+			.classed("userText", true)
+			.attr("presentationIndex", function(d) { return d.presentationIndex } )
+			.attr("transform", transform)
+			.text(function(d) { return d.presentationIndex == -1 ? "User" : '' })
+			*/
 
 		function zoom() {
 			// console.log("cool");
@@ -1470,6 +1522,9 @@ function renderScatterPlot(d) {
 			svg.select(".y.axis").call(yAxis);
 
 			svg.selectAll(".dot")
+				.attr("transform", transform);
+
+			svg.selectAll(".text")
 				.attr("transform", transform);
 
 			var domainX = x.domain();
@@ -1561,9 +1616,29 @@ async function showPresentationMap() {
 		presentationTimeline = res.presentationTimeline;
 	}
 
-	$("#examplePresentationMap").html('');
+	var pList = [];
+
+	for(var i=0;i<presentationTimeline.length;i++) {
+		pList.push(presentationTimeline[i].presentationIndex);
+	}
+
+	$("#examplePresentationMap").html("<div class='examplePresentationIndexStartLabel'> </div>" + 
+									  "<div class='examplePresentationIndexEndLabel'> </div>" + 
+									  "<div class='examplePresentationUserLabel'> User </div>" + 
+									  "<div class='examplePresentationHighlighterAbove'> </div>"+ 
+									  "<div class='examplePresentationHighlighterBelow'> </div>"+
+									  "<div class='examplePresentationUserHighlighter'> </div>" + 
+									  "<div class='examplePresentationHighlighter'> </div>" + 
+									  "<div class='examplePresentationCursor'> </div>"
+	);
+
+	filterExamplePresentation(pList, -1);
+
+	temp_map_examplePresentations = examplePresentations;
 
 	renderPresentationTree(presentationTree, 0, 0, $("#examplePresentationMap").width(), timelineSummary.length);
+
+	locateUserSlideOnPresentationMap();
 
 	presentationTreeRenderingFinished = true;
 	console.log("** GREAT **");
@@ -1600,7 +1675,7 @@ function renderPresentationTree(obj, y0, x0, x1, presentationCnt) {
 
 		if (Object.keys(subtree[i]).length > 0) {
 			$("#examplePresentationMap").append(
-				"<div id='" + nodeID + "' class='examplePresentationCell' " +
+				"<div id='" + nodeID + "' class='examplePresentationCell' h='" + _h + "' y0='" + _y0 + "' " +
 				"style='position: absolute; left: " + (_y0 * 100) + "%; top: " + (_x0 * 100) + "%; " +
 				"width: " + ((_h - _y0) * 100) + "%; height: " + (_w * 100) + "%;" +
 				"background-color: " + colorCode + "'> </div>"
@@ -1614,7 +1689,6 @@ function renderPresentationTree(obj, y0, x0, x1, presentationCnt) {
 		}
 	}
 
-	locateUserSlideOnPresentationMap();
 
 	return;
 }
@@ -8663,19 +8737,33 @@ function updateOutlineSegments() {
 
 	selectSegment(selectedOutlineIndex);
 
-	$(".outlineSegmentElement").resizable({
+	$("#outlineSegments > .outlineSegmentElement").resizable({
 		handles: 'e',
 		resize: function(e, ui) {
 			var target = $(e.target)
 
-			var totalWidth = $("#outlineSegments").width();
+			var segmentWidth = 0;
 
-			var segmentIndex = parseInt($(target).attr("index"));
+			$("#outlineSegments > .outlineSegmentElement").each(function(e) {
+				segmentWidth = segmentWidth + $(this).width();
+			})
+
+			var totalWidth = $("#outlineSegments").width();
 			var targetWidth = $(target).width();
 
+			if(segmentWidth+6 >= totalWidth) $(target).width(totalWidth-(segmentWidth-targetWidth)-6)
+
+			$(target).resizable({
+				maxWidth: (totalWidth-(segmentWidth-targetWidth)-6)
+			});
+
+			var segmentIndex = parseInt($(target).attr("index"));
+
+			var slideNumObj = $(".outlineSegmentSlideNumElement[index='" + segmentIndex + "']")
 			var labelObj = $(".outlineSegmentLabelElement[index='" + segmentIndex + "']")
 
 			$(labelObj).width(targetWidth);
+			$(slideNumObj).width(targetWidth);
 
 			var duration = targetWidth / totalWidth * curPresentationDuration;
 
@@ -8826,7 +8914,7 @@ function updateOutlineSegments() {
 }
 
 function locateUserSlideOnPresentationMap() {
-	$(".userPresentationLocated").removeClass("userPresentationLocated");
+//	$(".userPresentationLocated").removeClass("userPresentationLocated");
 
 	var timeline = [];
 
@@ -8834,8 +8922,31 @@ function locateUserSlideOnPresentationMap() {
 
 	var nodeList = presentationMapTraverse(presentationTree, 0, timeline);
 
+/*
 	for(var i=0;i<nodeList.length;i++) {
 		$("#" + nodeList[i]).addClass("userPresentationLocated");
+	}
+	*/
+
+	if (nodeList.length > 0) {
+		var nodeObj = $("#" + nodeList[nodeList.length - 1]);
+
+		var pos = $(nodeObj).position();
+		var width = $(nodeObj).width();
+		var height = $(nodeObj).height();
+
+		$(".examplePresentationUserHighlighter").css("top", pos.top + 1);
+		$(".examplePresentationUserHighlighter").width(width + pos.left - 2 + 5);
+		$(".examplePresentationUserHighlighter").height(height - 4);
+
+		$(".examplePresentationUserHighlighter").show();
+
+		$(".examplePresentationUserLabel").css("top", pos.top + 1 - 3 + (height / 2) - 3);
+		$(".examplePresentationUserLabel").show();
+	}
+	else {
+		$(".examplePresentationUserHighlighter").hide();
+		$(".examplePresentationUserLabel").hide();
 	}
 }
 
@@ -8861,6 +8972,8 @@ function presentationMapTraverse(tree, depth, timeline) {
 	if(idx == -1) idx = tree.subtree.length-1;
 
 	var nodeID = tree.subtree[idx].nodeID;
+
+	if(nodeID == null) return [];
 
 	return [ nodeID ].concat(presentationMapTraverse(tree.subtree[idx], depth+1, timeline))
 }
@@ -9833,12 +9946,8 @@ function locateSlideOnSlidesDiv(presentationIndex, slideIndex, sectionHighlightF
 	$(".slideThumbnailViewDiv[presentationIndex='" + presentationIndex + "']").find(".slideThumbnailImageDiv").removeClass("visible");
 
 	for(var i=st;i<st+Math.min(totalNumSlides, 3);i++) {
-		console.log($(".slideThumbnailViewDiv[presentationIndex='" + presentationIndex + "']").find(".slideThumbnailImageDiv[thumbnailIndex='" + i + "']"));
-
 		$(".slideThumbnailViewDiv[presentationIndex='" + presentationIndex + "']").find(".slideThumbnailImageDiv[thumbnailIndex='" + i + "']").addClass("visible");
 	}
-
-	console.log(sectionHighlightFlag);
 
 	if(sectionHighlightFlag) {
 		var sectionIndex = -1;
@@ -9846,8 +9955,6 @@ function locateSlideOnSlidesDiv(presentationIndex, slideIndex, sectionHighlightF
 		for(var i=0;i<examplePresentations[presentationIndex].outline.length;i++) {
 			var start = examplePresentations[presentationIndex].outline[i].startSlideIndex;
 			var end =  examplePresentations[presentationIndex].outline[i].endSlideIndex;
-
-			console.log(start, end, slideIndex);
 
 			if(start <= slideIndex && slideIndex <= end) {
 				sectionIndex = i;
@@ -9863,6 +9970,7 @@ function locateUserSlideOnPresentationSlides() {
 	if(selectedOutlineIndex == -1) return;
 
 	$(".presentationSlideTableCell.selected").removeClass("selected");
+	$(".examplePresentationSlideUserHighlighter").hide();
 
 	var label = outlineStructure[selectedOutlineIndex].label;
 	var idx = -1;
@@ -9878,7 +9986,18 @@ function locateUserSlideOnPresentationSlides() {
 	}
 
 	if(idx != -1) {
-		$(".presentationSlideTableCell[index='" + idx + "']").addClass("selected");
+		var obj = $(".presentationSlideTableCell[index='" + idx + "']");
+
+		if ($(obj).length > 0) {
+			$(obj).addClass("selected");
+
+			var left = $(obj).position().left;
+			var width = $(obj).width();
+
+			$(".examplePresentationSlideUserHighlighter").css("left", left);
+			$(".examplePresentationSlideUserHighlighter").width(width);
+			$(".examplePresentationSlideUserHighlighter").show();
+		}
 	}
 }
 
@@ -9923,8 +10042,8 @@ function showPresentationSlides() {
 		"</td>"
 	}
 
-	html = html + "</tr> </table>"
-
+	html = html + "</tr> </table>" + 
+		"<div class='examplePresentationSlideUserHighlighter'> User </div>"
 	$("#examplePresentationSlide").html(html);
 
 	locateUserSlideOnPresentationSlides();
@@ -10431,6 +10550,7 @@ $(document).ready(function () {
 
 	$(document).on("click", "#examplePresentationMap", function(e) {
 		if ($(e.target).hasClass("examplePresentationCell")) {
+			/*
 			$(".childCellSelected").removeClass("childCellSelected");
 
 			var nodeID = $(e.target).attr("id");
@@ -10442,12 +10562,30 @@ $(document).ready(function () {
 
 			$(".examplePresentationCell.selected").removeClass("selected");
 
-			console.log($(e.target));
-
 			var target = $(e.target);
 			var id = $(target).attr("id");
 
 			$(target).addClass("selected");
+			*/
+
+			var target = $(e.target);
+			var id = $(target).attr("id");
+
+			var position = $(e.target).position();
+			var height = $(e.target).height();
+
+			$(".examplePresentationHighlighterAbove").height(position.top);
+
+			$(".examplePresentationHighlighter").css("top", position.top);
+			$(".examplePresentationHighlighter").height(height-3)
+
+			$(".examplePresentationHighlighterBelow").css("top", position.top + height + 2);
+			$(".examplePresentationHighlighterBelow").css("height", $("#examplePresentationMap").height() - (position.top + height + 2));
+
+			$(".examplePresentationHighlighter").show();
+			$(".examplePresentationHighlighterAbove").show();
+			$(".examplePresentationHighlighterBelow").show();
+
 
 			var presentationNode = presentationTreeIndex[id];
 			var presentationList = []
@@ -10459,18 +10597,62 @@ $(document).ready(function () {
 			filterExamplePresentation(presentationList, presentationNode.depth);
 		}
 		else {
-			console.log($(e.target));
-
 			if ($(".examplePresentationCell.selected").length > 0) {
 				examplePresentations = root_examplePresentations;
 				updateExamplePresentation();
 			}
 
-			$(".childCellSelected").removeClass("childCellSelected");
-			$(".examplePresentationCell.selected").removeClass("selected");
-			$(".sectionHighlighted").removeClass("sectionHighlighted");
+			$(".examplePresentationHighlighter").hide();
+			$(".examplePresentationHighlighterAbove").hide();
+			$(".examplePresentationHighlighterBelow").hide();
+
+			$(".examplePresentationOutlineSegmentHighlighter").hide();
+
+			examplePresentations = temp_map_examplePresentations;
+			updateExamplePresentation();
 		}
 	});
+
+	$(document).on("click", "#examplePresentationDiv", function(e) {
+		if ($("#examplePresentationMapText").hasClass("selected")) {
+			if (!$(e.target).hasClass("examplePresentationCell") && !$(e.target).hasClass("examplePresentationModeSelectionText")) {
+				if ($(".examplePresentationCell.selected").length > 0) {
+					examplePresentations = root_examplePresentations;
+
+					updateExamplePresentation();
+
+					locateUserSlideOnPresentationMap();
+				}
+
+				$(".examplePresentationHighlighter").hide();
+				$(".examplePresentationHighlighterAbove").hide();
+				$(".examplePresentationHighlighterBelow").hide();
+				$(".examplePresentationCursor").hide();
+
+				$(".examplePresentationOutlineSegmentHighlighter").hide();
+
+				examplePresentations = temp_map_examplePresentations;
+
+				updateExamplePresentation();
+			}
+
+			var cur = $(e.target);
+
+			for (var i = 0; i < 100; i++) {
+				if ($(cur).attr("id") == "examplePresentationAdaptationPopup") return;
+				if ($(cur).attr("id") == "examplePresentationDiv") break;
+
+				cur = $(cur).parent();
+			}
+
+			$("#examplePresentationAdaptationPopup").hide();
+		}
+/*
+		$(".examplePresentationHighlighterAbove").hide();
+		$(".examplePresentationHighlighterBelow").hide();
+		$(".examplePresentationHighlighter").hide();
+		*/
+	})
 
 	$(document).on("click", ".examplePresentationInputBox", function(e) {
 		updateSearchControllers();
@@ -10642,15 +10824,12 @@ $(document).ready(function () {
 	})
 
 	$(document).on("click", "#examplePresentationSlide", function(e) {
-		console.log($(e.target));
-
 		if($(e.target).attr("id") == "examplePresentationSlide") {
 			$(".exampleSegmentElement.segmentHighlighted").removeClass("segmentHighlighted");
 
 			$(".presentationSlideTableCell.highlighted").removeClass("highlighted");
 			$(".presentationSlideTableTitle.highlighted").removeClass("highlighted");
 		}
-
 	})
 
 	$(document).on("mouseover", ".presentationSlideTableCell, .presentationSlideTableTitle", function(e) {
@@ -10716,18 +10895,20 @@ $(document).ready(function () {
 
 	$(document).on("click", "#examplePresentationSlideText", function(e) {
 		$(".searchConditionDiv").hide();
-
 		$("#examplePresentationSearchSlideConditions").show();
-
 		$(".exampleSegmentElement").addClass("hoverActive");
 
 		if($("#examplePresentationPlotText").hasClass("selected")) {
-			temp_plot_examplePresentations = examplePresentations;
-			temp_map_examplePresentations = examplePresentations;
+			temp_plot_examplePresentations = JSON.parse(JSON.stringify(examplePresentations));
+			temp_map2_examplePresentations = JSON.parse(JSON.stringify(examplePresentations));
+			presentationMapCached = false;
 		}
 
-		if($("#examplePresentationMapText").hasClass("selected"))
-			temp_map_examplePresentations = examplePresentations;
+		if($("#examplePresentationMapText").hasClass("selected")) {
+			temp_map2_examplePresentations = JSON.parse(JSON.stringify(examplePresentations));
+			presentationMapCached = true;
+		}
+
 
 		if($("#examplePresentationSlideText").hasClass("selected")) return;
 
@@ -10735,14 +10916,16 @@ $(document).ready(function () {
 		$("#examplePresentationPlotText").removeClass("selected");
 		$("#examplePresentationSlideText").addClass("selected");
 
-		showPresentationSlides();
-
 		$("#examplePresentationMapDiv").hide();
 		$("#examplePresentationPlotDiv").hide();
 		$("#examplePresentationSlideDiv").show();
 
+		showPresentationSlides();
+
 		// $("#exampleSearchButtonsDiv").hide();
 		// $("#examplePresentationSearch").hide();
+
+		$(".examplePresentationOutlineSegmentHighlighter").hide();
 
 		$("#examplePresentationListBody").css("height", "calc(100% - 5px)");
 		$(".slideThumbnailViewDiv").addClass("visible");
@@ -10754,29 +10937,68 @@ $(document).ready(function () {
 		$(".searchConditionDiv").hide();
 		$("#examplePresentationSearchMapConditions").show();
 
-		if($("#examplePresentationPlotText").hasClass("selected"))
-			temp_plot_examplePresentations = examplePresentations;
+		if($("#examplePresentationSlideText").hasClass("selected") && presentationMapCached) {
+			examplePresentations = temp_map2_examplePresentations;
 
-		if($("#examplePresentationSlideText").hasClass("selected"))
-			examplePresentations = temp_map_examplePresentations;
+			$("#examplePresentationMapText").addClass("selected");
+			$("#examplePresentationPlotText").removeClass("selected");
+			$("#examplePresentationSlideText").removeClass("selected");
 
-		if($("#examplePresentationMapText").hasClass("selected")) return;
+			$("#examplePresentationMapDiv").show();
+			$("#examplePresentationPlotDiv").hide();
+			$("#examplePresentationSlideDiv").hide();
 
-		$("#examplePresentationMapText").addClass("selected");
-		$("#examplePresentationPlotText").removeClass("selected");
-		$("#examplePresentationSlideText").removeClass("selected");
+			$("#examplePresentationListBody").css("height", "calc(100% - 300px)");
+			$(".slideThumbnailViewDiv").removeClass("visible");
 
-		showPresentationMap();
+			updateExamplePresentation();
+		}
+		else if($("#examplePresentationSlideText").hasClass("selected")) {
+			examplePresentations = JSON.parse(JSON.stringify(temp_plot_examplePresentations));
 
-		$("#examplePresentationMapDiv").show();
-		$("#examplePresentationPlotDiv").hide();
-		$("#examplePresentationSlideDiv").hide();
+			$(".examplePresentationOutlineSegmentHighlighter").hide();
 
-		// $("#exampleSearchButtonsDiv").hide();
-		// $("#examplePresentationSearch").hide();
+			if ($("#examplePresentationMapText").hasClass("selected")) return;
 
-		$("#examplePresentationListBody").css("height", "calc(100% - 300px)");
-		$(".slideThumbnailViewDiv").removeClass("visible");
+			$("#examplePresentationMapText").addClass("selected");
+			$("#examplePresentationPlotText").removeClass("selected");
+			$("#examplePresentationSlideText").removeClass("selected");
+
+			showPresentationMap();
+
+			$("#examplePresentationMapDiv").show();
+			$("#examplePresentationPlotDiv").hide();
+			$("#examplePresentationSlideDiv").hide();
+
+			// $("#exampleSearchButtonsDiv").hide();
+			// $("#examplePresentationSearch").hide();
+
+			$("#examplePresentationListBody").css("height", "calc(100% - 300px)");
+			$(".slideThumbnailViewDiv").removeClass("visible");
+		}
+
+		if ($("#examplePresentationPlotText").hasClass("selected")) {
+			temp_plot_examplePresentations = JSON.parse(JSON.stringify(examplePresentations));
+			$(".examplePresentationOutlineSegmentHighlighter").hide();
+
+			if ($("#examplePresentationMapText").hasClass("selected")) return;
+
+			$("#examplePresentationMapText").addClass("selected");
+			$("#examplePresentationPlotText").removeClass("selected");
+			$("#examplePresentationSlideText").removeClass("selected");
+
+			showPresentationMap();
+
+			$("#examplePresentationMapDiv").show();
+			$("#examplePresentationPlotDiv").hide();
+			$("#examplePresentationSlideDiv").hide();
+
+			// $("#exampleSearchButtonsDiv").hide();
+			// $("#examplePresentationSearch").hide();
+
+			$("#examplePresentationListBody").css("height", "calc(100% - 300px)");
+			$(".slideThumbnailViewDiv").removeClass("visible");
+		}
 	})
 
 	$(document).on("click", "#examplePresentationPlotText", function(e) {
@@ -10810,17 +11032,44 @@ $(document).ready(function () {
 	})
 
 	$(document).on("mouseover", ".examplePresentationCell", function(e) {
-		var target = $(e.target);
-		var nodeID = $(target).attr("id");
-		var nodeList = getParentNodes(nodeID);
+		if ($("#examplePresentationAdaptationPopup").css("display") != "block") {
+			var target = $(e.target);
+			var nodeID = $(target).attr("id");
 
-		for(var i=0;i<nodeList.length;i++) {
-			$("#" + nodeList[i]).addClass("cellHovered");
+			var pos = $(target).position();
+			var height = $(target).height();
+			var width = $(target).width();
+
+			var startIndex = presentationTreeIndex[nodeID].startIndex;
+			var endIndex = presentationTreeIndex[nodeID].endIndex;
+
+			$(".examplePresentationIndexStartLabel").html((endIndex - startIndex + 1) + "<br>" + "<span class='presentationMicroLabel'> presentations </span>")
+			$(".examplePresentationIndexStartLabel").css("top", pos.top + 1 - 3 + (height / 2) - 5);
+
+			$(".examplePresentationCursor").css("top", pos.top + 1);
+			$(".examplePresentationCursor").width(width + pos.left - 2);
+			$(".examplePresentationCursor").height(height - 4);
+
+			$(".examplePresentationCursor").show();
+			$(".examplePresentationIndexStartLabel").show();
+
+			/*
+			var nodeList = getParentNodes(nodeID);
+	
+			for(var i=0;i<nodeList.length;i++) {
+				$("#" + nodeList[i]).addClass("cellHovered");
+			}
+			*/
 		}
 	})
 
 	$(document).on("mouseleave", ".examplePresentationCell", function(e) {
-		$(".cellHovered").removeClass("cellHovered");
+		if ($("#examplePresentationAdaptationPopup").css("display") != "block") {
+			// $(".cellHovered").removeClass("cellHovered");
+			$(".examplePresentationCursor").hide();
+			$(".examplePresentationIndexStartLabel").hide();
+			$(".examplePresentationIndexEndLabel").hide();
+		}
 	})
 
 	$(document).on("mouseover", ".examplePresentationSlideThumbnailImageDiv", function(e) {
