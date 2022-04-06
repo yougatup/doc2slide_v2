@@ -1,111 +1,86 @@
-Author Keywords
-Author Keywords
-CCS Concepts
+ACM Classification Keywords
 INTRODUCTION
 INTRODUCTION
 INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-INTRODUCTION
-Spatial Design Support System for Early Design Phase
-Prototyping in Spatial Design
-Prototyping in Spatial Design
-Prototyping in Spatial Design
-Tangible User Interface and Design Collaboration
-Design Reference Retrieval
-Design Reference Retrieval
-C-SPACE
-Physical Modeling Components
-Physical Modeling Components
-Design Reference Data Analysis
-Design Reference Data Analysis
-Design Reference Data Analysis
-Design Reference Data Analysis
-Design Reference Data Analysis
-Design Constraint Mapping
-Design Reference Retrieval Interface Overview
-Design Reference Retrieval Interface Overview
-Design Reference Retrieval Interface Overview
-Shape-Based Retrieval Method and Interface
-Number of Rooms-Based Retrieval Method and Interface
-Room Connectivity-Based Retrieval Method and Interface
-Room Connectivity-Based Retrieval Method and Interface
-Room Connectivity-Based Retrieval Method and Interface
-Material Simulation
-Material Simulation
-Material Simulation
-Alternative Management
-Export to BIM Format
-Export to BIM Format
-Export to BIM Format
-IMPLEMENTATION & RESULTS
-User Study
-Experiment Design
-Experiment Design
-User Behavior Overview
-User Behavior Overview
-User Behavior Overview
-Assisting Rapid Spatial Design Exploration and Development
-Assisting Rapid Spatial Design Exploration and Development
-Experiencing Space and Scale
-Developing Details in the Early Stage
-Developing Details in the Early Stage
-Developing Details in the Early Stage
-Inducing Collaborative Discussion
-Inducing Collaborative Discussion
-Integration of Early Design Phase to Later Design Phases
-Integration of Early Design Phase to Later Design Phases
-CONCLUSION
-CONCLUSION
-CONCLUSION
-CONCLUSION
+4. A user study demonstrating the role of Thor’s Hammer
+RELATED WORK
+Wearable Force Feedback Devices
+Wearable Force Feedback Devices
+Ungrounded Force Feedback with Gyroscopic Effects
+Ungrounded Force Feedback with Gyroscopic Effects
+Force Feedback using Haptic Illusions
+Electro-Muscular Stimulation
+Electro-Muscular Stimulation
+Electro-Muscular Stimulation
+Force Feedback using Air Jet
+Force Feedback using Drones
+Other Ungrounded Force Feedback Methods
+Other Ungrounded Force Feedback Methods
+Summary
+Summary
+Summary
+Summary
+Summary
+Summary
+Summary
+Summary
+Summary
+TECHNICAL EVALUATION
+TECHNICAL EVALUATION
+Evaluation Setup
+Evaluation Setup
+Evaluation Setup
+Force Control on a Single Axis
+Force Control on a Single Axis
+Force Control on a Single Axis
+Force Control on a Single Axis
+Force Control on a Single Axis
+Force Control on a Single Axis
+Force Control on a Single Axis
+Force Control in an Arbitrary Direction
+Force Control in an Arbitrary Direction
+Operating Noise and Power Consumption
+USING FORCE FEEDBACK IN VR ENVIRONMENTS
+Holding an Object in Flowing Water
+Herding a Sheep
+Herding a Sheep
+Pushing Buttons
+Pushing Buttons
+Simulating Different Weights
+QUALITATIVE USER STUDY
+Participants
+Procedure
+Procedure
+Procedure
+Results
+Feeling the Water
+Feeling the Water
+Herding a Sheep
+Herding a Sheep
+Pushing Buttons
+Pushing Buttons
+Pushing Buttons
+Pushing Buttons
+Feeling Gravity
+Feeling Gravity
+Summary
+Summary
+DISCUSSION AND LIMITATIONS
+DISCUSSION AND LIMITATIONS
+Noise and Safety
+Noise and Safety
+Feedback Responsiveness
+Ease of Replication
+Ease of Replication
+Ease of Replication
+Extensibility to Other Shapes
+Untethered and Mobile
+Untethered and Mobile
+CONCLUSION AND FUTURE WORK
+CONCLUSION AND FUTURE WORK
+CONCLUSION AND FUTURE WORK
+CONCLUSION AND FUTURE WORK
 ACKNOWLEDGMENTS
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
-REFERENCES
 REFERENCES
 REFERENCES
 REFERENCES

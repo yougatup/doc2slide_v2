@@ -179,6 +179,18 @@
 
 					<button id='initializeMouseDownBtn'> Click </button>
 				</div>
+
+				<div style='float: left; margin-left: 20px;'>
+					Experiment start
+
+					<button id='experimentStartBtn'> Click </button>
+				</div>
+
+				<div style='float: left; margin-left: 20px;'>
+					Experiment finished
+
+					<button id='experimentEndBtn'> Click </button>
+				</div>
 			</div>
 
 			<div id='documentStructureBtnDiv'> 
@@ -210,8 +222,8 @@
 
 						<div id="sourceTabs">
 							<ul>
-							  <li><a href="#tabs-document"> Source document </a></li>
-							  <li><a href="#tabs-slide"> Example presentations </a></li>
+							  <li id="sourceDocumentTabBtn"><a href="#tabs-document"> Source document </a></li>
+							  <li id="examplePresentationTabBtn"><a href="#tabs-slide"> Example presentations </a></li>
 							</ul>
 							<div id="tabs-document">
 								<iframe id='pdfjsIframe' src='./generic/web/viewer.html' frameborder='0' marginwidth='0' marginheight='0'>
@@ -244,7 +256,7 @@
 										</div>
 										<div id="examplePresentationSlideText" class="examplePresentationModeSelectionText"> 
 											<div class="examplePresentationTextLeftDiv"> </div>
-											Segments
+											Sections
 											<div class="examplePresentationTextRightDiv"> </div>
 										</div>
 									</div>

@@ -6,8 +6,10 @@ import numpy as np
 import pandas as pd
 import os
 
-doi = "10.1145/3313831.3376452"
-paperTitle = "C-Space: An Interactive Prototyping Platform for Collaborative Spatial Design Exploration"
+doi = "10.1145/3173574.3174099"
+paperTitle = 'Thor’s Hammer: An Ungrounded Force Feedback Device Utilizing Propeller-Induced Propulsive Force'
+
+parsingFlag = 1    # -1: automatic, 1: number, 2: without number
 
 def getSectionStructure() :
     jsonData = json.load(open('./paperData.json'))
@@ -60,9 +62,7 @@ def getKeyword() :
         if 'title' in p and 'text' in p['title']:
             sectionTitle = p['title']['text']
 
-            print(sectionTitle)
-
-            if sectionTitle == "KEYWORDS" or sectionTitle == "Author Keywords":
+            if sectionTitle == "KEYWORDS" or sectionTitle == "KEYWORDS:" or sectionTitle == "Author Keywords":
                 for j in range(len(p['paragraphs'])) :
                     k = p['paragraphs'][j]['text']
                     sniffer = csv.Sniffer()
@@ -115,7 +115,10 @@ def isTopSectionTitle(text) :
 
     parsedIndex = text.split(' ')[0]
             
-    if parsedIndex.isdigit() :
+    if parsedIndex.isdigit() or parsingFlag == 1:
+        if parsingFlag == 1 and (not parsedIndex.isdigit()) :
+            return (False, {})
+
         body = text[(len(str(parsedIndex))+1):]
                 
         if not (body.isupper()) :
@@ -143,7 +146,9 @@ def getSectionTitles (jsonData) :
     for s in jsonData["sections"] :
         if "title" in s :
             titleText = s["title"]["text"]
-        
+
+            print(titleText)
+
             ret = isTopSectionTitle(titleText)
             
             if ret[0] :
@@ -203,6 +208,8 @@ for i in range(1, sectionCnt+1) :
         break
     
 sectionDatabase = []
+
+print(titles)
 
 if flag :
     print("**** needs attention **** ")

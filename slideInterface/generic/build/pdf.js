@@ -17844,6 +17844,20 @@ function hideOutlinePopup() {
   $("#outlinePopup").hide();
 }
 
+function getTimelineLabelCandidate() { 
+  return ''
+}
+
+function getAutoCompleteCandidate(l) {
+  var html = '';
+
+  for(var i=0;i<l.length;i++) {
+    html = html + "<div class='autoCompleteCandidate'> " + l[i] + "</div>"
+  }
+
+  return html;
+}
+
 function showOutlinePopup(mode) {
   var objs = $(".wordHighlighted");
 
@@ -17882,22 +17896,37 @@ function showOutlinePopup(mode) {
 
     issueEvent("pdfjs_getSectionTitle", curHighlightInfo, "root_getSectionTitle").then(result => {
       var title = result.detail.title;
+      var timelineLabelList = result.detail.timelineLabelList;
 
       console.log(title);
 
+      var ss = [];
+
+      for(var i=0;i<jsonSectionStructure.length;i++) {
+        ss.push(jsonSectionStructure[i].text);
+      }
+
+    $(popupObj).css("height", "");
       $(popupObj).css("width", "300px");
-      $(popupObj).css("height", "80px");
 
       $(popupObj).html(
         '<div id="outlinePopupMessage"> Add this highlight to </div>' +
         '<div id="outlinePopupCandidate">' +
         '<input id="outlinePopupInput" value="' + title + '"> </input>' +
         '<button id="outlinePopupConfirmBtn"> Confirm </button>' +
+        '<div id="outlinePopupAutocomplete">' +
+          '<div class="outlinePopupAutocompleteHeader"> You can select labels below. </div>' +
+          '<div class="outlinePopupAutocompleteSubheader"> Labels on the timeline: </div>' +
+          getAutoCompleteCandidate(timelineLabelList) + 
+          '<div class="outlinePopupAutocompleteSubheader"> Section titles: </div>' +
+          getAutoCompleteCandidate(ss) + 
+        '</div>' + 
         '</div>'
       )
 
       var myList = jsonSectionStructure.map((elem) => { return elem.text })
 
+      /*
       $('#outlinePopupInput').autocomplete({
         minLength: 0,
         source: function (request, response) {
@@ -17910,7 +17939,7 @@ function showOutlinePopup(mode) {
       }).focus(function () {
         $(this).autocomplete("search", "");
       });
-
+*/
       $(popupObj).show();
     });
   }
@@ -17939,7 +17968,7 @@ function showOutlinePopup(mode) {
     $("#outlineConfirmationMessageDiv").remove();
 
     $(popupObj).css("width", "300px");
-    $(popupObj).css("height", "80px");
+    $(popupObj).css("height", "");
 
     $("#outlinePopupMessage").show();
     $("#outlinePopupCandidate").show();
@@ -18238,6 +18267,12 @@ $(document).ready(function() {
 			$(".wordHighlighted").removeClass("wordHighlighted");
 		}
 
+    $(document).on("click", ".autoCompleteCandidate", function(e) {
+      var txt = $(this).html().trim();
+
+      $("#outlinePopupInput").val(txt);
+    })
+
     $(document).on("click", "#outlineConfirmationMessageConfirmBtn", function(e) {
       var segmentTitle = $("#outlinePopupInput").val();
       var text = getHighlightedText(curHighlightInfo.pageNumber, curHighlightInfo.startWordIndex, curHighlightInfo.endWordIndex);
@@ -18456,6 +18491,8 @@ $(document).ready(function() {
 
 		$(document).on("root_sendMappingIdentifier_2", function(e) {
 			var p = e.detail;
+
+      console.log(p);
 
 			applyClassToHighlight(p.pageNumber, p.startWordIndex, p.endWordIndex, "wordMapped", {
 				mappingID: p.mappingID

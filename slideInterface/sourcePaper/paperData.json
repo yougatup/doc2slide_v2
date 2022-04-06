@@ -2,470 +2,197 @@
   "abstractText": {
     "page": 0,
     "region": {
-      "x1": 53.619998931884766,
-      "x2": 298.7433776855469,
-      "y1": 338.8651123046875,
-      "y2": 553.2130126953125
+      "x1": 54.0,
+      "x2": 295.35089111328125,
+      "y1": 333.9960021972656,
+      "y2": 563.523681640625
     },
-    "text": "ABSTRACT C-Space is an interactive prototyping platform for collabora tive spatial design exploration. Spatial design projects often begin with conceptualization that includes abstract diagram ming, zoning, and massing to provide a foundation for making design decisions. Specifically, abstract diagrams guide design ers to explore alternative designs without thinking prematurely about the details. However, complications arise when commu nicating ambiguous and incomplete designs to collaborators. To overcome this drawback, designers devote considerable amounts of time and resources into searching for design refer ences and creating rough prototypes to explicate their design concepts better. Therefore, this study proposes C-Space, a novel design support system that integrates the abstract dia gram with design reference retrieval and prototyping through a tangible user interface and augmented reality. Through a user study with 12 spatial designers, we verify that C-Space promotes rapid and robust spatial design exploration, inducing collaborative discussions and motivating users to interact with designs."
+    "text": "ABSTRACT We present a new handheld haptic device, Thor’s Hammer, which uses propeller propulsion to generate ungrounded, 3- DOF force feedback. Thor’s Hammer has six motors and propellers that generates strong thrusts of air without the need for physical grounding or heavy air compressors. With its location and orientation tracked by an optimal tracking system, the system can exert forces in arbitrary directions regardless of the device’s orientation. Our technical evaluation shows that Thor’s Hammer can apply up to 4 N of force in arbitrary directions with less than 0.11 N and 3.9° of average magnitude and orientation errors. We also present virtual reality applications that can benefit from the force feedback provided by Thor’s Hammer. Using these applications, we conducted a preliminary user study and participants felt the experience more realistic and immersive with the force feedback. Author Keywords Haptic feedback; ungrounded force feedback; virtual reality; propeller-based feedback."
   },
   "figures": [{
-    "caption": "Figure 12. Inner wall detection algorithm.",
+    "caption": "Figure 2. (a) The Thor’s Hammer prototype. (b) Each motor has a three-blade propeller generating an outwards airflow. (c) Thor’s Hammer drive board.",
     "captionBoundary": {
-      "x1": 104.125,
-      "x2": 246.8057098388672,
-      "y1": 261.1074523925781,
-      "y2": 266.2919921875
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "12",
-    "page": 5,
-    "regionBoundary": {
-      "x1": 54.0,
-      "x2": 297.0,
-      "y1": 172.0,
-      "y2": 254.0
-    }
-  }, {
-    "caption": "Figure 14. Design alternative management: (a) checking the 3D model on GUI; (b) guide projection on the grid board.",
-    "captionBoundary": {
-      "x1": 321.093994140625,
-      "x2": 564.1661987304688,
-      "y1": 396.66046142578125,
-      "y2": 410.8113708496094
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "14",
-    "page": 5,
-    "regionBoundary": {
-      "x1": 321.0,
-      "x2": 565.0,
-      "y1": 322.0,
-      "y2": 391.0
-    }
-  }, {
-    "caption": "Figure 13. Material simulation: (a) material selection GUI; (b) projec tion mapping of the materials and real-time rotation.",
-    "captionBoundary": {
-      "x1": 321.093994140625,
-      "x2": 565.4892578125,
-      "y1": 284.8714599609375,
-      "y2": 299.0223693847656
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "13",
-    "page": 5,
-    "regionBoundary": {
-      "x1": 321.0,
-      "x2": 565.0,
-      "y1": 62.0,
-      "y2": 280.0
-    }
-  }, {
-    "caption": "Figure 11. Corner and outer wall detection process.",
-    "captionBoundary": {
-      "x1": 88.10099792480469,
-      "x2": 262.8294677734375,
-      "y1": 145.00941467285156,
-      "y2": 150.1939697265625
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "11",
-    "page": 5,
-    "regionBoundary": {
-      "x1": 54.0,
-      "x2": 297.0,
-      "y1": 62.0,
-      "y2": 138.0
-    }
-  }, {
-    "caption": "Figure 15. Exporting to the BIM format: (a) 3D model created on CSpace; (b) 3D model imported on Autodesk Revit.",
-    "captionBoundary": {
-      "x1": 53.92900085449219,
-      "x2": 298.32403564453125,
-      "y1": 135.79042053222656,
-      "y2": 149.94134521484375
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "15",
-    "page": 6,
-    "regionBoundary": {
-      "x1": 53.0,
-      "x2": 298.0,
-      "y1": 62.0,
-      "y2": 131.0
-    }
-  }, {
-    "caption": "Figure 16. C-Space configuration.",
-    "captionBoundary": {
-      "x1": 385.2330017089844,
-      "x2": 500.02630615234375,
-      "y1": 248.34645080566406,
-      "y2": 253.531005859375
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "16",
-    "page": 6,
-    "regionBoundary": {
-      "x1": 322.0,
-      "x2": 564.0,
-      "y1": 62.0,
-      "y2": 241.0
-    }
-  }, {
-    "caption": "Figure 19. Design outcomes produced by the participants using C-Space.",
-    "captionBoundary": {
-      "x1": 185.7469940185547,
-      "x2": 432.3498229980469,
-      "y1": 362.9034729003906,
-      "y2": 368.0880126953125
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "19",
-    "page": 9,
-    "regionBoundary": {
-      "x1": 53.0,
-      "x2": 565.0,
-      "y1": 62.0,
-      "y2": 356.0
-    }
-  }, {
-    "caption": "Figure 2. Physical modeling components and dimensions: (a) modular building blocks; (b) room marker blocks; (c) a numbering interface; (d) a grid board with an AR marker.",
-    "captionBoundary": {
-      "x1": 321.093994140625,
-      "x2": 564.7001953125,
-      "y1": 124.6754379272461,
-      "y2": 147.792724609375
+      "x1": 73.91999816894531,
+      "x2": 537.4473266601562,
+      "y1": 200.20196533203125,
+      "y2": 216.84295654296875
     },
     "figType": "Figure",
     "imageText": [],
     "name": "2",
     "page": 2,
     "regionBoundary": {
-      "x1": 321.0,
-      "x2": 565.0,
-      "y1": 62.0,
-      "y2": 119.0
+      "x1": 52.0,
+      "x2": 559.0,
+      "y1": 61.0,
+      "y2": 192.0
     }
   }, {
-    "caption": "Figure 17. Analysis of user behaviors using C-Space.",
+    "caption": "Figure 8. Four VR applications. (a) Feeling the water, (b) herding a sheep, (c) pushing buttons with different stiffness, and (d) feeling gravity on different planets.",
     "captionBoundary": {
-      "x1": 219.86599731445312,
-      "x2": 398.2288818359375,
-      "y1": 272.6944885253906,
-      "y2": 277.8790283203125
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "17",
-    "page": 7,
-    "regionBoundary": {
-      "x1": 65.0,
-      "x2": 553.0,
-      "y1": 62.0,
-      "y2": 265.0
-    }
-  }, {
-    "caption": "Figure 4. Floor plan shape analysis.",
-    "captionBoundary": {
-      "x1": 382.125,
-      "x2": 503.1349792480469,
-      "y1": 212.22645568847656,
-      "y2": 217.4110107421875
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "4",
-    "page": 3,
-    "regionBoundary": {
-      "x1": 322.0,
-      "x2": 564.0,
-      "y1": 62.0,
-      "y2": 205.0
-    }
-  }, {
-    "caption": "Figure 5. The main page of C-Space GUI: (a) navigation bar; (b) re trieved design references; (c) selected reference; (d) archived references; (e) design alternatives created by a user.",
-    "captionBoundary": {
-      "x1": 320.83099365234375,
-      "x2": 565.4891967773438,
-      "y1": 400.77545166015625,
-      "y2": 423.8927307128906
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "5",
-    "page": 3,
-    "regionBoundary": {
-      "x1": 321.0,
-      "x2": 565.0,
-      "y1": 241.0,
-      "y2": 396.0
-    }
-  }, {
-    "caption": "Figure 3. Analyzing design reference data.",
-    "captionBoundary": {
-      "x1": 103.60700225830078,
-      "x2": 247.32383728027344,
-      "y1": 152.18641662597656,
-      "y2": 157.3709716796875
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "3",
-    "page": 3,
-    "regionBoundary": {
-      "x1": 54.0,
-      "x2": 297.0,
-      "y1": 62.0,
-      "y2": 145.0
-    }
-  }, {
-    "caption": "Figure 18. User responses in C-Space evaluation survey.",
-    "captionBoundary": {
-      "x1": 214.32699584960938,
-      "x2": 403.7682800292969,
-      "y1": 250.04542541503906,
-      "y2": 255.22998046875
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "18",
-    "page": 8,
-    "regionBoundary": {
-      "x1": 53.0,
-      "x2": 565.0,
-      "y1": 62.0,
-      "y2": 243.0
-    }
-  }, {
-    "caption": "Figure 8. Pseudo-code for calculating similarity value.",
-    "captionBoundary": {
-      "x1": 350.95001220703125,
-      "x2": 534.3102416992188,
-      "y1": 164.72242736816406,
-      "y2": 169.906982421875
+      "x1": 323.4059753417969,
+      "x2": 552.7979736328125,
+      "y1": 680.56201171875,
+      "y2": 707.2830200195312
     },
     "figType": "Figure",
     "imageText": [],
     "name": "8",
-    "page": 4,
+    "page": 5,
     "regionBoundary": {
-      "x1": 322.0,
-      "x2": 564.0,
-      "y1": 62.0,
-      "y2": 158.0
+      "x1": 317.0,
+      "x2": 559.0,
+      "y1": 229.0,
+      "y2": 673.0
     }
   }, {
-    "caption": "Figure 6. Design constraint mapping: (a) image of the surrounding en vironment on screen; (b) projection mapping building site on the grid board.",
+    "caption": "Figure 7. Noise level in room by force magnitude",
     "captionBoundary": {
-      "x1": 53.7297477722168,
-      "x2": 298.32403564453125,
-      "y1": 148.3544464111328,
-      "y2": 171.47174072265625
+      "x1": 81.12000274658203,
+      "x2": 267.8700256347656,
+      "y1": 394.9620056152344,
+      "y2": 400.9200134277344
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "7",
+    "page": 5,
+    "regionBoundary": {
+      "x1": 54.0,
+      "x2": 296.0,
+      "y1": 325.0,
+      "y2": 393.0
+    }
+  }, {
+    "caption": "Figure 4. (a) Raw force measurements in three axes. (b) Mean force measurements in three axes, starting from 0 N to 4 N with 0.5 N intervals. The line indicates the linear graph y = x.",
+    "captionBoundary": {
+      "x1": 55.923004150390625,
+      "x2": 299.56207275390625,
+      "y1": 361.84197998046875,
+      "y2": 388.56298828125
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "4",
+    "page": 4,
+    "regionBoundary": {
+      "x1": 54.0,
+      "x2": 301.0,
+      "y1": 60.0,
+      "y2": 359.0
+    }
+  }, {
+    "caption": "Figure 5. (a) Measuring acceleration / deceleration time. (b) Acceleration, (c) deceleration time by axis and force change.",
+    "captionBoundary": {
+      "x1": 55.925994873046875,
+      "x2": 299.6009826660156,
+      "y1": 587.802001953125,
+      "y2": 604.0830078125
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "5",
+    "page": 4,
+    "regionBoundary": {
+      "x1": 56.0,
+      "x2": 300.0,
+      "y1": 400.0,
+      "y2": 586.0
+    }
+  }, {
+    "caption": "Figure 6. Intended vs measured force, projected on the (left) X-Z and (right) X-Y plane. Circles denote the intended force vector points red vectors show error.",
+    "captionBoundary": {
+      "x1": 321.4859924316406,
+      "x2": 553.3439331054688,
+      "y1": 474.281982421875,
+      "y2": 500.5169677734375
     },
     "figType": "Figure",
     "imageText": [],
     "name": "6",
     "page": 4,
     "regionBoundary": {
-      "x1": 53.0,
-      "x2": 298.0,
-      "y1": 62.0,
-      "y2": 143.0
+      "x1": 316.0,
+      "x2": 559.0,
+      "y1": 346.0,
+      "y2": 473.0
     }
   }, {
-    "caption": "Figure 7. Shape-based retrieval method: (a) IR camera-based wall detec tion interface; (b) projection mapping retrieved design reference on the grid board; (c) comparison of retrieved references between two different weighting values.",
+    "caption": "Figure 3. (a) Measurement setup built with aluminum extrusions and six load cells. (b) Thor’s Hammer prototype was stringed to load cells with steel wires with tensioners.",
     "captionBoundary": {
-      "x1": 53.6420783996582,
-      "x2": 298.32415771484375,
-      "y1": 360.22247314453125,
-      "y2": 392.3061218261719
+      "x1": 323.9940185546875,
+      "x2": 550.695068359375,
+      "y1": 544.4819946289062,
+      "y2": 571.0859985351562
     },
     "figType": "Figure",
     "imageText": [],
-    "name": "7",
-    "page": 4,
+    "name": "3",
+    "page": 3,
     "regionBoundary": {
-      "x1": 53.0,
-      "x2": 298.0,
-      "y1": 194.0,
-      "y2": 355.0
-    }
-  }, {
-    "caption": "Figure 9. Number of rooms-based retrieval method: (a) input interface; (b) retrieved reference samples.",
-    "captionBoundary": {
-      "x1": 320.83099365234375,
-      "x2": 564.9632568359375,
-      "y1": 267.1704406738281,
-      "y2": 281.32135009765625
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "9",
-    "page": 4,
-    "regionBoundary": {
-      "x1": 321.0,
-      "x2": 565.0,
-      "y1": 193.0,
-      "y2": 262.0
-    }
-  }, {
-    "caption": "Figure 10. Room connectivity-based retrieval: (a) input interface; (b) retrieved reference samples.",
-    "captionBoundary": {
-      "x1": 321.093994140625,
-      "x2": 564.7002563476562,
-      "y1": 689.220458984375,
-      "y2": 703.371337890625
-    },
-    "figType": "Figure",
-    "imageText": [],
-    "name": "10",
-    "page": 4,
-    "regionBoundary": {
-      "x1": 321.0,
-      "x2": 565.0,
-      "y1": 614.0,
-      "y2": 684.0
+      "x1": 316.0,
+      "x2": 558.0,
+      "y1": 417.0,
+      "y2": 540.0
     }
   }],
   "sections": [{
     "paragraphs": [{
       "page": 0,
       "region": {
-        "x1": 53.92900085449219,
-        "x2": 293.03131103515625,
-        "y1": 588.988525390625,
-        "y2": 616.90869140625
+        "x1": 54.0,
+        "x2": 198.92796325683594,
+        "y1": 584.886474609375,
+        "y2": 591.47998046875
       },
-      "text": "Spatial design; design support system; design collaboration; prototyping; tangible user interface; augmented reality; human-computer interaction."
-    }, {
-      "page": 0,
-      "region": {
-        "x1": 55.38298797607422,
-        "x2": 295.888427734375,
-        "y1": 641.7852783203125,
-        "y2": 725.697509765625
-      },
-      "text": "Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org. CHI ’20, April 25–30, 2020, Honolulu, HI, USA. © 2020 Association of Computing Machinery. ACM ISBN 978-1-4503-6708-0/20/04 ...$15.00. http://dx.doi.org/10.1145/3313831.3376452"
+      "text": "H.5.2. [User Interfaces]: Haptic I/O."
     }],
     "title": {
       "page": 0,
       "region": {
-        "x1": 53.92900085449219,
-        "x2": 127.75833892822266,
-        "y1": 577.902099609375,
-        "y2": 583.5330200195312
+        "x1": 54.0,
+        "x2": 181.03497314453125,
+        "y1": 573.635986328125,
+        "y2": 580.0800170898438
       },
-      "text": "Author Keywords"
+      "text": "ACM Classification Keywords"
     }
   }, {
     "paragraphs": [{
       "page": 0,
       "region": {
-        "x1": 320.5660095214844,
-        "x2": 564.1614990234375,
-        "y1": 349.1485595703125,
-        "y2": 366.911865234375
+        "x1": 54.0,
+        "x2": 558.0880126953125,
+        "y1": 345.13116455078125,
+        "y2": 714.8399658203125
       },
-      "text": "•Human-centered computing → Interactive systems and tools;"
-    }],
-    "title": {
-      "page": 0,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 383.3656921386719,
-        "y1": 338.8651123046875,
-        "y2": 344.4960021972656
-      },
-      "text": "CCS Concepts"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 0,
-      "region": {
-        "x1": 320.7359924316406,
-        "x2": 565.9131469726562,
-        "y1": 393.10052490234375,
-        "y2": 673.0750122070312
-      },
-      "text": "The most important spatial design ideas, project principles, and fundamental design decisions are developed in the earliest design phase [16, 36]. Spatial design projects such as those of architecture and interior design often begin with the concep tualization that includes abstract diagramming, zoning, and massing to provide a foundation for making design decisions. Specifically, abstract diagrams guide designers to explore al ternative designs without focusing excessively on details [13]. According to Goldschmidt [11], abstraction is a prerequisite to aid design creativity, and it helps designers in transferring only the essential relationships of the design properties. However, ambiguous and incomplete designs can cause communication issues when presented to collaborators. Therefore, designers devote significant amounts of time and resources into search ing for design references and developing rough prototypes to refine their design concepts. The prototyping process also involves communicating design ideas to team members and customers, besides collaborating with other designers [15]. Specifically, in the field of spatial design, the prototyping process is crucial because the design cannot be experienced di rectly until the space is constructed. Hence, designers conduct design explorations to identify better solutions by repeating a quick review via reference searching, conceptualization, and prototyping to address a given design problem. However, three limitations exist for the current design exploration process in spatial design."
-    }, {
-      "page": 0,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 564.1660766601562,
-        "y1": 684.0095825195312,
-        "y2": 700.9710083007812
-      },
-      "text": "First, the lack of a physical model makes it difficult to share spatial information intuitively. According to Chiu [6], design"
-    }, {
-      "page": 0,
-      "region": {
-        "x1": 325.5780029296875,
-        "x2": 410.7498474121094,
-        "y1": 708.9287109375,
-        "y2": 714.3309936523438
-      },
-      "text": "* Corresponding author"
+      "text": "Virtual reality (VR) allows users to engage with compelling experiences in ways that are otherwise not possible. Advances in graphical processing, displays, IMU integration, and other technologies have enabled highly compelling visual and audio experiences in commodity hardware, even on mobile devices. Despite these recent improvements in visual and auditory output, haptic feedback has yet to see the same degree of adoption. While some VR technologies use vibrotactile actuators to induce tactile haptic feedback, these technologies fail to elicit the experience of continuous force, such as feeling an object’s weight or an otherwise tugging of the hand. This feeling of the continuous force is sensed through a kinesthetic sensation, and the classes of haptic devices that can simulate continuous forces are generally referred to as force feedback or kinesthetic haptic devices. While there has been extensive research on developing force feedback devices, enabling force feedback in immersive VR environments is still challenging. This is because most force feedback devices require grounding, i.e., they need to be attached to a heavy object or otherwise fixed in place in order to be able to produce the forces needed and withstand reciprocal kickback [18,37,42,43]. Approaches to grounded force feedback include the use of mechanical joints [5,9,12,42,43], wires that are pulled [3,18], air jet actuators [30,31,34] or electromagnets [35,37]. While such methods can provide realistic and compelling force feedback in place, we are interested in exploring ungrounded force feedback to enable more mobile use cases. Grounded devices enable the administering of strong and accurate forces, but come with the caveat that they have to be located in the vicinity of the grounded structure. Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from Permissions@acm.org. CHI 2018, April 21–26, 2018, Montreal, QC, Canada. Copyright is held by the owner/author(s). Publication rights licensed to ACM. ACM. ISBN 978-1-4503-5620-6/18/04…$15.00 DOI: https://doi.org/10.1145/3173574.3174099"
     }, {
       "page": 0,
       "region": {
         "x1": 54.0,
-        "x2": 561.5982055664062,
-        "y1": 750.361572265625,
-        "y2": 756.8056030273438
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
       },
-      "text": "Paper 325 Page 1"
+      "text": "Paper 525 Page 1"
     }, {
       "page": 1,
       "region": {
-        "x1": 53.92900085449219,
-        "x2": 298.6584777832031,
-        "y1": 66.32254791259766,
-        "y2": 346.296875
+        "x1": 54.0,
+        "x2": 295.3309326171875,
+        "y1": 63.72648620605469,
+        "y2": 592.463134765625
       },
-      "text": "communication is crucial to the design process for facilitating accurate delivery of information. However, abstract diagram sketches in the early stages of design cannot convey the intent of the designer effectively. Moreover, spatial design utilizes 3D models; therefore, communicating it to design collabora tors is difficult, with ambiguous and incomplete 2D representa tions. Second, creating a physical prototype of a spatial design requires time and resources. Physical models facilitate not only the communication to design collaborators and customers, but also the examination of design ideas and decision-making [10]. Additionally, designers utilize prototypes to refine 3D space design concepts [9, 10], verify constructability [37], and clarify design credibility [10]. Prototyping is necessary during designing; however, it is time-consuming and resourceintensive, which hinders its potential use as a design aid [10], and a prolonged prototyping process may lead to design fixa­ tion [44]. Third, traditional design reference search methods are unsuitable for obtaining spatial design data. Spatial design ers must consider various elements such as user requirements, room properties, and connectivity. Currently, designers pri marily use relevant textual terms to search for references. For example, designers use keywords to search for design refer ences via online search engines such as Google and Pinterest; however, spatial design data is multi-type data with visual in formation. Relevant literatures have identified the limitations of textual search [4, 7, 25, 41] as insufficient and fuzzy [1]."
-    }, {
-      "page": 1,
-      "region": {
-        "x1": 53.18199920654297,
-        "x2": 298.7369689941406,
-        "y1": 357.2315368652344,
-        "y2": 538.5759887695312
-      },
-      "text": "Therefore, this study proposes C-Space, an interactive plat form that assists users in exploring spatial design ideas through a tangible user interface (TUI) and augmented reality (AR). Researchers have developed tools to help users in prototyping the landscape and urban designs through TUI [34, 38] but have not provided features for merging previous references to create new designs. Studies based on AR prototyping con centrate on assisting users in creating a working prototype of an AR application [18, 19, 26, 31, 32]. Unlike previous studies, we propose an interactive and collaborative platform to create new designs with existing references through AR and prototyping features. The interactive design process through C-Space involves the following steps (please refer to Figure 1): 1) retrieving references, 2) discussing and altering references through projection mapping, 3) prototyping design alterna tives with a TUI. With C-Space, users can collaboratively alter sections of design references to create a new design."
-    }, {
-      "page": 1,
-      "region": {
-        "x1": 53.599998474121094,
-        "x2": 298.6561279296875,
-        "y1": 549.5105590820312,
-        "y2": 708.93701171875
-      },
-      "text": "C-Space has three key features. First, it provides relevant building floor plan references from the database. The system uses building shape, number of rooms, and room connectivity for prioritizing the retrievals. The retrieved references are pro jections mapped on a shared platform. A large-scale dataset (N=13,312) of building floor plans was collected for such refer ence retrieval. Second, it provides a tangible experience to the user and facilitates physical manipulation. According to Kim and Maher [21], TUI and physical actions aid spatial cognition by reducing cognitive load for designers during mental visual reasoning. Furthermore, multi-view user participation enables the interactive and rapid exploration of design alternatives in a collaborative environment. Third, it allows users to assess various finishing materials via projection mapping. Although material testing is typically conducted in the later stages, the"
-    }, {
-      "page": 1,
-      "region": {
-        "x1": 320.7860107421875,
-        "x2": 565.8209228515625,
-        "y1": 66.32254791259766,
-        "y2": 138.0780029296875
-      },
-      "text": "system allows material consideration in the early phase. Also, The results of C-Space can be exported in a building informa tion modeling (BIM)-compatible file format. Spatial design projects require multidisciplinary collaboration, necessitating the connection of design knowledge acquired from the early through the later design phases. Thus, the results of C-Space can be seamlessly linked to a later design process."
+      "text": "Researchers have previously developed several ways to create ungrounded force feedback by, for example, making the grounding structure worn on the back [19,27], producing haptic illusions via asynchronous oscillations [4,28], or using electrical muscle stimulation (EMS) [14,23–25]. These methods, however, have several limitations. Creating force feedback by pushing against a frame worn on the body requires users to wear a large and heavy device [19,27] and creates an unintended kickback in reaction to the intended feedback force. Simulating force feedback via haptic illusions [4,28] severely limits the strength of the perceived forces (< 0.3 N), which may further diminish when such methods are used for multidimensional forces [28]. As EMS methods [14,23,25] require users to attach electrodes to their body, they require a calibration procedure prior to use, and their output is limited to forces in the direction of one’s muscular alignment. This paper presents Thor’s Hammer, an ungrounded 3-DOF force feedback device that can create large and continuous forces using propeller propulsion (Figure 1a). Propeller propulsion is a method of creating thrust by pushing air using a rotating propeller. Thor’s Hammer orients its propulsion force with three degrees of freedom, by using three pairs of opposing propellers that have been mounted onto the device and oriented orthogonally to one another (Figure 1b). Each propeller may be rotated to provide force in one of the cardinal directions, or in arbitrary force vectors by coordinating their propulsion. A technical evaluation of Thor’s Hammer demonstrated that it can create 4 N of force in three dimensions with an RMSE of less than 0.11 N. Force vectors may be oriented arbitrarily, with an RMSE of less than 3.9°. Despite these advantages, there are disadvantages to the approach: the reliance on propellers for generating force provides latency (309.4 ms on average), and the arrangement requires an apparatus that is physically larger than typical VR controllers. We developed VR scenarios where a user experiences the buoyancy and drag of the water flow, the tugging of a leashed animal, the resistance of a button that has been pressed, and the weight of an object. We also conducted a user study to examine users’ impressions of the force feedback provided by Thor’s Hammer in enhancing these experiences. Participants found the device’s force feedback to be realistic and improved the immersive experience of the VR. In this paper, we thus make the following contributions:"
     }],
     "title": {
       "page": 0,
       "region": {
-        "x1": 321.093994140625,
-        "x2": 389.65118408203125,
-        "y1": 382.0151062011719,
-        "y2": 387.64599609375
+        "x1": 316.79998779296875,
+        "x2": 385.6860656738281,
+        "y1": 333.9960021972656,
+        "y2": 340.44000244140625
       },
       "text": "INTRODUCTION"
     }
@@ -474,1327 +201,1309 @@
     "title": {
       "page": 1,
       "region": {
-        "x1": 321.093994140625,
-        "x2": 399.3079528808594,
-        "y1": 158.1551055908203,
-        "y2": 163.7860107421875
+        "x1": 54.059906005859375,
+        "x2": 295.22137451171875,
+        "y1": 601.3474731445312,
+        "y2": 619.4647216796875
       },
-      "text": "RELATED WORKS"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 1,
-      "region": {
-        "x1": 320.7860107421875,
-        "x2": 565.90869140625,
-        "y1": 188.97152709960938,
-        "y2": 468.9460144042969
-      },
-      "text": "Studies based on spatial design support systems focus on the generation of optimized design variations based on predefined objectives at an early stage [8]. However, it is difficult to establish a clear design objective because the design concept, in the early stage, only exists in an abstract form. Min et al. [28] developed a design support system to aid the early spatial design phase by implementing a rule-based approach. Users input abstract properties, and the system recommends design adjustments. However, such a system requires a set of predefined design rules, and thus, it requires extensive prior research. It is suitable when the designer creates a design with similar constraints and objectives but not ideal in conceptual development with abstract diagrams. Furthermore, objectivebased design-generation methods create design starting points instead of the final design outcome [5]. To the best of our knowledge, the design support system for the early design phase in spatial design, utilizing the abstract intentions of the designer and providing an interface to find appropriate design alternatives, has not been investigated yet [27]. It is crucial to utilize abstraction to enhance the understanding of source properties, which plays a key in aiding design creativity [11]. Therefore, identifying an appropriate design reference from a large number of design alternatives is a challenging task. Thus, we propose three design reference retrieval methods to identify a design reference that meets the design requirements of the user from a large dataset."
-    }],
-    "title": {
-      "page": 1,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 554.1575317382812,
-        "y1": 177.89015197753906,
-        "y2": 183.52105712890625
-      },
-      "text": "Spatial Design Support System for Early Design Phase"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 1,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 565.823974609375,
-        "y1": 500.1085205078125,
-        "y2": 714.3309936523438
-      },
-      "text": "In spatial design such as architectural design, physical models are utilized to test and refine design ideas [12]. Additionally, architectural designers utilize physical models to communicate and share design ideas [35]. According to Steffanny [43], digi tal models cannot replace physical models for spatial design because the act of creating a physical model itself is the act of recording and interpreting the design, and design decisions can be taken accordingly [47]. Scale is a crucial factor in ar chitectural design [40]. A scaled physical model provides the designer with highly intuitive and clear relationships between spaces in scale. Therefore, imagining space using a scaled physical model is natural for spatial designers. Yaneva [47] explained the importance of the prototyping a physical model by observing the design process of architects in a professional architecture firm. The architects communicated using a phys ical model and refined the design, and during this process, they naturally experienced the space. Physical modeling on a scale with greater accuracy is required to test the relation ship between spaces and their nuances; however, this activity increases time and resource consumption. Testing finishing"
-    }, {
-      "page": 1,
-      "region": {
-        "x1": 54.0,
-        "x2": 561.5982055664062,
-        "y1": 750.361572265625,
-        "y2": 756.8056030273438
-      },
-      "text": "Paper 325 Page 2"
-    }, {
-      "page": 2,
-      "region": {
-        "x1": 53.68000030517578,
-        "x2": 298.6493225097656,
-        "y1": 66.32254791259766,
-        "y2": 149.0369873046875
-      },
-      "text": "materials on the prototype further increases the cost. RoomA live [17] transforms any room into immersive experience by projection mapping the digital contents to the planar surfaces like walls and floors. In this respect, AR can be utilized to test various finishing material on design prototypes. Therefore, this study proposes the C-Space, which enables TUI and AR based intuitive modeling and material simulation features such that designers can explore a vast design space."
-    }],
-    "title": {
-      "page": 1,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 445.9690856933594,
-        "y1": 489.0231018066406,
-        "y2": 494.65399169921875
-      },
-      "text": "Prototyping in Spatial Design"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 2,
-      "region": {
-        "x1": 53.46099853515625,
-        "x2": 298.74053955078125,
-        "y1": 179.10653686523438,
-        "y2": 426.2040100097656
-      },
-      "text": "TUI is an interaction method that affects digital representation through physical manipulation by the user, enabling better understanding and application of data [30]. MiniStudio, pro posed by Kim et al. [20], used miniature models and AR to design ubicomp spaces. Spatiality is an element that is diffi­ cult to experience without a prototype. MiniStudio enabled designers to better capture the design constraint and domain. Wakita et al. [45] developed SMAAD Surface, a TUI-based tool for prototyping organic forms of architectural mass to help designers in modeling complex shapes intuitively. Another example of the use of TUI in spatial design is the daylight prototyping tool, Heliodon [30], that allows users to under stand daylighting by simulating daylight conditions in built environments using a TUI. Heliodon utilizes TUI to prototype objects that would otherwise be difficult to visualize without physical models. According to Zuckerman and Gal-Oz [49], TUI not only enables intuitive use, but also aids collabora tion. Gu et al. [14] also mentioned that TUI amplifies the effect of design collaboration in the same space by sharing the design changes through tangible interaction. Therefore, applying TUI in spatial design prototyping processes can lead to more intuitive and effective collaborations and improve the understanding of space that designers design."
-    }],
-    "title": {
-      "page": 2,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 263.3841552734375,
-        "y1": 168.0200958251953,
-        "y2": 173.6510009765625
-      },
-      "text": "Tangible User Interface and Design Collaboration"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 2,
-      "region": {
-        "x1": 53.56999969482422,
-        "x2": 298.7402648925781,
-        "y1": 456.2735290527344,
-        "y2": 714.3309936523438
-      },
-      "text": "In the early stages of designing, designers use existing design outcomes as a reference. By exploring similar design cases, they can utilize knowledge from previous examples in current design problems. In this respect, research has been conducted on the development of floor plan retrieval algorithms based on the case-based reasoning (CBR) concept [4, 7, 23, 25, 41]. CBR is a concept wherein a novel solution can be obtained by exploring similar problem cases [22]. The most advanced form of CBR for spatial design is the one that uses semantic fingerprints of buildings. Semantic information of buildings refers to the concept of indexing the numbers and functions of rooms and the connectivity and accessibility of each room by using the hierarchical structure of the building data [24]. For example, a.SCatch is a sketch-based tool that retrieves floor plan images similar to the plan values entered by the user [1, 46]. They introduced an algorithm for searching similar draw ings using the input sketch values and the method of forming a repository by extracting spatial semantics from existing design references. In contrast, MetisCBR uses multiple agents to provide a description of the search process to the user, along with the retrieved outcome [2, 3]. Although the floor plan retrieval method of these state-of-the-art graph-based seman tic fingerprint studies is very powerful, these methods cannot process the floor plan’s shape information. In other words, in"
-    }, {
-      "page": 2,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 565.821533203125,
-        "y1": 186.28952026367188,
-        "y2": 290.9219970703125
-      },
-      "text": "these methods, similar floor plan drawings can be searched by determining a relationship and functions of spaces, but the shape of the floor plan itself cannot be considered. However, as shape is an important feature of human cognitive activity [48], shape similarity-based floor plan retrieval methods must be developed [42]. Therefore, we propose a novel floor plan search system, and an interface consisting of semantic finger­ print and shape similarity-based retrieval features to better capture and connect abstract intention entered by the user to a design reference created by other designers."
-    }],
-    "title": {
-      "page": 2,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 169.63145446777344,
-        "y1": 445.1881103515625,
-        "y2": 450.8190002441406
-      },
-      "text": "Design Reference Retrieval"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 2,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 565.8204345703125,
-        "y1": 326.7605285644531,
-        "y2": 387.5580139160156
-      },
-      "text": "C-Space is a design support system that stands for \"collab orative space\" and \"see [si:] space.\" It consists of six major components: 1) physical modeling components; 2) design reference data analysis; 3) three design reference retrieval methods and interfaces; 4) material simulation; 5) design al ternative management; 6) export to BIM format."
-    }],
-    "title": {
-      "page": 2,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 360.18756103515625,
-        "y1": 315.67510986328125,
-        "y2": 321.3059997558594
-      },
-      "text": "C-SPACE"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 2,
-      "region": {
-        "x1": 320.7359924316406,
-        "x2": 565.9118041992188,
-        "y1": 423.3965148925781,
-        "y2": 714.3309936523438
-      },
-      "text": "C-Space supports a TUI environment for physical modeling in architectural design, scaled down to 1/30. The physical modeling components consist of modular building blocks, room marker blocks, numbering interface, and grid board. The modular building blocks are used to assemble walls and rooms, and room marker blocks are used to indicate the room types. As illustrated in Figure 2-a, we created three different wall types (20 mm, 40 mm, and 80 mm wide) and three corner types (L, T, and + shaped blocks). A magnet with diameter 3 mm was installed at the bottom of the blocks to prevent them from falling apart. The building blocks have infrared (IR) reflective stickers on the top to enable automatic wall detection. The room markers have color stickers (Figure 2-b). Each color indicates a room type (balcony = green; bathroom = blue; living room = red; entrance = pink; bedroom = yellow). The grid board was made of a steel plate with a total area of 800 mm × 800 mm (Figure 2-d). A single grid unit measured 20 mm × 20 mm, and such units were arranged in 25 rows and columns. The unit size in real scale (600 mm) followed the minimum size of human movement [29, 33]. The grid board could be rotated 360°, and the AR marker on the grid board was used to detect the rotational angle to responsively map design reference and finishing material on the rotating grid board in real time. The numbering interface left to the grid board consists of ’1’, ’2’, ’3’, and ’4 and more’ areas (Figure 2-c). Once the room marker blocks are placed in the number area, C-Space recognizes the number of the input room type."
-    }, {
-      "page": 2,
-      "region": {
-        "x1": 54.0,
-        "x2": 561.5982055664062,
-        "y1": 750.361572265625,
-        "y2": 756.8056030273438
-      },
-      "text": "Paper 325 Page 3"
-    }],
-    "title": {
-      "page": 2,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 456.43292236328125,
-        "y1": 412.31109619140625,
-        "y2": 417.9419860839844
-      },
-      "text": "Physical Modeling Components"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 3,
-      "region": {
-        "x1": 53.59967803955078,
-        "x2": 298.65850830078125,
-        "y1": 200.00851440429688,
-        "y2": 469.0249938964844
-      },
-      "text": "The residential building design references were used as re trieval data. We collected 13,312 floor plans of residen tial spaces in Seoul from a web-based real-estate database (r114.co.kr) using a custom-written software in Python. A total of 7,555 floor plans with reliable resolutions were used for the study (Figure 3-a). The collected data were analyzed to index semantic information of the floor plans. The floor plan analysis was performed using Python, OpenCV, and NetworkX libraries. As illustrated in Figure 3, first, a morphological trans formation was performed to remove unnecessary contour lines such as text, hatches, and furniture from the drawing images, and only the wall lines were extracted (Figure 3-a). Then, the edge points that share the same x or y coordinates within the specified threshold were drawn, and each room was extracted in the form of a closed polygon. The room type was classified based on the color detected at the center of each room (Figure 3-b) because the source data was already colored according to the room type. Thereafter, room nodes were created in accordance with the number of rooms. The nodes had their own room type as attributes. The room connectivity was deter mined by room nodes and door connection (Figure 3-c). When a room node is connected to a door, which is also connected to another room node, then the edge between the rooms is assigned. Later, the floor plan shape was extracted though shape analysis (Figure 3-d)."
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 53.58000183105469,
-        "x2": 298.7437438964844,
-        "y1": 479.9585266113281,
-        "y2": 661.302978515625
-      },
-      "text": "The bounding box is defined by connecting the outermost corner points of the building silhouette (Figure 4-a, b), and it is used to determine the aspect ratio of the floor plan shape. Thereafter, we divided the bounding box into 16 grids (Figure 4-c). Then, the shape’s area occupying ratio for each of the 16 grids was calculated. The floor plans were classified into seven types based on the aspect ratio and the 16 area ratios. The classification criteria are variations of those used by Rodrigues et al. [39] (Figure 4-d). The 16 area ratios also used for the shape-based retrieval method to calculate floor plan similarity. The room location is obtained by converting the room center to its relative position using the horizontal and vertical lengths, as shown in equations 1 and 2. The relative coordinates x and y are calculated by subtracting room center coordinate Rx and Ry from the top left corner coordinates, (Tx,Ty). Then, this result is divided by the difference of the bottom-right corner coordinates, (Bx,By), and (Tx,Ty)."
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 107.69715118408203,
-        "x2": 297.0064697265625,
-        "y1": 687.0762329101562,
-        "y2": 693.9205322265625
-      },
-      "text": "Relative x = |Rx − T x|/ |Bx − T x| (1)"
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 108.51411437988281,
-        "x2": 297.0065002441406,
-        "y1": 707.4796752929688,
-        "y2": 714.323974609375
-      },
-      "text": "Relative y = |Ry − Ty|/ |By − Ty| (2)"
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 565.81494140625,
-        "y1": 459.11810302734375,
-        "y2": 574.8359985351562
-      },
-      "text": "System Interface Figure 5 illustrates the main page of C-Space’s GUI. Users can utilize C-Space functions through the navigation bar (Figure 5-a). The retrieved design references are displayed next to the navigation bar (Figure 5-b). When a reference is clicked, the corresponding image is displayed in the center of the GUI and is also simultaneously projected on the grid board (Figure 5-c, Figure 7-b). When the \"Use\" button is clicked, C-Space archives the reference (Figure 5-d). Additionally, users can save and load the design alternatives that they previously cre ated (Figure 5-e)."
-    }],
-    "title": {
-      "page": 3,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 190.7383575439453,
-        "y1": 188.92311096191406,
-        "y2": 194.55401611328125
-      },
-      "text": "Design Reference Data Analysis"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 3,
-      "region": {
-        "x1": 320.7359924316406,
-        "x2": 564.167236328125,
-        "y1": 600.2245483398438,
-        "y2": 650.06298828125
-      },
-      "text": "As users start designing with C-Space, the first function that they use is design constraint mapping. Users can check the design constraints both on the monitor and on the grid board (Figure 6). The design constraints consist of information of the building site and the surrounding environment."
-    }],
-    "title": {
-      "page": 3,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 429.1391296386719,
-        "y1": 589.2243041992188,
-        "y2": 594.77001953125
-      },
-      "text": "Design Constraint Mapping"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 3,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 565.9017333984375,
-        "y1": 675.4515380859375,
-        "y2": 714.3308715820312
-      },
-      "text": "C-Space supports three retrieval methods: 1) shape-based, 2) number of rooms-based, and 3) room connectivity-based meth ods. These three retrieval algorithms can be used in parallel. Users can use two or more search methods simultaneously"
-    }, {
-      "page": 3,
-      "region": {
-        "x1": 54.0,
-        "x2": 561.5982055664062,
-        "y1": 750.361572265625,
-        "y2": 756.8056030273438
-      },
-      "text": "Paper 325 Page 4"
-    }, {
-      "page": 4,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 298.2390441894531,
-        "y1": 426.0205383300781,
-        "y2": 464.8999938964844
-      },
-      "text": "depending on the desired conditions. The search results do not include floor plans with full details; instead, we simplified the floor plan image to focus on the visualizations of the shape, type, location, area, and connectivity between rooms."
-    }],
-    "title": {
-      "page": 3,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 506.9226379394531,
-        "y1": 664.4512939453125,
-        "y2": 669.9970092773438
-      },
-      "text": "Design Reference Retrieval Interface Overview"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 4,
-      "region": {
-        "x1": 53.56999969482422,
-        "x2": 298.7369689941406,
-        "y1": 489.1505432128906,
-        "y2": 714.3309936523438
-      },
-      "text": "A C-Space user can search for a floor plan reference with a similar shape by assembling the outer walls on the grid board using building blocks (Figure 7). In this case, users do not need to complete the outer walls of the desired shape; users only need to assemble the corners of the desired shape on the grid board (Figure 7-a). Additionally, when the corners are correctly recognized, the surface area (m2) is calculated and provided to the user. Unlike other reference retrieval methods, the shape-based method enables users to input the weighting value through the slider GUI to retrieve the floor plan references based on the degree of similarity. The higher the weighting value, the higher the is degree of similarity of the retrieved floor plan (Figure 7-c). The shape-based reference retrieval method is performed in three steps. First, filtering is performed using the shape classification method. Secondly, the references with a similarity degree lower than the weighting value are filtered out. The similarity value is calculated by comparing the averaged differences of the 16 grids between the input floor plan and reference in the dataset (Figure 8). Finally, the references were retrieved based on the similarity values."
-    }],
-    "title": {
-      "page": 4,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 232.71900939941406,
-        "y1": 478.1492919921875,
-        "y2": 483.69500732421875
-      },
-      "text": "Shape-Based Retrieval Method and Interface"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 4,
-      "region": {
-        "x1": 320.7860107421875,
-        "x2": 565.9117431640625,
-        "y1": 326.8225402832031,
-        "y2": 398.5790100097656
-      },
-      "text": "To search for references using the number of rooms-based method, users must input the number of rooms per room type by placing the room marker blocks on the numbering interface. Then, the webcam detects the room marker and processes the number of rooms-based retrieval method (Figure 9-a). The system compares the entire dataset with the input information and provides only the matching data to the user (Figure 9-b)."
-    }],
-    "title": {
-      "page": 4,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 546.70654296875,
-        "y1": 315.8222961425781,
-        "y2": 321.3680114746094
-      },
-      "text": "Number of Rooms-Based Retrieval Method and Interface"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 4,
-      "region": {
-        "x1": 320.7359924316406,
-        "x2": 565.4038696289062,
-        "y1": 423.1585388183594,
-        "y2": 593.5440063476562
-      },
-      "text": "In this method, users can input the relative position of the room by placing a room marker on the grid board. The webcam detects the marker, and if there is an input shape data created with TUI, the relative position of the marker is calculated using the width and length of the floor plan in the dataset. Users can assign the room connectivity by selecting the rooms using the GUI (Figure 10-a). In the room-connectivity search, the entire dataset is first filtered based on connectivity. The purpose of this filtering operation is not to perform graph matching to obtain data identical to the user input but to perform subgraph matching to obtain data including the user input. Therefore, users can retrieve design references that partially match the input room connectivity. Also, the room connectivity-based retrieval method is integrated with the location of the room to sort the retrieved results. This method calculates the sum of distances between the location of the input room and rooms in"
-    }, {
-      "page": 4,
-      "region": {
-        "x1": 54.0,
-        "x2": 561.5982055664062,
-        "y1": 750.361572265625,
-        "y2": 756.8056030273438
-      },
-      "text": "Paper 325 Page 5"
-    }, {
-      "page": 5,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 297.0008544921875,
-        "y1": 299.75152587890625,
-        "y2": 360.5480041503906
-      },
-      "text": "the database. A shorter distance between the rooms infers that a room of the same type is located near the input room. The sum of distances is sorted in ascending order and displayed to the user. If the connectivity input is not provided, the room location retrieval algorithm operates as a stand-alone algorithm."
-    }],
-    "title": {
-      "page": 4,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 549.19921875,
-        "y1": 412.15728759765625,
-        "y2": 417.7030029296875
-      },
-      "text": "Room Connectivity-Based Retrieval Method and Interface"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 5,
-      "region": {
-        "x1": 53.599998474121094,
-        "x2": 298.7382507324219,
-        "y1": 384.54254150390625,
-        "y2": 587.8049926757812
-      },
-      "text": "To simulate materials on the physical model, users must com plete the assembly of the building blocks. Then, the pre installed IR camera detects the IR Sticker on the building block, and the system reconstructs a digital 3D model of the building block assembly. To achieve this, C-Space detects the corner, outer, and inner walls of the completed model. Corners are detected using an algorithm that distinguishes between the inner and outer walls based on their areas by examining the surrounding eight grids (Figure 11). Then, the order of the corners is sorted to form a continuous line, and the outer walls are automatically assigned between the corners. For accurate modeling, corners are offset by 8 pixels (7.071 mm) to account for the thickness of the wall. The intersection points of three or more walls are set as starting points for the detection of the inner space. The search process begins from a starting point, and inner corners are identified. Then, other corners of the same space are eliminated to prevent redundant searching. Finally, every corner of the inner space is offset by 26 pixels (21.213 mm)."
-    }, {
-      "page": 5,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 298.6584167480469,
-        "y1": 598.7395629882812,
-        "y2": 714.3309936523438
-      },
-      "text": "Users can select and apply finishing materials by using C Space’s GUI (Figure 13-a). The source images for material simulation were collected from an online texture database (tex ture.com). We collected 91 material textures (11 brick, 10 concrete, 11 fabric, 6 plaster, 14 stone, 14 tile, 6 wallpaper, 9 wood, and 10 wood flooring textures). When the \"Map ping\" button on the GUI is pressed, the system reconstructs 3D walls by using two adjacent points among the assembled model input, and a floor is created based on all the corners of each room. We calculated the wall length to crop the selected materials to the real-life scale on each face of the wall. Then,"
-    }, {
-      "page": 5,
-      "region": {
-        "x1": 320.7359924316406,
-        "x2": 565.822265625,
-        "y1": 444.988525390625,
-        "y2": 516.7449951171875
-      },
-      "text": "the preinstalled projectors map the reconstructed 3D model with the material texture to the assembled building blocks by adjusting camera FOV, viewpoint location, and rotation. Three projectors (Figure 13-b) were calibrated for material simula tion (two projectors for the walls and one for the floor). The real-time rotation was supported by calculating the rotation angle through the AR marker recognition on the grid board."
-    }],
-    "title": {
-      "page": 5,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 130.2061767578125,
-        "y1": 373.54229736328125,
-        "y2": 379.0880126953125
-      },
-      "text": "Material Simulation"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 5,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 565.7755737304688,
-        "y1": 541.4575805664062,
-        "y2": 602.2550048828125
-      },
-      "text": "Users can save the design alternatives that they create; 3D model, material data, floor plan references used to complete the design are saved. Additionally, users can track design generation history through the retrieval tags. Furthermore, C-Space supports guide projection on the grid board to help users in remodeling the saved design alternatives (Figure 14)."
-    }],
-    "title": {
-      "page": 5,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 418.2718811035156,
-        "y1": 530.457275390625,
-        "y2": 536.0029907226562
-      },
-      "text": "Alternative Management"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 5,
-      "region": {
-        "x1": 320.7860107421875,
-        "x2": 565.90478515625,
-        "y1": 631.6155395507812,
-        "y2": 714.3309936523438
-      },
-      "text": "The design alternative created with C-Space can be exported to a BIM file format (Figure 15). The design outcome can be exported as an rvt file, an extension of Autodesk Revit, through the Autodesk Dynamo Studio environment. When the alternative is saved in C-Space, the room types and inner and outer wall information are immediately exported to a csv file. Next, the wall shape is reconstructed in the form of a set of curves comprising the coordinates of the start and end points"
-    }, {
-      "page": 5,
-      "region": {
-        "x1": 54.0,
-        "x2": 561.5982055664062,
-        "y1": 750.361572265625,
-        "y2": 756.8056030273438
-      },
-      "text": "Paper 325 Page 6"
-    }, {
-      "page": 6,
-      "region": {
-        "x1": 53.56999969482422,
-        "x2": 297.00311279296875,
-        "y1": 182.18154907226562,
-        "y2": 232.02001953125
-      },
-      "text": "that are again modeled in curves on Revit and converted into walls using a custom-written Dynamo code. The properties of each room, including the coordinates of the center point and the room type, are subsequently used to assign and define the room after reconstructing the wall in Revit."
-    }],
-    "title": {
-      "page": 5,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 412.4347229003906,
-        "y1": 620.5300903320312,
-        "y2": 626.1610107421875
-      },
-      "text": "Export to BIM Format"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 6,
-      "region": {
-        "x1": 53.18199920654297,
-        "x2": 298.37957763671875,
-        "y1": 258.9335021972656,
-        "y2": 374.5249938964844
-      },
-      "text": "We implemented C-Space in the predefined lab test condition (Figure 16). Our configuration required the custom-developed C-Space software written in Java and the following hardware: three projectors (NEC NP-3150 with 5000 lumens; Optoma HD65 with 1600 lumen; Panasonic PT-VX420 with 4500 lumens), an IR light, a high-definition (HD) camera, and a custom-made HD IR camera. To detect modular building blocks, we created an HD IR camera with Logitech C920 and a negative film for high resolution images. All the devices were connected to a computer (i7-7800; Nvidia GTX 1660Ti; 16 GB DDR4 RAM) with a 32\" monitor (1920 × 1080)."
-    }],
-    "title": {
-      "page": 6,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 185.51092529296875,
-        "y1": 247.8480987548828,
-        "y2": 253.47900390625
-      },
-      "text": "IMPLEMENTATION & RESULTS"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 6,
-      "region": {
-        "x1": 53.599998474121094,
-        "x2": 298.7369689941406,
-        "y1": 401.43951416015625,
-        "y2": 538.948974609375
-      },
-      "text": "For an objective evaluation of the experiments, two groups of participants were invited: novice designers and professional designers. Then, the participants were grouped into teams. Each team comprised three members, and a total of four teams participated in the experiment (professional team, a and b; novice team, a and b). Participants majoring in interior ar chitecture design were invited as novices and those currently practicing as spatial designers were recruited as professionals (working experience: M=30.667 month, SD=15.946). A total of five males and seven females (P1–P12) in the age range of 22–29 years were recruited; among them, six were novice and the rest were professional designers. Every participant was very familiar with the traditional spatial design process."
-    }],
-    "title": {
-      "page": 6,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 101.12812805175781,
-        "y1": 390.3540954589844,
-        "y2": 395.9849853515625
-      },
-      "text": "User Study"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 6,
-      "region": {
-        "x1": 53.56999969482422,
-        "x2": 298.74517822265625,
-        "y1": 565.862548828125,
-        "y2": 714.33056640625
-      },
-      "text": "The experiment lasted for approximately 4 h. The first 50 min were dedicated to a tutorial session that consisted of a summary of our research and instructions for using C-Space. Participants were given 20–30 min to familiarize themselves with the system. Thereafter, each group performed a design task based on a design brief. The participants aimed to design a residential building based on the design brief that consisted of specific design requirements including site, target user, and user requirements. There were two types of design briefs: the first type for teams \"Professional a\" and \"Novice b,\" and the second type for teams \"Professional b\" and \"Novice a.\" In the first type, a house was to be designed for a retired couple, who use wheelchairs, and their two daughters. In the second type, a house was to be designed for a young"
-    }, {
-      "page": 6,
-      "region": {
-        "x1": 320.7359924316406,
-        "x2": 565.9152221679688,
-        "y1": 287.529541015625,
-        "y2": 468.8739929199219
-      },
-      "text": "couple and their little son who requires a room for piano practice. The participants were asked to submit more than one design. They were given approximately 2 h to complete the task. Upon completion, each participant was asked to answer questionnaires. Two indicators were measured in this experiment: system performance and system usability scale (SUS) in the 7-point Likert scale. Then, an in-depth interview was conducted with each participant for approximately 40 min. During the interview, we inquired about the effectiveness of collaboration with their team members using C-Space, which is different from the existing design methods, the role and importance of reference exploration and prototyping in the design process, pros and cons of C-Space compared to the traditional methods. Specifically, participants were asked to compare traditional design approaches (e.g., sketching and 3D tools) with C-Space in terms of time efficiency, usability, and quality."
-    }],
-    "title": {
-      "page": 6,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 135.1466522216797,
-        "y1": 554.777099609375,
-        "y2": 560.4080200195312
-      },
-      "text": "Experiment Design"
+      "text": "1. A demonstration of a propeller-based 3-DOF ungrounded force-feedback device."
     }
   }, {
     "paragraphs": [],
     "title": {
-      "page": 6,
+      "page": 1,
       "region": {
-        "x1": 321.093994140625,
-        "x2": 422.2439880371094,
-        "y1": 486.881103515625,
-        "y2": 492.5119934082031
+        "x1": 54.05987548828125,
+        "x2": 255.97909545898438,
+        "y1": 625.35107421875,
+        "y2": 631.944580078125
       },
-      "text": "Results and Discussion"
+      "text": "2. A technical evaluation of our implementation."
+    }
+  }, {
+    "paragraphs": [],
+    "title": {
+      "page": 1,
+      "region": {
+        "x1": 54.05987548828125,
+        "x2": 295.43060302734375,
+        "y1": 637.8309326171875,
+        "y2": 655.9481811523438
+      },
+      "text": "3. A discussion of design considerations given the technical tradeoffs of our device."
+    }
+  }, {
+    "paragraphs": [{
+      "page": 1,
+      "region": {
+        "x1": 72.05760192871094,
+        "x2": 190.95013427734375,
+        "y1": 673.3582763671875,
+        "y2": 679.9517822265625
+      },
+      "text": "in enhancing VR experiences."
+    }],
+    "title": {
+      "page": 1,
+      "region": {
+        "x1": 54.05987548828125,
+        "x2": 295.1517028808594,
+        "y1": 661.8345336914062,
+        "y2": 668.4280395507812
+      },
+      "text": "4. A user study demonstrating the role of Thor’s Hammer"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 1,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 558.1109008789062,
+        "y1": 73.80650329589844,
+        "y2": 114.2540283203125
+      },
+      "text": "To place Thor’s Hammer within the context of existing literature, we focus our review on techniques for inducing body-grounded and ungrounded force feedback that allow moving with the device."
+    }],
+    "title": {
+      "page": 1,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 390.1409912109375,
+        "y1": 62.915985107421875,
+        "y2": 69.3599853515625
+      },
+      "text": "RELATED WORK"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 1,
+      "region": {
+        "x1": 316.7999572753906,
+        "x2": 558.1206665039062,
+        "y1": 135.00645446777344,
+        "y2": 242.903076171875
+      },
+      "text": "Wearable force feedback devices create force against a wearer’s body, allowing the workspace to move with the wearer. Torso-grounded devices [19,27] are worn on a user’s back and use motors to pull tension wires attached to a haptic handle through a rigid frame that extends around the workspace in front of the wearer’s body. The use of wires makes the device lighter than using a robotic linkage, however, it requires a frame larger than the required workspace, making it cumbersome to wear because the wires can only pull the haptic feedback handle."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 316.800048828125,
+        "x2": 558.0909423828125,
+        "y1": 253.5664520263672,
+        "y2": 339.023193359375
+      },
+      "text": "Hand-grounded force feedback devices [8,10,13,20,44,45] allow users to experience the sensation of grasping. Some haptic gloves [8,13] provide passive force feedback by using a brake instead of a motor to stop movement of the fingers, thus making the device lighter and more robust to strong grasping. While these gloves are small and lightweight, they can only create forces that act upon the hand, unless of course, used in combination with other grounded devices."
+    }],
+    "title": {
+      "page": 1,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 464.364013671875,
+        "y1": 124.11599731445312,
+        "y2": 130.55999755859375
+      },
+      "text": "Wearable Force Feedback Devices"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 1,
+      "region": {
+        "x1": 316.78997802734375,
+        "x2": 558.0909423828125,
+        "y1": 359.7664794921875,
+        "y2": 467.79254150390625
+      },
+      "text": "Gyroscopic effects, in which a spinning wheel tries to conserve energy by rotating the wheel perpendicular to the spinning axis, can also be used to create force feedback. As gyroscopic effects can be made without any grounding structure, they have been used to provide haptic feedback on mobile devices [6,26], handheld haptic controller [38,40], and VR head-mounted displays [16]. Winfree et al. [38] implemented a handheld device with motors controlling two gimbals and showed that it could create torque in arbitrary directions on two axes with a maximum torque of 1.2 Nm."
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 558.0211791992188,
+        "y1": 478.4796447753906,
+        "y2": 552.6517333984375
+      },
+      "text": "Using gyroscope-based force feedback techniques, however, can only create torque in up to two axes, as the flywheel rotation cannot be used to create torque. An additional complication of the approach is that increasing the torque magnitude without increasing the weight or the size of device can also be challenging as the moment of inertia is determined by the weight and the radius of the flywheel."
+    }],
+    "title": {
+      "page": 1,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 546.4441528320312,
+        "y1": 348.8760070800781,
+        "y2": 355.32000732421875
+      },
+      "text": "Ungrounded Force Feedback with Gyroscopic Effects"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 1,
+      "region": {
+        "x1": 316.78997802734375,
+        "x2": 558.0510864257812,
+        "y1": 573.3665161132812,
+        "y2": 670.1079711914062
+      },
+      "text": "Researchers have demonstrated the use of asynchronous periodic oscillation to create the sense of pulling or pushing due to the nonlinear nature of our tactile perception [2,19,22]. As vibrotactile actuators are small and ungrounded, the use of haptic illusions may be a viable solution for mobile force feedback scenarios. However, illusion-based force feedback is limited, as perceived force magnitudes are small (< 0.3 N) and often diminish for multidimensional forces [28]."
+    }],
+    "title": {
+      "page": 1,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 480.9058837890625,
+        "y1": 562.35595703125,
+        "y2": 568.7999877929688
+      },
+      "text": "Force Feedback using Haptic Illusions"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 1,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 557.971435546875,
+        "y1": 687.8464965820312,
+        "y2": 716.8798828125
+      },
+      "text": "Instead of creating actual forces to act on muscles, researchers have found that stimulating the muscles themselves using electric signals can be a viable way to"
+    }, {
+      "page": 1,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 525 Page 2"
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 53.97010803222656,
+        "x2": 295.29095458984375,
+        "y1": 228.7264862060547,
+        "y2": 291.6138916015625
+      },
+      "text": "create the perception of force feedback [14,23] and enable weight perception [24,25]. EMS-based techniques have the benefits of being small and lightweight, however, these methods cannot generate standardized force feedback, e.g., simulating 2 N of force or 300 g of weight. They also require users to wear electrodes on their body."
+    }],
+    "title": {
+      "page": 1,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 441.3329162597656,
+        "y1": 676.8360595703125,
+        "y2": 683.280029296875
+      },
+      "text": "Electro-Muscular Stimulation"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 2,
+      "region": {
+        "x1": 53.95024108886719,
+        "x2": 295.17144775390625,
+        "y1": 312.60650634765625,
+        "y2": 443.07244873046875
+      },
+      "text": "Of greatest relevance to our work are devices that generate forces by releasing high-pressure air through nozzles. AirWand [29] is a pen-shaped device with two air nozzles aligned on a single axis facing opposite directions. The device can generate up to 3.16 N of continuous force along one axis by releasing compressed air through a nozzle. Furthermore, AirGlove [17] is a hand-worn device that has six air nozzles that can exert up to 7.3 N of force in three dimensions. However, the air jets used in such devices require a heavy air compressor to produce high-pressure compressed air, which makes it difficult for them to be mobile and worn by users."
+    }],
+    "title": {
+      "page": 2,
+      "region": {
+        "x1": 54.0,
+        "x2": 179.5139923095703,
+        "y1": 301.71600341796875,
+        "y2": 308.1600036621094
+      },
+      "text": "Force Feedback using Air Jet"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 2,
+      "region": {
+        "x1": 53.99005126953125,
+        "x2": 295.281005859375,
+        "y1": 464.0465087890625,
+        "y2": 628.3665771484375
+      },
+      "text": "With the recent proliferation of drone technology, there has been a growing interest in using them to provide haptic feedback. While rotating propellers can be a potential hazard in drones, a study by Abtahi et al. [2] found that more than half of participants would touch a flying drone to interact with it if it was equipped with a protective mesh. While drones could provide passive haptic feedback when being touched or moved by the user’s hand [15], researchers demonstrated that drones could provide active haptic feedback by flying towards the user’s hand [21,39], although the feedback can only create up to 0.118 N of force [39]. Furthermore, Abdullah et al. [1] showed that when using drones to generate force feedback on a single axis aligned with the propeller orientation, it could exert up to 1.53 N for upward and 2.97 N for downward forces."
+    }],
+    "title": {
+      "page": 2,
+      "region": {
+        "x1": 54.0,
+        "x2": 182.60098266601562,
+        "y1": 453.156005859375,
+        "y2": 459.6000061035156
+      },
+      "text": "Force Feedback using Drones"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 2,
+      "region": {
+        "x1": 54.0,
+        "x2": 295.2112731933594,
+        "y1": 646.0864868164062,
+        "y2": 708.9739379882812
+      },
+      "text": "Benko et al. [7] developed the NormalTouch controller to enable users to perceive the shape of physical objects in VR. NormalTouch uses three servo motors that move a small platform to provide force feedback. Given its size, this device can only create force feedback on a finger. Weightshifting has also been explored for ungrounded force"
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 316.79461669921875,
+        "x2": 558.1549072265625,
+        "y1": 228.74253845214844,
+        "y2": 291.62994384765625
+      },
+      "text": "feedback. TorqueBAR [32] is a handheld device with horizontal rails that a motor slides along. The device creates torque by moving the center of mass via the left and right movement of a motor. Shifty [41] is a rod-shaped handheld device that moves a weight along the rod, thus changing its rotational inertia."
+    }],
+    "title": {
+      "page": 2,
+      "region": {
+        "x1": 54.0,
+        "x2": 244.6110382080078,
+        "y1": 635.196044921875,
+        "y2": 641.6400146484375
+      },
+      "text": "Other Ungrounded Force Feedback Methods"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 2,
+      "region": {
+        "x1": 316.7900695800781,
+        "x2": 558.0309448242188,
+        "y1": 309.3664855957031,
+        "y2": 383.5385437011719
+      },
+      "text": "While extensive research has explored creating ungrounded force feedback, there has yet to be an ungrounded method that can create a large physical force in an arbitrary threedimensional direction without the use of large and heavy equipment. Thor’s Hammer overcomes this by using propellers to push an ungrounded material, air, to create forces."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 316.7801513671875,
+        "x2": 558.0410766601562,
+        "y1": 393.635986328125,
+        "y2": 467.77532958984375
+      },
+      "text": "THOR’S HAMMER: FORCE FEEDBACK DEVICE USING PROPELLER PROPULSION This work proposes the use of propeller propulsion to create 3-DOF force feedback. We demonstrate this approach with our prototype device, dubbed Thor’s Hammer. The device was implemented using off-the-shelf materials and 3Dprinted parts from an FDM printer."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 316.7701416015625,
+        "x2": 558.0411376953125,
+        "y1": 477.8760070800781,
+        "y2": 622.121826171875
+      },
+      "text": "Hardware Implementation Thor’s Hammer is constructed using a series of propellers mounted within a carbon fiber pipe cage (Figure 2). Thor’s Hammer has six 2600KV T-Motor F40 III brushless motors (and accompanying tri-blade propellers) to generate bidirectional thrust in three axes. Each tri-blade propeller has a length of 127 mm, a pitch of 114.3 mm, and creates an outward airflow, away from the carbon fiber frame. Instead of rotating one propeller in two directions to create pushing and pulling forces, the device uses two propellers, which push the air to change the direction of the force by controlling the throttle to minimize latency when inverting the rotating direction of each motor."
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 316.7502746582031,
+        "x2": 558.021240234375,
+        "y1": 633.0479736328125,
+        "y2": 708.6642456054688
+      },
+      "text": "Surrounding the motors and propellers is a motor frame that was built using 10 mm-diameter carbon fiber pipes. This frame allows each motor to be mounted in its necessary location. External to this frame was a cage frame that was assembled with 8 mm-diameter carbon fiber pipes and have a badminton string weaved mesh with 10 mm spacing surrounding it. This frame and mesh provides structural"
+    }, {
+      "page": 2,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 525 Page 3"
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 54.0,
+        "x2": 295.25115966796875,
+        "y1": 63.72648620605469,
+        "y2": 173.7945556640625
+      },
+      "text": "support for the device and acts as a safety mechanism, while still maximizing the airflow from the device and also minimizing device weight. A handle is wrapped with a hightraction racket grip and affixed to the outside of the frame and mesh to enable a user to hold the device. All joints, motor mounts, and the handle were 3D printed. The resulting dimensions of the device are 208 mm × 208 mm × 208 mm (without a handle, whose length is 120 mm and diameter 34 mm). The total weight of the device is 692 g, excluding the wires necessary to connect the motors to the drive board."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 53.99009704589844,
+        "x2": 295.24114990234375,
+        "y1": 184.72068786621094,
+        "y2": 294.90826416015625
+      },
+      "text": "Six ES30 HV electronic speed controllers (ESC) are used to power the motors and are placed on a drive board to reduce the weight of the device. Due to the electrical requirements, two 14V 350W power supplies are used to run the prototype device. Because stopping the brushless motors can result in a high-voltage current back flow, SR1050 Schottky diodes have been added between the ESCs and power supplies. An Arduino Leonardo installed on the drive board controls the ESCs using PWM signals and communicates with a PC through a USB connection."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 53.99003601074219,
+        "x2": 295.2511291503906,
+        "y1": 305.7148742675781,
+        "y2": 547.1107177734375
+      },
+      "text": "We used a VICON optical tracking system to track the device’s position and orientation in a virtual environment. Position and orientation of the device are essential to locate it in the virtual environment and to enable force vectors in environment space rather than relative to the orientation of the device. For example, if a user puts a virtual wooden stick into the water, the buoyancy force should change by the stick location and should remain ‘upward’ relative to the real world regardless of the device orientation. Virtual environments were simulated using an Oculus Rift headmounted display. Software Implementation The device control software was written in C# and the VR applications were implemented in Unity. A force-control API for Unity was implemented and used to calculate a device-based force vector by rotating the global force vector in a direction opposite to the device’s rotation, and to send the force vector to the device control software via UDP communication. The device control software calculates the throttle for each motor and sends motor control messages to the Arduino."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 53.98008728027344,
+        "x2": 295.2710266113281,
+        "y1": 558.0368041992188,
+        "y2": 656.7005615234375
+      },
+      "text": "When the device starts, all motors begin rotating at a minimum speed of 1200 rpm, to minimize the latency of subsequently applying a propeller force. As single axis force is created by combining the throttles of two motors, the device produces a 3-DOF force by combining the three force vectors created by the three pairs of motors. The throttleforce function for each motor was calibrated using quadratic fitting functions to have a linear relation with an actual force between 0 - 4 N."
+    }],
+    "title": {
+      "page": 2,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 358.0379333496094,
+        "y1": 298.47601318359375,
+        "y2": 304.9200134277344
+      },
+      "text": "Summary"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 3,
+      "region": {
+        "x1": 54.0,
+        "x2": 295.291015625,
+        "y1": 677.886474609375,
+        "y2": 707.4078979492188
+      },
+      "text": "As this work is one of the first to investigate the use of propeller propulsion to create force feedback, it was essential to empirically evaluate the force characteristics that Thor’s"
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 316.79461669921875,
+        "x2": 558.0655517578125,
+        "y1": 63.73295593261719,
+        "y2": 139.349365234375
+      },
+      "text": "Hammer produces. To quantify the capabilities of our prototype, we conducted a technical evaluation of its performance by measuring the force control accuracy (both strength and direction), responsiveness (latency), noise level, and power consumption of the device. We begin by presenting our measurement rig, and then describe the results of the evaluation."
+    }],
+    "title": {
+      "page": 3,
+      "region": {
+        "x1": 54.0,
+        "x2": 166.93202209472656,
+        "y1": 666.7559814453125,
+        "y2": 673.2000122070312
+      },
+      "text": "TECHNICAL EVALUATION"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 3,
+      "region": {
+        "x1": 316.78997802734375,
+        "x2": 558.1007080078125,
+        "y1": 160.5664520263672,
+        "y2": 247.70660400390625
+      },
+      "text": "An aluminum extrusion measurement frame was created to evaluate the prototype (Figure 3). The frame measured 610 mm × 610 mm × 610 mm, allowing for 201 mm of space between each face of the prototype and the aluminium extrusion frame. Attached to each center of the frame, were six calibrated load cells that could measure up to 5 kg of force (CZL635). The frame was raised 300 mm above the ground."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 316.7998962402344,
+        "x2": 557.981201171875,
+        "y1": 258.51324462890625,
+        "y2": 322.725341796875
+      },
+      "text": "The prototype was suspended within the aluminum frame using six steel wires to minimize the probable effect of the aluminum frame magnifying the force magnitude. Each wire connected a motor mount to a load cell and had a plastic tensioner to tighten the wire. The handle and weaved mesh were removed during the entire measurement process."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 316.7899169921875,
+        "x2": 558.0509643554688,
+        "y1": 333.5319519042969,
+        "y2": 409.2677307128906
+      },
+      "text": "The load cells were connected to HX711 load cell amplifiers that amplify and digitize the sensor values with 24-bit Analog-Digital converters. An Arduino Uno sampled the load cell measurements at 82 FPS and sent them to a PC. An experimental program written in C# generated force feedback via Thor’s Hammer and recorded the resulting force measurements."
+    }],
+    "title": {
+      "page": 3,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 389.8619689941406,
+        "y1": 149.43600463867188,
+        "y2": 155.8800048828125
+      },
+      "text": "Evaluation Setup"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 3,
+      "region": {
+        "x1": 316.7900390625,
+        "x2": 557.971435546875,
+        "y1": 591.9664916992188,
+        "y2": 656.05908203125
+      },
+      "text": "To test the accuracy of the forces created by the prototype, force patterns that increased in magnitude along a single axis, from 0.5 N to 4 N with 0.5 N increments, were designed. Each force feedback pattern was activated for 3 seconds and tested in both directions on all three axes. There were 3 second breaks between each direction and axis change."
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 557.9813232421875,
+        "y1": 666.9851684570312,
+        "y2": 708.0303344726562
+      },
+      "text": "The average output force as a relation of the input force was calculated from the measurements, for all three axes (Figure 4b). The device was able to exert force at 4 N in each of the six directions on three axes, which is comparable to a"
+    }, {
+      "page": 3,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 525 Page 4"
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 54.0,
+        "x2": 295.291015625,
+        "y1": 614.16650390625,
+        "y2": 666.7353515625
+      },
+      "text": "commercial grounded 3-DOF force feedback device, Geomagic Touch [42], which can exert force up to 3.3 N. Root-mean-square error (RMSE) values of the output force against the input force for X, Y, and Z-axes were 0.077 N, 0.084 N, and 0.148 N, respectively."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 54.00004577636719,
+        "x2": 295.1814880371094,
+        "y1": 677.6614990234375,
+        "y2": 707.3024291992188
+      },
+      "text": "To investigate the stability of the force during a constant force exertion, the standard deviation of the force magnitudes were calculated using the axes and force levels."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 316.76495361328125,
+        "x2": 558.0758056640625,
+        "y1": 63.74699401855469,
+        "y2": 196.862548828125
+      },
+      "text": "As our focus was to measure the fluctuations while exerting a constant force, we excluded force measurements for the first 500 ms, which may have included measurements before the force reached its target level. Thus, only the measurements during the latter 2500 ms were used to compute the standard deviations (Figure 4c). Based on the measurements, there appears to be a tendency for the force fluctuations to increase as the exertion force increases. The standard deviation was lower than 0.05 N, except for a positive z-axis force, which was measured to be 0.08 N. This trend can also be observed in the raw measurement graph (Figure 4a)."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 316.71539306640625,
+        "x2": 558.0061645507812,
+        "y1": 207.5496063232422,
+        "y2": 338.01556396484375
+      },
+      "text": "To measure the latency of increasing and decreasing the force, we wrote a program that would exert forces with different magnitudes along the three axes for 2 seconds, then immediately reducing the force magnitude to 0 N. Acceleration and deceleration time were obtained by measuring the time between the signal trigger moment and the moment when the force reached within ± 0.15 N of the target force (Figure 5a). The results demonstrated that the acceleration time remained similar regardless of the force change, and the deceleration time was shorter when a smaller amount of force was reduced (Figure 5bc). In all cases, deceleration was faster than acceleration."
+    }],
+    "title": {
+      "page": 3,
+      "region": {
+        "x1": 316.79400634765625,
+        "x2": 447.9059143066406,
+        "y1": 580.842041015625,
+        "y2": 587.2860107421875
+      },
+      "text": "Force Control on a Single Axis"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 4,
+      "region": {
+        "x1": 316.7599792480469,
+        "x2": 558.0609130859375,
+        "y1": 520.8065185546875,
+        "y2": 696.2817993164062
+      },
+      "text": "As Thor’s Hammer can create force feedback in an arbitrary direction by combining force vectors on three-axes, 212 force vectors were used to measure its directional control, each pointing toward the points along the surface of a sphere with a radius of 2 N. The vectors had an 18° interval spacing along the longitudinal and latitudinal directions (Figure 6). For each force vector, the device exerted a constant force for 3 seconds. The force measurements were converted to force vectors for analysis. The RMSE of angles between the target and measured vectors was 3.86° (SD: 1.75°) with a magnitude RMSE of 0.05 N (SD: 0.02 N; Figure 6). The force vectors were the most accurate when only a single axis force was used. When a force was made by combining two or more single axis force vectors, there was a tendency for the resulting vector to be slightly off-target, towards the origin of the weaker axis."
+    }, {
+      "page": 4,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 525 Page 5"
+    }],
+    "title": {
+      "page": 4,
+      "region": {
+        "x1": 316.80596923828125,
+        "x2": 481.2900085449219,
+        "y1": 509.9129333496094,
+        "y2": 516.35693359375
+      },
+      "text": "Force Control in an Arbitrary Direction"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 5,
+      "region": {
+        "x1": 53.999900817871094,
+        "x2": 295.3306884765625,
+        "y1": 73.56645202636719,
+        "y2": 319.757568359375
+      },
+      "text": "We measured the amount of noise generated by the propellers that is used by the device to create the ungrounded force feedback. A sound level meter was positioned 1-meter away from Thor’s Hammer and measured peak noise levels while the device was exerting a constant force. The measurements were made in an indoor location where the ambient noise level was 32.4 dB. Initially providing power to the device caused the ambient noise to increase to 35.6 dB. The noise level increased as the force magnitude increased, with a maximum of 80.7 dB when exerting 4 N of force (Figure 7). The power consumption of Thor’s Hammer depends on several factors, including the amount of force created by the device and the load applied to the device. The power consumption of the device was measured while it was stationary. The device drew 2.52 W of power while idling and as the applied force increased, so did the power consumed (e.g., 10.5 W at 0.5 N, 27.0 W at 1 N, 49.3 W at 1.5 N, 75.7 W at 2 N, 130.8 W at 3 N, and 204.7 W at 4 N). Based on the measurements, we can expect it to continuously apply 2 N of force for about 19 minutes on a typical 4S 1800mA LiPo battery that weights around 200 grams."
+    }],
+    "title": {
+      "page": 5,
+      "region": {
+        "x1": 54.0,
+        "x2": 232.04701232910156,
+        "y1": 62.675994873046875,
+        "y2": 69.1199951171875
+      },
+      "text": "Operating Noise and Power Consumption"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 5,
+      "region": {
+        "x1": 53.99003601074219,
+        "x2": 295.2410583496094,
+        "y1": 422.2864990234375,
+        "y2": 489.2475280761719
+      },
+      "text": "Previous studies on ungrounded force feedback techniques have illustrated several haptic interaction scenarios for VR applications [7,16,25,39,41]. Thor’s Hammer can create uniquely strong, precise, and continuous force feedback in a mobile form factor. In this section, we demonstrate VR scenarios for which the device might be useful (Figure 8)."
+    }],
+    "title": {
+      "page": 5,
+      "region": {
+        "x1": 53.993988037109375,
+        "x2": 270.47998046875,
+        "y1": 410.676025390625,
+        "y2": 417.1200256347656
+      },
+      "text": "USING FORCE FEEDBACK IN VR ENVIRONMENTS"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 5,
+      "region": {
+        "x1": 53.99003601074219,
+        "x2": 295.1515197753906,
+        "y1": 511.5665283203125,
+        "y2": 626.893310546875
+      },
+      "text": "This scenario takes advantage of the fact that Thor’s Hammer is ungrounded, as the scene is large and would require the user to move around, and the movement of the waves can be matched to the device’s latency, since the force continuously changes as the stick moves through the water. In the scenario, the sensation of water flowing is felt when users place a virtual stick into a stream of water. To simulate water flow, we used Thor’s Hammer to generate forces that change in magnitude according to the strength of the waves, and an upward force to simulate buoyancy (Figure 8a)."
+    }],
+    "title": {
+      "page": 5,
+      "region": {
+        "x1": 54.0,
+        "x2": 205.67703247070312,
+        "y1": 500.07598876953125,
+        "y2": 506.5199890136719
+      },
+      "text": "Holding an Object in Flowing Water"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 5,
+      "region": {
+        "x1": 53.999977111816406,
+        "x2": 295.2510070800781,
+        "y1": 649.2064819335938,
+        "y2": 704.0462646484375
+      },
+      "text": "The purpose of this scenario is to demonstrate the ability of Thor’s Hammer to continuously and accurately simulate forces of various directions and magnitudes. In this scenario, users herd a leashed lamb. As the lamb tries to move around the field, Thor’s Hammer creates a tugging force based on"
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 316.8045349121094,
+        "x2": 557.806640625,
+        "y1": 63.72782897949219,
+        "y2": 82.44268798828125
+      },
+      "text": "the direction that the lamb is pulling and the position and orientation of the device (Figure 8b)."
+    }],
+    "title": {
+      "page": 5,
+      "region": {
+        "x1": 54.0,
+        "x2": 125.14498901367188,
+        "y1": 637.595947265625,
+        "y2": 644.0399780273438
+      },
+      "text": "Herding a Sheep"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 5,
+      "region": {
+        "x1": 316.7801513671875,
+        "x2": 558.0010986328125,
+        "y1": 104.76646423339844,
+        "y2": 219.9739990234375
+      },
+      "text": "The haptic sensations that Thor’s Hammer produces can be used to simulate active touch scenarios when users explore the physical properties of an object. In this scenario, buttons with various rigidities are felt by pushing them with a virtual stick (Figure 8c). When a button is pushed, Thor’s Hammer creates different reaction forces that vary depending on the stiffness of the button. This scenario not only requires precise and continuous force control, but also the ability to specify forces in different directions, as users may use any side of the stick to push the buttons."
+    }, {
+      "page": 5,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 525 Page 6"
+    }],
+    "title": {
+      "page": 5,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 388.8719177246094,
+        "y1": 93.15597534179688,
+        "y2": 99.5999755859375
+      },
+      "text": "Pushing Buttons"
     }
   }, {
     "paragraphs": [{
       "page": 6,
       "region": {
-        "x1": 320.7359924316406,
-        "x2": 565.8239135742188,
-        "y1": 511.0675354003906,
-        "y2": 714.3309936523438
+        "x1": 53.990020751953125,
+        "x2": 295.2711181640625,
+        "y1": 74.64646911621094,
+        "y2": 201.975341796875
       },
-      "text": "As illustrated in Figure 17, the participants consistently used the TUI and GUI. Both novice and professional teams actively discussed and collaborated with their team members during the experiment. It was also observed that the participant behav ior varied across different teams and working processes. This is because C-Space supports both parallel and iterative design processes and not sequential processes. Interestingly, novice and professional groups exhibited significantly different de sign behaviors. The novice group conducted short design brief analysis (light yellow bar) sessions throughout the experiment (Figure 17). In contrast, the professional designers conducted an extensive design brief analysis session at the beginning of the experiment. Additionally, the novice group searched approximately 7,500 references throughout the experiment sessions when the professional group focused on searching for references in the very beginning of the session. This is be cause the professional designers are familiar with developing designs with specific requirements and constraints. During the in-depth interview, professional designers commented that"
+      "text": "In this scenario, we demonstrate how object weights can be dynamically simulated using the force vector control of Thor’s Hammer, which can increase or decrease by up to 4 N, i.e., 408 g, in opposite directions. The scenario entails transporting users to various planets with different gravitational forces (Figure 8d). Inspired by Thor’s Hammer in Norse mythology [22], users experience the sensation of gravity by holding a hammer whose weight changes from planet to planet. This scenario requires precise, continuous, and directional force control as users should feel a downward gravitational force regardless of the orientation of the device."
+    }],
+    "title": {
+      "page": 6,
+      "region": {
+        "x1": 54.0,
+        "x2": 176.95802307128906,
+        "y1": 63.035980224609375,
+        "y2": 69.47998046875
+      },
+      "text": "Simulating Different Weights"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 6,
+      "region": {
+        "x1": 54.0,
+        "x2": 295.410400390625,
+        "y1": 223.68650817871094,
+        "y2": 276.375
+      },
+      "text": "We conducted an informal user study to gain insights into user perceptions of using Thor’s Hammer for VR applications. In the study, participants were placed into each of the four VR scenarios described above and provided feedback about their experiences."
+    }],
+    "title": {
+      "page": 6,
+      "region": {
+        "x1": 54.0,
+        "x2": 174.36599731445312,
+        "y1": 212.55599975585938,
+        "y2": 219.0
+      },
+      "text": "QUALITATIVE USER STUDY"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 6,
+      "region": {
+        "x1": 53.999969482421875,
+        "x2": 295.2909240722656,
+        "y1": 297.60650634765625,
+        "y2": 384.7464904785156
+      },
+      "text": "Six participants with an average age of 22.5 were recruited through university Facebook groups (2 males, aged 19–27). Apart from one participant who had previously used Google Cardboard for a period of one year, other participants did not have experience in using VR. Furthermore, all participants were right-handed and had not previously used force feedback devices. Participants were compensated with $8 for the 40-minute experiment."
+    }],
+    "title": {
+      "page": 6,
+      "region": {
+        "x1": 54.0,
+        "x2": 105.56100463867188,
+        "y1": 286.47601318359375,
+        "y2": 292.9200134277344
+      },
+      "text": "Participants"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 6,
+      "region": {
+        "x1": 54.0,
+        "x2": 295.1514892578125,
+        "y1": 405.96649169921875,
+        "y2": 447.0116271972656
+      },
+      "text": "The study was conducted indoors. Participants stood while holding the device with their dominant hand, and wore an Oculus Rift VR headset and active noise cancelling headphones."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 53.970123291015625,
+        "x2": 295.2412414550781,
+        "y1": 457.9377746582031,
+        "y2": 533.5540771484375
+      },
+      "text": "Prior to the start of each scenario, the experimenter briefly described the VR environment and demonstrated ways one could interact with it. Participants were then placed into the scenario and freely explored the environment. Participants experienced each scenario with and without haptic feedback for at least 30 seconds. Each scenario began without haptic feedback."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 53.94019317626953,
+        "x2": 295.2113037109375,
+        "y1": 544.4801635742188,
+        "y2": 666.0718383789062
+      },
+      "text": "After each scenario, participants filled out a questionnaire. The questionnaire entailed rating, on a 7-point Likert scale (1: strongly disagree - 7: strongly agree), three statements regarding each participant’s thoughts on the force feedback and whether it improved their sense of immersion in VR. The questionnaire also included open-ended questions inquiring on what participants liked and disliked about the force feedback, and how it fared in comparison to real life experiences. After having experienced all scenarios, participants selected the scenario they liked the most and justified their choice."
+    }],
+    "title": {
+      "page": 6,
+      "region": {
+        "x1": 54.0,
+        "x2": 98.60399627685547,
+        "y1": 394.83599853515625,
+        "y2": 401.2799987792969
+      },
+      "text": "Procedure"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 6,
+      "region": {
+        "x1": 54.0,
+        "x2": 295.0916748046875,
+        "y1": 687.2464599609375,
+        "y2": 705.3637084960938
+      },
+      "text": "Participants were able to use the techniques without problems and were positive about the force feedback."
+    }],
+    "title": {
+      "page": 6,
+      "region": {
+        "x1": 54.0,
+        "x2": 86.5979995727539,
+        "y1": 676.115966796875,
+        "y2": 682.5599975585938
+      },
+      "text": "Results"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 6,
+      "region": {
+        "x1": 316.7999572753906,
+        "x2": 557.9813842773438,
+        "y1": 74.04649353027344,
+        "y2": 126.7349853515625
+      },
+      "text": "In this scenario, the questionnaire items included the following: “It felt like the stick was moving in the water”, “I could feel the differences in the water as I moved differently”, and “Being able to feel the water’s resistance made the virtual environment more immersive”."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 316.7799072265625,
+        "x2": 558.12060546875,
+        "y1": 137.54161071777344,
+        "y2": 293.70458984375
+      },
+      "text": "The results indicate that participants felt that Thor’s Hammer made the stick seem as though it was actually moving through water (all answered 6: agree) and that they all could feel the differences in the water’s resistance as they moved the stick with varying speeds and directions (M:6.5). Participants remarked that the feedback felt similar to how flowing water should feel: “It kind of reminded me of playing in the water at a pool, like when you move your hand around in the water it's a similar feeling”, “It was pretty similar as real life”. Participants also reported that the haptic feedback made the virtual environment more immersive (all answered 6). For instance, one participant commented, “I like that it gave a feeling of depth to the water, this made it feel less fake”."
+    }],
+    "title": {
+      "page": 6,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 387.9630126953125,
+        "y1": 63.52648162841797,
+        "y2": 69.47998046875
+      },
+      "text": "Feeling the Water"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 6,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 557.9415893554688,
+        "y1": 314.8865051269531,
+        "y2": 367.4553527832031
+      },
+      "text": "The questionnaire for this scenario included the following items: “I could feel like the lamb was actually pulling my hand”, “I could feel the direction that the lamb pulls in”, and “the feeling of the pulling force made me feel more immersed in the virtual environment”."
+    }, {
+      "page": 6,
+      "region": {
+        "x1": 316.7900695800781,
+        "x2": 558.0809936523438,
+        "y1": 378.3815002441406,
+        "y2": 661.0660400390625
+      },
+      "text": "Responses to this scenario were mixed. The responses showed that the force feedback felt as though the lamb was actually tugging their hand (M:6), and participants were able to correctly identify the direction of the force (M:6). However, one participant felt that the device was a bit slow to respond when he moved it around quickly, and another participant felt that the scenario was unrealistic since her actions had no influence on the sheep’s movement. In spite of this, some participants appreciated the directional pulling force and gave positive feedback: “It was very precise and accurate. The direction the sheep would go to was easy to identify just by the pull”. Furthermore, participants reported that the force felt “like a string was being tugged” and as though “I was really being pulled around”. In light of the feedback given by participants, the virtual leash should be made visibly elastic to account for latency in haptic response, and that the virtual animal should be made responsive to user input. In summary, most participants reported that the haptic device made the virtual environment more immersive (M:5.5). The two participants who did not feel this way, also did not agree with the other items in the questionnaire. Two participants reportedly expressed disliking the noise produced by device’s fan. Further, one participant felt that the forces were too strong. Two participants mentioned that wind generated by the propellers felt uncomfortable."
+    }],
+    "title": {
+      "page": 6,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 384.4530334472656,
+        "y1": 304.36651611328125,
+        "y2": 310.32000732421875
+      },
+      "text": "Herding a Sheep"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 6,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 557.9813842773438,
+        "y1": 682.2064819335938,
+        "y2": 711.847412109375
+      },
+      "text": "In this scenario, participants were asked to rate their agreement to: “I was able to feel each button’s rigidity”, “The rigidity of each button felt different”, and “Being able to feel"
     }, {
       "page": 6,
       "region": {
         "x1": 54.0,
-        "x2": 561.5982055664062,
-        "y1": 750.361572265625,
-        "y2": 756.8056030273438
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
       },
-      "text": "Paper 325 Page 7"
+      "text": "Paper 525 Page 7"
     }, {
       "page": 7,
       "region": {
-        "x1": 53.674957275390625,
-        "x2": 298.65777587890625,
-        "y1": 310.73052978515625,
-        "y2": 535.9110107421875
+        "x1": 53.99998474121094,
+        "x2": 295.18145751953125,
+        "y1": 63.72648620605469,
+        "y2": 81.84375
       },
-      "text": "they thoroughly analyzed design briefs at the beginning of the session to fully understand the design objectives. Then, they focused on searching for and archiving the design refer ences that satisfy their objectives. However, the novice group seemed to understand the design objective as they were de veloping the design concepts. Unlike the professionals, the novices retrieved references with loosely defined filters. We observed that the novice groups primarily used one retrieval method at a time, whereas the professionals used multiple retrieval methods to filter out the unnecessary references. The interview with the novice group revealed that they exhibited a tendency to create aesthetically novel design concepts rather than meeting the design constraints. Despite the different de sign approaches, both novice and professional groups shared positive responses to the impact of C-Space. According to the in-depth interviews with the 12 participants, the contribution of C-Space were categorized as follows: 1) assisting rapid spatial design exploration and development; 2) experiencing space and scale; 3) developing details in the early stage; 4) in ducing collaborative discussion; 5) integration of early design phase to later design phases."
+      "text": "the rigidity of the buttons made the virtual environment more immersive”."
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 53.99998474121094,
+        "x2": 295.4104919433594,
+        "y1": 92.65037536621094,
+        "y2": 179.79052734375
+      },
+      "text": "Participants indicated that they could feel the rigidity of each button (M:6.5) and that each button felt different (M:5.5). Two commented that, “as I pushed on the button, they appeared to have springs between them” and “it made some buttons easier / harder to press”. All participants agreed that the haptic feedback made the environment more immersive (M:6.5). Two participants noted that they did not like the noise generated by the device’s fan."
     }],
     "title": {
       "page": 6,
       "region": {
-        "x1": 321.093994140625,
-        "x2": 417.4379577636719,
-        "y1": 500.0661926269531,
-        "y2": 505.6119079589844
+        "x1": 316.79998779296875,
+        "x2": 382.3829650878906,
+        "y1": 671.6865234375,
+        "y2": 677.6400146484375
       },
-      "text": "User Behavior Overview"
+      "text": "Pushing Buttons"
     }
   }, {
     "paragraphs": [{
       "page": 7,
       "region": {
-        "x1": 53.56999969482422,
-        "x2": 298.65570068359375,
-        "y1": 565.862548828125,
-        "y2": 714.3309936523438
+        "x1": 53.99004364013672,
+        "x2": 295.2609558105469,
+        "y1": 201.00645446777344,
+        "y2": 265.21868896484375
       },
-      "text": "As per the responses evident in Figure 18, the participants provided a positive assessment of C-Space. In terms of the time required to complete the design outcome, it took 85 min to complete the first design and approximately 20 min to com plete the next one. In other words, it took only 24.09% of the initial design development time to complete the consec utive designs. P9 commented, \"Even in the early stages of the design, there is a shared visual representation, so team design decisions are much faster than traditional methods.\" This is supported by the user response on the system, which significantly helped in making design decisions (Figure 18 Q4: M=5.583, SD=0.900). The participants also gave high scores for satisfaction with the time required to complete the task question (Q2: 6.000, 0.426). P6 commented, \"traditional"
+      "text": "The questions relating to weight perception included: “The haptic feedback made it feel like the weight was changing”, “I felt that the weight of the hammer changed depending on the planet I was on”, and “The fact that [the] hammer’s weight would change made me feel more immersed in the virtual environment”."
     }, {
       "page": 7,
       "region": {
-        "x1": 320.7359924316406,
-        "x2": 565.5460815429688,
-        "y1": 310.78533935546875,
-        "y2": 426.3219909667969
+        "x1": 53.99005889892578,
+        "x2": 295.3209228515625,
+        "y1": 276.0252990722656,
+        "y2": 420.6643371582031
       },
-      "text": "process requires designers to search, print and lay over the reference on a desk, but C-Space conveniently integrates the separate tasks in a single process.\" Most importantly, the participants were satisfied with the results of C-Space (Q1: 5.250, 1.055). P3 commented, \"I believe that the C-Space is so intuitive and convenient, that anyone can use it right away with a 20-minutes of the tutorial.\" This was well reflected in the ease-of-use questions (Q10: 5.250, 1.215; Q14: 6.167, 0.835). This indicates that C-Space can be easily learned in a single trial, and this allowed for rapid design development with satisfactory design outcomes (Figure 19)."
+      "text": "Participants reported that they could feel changes in the weight of the hammer from planet to planet (M:6.5, “Changing it makes my hand feel of changing its weight”) and feel the changes that occurred on different planets (M:6.5, “Each gravitational pull was clearly different”). One participant said, “I felt more like I was floating midair”. Participants also felt that the weight change was accurate: “It's very accurate and precise”, “you could tell the difference between planets”. All except one participant felt that the feedback made the virtual environment (M:6.5) more immersive. The one participant who did not feel immersed had expressed that “It [the scenario] wasn’t very interactive, so not as immersive”."
     }],
     "title": {
       "page": 7,
       "region": {
-        "x1": 53.92900085449219,
-        "x2": 295.5376281738281,
-        "y1": 554.8623046875,
-        "y2": 560.4080200195312
+        "x1": 54.0,
+        "x2": 114.54299926757812,
+        "y1": 190.4864959716797,
+        "y2": 196.44000244140625
       },
-      "text": "Assisting Rapid Spatial Design Exploration and Development"
+      "text": "Feeling Gravity"
     }
   }, {
     "paragraphs": [{
       "page": 7,
       "region": {
-        "x1": 320.7359924316406,
-        "x2": 565.8270263671875,
-        "y1": 449.2555236816406,
-        "y2": 575.8060302734375
+        "x1": 53.97015380859375,
+        "x2": 295.2611083984375,
+        "y1": 441.84649658203125,
+        "y2": 540.5101928710938
       },
-      "text": "The design outcome assembled with modular building blocks was effective in communicating and modifying designs among the team members. The physical model also enabled the partic ipants to experience spatiality when compared with 2D works such as sketches and floor plan drawings. P4 commented, \"The task was to design a space for the disabled, and it was easy to predict the room size with the modular building blocks.\" P5 said, \"the modular building blocks made it easy to measure the size of the room along with wall thickness and the width of the corridor.\" This is well reflected in the user response; users believed that the TUI facilitates the design development process (Q5: 5.417, 1.311)."
+      "text": "Overall, the feedback from participants was positive. Based on the responses, Thor’s Hammer could simulate forces to a high degree of strength—to enable feeling the resistance of water flow and tugging forces, continuity—to simulate the flow of water and leash-pulling from different directions, and precision—to feel various weights buttons of different rigidities. The feedback also helped participants feel more immersed in each of the VR scenarios (M:6, 5.5, 6.5, 6.5, respectively)."
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 53.93028259277344,
+        "x2": 295.19140625,
+        "y1": 551.4363403320312,
+        "y2": 661.5042724609375
+      },
+      "text": "Despite this, subjective responses from participants revealed some of the hammer’s shortcomings. Notably, many participants remarked that the noise produced by the device’s fan was distracting, which reduced their sense of immersion. Moreover, for the sheep-herding scenario, two participants reported disliking the wind that was generated by the propellers. One participant reporting that the force feedback was not responsive enough to properly react when he was the device quickly, and another participant expressed that the force was too strong."
     }],
     "title": {
       "page": 7,
       "region": {
-        "x1": 321.093994140625,
-        "x2": 443.33294677734375,
-        "y1": 438.2552795410156,
-        "y2": 443.8009948730469
+        "x1": 54.0,
+        "x2": 92.46599578857422,
+        "y1": 431.3265075683594,
+        "y2": 437.2799987792969
       },
-      "text": "Experiencing Space and Scale"
+      "text": "Summary"
     }
   }, {
     "paragraphs": [{
       "page": 7,
       "region": {
-        "x1": 321.093994140625,
-        "x2": 565.9134521484375,
-        "y1": 598.7395629882812,
-        "y2": 714.3309936523438
+        "x1": 54.0,
+        "x2": 295.1514892578125,
+        "y1": 682.6865234375,
+        "y2": 712.3274536132812
       },
-      "text": "C-Space can assist the designers in developing design ideas in the early design phase without a concrete design concept. P8 commented, \"It is difficult to develop design concept in the early phase due to lack of concrete idea, but the C-Space was helpful to set the design direction by interacting with the refer ence retrieval system.\" According to user responses, they were highly satisfied with the information provided by the system to complete the task (Q3: 5.583, 1.505). P9 commented that the reference retrieval was especially helpful because they were from the existing design that provided a realistic space layout. P9 also added that they did not utilize the reference directly"
+      "text": "The technical validation and informal user study identified advantages and disadvantages of the force feedback provided by Thor’s Hammer. While the device can generate strong and"
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 316.8045654296875,
+        "x2": 557.9359130859375,
+        "y1": 63.73222351074219,
+        "y2": 104.77740478515625
+      },
+      "text": "accurate force feedback without grounding, it also has some sound and perceptual limitations that were found to diminish user experience. In this section, we discuss potential issues and future directions."
+    }],
+    "title": {
+      "page": 7,
+      "region": {
+        "x1": 54.0,
+        "x2": 191.99697875976562,
+        "y1": 671.5560302734375,
+        "y2": 678.0
+      },
+      "text": "DISCUSSION AND LIMITATIONS"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 7,
+      "region": {
+        "x1": 316.78021240234375,
+        "x2": 558.1207275390625,
+        "y1": 126.00645446777344,
+        "y2": 282.1694641113281
+      },
+      "text": "In the user study, noise was a frequently mentioned drawback of Thor’s Hammer. Like other devices that generate strong airflow, such as drones and hair dryers, Thor’s Hammer creates a substantial amount of noise. The noise levels for 2 N of force were approximately 70 dB, which is similar to the noise heard when taking a shower, and for 4N was approximately 80.7 dB, which is similar to the noise of garbage disposal. Although users may wear headphones when using VR, the noise created by Thor’s Hammer is a limitation of the device. While eliminating all noise would be impossible, future work could consider using methods developed for noise reduction in other devices, such as drones. This includes active noise cancellation [36] or using sound damping material."
+    }, {
+      "page": 7,
+      "region": {
+        "x1": 316.78021240234375,
+        "x2": 558.05126953125,
+        "y1": 293.0956115722656,
+        "y2": 357.18817138671875
+      },
+      "text": "Another important issue is safety. We used a weaved mesh to prevent hand and finger injury due to contact with the spinning propeller blades. However, there is still a possibility that some small objects may pass through the mesh, hit a propeller blade, and fly back through the mesh. To avoid this, we ensured that the workplace was free of debris."
+    }],
+    "title": {
+      "page": 7,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 389.6009521484375,
+        "y1": 114.87600708007812,
+        "y2": 121.32000732421875
+      },
+      "text": "Noise and Safety"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 7,
+      "region": {
+        "x1": 316.77008056640625,
+        "x2": 558.1008911132812,
+        "y1": 378.3664855957031,
+        "y2": 615.07568359375
+      },
+      "text": "Another concern is the latency of the haptic feedback. While our device can create continuous and strong force feedback, the device’s 300 milliseconds latency may not be appropriate for haptic scenarios that require instantaneous or highly responsive feedback, such as hitting a rigid surface. This concern was brought up by one participant in the user study, who noted that the feedback was not responsive enough to follow his movements for the sheep-herding scenario. The latency can also make a disparity between the intended and actual force orientation, e.g., if a user rotates the device at a rotational speed of 90°/sec, a user may experience approx. 27° of orientation disparity between what they expect and feel. In prior work, Lopes, Ion, and Baudisch found that using a blend of haptic feedback techniques with different characteristics can complement the limitations of each technique [24]. Future iterations of Thor’s Hammer could also utilize a blend of different haptic feedback techniques and motion prediction to reduce latency. We also believe that building a closed control loop by adding force sensors under each motor could enable PID control of the force feedback for a more precise and responsive force feedback."
+    }],
+    "title": {
+      "page": 7,
+      "region": {
+        "x1": 316.79998779296875,
+        "x2": 431.9640197753906,
+        "y1": 367.2359924316406,
+        "y2": 373.67999267578125
+      },
+      "text": "Feedback Responsiveness"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 7,
+      "region": {
+        "x1": 316.7900390625,
+        "x2": 558.0609130859375,
+        "y1": 636.2464599609375,
+        "y2": 711.86279296875
+      },
+      "text": "The off-the-shelf and 3D-printed nature of Thor’s Hammer enables it to be easily replicated. Since the force created along each axis is independent from the other axes, calibration can be performed on a per-axis basis. We expect this to be easily replicated by researchers and designers. We will make the drawings, CAD files, firmware source code, force control software, and force control Unity API available"
     }, {
       "page": 7,
       "region": {
         "x1": 54.0,
-        "x2": 561.5982055664062,
-        "y1": 750.361572265625,
-        "y2": 756.8056030273438
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
       },
-      "text": "Paper 325 Page 8"
+      "text": "Paper 525 Page 8"
     }, {
       "page": 8,
       "region": {
-        "x1": 53.57333755493164,
-        "x2": 298.7453918457031,
-        "y1": 288.08251953125,
-        "y2": 524.2219848632812
+        "x1": 53.99568176269531,
+        "x2": 295.2866516113281,
+        "y1": 62.55026626586914,
+        "y2": 81.84375
       },
-      "text": "but used partial layouts from various references. Thus, they were able to create a novel and realistic space layout. Addi tionally, after the design direction was defined, the designers used the three retrieval methods as needed to selectively uti lize the appropriate information among the vast references. P12 responded, \"It was helpful to be able to search gradually, depending on the input condition.\" P8 said, \"C-Space was timeefficient because the reference search using visual language was simpler and faster than keyword search through Pinterest or Google which is widely used reference search process.\" This was well reflected in the user response regarding the im pact of retrieval on design development (Q6: 6.000, 0.853). Further, evaluating the finishing materials through projection mapping allowed users to explore the variations in materials, determining the overall nuance of the design. The participants agreed that material simulation helps in embodying the design concept. However, it was pointed out that the limitation of C-Space was that the windows and doors cannot be articulated, and the performance of the projector used to simulate the ma terial was sub-optimal. Therefore, the user response regarding the material simulation on design concept development was lower than other performance measures. (Q7: 4.250, 1.712)."
+      "text": "online1, so that those who want to use the force feedback can build and use this device."
     }],
     "title": {
       "page": 7,
       "region": {
-        "x1": 321.093994140625,
-        "x2": 468.7436828613281,
-        "y1": 587.7393188476562,
-        "y2": 593.2850341796875
+        "x1": 316.79998779296875,
+        "x2": 399.9329528808594,
+        "y1": 625.115966796875,
+        "y2": 631.5599975585938
       },
-      "text": "Developing Details in the Early Stage"
+      "text": "Ease of Replication"
     }
   }, {
     "paragraphs": [{
       "page": 8,
       "region": {
-        "x1": 53.46099853515625,
-        "x2": 298.6584777832031,
-        "y1": 554.903564453125,
-        "y2": 714.3309936523438
+        "x1": 54.0,
+        "x2": 295.2810974121094,
+        "y1": 103.08647155761719,
+        "y2": 213.154541015625
       },
-      "text": "We observed that discussions were actively conducted in all the four teams. These discussions accounted for 73% of the entire design experiment in the four teams (Figure 17). The in-depth interviews also revealed that C-Space promoted the collaboration, regardless of the relationships among the partic ipants. P10 said, \"I was working with the stranger, and it was awkward in the tutorial. However, we felt like we were getting closer as if we were assembling modular building blocks to gether like Lego.\" P11 replied, \"It was possible to design and evaluate models together without knowing the personality or working style of team members, so there was no problem in col laboration.\" Thus, C-Space is helpful even when unacquainted people collaborate; it promotes multi-user participation. P7 commented, \"It was good that the design idea led to a physical model, which could be shared and modified directly with the"
-    }, {
-      "page": 8,
-      "region": {
-        "x1": 320.7860107421875,
-        "x2": 565.9105834960938,
-        "y1": 288.0861511230469,
-        "y2": 425.5920104980469
-      },
-      "text": "team.\" P10 said, \"Because it is much easier than hand draw ing, anyone can understand it, and it seems to be excellent in communication with non-designers. It was also great to be able to quickly come up with ideas through modeling and instantly modify them.\" We observed users embody design ideas by exploring references in the dataset through C-Space. For example, P10 said, \"I like this reference, but the room is small, let’s combine the two rooms or move the porch,\" and the collaborators started to assemble building blocks to test the new designs over the references projected on the grid board. Thus, C-Space motivates multiple users to collaboratively de velop design ideas by modifying retrieved design references partially or entirely during the early design phase."
+      "text": "While the present implementation uses a cubic frame that is 208 mm in each dimension, the frame can be built in a number of different shapes and sizes by changing the size of motors and propellers, and by reducing the number of propellers based on the desired types of forces. The present implementation is handheld, but if smaller propellers and motors were used, it could be miniaturized such that it could be attached on a bracelet or armband. It could also be attached to another physical prop such as a gun game controller to augment it with a force feedback."
     }],
     "title": {
       "page": 8,
       "region": {
-        "x1": 53.92900085449219,
-        "x2": 188.15602111816406,
-        "y1": 543.9032592773438,
-        "y2": 549.448974609375
+        "x1": 54.0,
+        "x2": 178.9920196533203,
+        "y1": 91.95602416992188,
+        "y2": 98.4000244140625
       },
-      "text": "Inducing Collaborative Discussion"
+      "text": "Extensibility to Other Shapes"
     }
   }, {
     "paragraphs": [{
       "page": 8,
       "region": {
-        "x1": 320.7359924316406,
-        "x2": 565.823974609375,
-        "y1": 456.2735290527344,
-        "y2": 714.3309936523438
+        "x1": 54.0,
+        "x2": 295.1514892578125,
+        "y1": 234.3665008544922,
+        "y2": 309.9828796386719
       },
-      "text": "According to participant responses, the design alternative man agement feature to archive design references and concepts was helpful. P8 and P10 added that this feature could be signifi­ cantly helpful in the later design phase when designers review previous concepts for reference. Therefore, creating a large set of possible and reliable design alternatives and references was useful to assimilate knowledge acquired from the early design phase to use the same in later design phases. Furthermore, every participant said yes to the question, \"Will the design outcome of the C-Space be exported to a BIM file and run on Autodesk Revit, help with the mid and late design phase?\" P11 said, \"Even when using Revit, there’s a big difference between starting with no initial concept, no site and import ing predefined early design concept. The design development process will be much faster by utilizing the C-Space and Revit together.\" P8 replied, \"Because we have defined the fundamen tals of floor plan through the C-Space, we can further develop details like the position of the door in Revit.\" In the spatial design, BIM is a leading technology helping designers in the mid to late design phases. However, designers still utilize tex tual reference search, sketching, and foam boards for the early design phase. Thus, C-Space can be used to assist designers in the early design phase to allow them to achieve better design outcomes in the later phase of design."
+      "text": "Making Thor’s Hammer truly mobile requires many considerations, with power consumption being of utmost concern. Our estimation showed that it could exert 2 N of continuous force for 19 minutes on a 4s 1800mA battery, which might not be sufficient to support long periods of use. Limiting the force magnitude and using components that draw less power may lengthen the untethered use time."
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 54.00001525878906,
+        "x2": 295.42047119140625,
+        "y1": 320.9090270996094,
+        "y2": 373.4778747558594
+      },
+      "text": "Although we used a VICON optical tracking system to track the device, using inside-out tracking [46] or inertia-sensor based tracking methods [47] would enable the device to be used without any external tracking system installed in the environment."
+    }],
+    "title": {
+      "page": 8,
+      "region": {
+        "x1": 54.0,
+        "x2": 151.02899169921875,
+        "y1": 223.23599243164062,
+        "y2": 229.67999267578125
+      },
+      "text": "Untethered and Mobile"
+    }
+  }, {
+    "paragraphs": [{
+      "page": 8,
+      "region": {
+        "x1": 54.0,
+        "x2": 295.28106689453125,
+        "y1": 394.6864929199219,
+        "y2": 562.3729248046875
+      },
+      "text": "This paper introduced Thor’s Hammer, an ungrounded force feedback device that can create 3-DOF force feedback. The technical evaluation demonstrated that the device can generate up to 4 N of continuous and precise force feedback in arbitrary directions. The informal user study showed promise in the device, provided insights regarding how users experienced the force feedback, and identified areas for which the device could be improved. Together with the results from the technical evaluation and the user study, we believe that the new device may open up many possibilities in creating more realistic experiences in virtual environments. Due to the 3D printed nature of the device, and its use of off-the-shelf components, the device can be easily replicated and operated without any grounding structures."
     }, {
       "page": 8,
       "region": {
         "x1": 54.0,
-        "x2": 561.5982055664062,
-        "y1": 750.361572265625,
-        "y2": 756.8056030273438
+        "x2": 295.2709655761719,
+        "y1": 573.299072265625,
+        "y2": 683.3670043945312
       },
-      "text": "Paper 325 Page 9"
+      "text": "Since the use of propeller propulsion for 3-DOF force feedback had not been investigated prior to this work, our focus was to build a proof-of-concept device. The device currently has several limitations and future work should seek to address them. For instance, while there was no mention of fatigue in the user study, the device is larger and heavier than most VR controllers and a prolonged use could cause fatigue. High latency of the feedback also limits the use of the device to scenarios with gradually changing force feedback. Future work could also include an expansion to a 6-DOF force"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 54.0,
+        "x2": 239.82679748535156,
+        "y1": 703.8302612304688,
+        "y2": 711.5999755859375
+      },
+      "text": "1 https://github.com/seongkook/ThorsHammer"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 316.797607421875,
+        "x2": 558.168212890625,
+        "y1": 63.72184753417969,
+        "y2": 139.3382568359375
+      },
+      "text": "feedback device by using rotor configurations that support omnidirectional actuation [11] and a more controlled psychophysical study investigating how users perceive the force created by propeller propulsion compared to a grounded force feedback device and the effect of unintended haptic sensations such as vibration and torque on perception of the force."
     }],
     "title": {
       "page": 8,
       "region": {
-        "x1": 321.093994140625,
-        "x2": 550.3020629882812,
-        "y1": 445.2732849121094,
-        "y2": 450.8190002441406
+        "x1": 54.0,
+        "x2": 206.531982421875,
+        "y1": 383.5559997558594,
+        "y2": 390.0
       },
-      "text": "Integration of Early Design Phase to Later Design Phases"
+      "text": "CONCLUSION AND FUTURE WORK"
     }
   }, {
     "paragraphs": [{
-      "page": 9,
+      "page": 8,
       "region": {
-        "x1": 53.619998931884766,
-        "x2": 298.73699951171875,
-        "y1": 412.3965148925781,
-        "y2": 440.3169860839844
+        "x1": 316.79998779296875,
+        "x2": 557.9714965820312,
+        "y1": 160.5664520263672,
+        "y2": 201.61163330078125
       },
-      "text": "This study proposed C-Space, a novel design support system for interactive and collaborative spatial design exploration. The contributions of this study are as follows:"
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 53.56999969482422,
-        "x2": 298.65838623046875,
-        "y1": 451.25152587890625,
-        "y2": 632.5960083007812
-      },
-      "text": "First, we created an interactive platform on the collaborative spatial design exploration; the designers were enthusiastic about using C-Space in their practice. C-Space offers a novel way of exploring design spaces. We believe that C-Space represents a novel contribution in the area of interactive ex ploration of large collections of design references, particularly those with information on spatial layout, connectivity, and shape. Second, C-Space offers a collaborative design platform with the integration of useful features, including design ref erence exploration using AR and prototyping using TUI that could enhance collaborative processes and produce satisfac tory design outcomes. The individual features of C-Space may not be novel, but to the best of our knowledge, it is the first to integrate the features into an intuitive system and enable better optimization of formerly conducted design processes. Thus, CSpace can be an example of an integrated collaborative system that motivates designers to interact with designs."
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 298.74639892578125,
-        "y1": 643.5305786132812,
-        "y2": 704.3270263671875
-      },
-      "text": "However, we identified some limitations of the current CSpace; it only supports orthogonal modeling and a single floor building. These limitations can be overcome in further studies. For example, implementation of tabletop-based shapechanging displays can significantly improve the responsive ness and resolution of the model in the process of prototyping."
-    }, {
-      "page": 9,
-      "region": {
-        "x1": 320.6260070800781,
-        "x2": 565.9093627929688,
-        "y1": 400.93951416015625,
-        "y2": 527.489990234375
-      },
-      "text": "Further, it can resolve the flooring issue, wherein it is difficult to create multiple floors in the current version. Also, the scope of the research can be widened to other types of spaces such as commercial, exhibition, and office spaces. Most importantly, C-Space can be applied to any dataset with spatial layout, con nectivity, and shapes. It can be used in spatial design domains such as urban planning, landscape design, and interior space design for both professional and educational purposes. For future work, C-Space can also be developed as a prototyping tool to design projector-based responsive spaces as RoomA live [17] by adding the AR content information to spatial data. We hope this study inspires future research in this area."
+      "text": "We would like to thank the anonymous reviewers for their suggestions and the members of the DGP Lab at the University of Toronto for their valuable feedback. The research was supported by NSERC."
     }],
     "title": {
-      "page": 9,
+      "page": 8,
       "region": {
-        "x1": 53.92900085449219,
-        "x2": 114.20114135742188,
-        "y1": 401.31109619140625,
-        "y2": 406.9419860839844
-      },
-      "text": "CONCLUSION"
-    }
-  }, {
-    "paragraphs": [{
-      "page": 9,
-      "region": {
-        "x1": 320.7860107421875,
-        "x2": 564.1646118164062,
-        "y1": 556.6695556640625,
-        "y2": 584.5899658203125
-      },
-      "text": "This work was supported by the Ministry of Education of the Republic of Korea and the National Research Foundation of Korea (NRF-2019S1A5A8034285)."
-    }],
-    "title": {
-      "page": 9,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 417.913330078125,
-        "y1": 545.5840454101562,
-        "y2": 551.2149658203125
+        "x1": 316.79998779296875,
+        "x2": 414.72003173828125,
+        "y1": 149.43600463867188,
+        "y2": 155.8800048828125
       },
       "text": "ACKNOWLEDGMENTS"
     }
   }, {
     "paragraphs": [{
-      "page": 9,
+      "page": 8,
       "region": {
-        "x1": 326.07598876953125,
-        "x2": 535.5995483398438,
-        "y1": 613.2705688476562,
-        "y2": 619.2730102539062
+        "x1": 316.79998779296875,
+        "x2": 544.6644897460938,
+        "y1": 222.8464813232422,
+        "y2": 229.44000244140625
       },
-      "text": "[1] Sheraz Ahmed, Markus Weber, Marcus Liwicki,"
+      "text": "1. Muhammad Abdullah, Minji Kim, Waseem Hassan,"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 336.00286865234375,
+        "x2": 548.5890502929688,
+        "y1": 234.37022399902344,
+        "y2": 309.9866027832031
+      },
+      "text": "Yoshihiro Kuroda, and Seokhee Jeon. 2017. HapticDrone: An Encountered-Type Kinesthetic Haptic Interface with Controllable Force Feedback: Initial Example for 1D Haptic Feedback. In Adjunct Publication of the 30th Annual ACM Symposium on User Interface Software and Technology (UIST ’17), 115–117. https://doi.org/10.1145/3131785.3131821"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 316.7998352050781,
+        "x2": 557.9613037109375,
+        "y1": 314.91680908203125,
+        "y2": 678.1478881835938
+      },
+      "text": "2. Parastoo Abtahi, David Y. Zhao, L. E. Jane, and James A. Landay. 2017. Drone Near Me: Exploring TouchBased Human-Drone Interaction. Proc. ACM Interact. Mob. Wearable Ubiquitous Technol. 1, 3: 34:1–34:8. https://doi.org/10.1145/3130899 3. Michael L. Agronin. 1987. The design of a nine-string six-degree-of-freedom force-feedback joystick for telemanipulation. In Proceedings of the Workshop on Space Telerobotics. 4. Tomohiro Amemiya, Hideyuki Ando, and Taro Maeda. 2005. Virtual force display: direction guidance using asymmetric acceleration via periodic translational motion. In First Joint Eurohaptics Conference and Symposium on Haptic Interfaces for Virtual Environment and Teleoperator Systems. World Haptics Conference, 619–622. https://doi.org/10.1109/WHC.2005.146 5. Bruno Araujo, Ricardo Jota, Varun Perumal, Jia Xian Yao, Karan Singh, and Daniel Wigdor. 2016. Snake Charmer: Physically Enabling Virtual Objects. In Proceedings of the TEI ’16: Tenth International Conference on Tangible, Embedded, and Embodied Interaction (TEI ’16), 218–226. https://doi.org/10.1145/2839462.2839484 6. Akash Badshah, Sidhant Gupta, Daniel Morris, Shwetak Patel, and Desney Tan. 2012. GyroTab: A Handheld Device That Provides Reactive Torque Feedback. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI ’12), 3153–3156. https://doi.org/10.1145/2207676.2208731 7. Hrvoje Benko, Christian Holz, Mike Sinclair, and Eyal Ofek. 2016. NormalTouch and TextureTouch: High-"
+    }, {
+      "page": 8,
+      "region": {
+        "x1": 54.0,
+        "x2": 557.9979858398438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
+      },
+      "text": "Paper 525 Page 9"
     }, {
       "page": 9,
       "region": {
-        "x1": 341.89599609375,
-        "x2": 564.1692504882812,
-        "y1": 624.2294311523438,
-        "y2": 674.0679931640625
+        "x1": 73.19999694824219,
+        "x2": 291.6526794433594,
+        "y1": 63.72648620605469,
+        "y2": 116.29541015625
       },
-      "text": "Christoph Langenhan, Andreas Dengel, and Frank Petzold. 2014. Automatic analysis and sketch-based retrieval of architectural floor plans. Pattern Recognition Letters 35 (2014), 91–100. DOI: http://dx.doi.org/10.1016/j.patrec.2013.04.005"
+      "text": "fidelity 3D Haptic Shape Rendering on Handheld Virtual Reality Controllers. In Proceedings of the 29th Annual Symposium on User Interface Software and Technology (UIST ’16), 717–728. https://doi.org/10.1145/2984511.2984526"
     }, {
       "page": 9,
       "region": {
-        "x1": 326.07598876953125,
-        "x2": 564.1227416992188,
-        "y1": 686.4105834960938,
-        "y2": 714.3309936523438
+        "x1": 53.977264404296875,
+        "x2": 295.01934814453125,
+        "y1": 121.22563171386719,
+        "y2": 714.4531860351562
       },
-      "text": "[2] Viktor Ayzenshtadt. 2017. Current State and Further Development of a Case-Based Framework for Early Phases of Architectural Conceptual Design. In M. Leyer"
+      "text": "8. Jonathan Blake and Hakan B. Gurocak. 2009. Haptic Glove With MR Brakes for Virtual Reality. IEEE/ASME Transactions on Mechatronics 14, 5: 606–615. https://doi.org/10.1109/TMECH.2008.2010934 9. Diego Borro, Joan Savall, Aiert Amundarain, Jorge Juan Gil, Alejandro Garcia-Alonso, and Luis Matey. 2004. A large haptic device for aircraft engine maintainability. IEEE Computer Graphics and Applications 24, 6: 70–74. https://doi.org/10.1109/MCG.2004.45 10. Mourad Bouzit, Grigore Burdea, George Popescu, and Rares Boian. 2002. The Rutgers Master II-new design force-feedback glove. IEEE/ASME Transactions on Mechatronics 7, 2: 256–263. https://doi.org/10.1109/TMECH.2002.1011262 11. D. Brescianini and R. D’Andrea. 2016. Design, modeling and control of an omni-directional aerial vehicle. In 2016 IEEE International Conference on Robotics and Automation (ICRA), 3261–3266. https://doi.org/10.1109/ICRA.2016.7487497 12. Frederick P. Brooks Jr., Ming Ouh-Young, James J. Batter, and P. Jerome Kilpatrick. 1990. Project GROPEHaptic Displays for Scientific Visualization. In Proceedings of the 17th Annual Conference on Computer Graphics and Interactive Techniques (SIGGRAPH ’90), 177–185. https://doi.org/10.1145/97879.97899 13. Inrak Choi and Sean Follmer. 2016. Wolverine: A Wearable Haptic Interface for Grasping in VR. In Proceedings of the 29th Annual Symposium on User Interface Software and Technology (UIST ’16 Adjunct), 117–119. https://doi.org/10.1145/2984751.2985725 14. Tim Duente, Max Pfeiffer, and Michael Rohs. 2017. Zap++: A 20-channel Electrical Muscle Stimulation System for Fine-grained Wearable Force Feedback. In Proceedings of the 19th International Conference on Human-Computer Interaction with Mobile Devices and Services (MobileHCI ’17), 1:1–1:13. https://doi.org/10.1145/3098279.3098546 15. Antonio Gomes, Calvin Rubens, Sean Braley, and Roel Vertegaal. 2016. BitDrones: Towards Using 3D Nanocopter Displays As Interactive Self-Levitating Programmable Matter. In Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems (CHI ’16), 770–780. https://doi.org/10.1145/2858036.2858519 16. Jan Gugenheimer, Dennis Wolf, Eythor R. Eiriksson, Pattie Maes, and Enrico Rukzio. 2016. GyroVR: Simulating Inertia in Virtual Reality Using Head Worn Flywheels. In Proceedings of the 29th Annual"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 335.9946594238281,
+        "x2": 510.1851806640625,
+        "y1": 63.93571472167969,
+        "y2": 93.4571533203125
+      },
+      "text": "Symposium on User Interface Software and Technology (UIST ’16), 227–232. https://doi.org/10.1145/2984511.2984535"
+    }, {
+      "page": 9,
+      "region": {
+        "x1": 316.79168701171875,
+        "x2": 557.5348510742188,
+        "y1": 98.38737487792969,
+        "y2": 714.6624145507812
+      },
+      "text": "17. Hakan Gurocak, Sankar Jayaram, Benjamin Parrish, and Uma Jayaram. 2003. Weight sensation in virtual environments using a haptic device with air jets. Journal of Computing and Information Science in Engineering 3, 2: 130–135. 18. Yukihiro Hirata and Makoto Sato. 1992. 3-dimensional Interface Device For Virtual Work Space. In Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems, 889–896. https://doi.org/10.1109/IROS.1992.594498 19. Michitaka Hirose, Koichi Hirota, Tetsuro Ogi, Hiroaki Yano, Naoyuki Kakehi, Makoto Saito, and Mutsuhiro Nakashige. 2001. HapticGEAR: the development of a wearable force display system for immersive projection displays. In Proceedings IEEE Virtual Reality 2001, 123–129. https://doi.org/10.1109/VR.2001.913778 20. Han-Pang Huang and Ya-Fu Wei. 1998. Control of dexterous hand master with force feedback. In Proceedings. 1998 IEEE International Conference on Robotics and Automation (Cat. No.98CH36146), 687– 692 vol.1. https://doi.org/10.1109/ROBOT.1998.677052 21. Pascal Knierim, Thomas Kosch, Valentin Schwind, Markus Funk, Francisco Kiss, Stefan Schneegass, and Niels Henze. 2017. Tactile Drones - Providing Immersive Tactile Feedback in Virtual Reality Through Quadcopters. In Proceedings of the 2017 CHI Conference Extended Abstracts on Human Factors in Computing Systems (CHI EA ’17), 433–436. https://doi.org/10.1145/3027063.3050426 22. John Lindow. 2002. Norse Mythology: A Guide to Gods, Heroes, Rituals, and Beliefs. Oxford University Press. 23. Pedro Lopes and Patrick Baudisch. 2013. Musclepropelled Force Feedback: Bringing Force Feedback to Mobile Devices. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI ’13), 2577–2580. https://doi.org/10.1145/2470654.2481355 24. Pedro Lopes, Alexandra Ion, and Patrick Baudisch. 2015. Impacto: Simulating Physical Impact by Combining Tactile Stimulation with Electrical Muscle Stimulation. In Proceedings of the 28th Annual ACM Symposium on User Interface Software & Technology (UIST ’15), 11–19. https://doi.org/10.1145/2807442.2807443 25. Pedro Lopes, Sijing You, Lung-Pan Cheng, Sebastian Marwecki, and Patrick Baudisch. 2017. Providing Haptics to Walls & Heavy Objects in Virtual Reality by Means of Electrical Muscle Stimulation. In Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems (CHI ’17), 1471–1482. https://doi.org/10.1145/3025453.3025600"
     }, {
       "page": 9,
       "region": {
         "x1": 54.0,
-        "x2": 561.5972290039062,
-        "y1": 750.361572265625,
-        "y2": 756.8056030273438
+        "x2": 557.9970092773438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
       },
-      "text": "Paper 325 Page 10"
+      "text": "Paper 525 Page 10"
     }, {
       "page": 10,
       "region": {
-        "x1": 74.34200286865234,
-        "x2": 278.78448486328125,
-        "y1": 66.3773422241211,
-        "y2": 94.24273681640625
+        "x1": 53.98005676269531,
+        "x2": 294.0659484863281,
+        "y1": 63.72648620605469,
+        "y2": 702.9295043945312
       },
-      "text": "(Ed.): Proceedings of the LWDA 2017 Workshops: KDML, FGWM, IR, and FGDB. http://ceur-ws.org, Aachen, Germany, 224–228."
+      "text": "26. Martin Murer, Bernhard Maurer, Hermann Huber, Ilhan Aslan, and Manfred Tscheligi. 2015. TorqueScreen: Actuated Flywheels for Ungrounded Kinaesthetic Feedback in Handheld Devices. In Proceedings of the Ninth International Conference on Tangible, Embedded, and Embodied Interaction (TEI ’15), 161–164. https://doi.org/10.1145/2677199.2680579 27. Kazuki Nagai, Soma Tanoue, Katsuhito Akahane, and Makoto Sato. 2015. Wearable 6-DoF Wrist Haptic Device “SPIDAR-W.” In SIGGRAPH Asia 2015 Haptic Media And Contents Design (SA ’15), 19:1– 19:2. https://doi.org/10.1145/2818384.2818403 28. Jun Rekimoto. 2013. Traxion: A Tactile Interaction Device with Virtual Force Sensation. In Proceedings of the 26th Annual ACM Symposium on User Interface Software and Technology (UIST ’13), 427–432. https://doi.org/10.1145/2501988.2502044 29. J. M. Romano and K. J. Kuchenbecker. 2009. The AirWand: Design and characterization of a largeworkspace haptic device. In 2009 IEEE International Conference on Robotics and Automation, 1461–1466. https://doi.org/10.1109/ROBOT.2009.5152339 30. Yuriko Suzuki and Minoru Kobayashi. 2005. Air jet driven force feedback in virtual reality. IEEE Computer Graphics and Applications 25, 1: 44–47. https://doi.org/10.1109/MCG.2005.1 31. Yuriko Suzuki, Minoru Kobayashi, and Satoshi Ishibashi. 2002. Design of Force Feedback Utilizing Air Pressure Toward Untethered Human Interface. In CHI ’02 Extended Abstracts on Human Factors in Computing Systems (CHI EA ’02), 808–809. https://doi.org/10.1145/506443.506608 32. Colin Swindells, Alex Unden, and Tao Sang. 2003. TorqueBAR: An Ungrounded Haptic Feedback Device. In Proceedings of the 5th International Conference on Multimodal Interfaces (ICMI ’03), 52– 59. https://doi.org/10.1145/958432.958445 33. Takeshi Tanabe, Hiroaki Yano, and Hiroo Iwata. 2017. Evaluation of the Perceptual Characteristics of a Force Induced by Asymmetric Vibrations. IEEE Transactions on Haptics PP, 99: 1–1. https://doi.org/10.1109/TOH.2017.2743717 34. Mohamed Yassine Tsalamlal, Paul Issartel, Nizar Ouarti, and Mehdi Ammi. 2014. HAIR: HAptic feedback with a mobile AIR jet. In 2014 IEEE International Conference on Robotics and Automation (ICRA), 2699–2706. https://doi.org/10.1109/ICRA.2014.6907246 35. Jessica Tsimeris, Tom Gedeon, and Michael Broughton. 2012. Using Magnetic Forces to Convey State Information: An Exploration of a Haptic Technology. In Proceedings of the 24th Australian Computer-Human Interaction Conference (OzCHI ’12), 620–623. https://doi.org/10.1145/2414536.2414630"
     }, {
       "page": 10,
       "region": {
-        "x1": 58.909942626953125,
-        "x2": 295.83050537109375,
-        "y1": 104.1604995727539,
-        "y2": 197.83001708984375
+        "x1": 316.77459716796875,
+        "x2": 557.6996459960938,
+        "y1": 63.93577575683594,
+        "y2": 679.8413696289062
       },
-      "text": "[3] Viktor Ayzenshtadt, Christian Espinoza-Stapelfeld, Christoph Langenhan, and Klaus-Dieter Althoff. 2018. Multi-Agent-Based Generation of Explanations for Retrieval Results Within a Case-Based Support Framework for Architectural Design. In Proceedings of the 10th International Conference on Agents and Artificial Intelligence 2018 (ICAART ’18). SCITEPRESS, Setúbal, Portugal, 103–114. DOI: http://dx.doi.org/10.5220/0006650201030114"
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 58.90999984741211,
-        "x2": 298.7421875,
-        "y1": 207.74453735351562,
-        "y2": 301.4179992675781
-      },
-      "text": "[4] Viktor Ayzenshtadt, Christoph Langenhan, Johannes Roith, Saqib Bukhari, Klaus-Dieter Althoff, Frank Petzold, and Andreas Dengel. 2016. Comparative evaluation of rule-based and case-based retrieval coordination for search of architectural building designs. In International Conference on Case-Based Reasoning (ICCBR ’16). Springer, Cham, New York, NY, USA, 16–31. DOI: http://dx.doi.org/10.1007/978-3-319-47096-2_2"
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 58.90999984741211,
-        "x2": 297.0081481933594,
-        "y1": 311.33251953125,
-        "y2": 383.0880126953125
-      },
-      "text": "[5] Erin Bradner, Francesco Iorio, and Mark Davis. 2014. Parameters Tell the Design Story: Ideation and Abstraction in Design Optimization. In Proceedings of the Symposium on Simulation for Architecture & Urban Design (SimAUD ’14). Society for Computer Simulation International, San Diego, CA, USA, Article Article 26, 8 pages."
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 58.910438537597656,
-        "x2": 294.515869140625,
-        "y1": 393.0057678222656,
-        "y2": 431.8819885253906
-      },
-      "text": "[6] Mao-Lin Chiu. 2002. An organizational view of design communication in design collaboration. Design studies 23, 2 (2002), 187–210. DOI: http://dx.doi.org/10.1016/S0142-694X(01)00019-9"
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 58.90999984741211,
-        "x2": 294.166748046875,
-        "y1": 441.7955322265625,
-        "y2": 513.552001953125
-      },
-      "text": "[7] Simon Daum, Andre Borrmann, Christoph Langenhan, and Frank Petzold. 2014. Automated generation of building fingerprints using a spatio-semantic query language for building information models. eWork and eBusiness in Architecture, Engineering and Construction: ECPPM (2014), 87–97. DOI: http://dx.doi.org/10.1201/b17396-18"
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 58.90999984741211,
-        "x2": 292.7221984863281,
-        "y1": 523.465576171875,
-        "y2": 562.344970703125
-      },
-      "text": "[8] Ipek Gursel Dino. 2016. An evolutionary approach for 3D architectural space layout design exploration. Automation in Construction 69 (2016), 131–150. DOI: http://dx.doi.org/10.1016/j.autcon.2016.05.020"
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 58.90999984741211,
-        "x2": 298.47064208984375,
-        "y1": 572.259521484375,
-        "y2": 600.1796875
-      },
-      "text": "[9] Nick Dunn. 2014. Architectural modelmaking (2nd ed.). Laurence King, London, UK, Chapter Why we make models, 6–13."
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 53.9286994934082,
-        "x2": 290.35107421875,
-        "y1": 610.0975341796875,
-        "y2": 648.9730224609375
-      },
-      "text": "[10] Ian Gibson, Thomas Kvan, and Ling Wai Ming. 2002. Rapid prototyping for architectural models. Rapid prototyping journal 8, 2 (2002), 91–95. DOI: http://dx.doi.org/10.1108/13552540210420961"
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 298.142822265625,
-        "y1": 658.8865356445312,
-        "y2": 708.7249755859375
-      },
-      "text": "[11] Gabriela Goldschmidt. 2011. Avoiding design fixation: transformation and abstraction in mapping from source to target. The Journal of Creative Behavior 45, 2 (2011), 92–100. DOI: http://dx.doi.org/10.1002/j.2162-6057.2011.tb01088.x"
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 297.0004577636719,
-        "y1": 717.2285766601562,
-        "y2": 734.1900024414062
-      },
-      "text": "[12] Scott D Greenhalgh. 2009. Rapid prototyping in design education: a comparative study of rapid prototyping and"
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 342.17498779296875,
-        "x2": 552.6248168945312,
-        "y1": 66.32254791259766,
-        "y2": 83.28387451171875
-      },
-      "text": "traditional model construction. Master’s thesis. Utah State University, Logan, UT, USA."
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 321.0941162109375,
-        "x2": 564.165771484375,
-        "y1": 93.8193130493164,
-        "y2": 165.57501220703125
-      },
-      "text": "[13] Mark D. Gross and Ellen Yi-Luen Do. 1996. Ambiguous Intentions: A Paper-like Interface for Creative Design. In Proceedings of the 9th Annual ACM Symposium on User Interface Software and Technology (UIST ’96). Association for Computing Machinery, New York, NY, USA, 183–192. DOI: http://dx.doi.org/10.1145/237091.237119"
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 566.775390625,
-        "y1": 176.11050415039062,
-        "y2": 236.90802001953125
-      },
-      "text": "[14] Ning Gu, Mi Jeong Kim, and Mary Lou Maher. 2011. Technological advancements in synchronous collaboration: The effect of 3D virtual worlds and tangible user interfaces on architectural design. Automation in Construction 20, 3 (2011), 270–278. DOI: http://dx.doi.org/10.1016/j.autcon.2010.10.004"
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 565.2076416015625,
-        "y1": 247.44351196289062,
-        "y2": 341.11700439453125
-      },
-      "text": "[15] Björn Hartmann, Scott R. Klemmer, Michael Bernstein, Leith Abdulla, Brandon Burr, Avi Robinson-Mosher, and Jennifer Gee. 2006. Reflective Physical Prototyping through Integrated Design, Test, and Analysis. In Proceedings of the 19th Annual ACM Symposium on User Interface Software and Technology (UIST ’06). Association for Computing Machinery, New York, NY, USA, 299–308. DOI: http://dx.doi.org/10.1145/1166253.1166300"
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 564.0917358398438,
-        "y1": 351.65252685546875,
-        "y2": 412.4490051269531
-      },
-      "text": "[16] Jiang Hui. 2015. Approach to the Interior Design Using Augmented Reality Technology. In 2015 Sixth International Conference on Intelligent Systems Design and Engineering Applications (ISDEA). IEEE, Piscataway, NJ, USA, 163–166. DOI: http://dx.doi.org/10.1109/ISDEA.2015.50"
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 565.8762817382812,
-        "y1": 422.9845275878906,
-        "y2": 516.6589965820312
-      },
-      "text": "[17] Brett Jones, Rajinder Sodhi, Michael Murdock, Ravish Mehra, Hrvoje Benko, Andrew Wilson, Eyal Ofek, Blair MacIntyre, Nikunj Raghuvanshi, and Lior Shapira. 2014. RoomAlive: Magical Experiences Enabled by Scalable, Adaptive Projector-Camera Units. In Proceedings of the 27th Annual ACM Symposium on User Interface Software and Technology (UIST ’14). Association for Computing Machinery, New York, NY, USA, 637–644. DOI:http://dx.doi.org/10.1145/2642918.2647383"
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 562.48779296875,
-        "y1": 527.194580078125,
-        "y2": 620.8679809570312
-      },
-      "text": "[18] Seokbin Kang, Leyla Norooz, Elizabeth Bonsignore, Virginia Byrne, Tamara Clegg, and Jon E. Froehlich. 2019. PrototypAR: Prototyping and Simulating Complex Systems with Paper Craft and Augmented Reality. In Proceedings of the 18th ACM International Conference on Interaction Design and Children (IDC ’19). Association for Computing Machinery, New York, NY, USA, 253–266. DOI: http://dx.doi.org/10.1145/3311927.3323135"
-    }, {
-      "page": 10,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 565.4154052734375,
-        "y1": 631.403564453125,
-        "y2": 714.1179809570312
-      },
-      "text": "[19] Annie Kelly, R. Benjamin Shapiro, Jonathan de Halleux, and Thomas Ball. 2018. ARcadia: A Rapid Prototyping Platform for Real-Time Tangible Interfaces. In Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems (CHI ’18). Association for Computing Machinery, New York, NY, USA, Article Paper 409, 8 pages. DOI: http://dx.doi.org/10.1145/3173574.3173983"
+      "text": "36. Balemir Uragun and Ibrahim N. Tansel. 2014. The noise reduction techniques for unmanned air vehicles. In 2014 International Conference on Unmanned Aircraft Systems (ICUAS), 800–807. https://doi.org/10.1109/ICUAS.2014.6842325 37. Malte Weiss, Chat Wacharamanotham, Simon Voelker, and Jan Borchers. 2011. FingerFlux: Nearsurface Haptic Feedback on Tabletops. In Proceedings of the 24th Annual ACM Symposium on User Interface Software and Technology (UIST ’11), 615–620. https://doi.org/10.1145/2047196.2047277 38. Kyle N. Winfree, Jamie Gewirtz, Thomas Mather, Jonathan Fiene, and Katherine J. Kuchenbecker. 2009. A high fidelity ungrounded torque feedback device: The iTorqU 2.0. In World Haptics 2009 - Third Joint EuroHaptics conference and Symposium on Haptic Interfaces for Virtual Environment and Teleoperator Systems, 261–266. https://doi.org/10.1109/WHC.2009.4810866 39. Kotaro Yamaguchi, Ginga Kato, Yoshihiro Kuroda, Kiyoshi Kiyokawa, and Haruo Takemura. 2016. A Non-grounded and Encountered-type Haptic Display Using a Drone. In Proceedings of the 2016 Symposium on Spatial User Interaction (SUI ’16), 43–46. https://doi.org/10.1145/2983310.2985746 40. H. Yano, M. Yoshie, and H. Iwata. 2003. Development of a non-grounded haptic interface using the gyro effect. In 11th Symposium on Haptic Interfaces for Virtual Environment and Teleoperator Systems, 2003. HAPTICS 2003. Proceedings., 32–39. https://doi.org/10.1109/HAPTIC.2003.1191223 41. A. Zenner and A. Krüger. 2017. Shifty: A WeightShifting Dynamic Passive Haptic Proxy to Enhance Object Perception in Virtual Reality. IEEE Transactions on Visualization and Computer Graphics 23, 4: 1285–1294. https://doi.org/10.1109/TVCG.2017.2656978 42. Geomagic Touch (formerly Geomagic Phantom Omni) Overview. Retrieved September 12, 2017 from http://www.geomagic.com/en/products/phantomomni/overview/ 43. Novint Falcon. Retrieved September 12, 2017 from http://www.novint.com/index.php/products/novintfalcon 44. ExoHand | Festo Corporate. Retrieved September 13, 2017 from https://www.festo.com/group/en/cms/10233.htm 45. CyberGrasp. CyberGlove Systems LLC. Retrieved September 12, 2017 from http://www.cyberglovesystems.com/cybergrasp/ 46. Motion controllers. Retrieved December 19, 2018 from https://developer.microsoft.com/enus/windows/mixed-reality/motion_controllers 47. Finch Shift - Motion Controller for Your Smartphone. Retrieved January 5, 2018 from https://finch-shift.com/"
     }, {
       "page": 10,
       "region": {
         "x1": 54.0,
-        "x2": 561.5972290039062,
-        "y1": 750.361572265625,
-        "y2": 756.8056030273438
+        "x2": 557.9970092773438,
+        "y1": 757.56201171875,
+        "y2": 764.0060424804688
       },
-      "text": "Paper 325 Page 11"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 296.3089904785156,
-        "y1": 66.32254791259766,
-        "y2": 138.0780029296875
-      },
-      "text": "[20] Han-Jong Kim, Ju-Whan Kim, and Tek-Jin Nam. 2016. MiniStudio: Designers’ Tool for Prototyping Ubicomp Space with Interactive Miniature. In Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems (CHI ’16). Association for Computing Machinery, New York, NY, USA, 213–224. DOI: http://dx.doi.org/10.1145/2858036.2858180"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 295.5419006347656,
-        "y1": 147.89950561523438,
-        "y2": 197.73797607421875
-      },
-      "text": "[21] Mi Jeong Kim and Mary Lou Maher. 2008. The impact of tangible user interfaces on designers’ spatial cognition. Human Computer Interaction 23, 2 (2008), 101–137. DOI: http://dx.doi.org/10.1080/07370020802016415"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 292.9715270996094,
-        "y1": 207.55953979492188,
-        "y2": 235.47998046875
-      },
-      "text": "[22] Janet L Kolodner. 1992. An introduction to case-based reasoning. Artificial Intelligence Review 6, 1 (1992), 3–34. DOI:http://dx.doi.org/10.1007/BF00155578"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 293.5793151855469,
-        "y1": 245.30154418945312,
-        "y2": 317.05718994140625
-      },
-      "text": "[23] Christoph Langenhan, Weber Markus, Petzold Frank, and Dengel Andreas Liwicki Marcus. 2011. Sketch-based methods for researching building layouts through the semantic fingerprint of architecture. In Proceedings of the International Conference on Computer Aided Architectural Design Futures 2011. CUMINCAD, 85–102."
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 53.92899703979492,
-        "x2": 296.9981384277344,
-        "y1": 326.8753356933594,
-        "y2": 387.67498779296875
-      },
-      "text": "[24] Christoph Langenhan and Frank Petzold. 2010. The fingerprint of architecture-sketch-based design methods for researching building layouts through the semantic fingerprinting of floor plans. International electronic scientific-educational journal: Architecture and Modern Information Technologies 4, 13 (2010), 1–8."
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 53.92950439453125,
-        "x2": 296.9014892578125,
-        "y1": 397.4931335449219,
-        "y2": 458.29400634765625
-      },
-      "text": "[25] Christoph Langenhan, Markus Weber, Marcus Liwicki, Frank Petzold, and Andreas Dengel. 2013. Graph-based retrieval of building information models for supporting the early design stages. Advanced Engineering Informatics 27, 4 (2013), 413–426. DOI: http://dx.doi.org/10.1016/j.aei.2013.04.005"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 297.4747009277344,
-        "y1": 468.11553955078125,
-        "y2": 550.8300170898438
-      },
-      "text": "[26] Blair MacIntyre, Maribeth Gandy, Steven Dow, and Jay David Bolter. 2004. DART: A Toolkit for Rapid Design Exploration of Augmented Reality Experiences. In Proceedings of the 17th Annual ACM Symposium on User Interface Software and Technology (UIST ’04). Association for Computing Machinery, New York, NY, USA, 197–206. DOI: http://dx.doi.org/10.1145/1029632.1029669"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 296.9833068847656,
-        "y1": 560.6515502929688,
-        "y2": 654.3250122070312
-      },
-      "text": "[27] Justin Matejka, Michael Glueck, Erin Bradner, Ali Hashemi, Tovi Grossman, and George Fitzmaurice. 2018. Dream Lens: Exploration and Visualization of Large-Scale Generative Design Datasets. In Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems (CHI ’18). Association for Computing Machinery, New York, NY, USA, Article Paper 369, 12 pages. DOI: http://dx.doi.org/10.1145/3173574.3173943"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 298.2494812011719,
-        "y1": 664.1465454101562,
-        "y2": 722.7869873046875
-      },
-      "text": "[28] Deedee Aram Min, Kyung Hoon Hyun, Sun-Joong Kim, and Ji-Hyun Lee. 2017. A rule-based servicescape design support system from the design patterns of theme parks. Advanced Engineering Informatics 32 (2017), 77–91. DOI: http://dx.doi.org/10.1016/j.aei.2017.01.005"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 565.4112548828125,
-        "y1": 66.32254791259766,
-        "y2": 138.07757568359375
-      },
-      "text": "[29] Amartuvshin Narengerel, Sukjoo Hong, Chae-Seok Lee, and Ji-Hyun Lee. 2018. FBSMAP: The Spatial Representation Method for Intelligent Semantic Service in Indoor Environment. In Proceedings of the International Conference of the Association for Computer-Aided Architectural Design Research in Asia 2018 (CAADRIA ’18). CUMINCAD, 587–596."
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 321.0941467285156,
-        "x2": 564.16162109375,
-        "y1": 148.61300659179688,
-        "y2": 198.4520263671875
-      },
-      "text": "[30] Joshua Nasman and Barbara Cutler. 2013. Evaluation of user interaction with daylighting simulation in a tangible user interface. Automation in Construction 36 (2013), 117–127. DOI: http://dx.doi.org/10.1016/j.autcon.2013.08.018"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 563.4741821289062,
-        "y1": 208.98751831054688,
-        "y2": 280.7430114746094
-      },
-      "text": "[31] Michael Nebeling and Katy Madier. 2019. 360proto: Making Interactive Virtual Reality & Augmented Reality Prototypes from Paper. In Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems (CHI ’19). Association for Computing Machinery, New York, NY, USA, Article Paper 596, 13 pages. DOI:http://dx.doi.org/10.1145/3290605.3300826"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 565.912841796875,
-        "y1": 291.2785339355469,
-        "y2": 373.9939880371094
-      },
-      "text": "[32] Michael Nebeling, Janet Nebeling, Ao Yu, and Rob Rumble. 2018. ProtoAR: Rapid Physical-Digital Prototyping of Mobile Augmented Reality Applications. In Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems (CHI ’18). Association for Computing Machinery, New York, NY, USA, Article Paper 353, 12 pages. DOI: http://dx.doi.org/10.1145/3173574.3173927"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 564.6597290039062,
-        "y1": 384.529541015625,
-        "y2": 401.4908752441406
-      },
-      "text": "[33] Ernst Neufert and Peter Neufert. 2012. Architects’ data. John Wiley & Sons, Oxford, UK, 447."
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 558.5926513671875,
-        "y1": 412.02630615234375,
-        "y2": 450.9049987792969
-      },
-      "text": "[34] Ariel Noyman, Yasushi Sakai, and Kent Larson. 2019. Cityscopear: urban design and crowdsourced engagement platform. (2019). https://arxiv.org/abs/1907.08586"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 553.2125854492188,
-        "y1": 461.4405212402344,
-        "y2": 500.32000732421875
-      },
-      "text": "[35] Chengzhi Peng. 1994. Exploring communication in collaborative design: co-operative architectural modelling. Design studies 15, 1 (1994), 19–44. DOI: http://dx.doi.org/10.1016/0142-694X(94)90037-X"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 561.760498046875,
-        "y1": 510.8555603027344,
-        "y2": 560.6929931640625
-      },
-      "text": "[36] Hannu Penttila. 2007. Early architectural design and BIM. In Computer-Aided Architectural Design Futures (CAADFutures ’07). Springer, Dordrecht, Netherlands, 291–302. DOI: http://dx.doi.org/10.1007/978-1-4020-6528-6_22"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 564.166015625,
-        "y1": 571.2285766601562,
-        "y2": 632.0260009765625
-      },
-      "text": "[37] Roberto Pietroforte, Paolo Tombesi, and Daniel D Lebiedz. 2011. Are physical mock-ups still necessary to complement visual models for the realization of design intents? Journal of Architectural Engineering 18, 1 (2011), 34–41. DOI: http://dx.doi.org/10.1061/(ASCE)AE.1943-5568.0000060"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 563.0755615234375,
-        "y1": 642.5615234375,
-        "y2": 714.3170166015625
-      },
-      "text": "[38] Ben Piper, Carlo Ratti, and Hiroshi Ishii. 2002. Illuminating Clay: A 3-D Tangible Interface for Landscape Analysis. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI ’02). Association for Computing Machinery, New York, NY, USA, 355–362. DOI: http://dx.doi.org/10.1145/503376.503439"
-    }, {
-      "page": 11,
-      "region": {
-        "x1": 54.0,
-        "x2": 561.5972290039062,
-        "y1": 750.361572265625,
-        "y2": 756.8056030273438
-      },
-      "text": "Paper 325 Page 12"
-    }, {
-      "page": 12,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 296.3787841796875,
-        "y1": 66.32254791259766,
-        "y2": 138.0780029296875
-      },
-      "text": "[39] Eugenio Rodrigues, David Sousa-Rodrigues, Mafalda Teixeira de Sampayo, Adelio Rodrigues Gaspar, Alvaro Gomes, and Carlos Henggeler Antunes. 2017. Clustering of architectural floor plans: A comparison of shape representations. Automation in Construction 80 (2017), 48–65. DOI: http://dx.doi.org/10.1016/j.autcon.2017.03.017"
-    }, {
-      "page": 12,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 298.0823974609375,
-        "y1": 148.61355590820312,
-        "y2": 198.4520263671875
-      },
-      "text": "[40] Gerard Ryder, Bill Ion, Graham Green, David Harrison, and Bruce Wood. 2002. Rapid design and manufacture tools in architecture. Automation in Construction 11, 3 (2002), 279–290. DOI: http://dx.doi.org/10.1016/S0926-5805(00)00111-4"
-    }, {
-      "page": 12,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 298.2423400878906,
-        "y1": 208.98751831054688,
-        "y2": 302.6610107421875
-      },
-      "text": "[41] Qamer Uddin Sabri, Johannes Bayer, Viktor Ayzenshtadt, Syed Saqib Bukhari, Klaus-Dieter Althoff, and Andreas Dengel. 2018. Semi-automated testing of an architectural floor plan retrieval framework: Quantitative and qualitative comparison of semantic pattern-based matching approaches. In International Conference on Pattern Recognition Applications and Methods. Springer, Cham, Germany, 169–189. DOI: http://dx.doi.org/10.1007/978-3-319-93647-5_10"
-    }, {
-      "page": 12,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 296.5980224609375,
-        "y1": 313.196533203125,
-        "y2": 395.9110107421875
-      },
-      "text": "[42] David Sousa-Rodrigues, Mafalda Teixeira de Sampayo, Eugenio Rodrigues, Adelio Rodrigues Gaspar, and Alvaro Gomes. 2015. Crowdsourced clustering of computer generated floor plans. In International Conference on Cooperative Design, Visualization and Engineering 2015 (CDVE ’15). Springer, Cham, Germany, 142–151. DOI: http://dx.doi.org/10.1007/978-3-319-24132-6_17"
-    }, {
-      "page": 12,
-      "region": {
-        "x1": 53.92900085449219,
-        "x2": 296.81707763671875,
-        "y1": 406.446533203125,
-        "y2": 445.3255920410156
-      },
-      "text": "[43] Elaine Steffanny. 2009. Design communication through model making: A taxonomy of physical models in interior design education. Master’s thesis. Iowa State University, Ames, IA."
-    }, {
-      "page": 12,
-      "region": {
-        "x1": 321.0960388183594,
-        "x2": 564.1326904296875,
-        "y1": 66.32254791259766,
-        "y2": 116.15997314453125
-      },
-      "text": "[44] Vimal K Viswanathan and Julie S Linsey. 2013. Role of sunk cost in engineering idea generation: an experimental investigation. Journal of Mechanical Design 135, 12 (2013), 121002. DOI: http://dx.doi.org/10.1115/1.4025290"
-    }, {
-      "page": 12,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 563.9623413085938,
-        "y1": 126.6955337524414,
-        "y2": 187.4923095703125
-      },
-      "text": "[45] Akira Wakita, Akito Nakano, and Michihiko Ueno. 2011. SMAAD surface: A tangible interface for smart material aided architectural design. In Proceedings of the International Conference on Computer Aided Architectural Design Research in Asia 2011 (CAADRIA ’11). CUMINCAD, 355–364."
-    }, {
-      "page": 12,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 562.2288208007812,
-        "y1": 198.02774047851562,
-        "y2": 280.7430114746094
-      },
-      "text": "[46] Markus Weber, Christoph Langenhan, Thomas Roth-Berghofer, Marcus Liwicki, Andreas Dengel, and Frank Petzold. 2010. a.SCatch: Semantic Structure for Architectural Floor Plan Retrieval. In International Conference on Case-Based Reasoning (ICCBR ’10). Springer, Berlin, Heidelberg, Berlin, Heidelberg, Germany, 510–524. DOI: http://dx.doi.org/10.1007/978-3-642-14274-1_37"
-    }, {
-      "page": 12,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 563.2152099609375,
-        "y1": 291.2785339355469,
-        "y2": 330.1579895019531
-      },
-      "text": "[47] Albena Yaneva. 2005. Scaling up and down: Extraction trials in architectural design. Social Studies of Science 35, 6 (2005), 867–894. DOI: http://dx.doi.org/10.1177/0306312705053053"
-    }, {
-      "page": 12,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 559.9473876953125,
-        "y1": 339.28253173828125,
-        "y2": 378.1615905761719
-      },
-      "text": "[48] Dengsheng Zhang and Guojun Lu. 2001. Shape Retrieval Using Fourier Descriptors. In Proceedings of 2nd IEEE Pacific Rim Conference on Multimedia. Springer, 1–9."
-    }, {
-      "page": 12,
-      "region": {
-        "x1": 321.093994140625,
-        "x2": 556.888916015625,
-        "y1": 388.697021484375,
-        "y2": 449.4939880371094
-      },
-      "text": "[49] Oren Zuckerman and Ayelet Gal-Oz. 2013. To TUI or not to TUI: Evaluating performance and preference in tangible vs. graphical user interfaces. International Journal of Human-Computer Studies 71, 7-8 (2013), 803–820. DOI: http://dx.doi.org/10.1016/j.ijhcs.2013.04.003"
-    }, {
-      "page": 12,
-      "region": {
-        "x1": 54.0,
-        "x2": 561.5972290039062,
-        "y1": 750.361572265625,
-        "y2": 756.8056030273438
-      },
-      "text": "Paper 325 Page 13"
+      "text": "Paper 525 Page 11"
     }],
     "title": {
-      "page": 9,
+      "page": 8,
       "region": {
-        "x1": 321.093994140625,
-        "x2": 382.3704528808594,
-        "y1": 602.6830444335938,
-        "y2": 608.31396484375
+        "x1": 316.79998779296875,
+        "x2": 378.2519836425781,
+        "y1": 211.71597290039062,
+        "y2": 218.15997314453125
       },
       "text": "REFERENCES"
     }

@@ -234,9 +234,9 @@ function getFilmstripStructure() {
 		if($(this).find(".punch-filmstrip-thumbnail-outlineStrip").length <= 0) {
 			var bbar = $(document.createElementNS("http://www.w3.org/2000/svg", "rect")).attr({
 				x: 0,
-				y: 0,
+				y: -1,
 				width: 15,
-				height:100 
+				height: 102
 			}).addClass("punch-filmstrip-thumbnail-outlineStrip");
 
 			$(this).append(bbar);
